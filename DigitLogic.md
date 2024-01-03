@@ -167,8 +167,43 @@
   - $P_i = A_i \oplus B_i$
   - $C_{i+1} = G_i + P_iC_i$
   - $S_i = P_i \oplus C_i$
-- Programmable Logic Array (PLA)
-  - $2^N$ AND gates
-  - $2^K$ OR gates
-  - $2^N$ AND gates + $2^K$ OR gates
-  - **Use 3-state gate to optimize the cost**
+
+- (P)ROM
+  - Read-Only Memory 
+  - Programmable only once
+  - $2^K \times N$ ROM ($2^K$ addresses by $K - 2^K$ Decoder, N bits per address) 
+  - For a given address line, the connected data column is 1, others are 0
+- PAL
+  - Programmable Array Logic
+  - Programmable only once
+  - K inputs into 2*K columns($X/\overline{X}$)
+  - Fixed structure of N AO, but programmable AND terms
+  - One output can be used as input of another output as compensation 
+- PLA
+  - Programmable Logic Array
+  - Programmable only once
+  - K inputs into 2*K columns($X/\overline{X}$)
+  - N programmable AND terms
+  - M programmable OR terms (select miniterms above) with M programmable XOR terms (get inverters)
+  - Optimize by optimizing both $F/\overline{F}$
+- FPGA
+  - Field Programmable Gate Array 
+  - LUT
+    - Look-Up Table
+    - Like $2^K - 1$ RAM
+    - Expansion:
+      - Shannon’s expansion theorem : $F = F(X_1, X_2, ..., X_n) = X_nF(X_1, X_2, ..., X_{n-1}, 1) + \overline{X_n}F(X_1, X_2, ..., X_{n-1},0)$
+    - **CLB*
+      - Configurable Logic Block
+      - LUT + Flip-Flop 
+    - **SM*
+      - Switch Matrix
+      - Interconnects between CLBs 
+    - **IOB*
+      - Input/Output Block
+      - Connects to the outside world
+ 
+## Hardware Implementation
+- **CMOS*
+  - NMOS - GND, PMOS - VCC
+  - NMOS & PMOS in series(complesmentary & dual) 
