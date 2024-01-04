@@ -109,6 +109,7 @@
 ## Combinational Logic
 
 - Delays
+
   - Transition Time (**Focus on output change**)
     - $t_{LH}=t_r$ : 10% Low to 90% High  (rise)
     - $t_{HL}=t_f$ : 90% High to 10% Low  (fall)
@@ -120,29 +121,31 @@
       - $t_{pd}=t_{固有}+k*SL$ (sum of fan-out standard loads)
     - Inertial Delay
       - Rejection Time : rejects narrow “pulses” on the outputs
-
 - Technology Mapping
+
   - Use NAND/NOR to implement any logic
   - Optimize
     - Push down NOTs
     - Remove redundant gates (linked NOTs)
-    - Keep doing 
-
+    - Keep doing
 - Decoder
+
   - $N - 2^N$ One-Hot Decoder
   - Hierarchical Design
-    - $N-2^N = (\frac{N}{2} - 2^{\frac{N}{2}} )\times (\frac{N}{2} - 2^{\frac{N}{2}})$  
+    - $N-2^N = (\frac{N}{2} - 2^{\frac{N}{2}} )\times (\frac{N}{2} - 2^{\frac{N}{2}})$
     - Sometimes we can use ENABLE as a select signal
 - Encoder
-  - $2^N-N$ One-Hot Encoder 
+
+  - $2^N-N$ One-Hot Encoder
   - $2^K-N$ Priority Encoder
 - Multiplexer
+
   - $2^N-1$ MUX
   - Input AND Decoder --OR--> Output
   - Expansion
     - Focus on how to cope with the multi-outputs of several MUXs
   - Implement Combinational Logic Function
-    - Simple 
+    - Simple
       - Input: Output in truth table
       - Select: Input
     - Efficient
@@ -151,35 +154,41 @@
       - Input : combination logic of the second part
   - *Use 3-state gate to optimize the cost*
 - Demultiplexer
-  - $1-2^N$ DeMUX
 
+  - $1-2^N$ DeMUX
 - Half Adder  (No last carry)
+
   - $S = A \oplus B$
   - $C = AB$
 - Full Adder
+
   - $S = (A \oplus B)\oplus Z$
   - $C = AB + Z(A \oplus B)$
 - Ripple-Carry Binary Adder (*with $\oplus$ gate)
+
   - Linked Full Adders
-  - The first carry 1 means doing subtraction(2's complement) 
+  - The first carry 1 means doing subtraction(2's complement)
 - **Carry Lookahead Adder*
+
   - $G_i = A_iB_i$
   - $P_i = A_i \oplus B_i$
   - $C_{i+1} = G_i + P_iC_i$
   - $S_i = P_i \oplus C_i$
-
 - (P)ROM
-  - Read-Only Memory 
+
+  - Read-Only Memory
   - Programmable only once
-  - $2^K \times N$ ROM ($2^K$ addresses by $K - 2^K$ Decoder, N bits per address) 
+  - $2^K \times N$ ROM ($2^K$ addresses by $K - 2^K$ Decoder, N bits per address)
   - For a given address line, the connected data column is 1, others are 0
 - PAL
+
   - Programmable Array Logic
   - Programmable only once
   - K inputs into 2*K columns($X/\overline{X}$)
   - Fixed structure of N AO, but programmable AND terms
-  - One output can be used as input of another output as compensation 
+  - One output can be used as input of another output as compensation
 - PLA
+
   - Programmable Logic Array
   - Programmable only once
   - K inputs into 2*K columns($X/\overline{X}$)
@@ -187,7 +196,8 @@
   - M programmable OR terms (select miniterms above) with M programmable XOR terms (get inverters)
   - Optimize by optimizing both $F/\overline{F}$
 - FPGA
-  - Field Programmable Gate Array 
+
+  - Field Programmable Gate Array
   - LUT
     - Look-Up Table
     - Like $2^K - 1$ RAM
@@ -195,15 +205,82 @@
       - Shannon’s expansion theorem : $F = F(X_1, X_2, ..., X_n) = X_nF(X_1, X_2, ..., X_{n-1}, 1) + \overline{X_n}F(X_1, X_2, ..., X_{n-1},0)$
     - **CLB*
       - Configurable Logic Block
-      - LUT + Flip-Flop 
+      - LUT + Flip-Flop
     - **SM*
       - Switch Matrix
-      - Interconnects between CLBs 
+      - Interconnects between CLBs
     - **IOB*
       - Input/Output Block
       - Connects to the outside world
- 
+
+## Sequential Logic
+
+- Synchonous & Asynconous
+
+  - Synchonous : Triggered by discrete clock signal
+  - Asynconous : Triggered by input signal
+- *Buffer*
+
+  - Store a bit, unable to change
+  - Delay = 2 * Inverter Delay
+
+- **Latch**
+  - Property 
+    - Store a bit, able to change and keep
+    - Too fast fallback and state change for a sequential circuit (transparent)
+  - $S-R$ Latch
+    - NOR gates
+    - $R---Q$
+      $S---\overline{Q}$
+    - $S = 1, R = 0,Q = 1$ : Set
+    - $S = 0, R = 1,Q = 0$ : Reset
+  - $\overline{S}-\overline{R}$ Latch
+    - NAND gates
+    - $\overline{S}---Q$
+      $\overline{R}---\overline{Q}$
+    - $S = 1(\overline{S}=0), R = 0,Q=1$ : Set
+    - $S = 0, R = 1,Q=0$ : Reset
+  - Clocked $S-R$ Latch ($S-R$ Latch with Control Input)
+    - Add a control input to control the $\overline{S}-\overline{R}$ latch
+    - $\overline{S}$ = S NAND C
+  - **Both Latches S=1,Q=1**
+  - D Latch
+    - Based on $\overline{S}-\overline{R}$ Latch with Control Input
+    - Let $S = D, R = \overline{D}$ to avoid the forbidden state
+    - Q = D 
+
+- **Flip-Flop**
+  - **Master - Slave FF**
+    - Pulse - Triggered 
+      - S-R MS FF
+        - Master : Clocked S-R Latch
+        - Slave : Clocked S-R Latch 
+        - Control Input : $C$ & $\overline{C}$
+        - Every clock cycle only change once (half for master, half for slave) 
+        - 1's catching problem : glitch 
+    - Edge - Triggered
+      - D MS FF
+        - Master : D Latch
+        - Slave : Clocked S-R Latch 
+        - Control Input : $C$ & $\overline{C}$
+        - Since D Latch has no keeping state when clocked, no 1's catching problem
+        - Positive/Negative - level triggered flip-flop : associated with the **output slave** 
+        - **Direct inputs : often for initial set*
+  - **Edge-Triggered D Flip-Flop*
+  - Timing parameters
+    - Setup Time $t_s$
+      - Time before clock edge that data must be stable
+      - **For Edge-trigger it's short, for Pulse-trigger it keep for whole pulse*
+    - Hold Time $t_h$
+      - Time after clock edge that data must be stable
+    - Propagation Delay $t_{pd}$
+      - Time from input change to output change
+    - $t_h$ in $t_{pd}$ and often $t_h < t_{pd}$, thus often ignore $t_h$ in analysis
+    - **Clock cycle time > longest propagation delay from one clock edge to another edge**
+
+
 ## Hardware Implementation
+
 - **CMOS*
   - NMOS - GND, PMOS - VCC
-  - NMOS & PMOS in series(complesmentary & dual) 
+  - NMOS & PMOS in series(complesmentary & dual)
