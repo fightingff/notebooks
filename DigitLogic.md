@@ -224,6 +224,18 @@
   - Store a bit, unable to change
   - Delay = 2 * Inverter Delay
 
+- Analysis
+  - Input Equation
+    - $D_A = A(t)X(t)$
+  - Output Equation
+    - $Y(t)= F(A(t),X(t))$
+  - Excitation Equation(D Flip-Flop)
+    - $D_A = A(t+1)$
+    - Function of the current state and next state
+  - Next State Equation(Characteristic equation)
+    - $A(t+1) = D_A$
+    - A function of inputs and the current state 
+
 - **Latch**
   - Property 
     - Store a bit, able to change and keep
@@ -258,6 +270,9 @@
         - Control Input : $C$ & $\overline{C}$
         - Every clock cycle only change once (half for master, half for slave) 
         - 1's catching problem : glitch 
+      - J-K MS FF
+        - Same as S-R MS FF, but with J-K Latch
+        - 1 - 1 state permitted, flip to the opposite state 
     - Edge - Triggered
       - D MS FF
         - Master : D Latch
@@ -266,6 +281,11 @@
         - Since D Latch has no keeping state when clocked, no 1's catching problem
         - Positive/Negative - level triggered flip-flop : associated with the **output slave** 
         - **Direct inputs : often for initial set*
+      - T Flip-Flop
+        - J-K MS FF with J = K
+        - $T = 1$ : Toggle
+        - $T = 0$ : Keep
+
   - **Edge-Triggered D Flip-Flop*
   - Timing parameters
     - Setup Time $t_s$
