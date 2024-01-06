@@ -284,3 +284,164 @@
 - **CMOS*
   - NMOS - GND, PMOS - VCC
   - NMOS & PMOS in series(complesmentary & dual)
+
+- **Register**
+  > A set of flip-flops, possibly with added combinational 
+gates, that perform data-processing tasks. 
+  > The flip-flops hold data, and the gates determine the new or transformed data to be transferred into the flip-flops
+  - Structure
+    - Clock
+      - Sequential control   
+    - Flip-Flops 
+      - Storage 
+    - Data Path (**micro-operation**)
+      - Processing data 
+      - Transfer data 
+    - Control Unit 
+      - Control the data path 
+  - Load
+    - Parallel Load
+      > Load all bits at the same time (clock cycle)
+      - Clock gating
+        - $C = \overline{Load} + Clock$
+        - Clock skew problem, hard to implement 
+      - Load enable
+        - $D = Load \cdot D + \overline{Load} \cdot Q$
+        - Actually a MUX
+    - Serial Load
+      > Load one bit at a time (clock cycle)
+      - Useful in data transmission
+  - Transfer 
+    > Condition: DR[...] <- SR[Address] 
+    - Multiplexer and Bus -Based Transfers
+      - For single register (too expensive)
+        - $Load = K_1 + K_2 + ... +K_n$ 
+        - $D = MUX(Input,K)$
+      - For multiple registers 
+        - Bus : a set of multiplexer outputs shared as a common path (single source problem)
+        - Three-state gates : bidirectional input–output lines  
+  - Processing
+    - ALU
+      - Arithmetic micro-operations
+      - Logic micro-operations
+    - Shift micro-operations
+      - Serial shift
+        - Serial link the flip-flops
+        - With a proper clock difference, SO can get the serial result
+          - For N bits:
+            - Starts with N - K clcok cycles, get SI << K
+            - Start with N + K clock cycles, get SI >> K
+      - Parallel shift
+        - Parallel output
+          - Just add an output for each flip-flop 
+        - Parallel load 
+          - Use combinational logic to control the load (MUX)
+          - $Shift:Q \leftarrow shift (Q)$
+            $\overline{Shift} \cdot Load: Q \leftarrow D$
+            $\overline{Shift} \cdot \overline{Load}: Q \leftarrow Q$  
+      - Bidirectional shift
+        - Add a control signal to control the direction of shift 
+        - $\overline{S_1} S_0: D \leftarrow SL(Q)$
+          $S_1 \overline{S_0}: D \leftarrow SR(Q)$
+          $S_1 S_0: D \leftarrow Input$
+          $\overline{S_1} \overline{S_0}: D \leftarrow Q$
+  - **Counter**
+    - Ripple counter
+      - $C_{i+1} = \overline{Q_i}(add)/Q_i(dec)$
+        $D_i = \overline{Q_i}$
+      - Consider every time Q flips, the next flip-flop will be triggered
+    - Serial counter
+      - Same clock
+      - Control the D input of each flip-flop, but D relies on the previous flip-flop 
+    - Parallel counter
+      - Update all in a single clock cycle
+      - More efficient than serial counter 
+    - Other counter
+      - Modulo-N counter
+      - BCD counter
+
+- **Memory**
+  - Some terminology
+    - Word
+      -  A groups of bits that are accessed together
+    - Width (Memory width)
+      - The number of bits in a word
+    - Depth (Address width)
+      - The number of words in a memory 
+    - **Memory size = Width * Depth**
+    - Memory data path width
+      - The number of bits that can be transferred in a bus
+    - Latency time 
+      - From application of row address until first word available
+    - Burst size
+      - The number of words/bits transferred in a burst 
+    - Memory bandwidth
+      - Speed of data transfer 
+      - **Bandwidth = Burst size / (Latency time + Burst Size * Cycle time)**   (Busrt size plus 2 if it's DDR)
+  - Read / Write
+    - CS (Chip Select)
+      - Enable the memory
+    - Address line
+      - Select the word
+    - Data line
+      - Read / Write the data
+    - Access time
+      - Time from address to output data 
+    - Write cycle time   
+      - Time between successive writes
+  - Special Technicals
+    - bidirectional pins for data line
+      - Use three-state gates
+    - Coincidence selection
+      - 2D array : Access by row address and column address
+      - **Often the address line is used for both row select and column select, not row line and column line**
+  - Extension
+    - Word extension
+      - Just parallel the data line
+    - Depth extension
+      - Use a decoder with CS to choose the memory    
+ 
+  - SRAM
+    > Static Random Access Memory
+    - Structure
+      - Storage on S-R Latch
+      - Dual input & output 
+    - Volatile
+    - Expensive
+  - DRAM 
+    > Dynamic Random Access Memory
+    - Structure
+      - Storage on capacitor
+      - Single input & output 
+    - Cheap
+    - Dense
+    - Read / Write
+      - Row address $\rightarrow$ Column address $\rightarrow$ Data valid $\rightarrow$ Refresh
+    - Refresh
+      - Recharge the capacitor
+      - Control by $\overline{RAS}$ & $\overline{CAS}$ of outside devices (0 triggered)
+      - Methods
+        - RAS-only refresh
+          - Refresh the whole row 
+          - The row address is controlled by IC
+          - $RAS =0,CAS =1$
+        - CAS-before-RAS refresh
+          - Controlled by inner counter
+          - $CAS =0 \rightarrow RAS = 0$
+        - Hidden refresh
+          - CAS-before-RAS refresh following a normal read / write 
+      - Mode
+        - Burst mode
+          - stop the work and refresh all memory for a while
+        - Distributed refresh
+          - Refresh the memory in a distributed way
+          - space out refresh one row at a time, thus avoid blocking memory for a long time
+    - SDRAM
+    > Synchronous DRAM
+    - Burst length
+      - Number of words accessed in a single access (burst read) 
+  - DDR SDRAM 
+    > Double Data Rate SDRAM
+    - Transfer data on both rising and falling edges of the clock
+  - **RDRAM*
+    > Rambus DRAM  
