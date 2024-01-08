@@ -87,6 +87,9 @@
     - Choose 1's
   - POM (product of maxterm)
     - Choose 0's
+  - SOP (sum of product)
+    - Choose 1's
+    - Every product term contains all variables 
   - **Cost**
     - Literal cost
       - Number of literals
