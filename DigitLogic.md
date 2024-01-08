@@ -436,7 +436,7 @@ gates, that perform data-processing tasks.
     - Cheap
     - Dense
     - Read / Write
-      - Row address $\rightarrow$ Column address $\rightarrow$ Data valid $\rightarrow$ Refresh
+      - Row address $\rightarrow$ Column address $\rightarrow$ $\rightarrow$ I/O activated $\rightarrow$ Data valid $\rightarrow$ Refresh
     - Refresh
       - Recharge the capacitor
       - Control by $\overline{RAS}$ & $\overline{CAS}$ of outside devices (0 triggered)
