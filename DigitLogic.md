@@ -521,3 +521,11 @@
   - 4 bit Hex - 7 segment decoder
   - negative logic
   - a - f clockwise, g in the middle, p is point
+
+## Verilog
+- 门级
+  - or,and,not,nand,nor,xor,xnor(output,input1,input2) 
+- RTL
+  - assign  
+- 行为级
+  - always @(*) 
