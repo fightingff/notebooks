@@ -26,6 +26,7 @@
   - MSB & LSB
     - Most/Least Significant Bit
 - **Unsigned integer**
+
   - **Radix Complement(补码)**
 
     - r’s complement for radix r
@@ -37,13 +38,14 @@
     - (r - 1)’s complement for radix r
     - 1’s complement for radix 2
     - Defined as $r^N - 1 - x$ , "flipping" every bit actually
-
 - **Signed integer**
+
   - positive
     - Both 1's and 2's complement are the same as true code
   - negative
     - 1's complement is flipping every bit follow the sign bit
     - 2's complement is 1's complement + 1
+
 ## Arithmetic System
 
 - In computer system, it's actually a **"$mod \ r^N$"** system for N bit calculation
@@ -96,7 +98,7 @@
     - Choose 0's
   - SOP (sum of product)
     - Choose 1's
-    - Every product term contains all variables 
+    - Every product term contains all variables
   - **Cost**
     - Literal cost
       - Number of literals
@@ -233,8 +235,8 @@
 
   - Store a bit, unable to change
   - Delay = 2 * Inverter Delay
-
 - Analysis
+
   - Input Equation
     - $D_A = A(t)X(t)$
   - Output Equation
@@ -244,10 +246,10 @@
     - Function of the current state and next state
   - Next State Equation(Characteristic equation)
     - $A(t+1) = D_A$
-    - A function of inputs and the current state 
-
+    - A function of inputs and the current state
 - **Latch**
-  - Property 
+
+  - Property
     - Store a bit, able to change and keep
     - Too fast fallback and state change for a sequential circuit (transparent)
   - $S-R$ Latch
@@ -269,35 +271,36 @@
   - D Latch
     - Based on $\overline{S}-\overline{R}$ Latch with Control Input
     - Let $S = D, R = \overline{D}$ to avoid the forbidden state
-    - Q = D 
-
+    - Q = D
 - **Flip-Flop**
+
   - **Master - Slave FF**
-    - Pulse - Triggered 
+
+    - Pulse - Triggered
       - S-R MS FF
         - Master : Clocked S-R Latch
-        - Slave : Clocked S-R Latch 
+        - Slave : Clocked S-R Latch
         - Control Input : $C$ & $\overline{C}$
-        - Every clock cycle only change once (half for master, half for slave) 
-        - 1's catching problem : glitch 
+        - Every clock cycle only change once (half for master, half for slave)
+        - 1's catching problem : glitch
       - J-K MS FF
         - Same as S-R MS FF, but with J-K Latch
-        - 1 - 1 state permitted, flip to the opposite state 
+        - 1 - 1 state permitted, flip to the opposite state
     - Edge - Triggered
       - D MS FF
         - Master : D Latch
-        - Slave : Clocked S-R Latch 
+        - Slave : Clocked S-R Latch
         - Control Input : $C$ & $\overline{C}$
         - Since D Latch has no keeping state when clocked, no 1's catching problem
-        - Positive/Negative - level triggered flip-flop : associated with the **output slave** 
+        - Positive/Negative - level triggered flip-flop : associated with the **output slave**
         - **Direct inputs : often for initial set*
       - T Flip-Flop
         - J-K MS FF with J = K
         - $T = 1$ : Toggle
         - $T = 0$ : Keep
-
   - **Edge-Triggered D Flip-Flop*
   - Timing parameters
+
     - Setup Time $t_s$
       - Time before clock edge that data must be stable
       - **For Edge-trigger it's short, for Pulse-trigger it keep for whole pulse*
@@ -308,49 +311,63 @@
     - $t_h$ in $t_{pd}$ and often $t_h < t_{pd}$, thus often ignore $t_h$ in analysis
     - **Clock cycle time > longest propagation delay from one clock edge to another edge**
 
-
 ## Hardware Implementation
 
 - **CMOS*
+
   - NMOS - GND, PMOS - VCC
   - NMOS & PMOS in series(complesmentary & dual)
-
 - **Register**
-  > A set of flip-flops, possibly with added combinational 
-gates, that perform data-processing tasks. 
+
+  > A set of flip-flops, possibly with added combinational
+  > gates, that perform data-processing tasks.
   > The flip-flops hold data, and the gates determine the new or transformed data to be transferred into the flip-flops
+  >
+
   - Structure
+
     - Clock
-      - Sequential control   
-    - Flip-Flops 
-      - Storage 
+      - Sequential control
+    - Flip-Flops
+      - Storage
     - Data Path (**micro-operation**)
-      - Processing data 
-      - Transfer data 
-    - Control Unit 
-      - Control the data path 
+      - Processing data
+      - Transfer data
+    - Control Unit
+      - Control the data path
   - Load
+
     - Parallel Load
+
       > Load all bits at the same time (clock cycle)
+      >
+
       - Clock gating
         - $C = \overline{Load} + Clock$
-        - Clock skew problem, hard to implement 
+        - Clock skew problem, hard to implement
       - Load enable
         - $D = Load \cdot D + \overline{Load} \cdot Q$
         - Actually a MUX
     - Serial Load
+
       > Load one bit at a time (clock cycle)
+      >
+
       - Useful in data transmission
-  - Transfer 
-    > Condition: DR[...] <- SR[Address] 
+  - Transfer
+
+    > Condition: DR[...] <- SR[Address]
+    >
+
     - Multiplexer and Bus -Based Transfers
       - For single register (too expensive)
-        - $Load = K_1 + K_2 + ... +K_n$ 
+        - $Load = K_1 + K_2 + ... +K_n$
         - $D = MUX(Input,K)$
-      - For multiple registers 
+      - For multiple registers
         - Bus : a set of multiplexer outputs shared as a common path (single source problem)
-        - Three-state gates : bidirectional input–output lines  
+        - Three-state gates : bidirectional input–output lines
   - Processing
+
     - ALU
       - Arithmetic micro-operations
       - Logic micro-operations
@@ -363,52 +380,55 @@ gates, that perform data-processing tasks.
             - Start with N + K clock cycles, get SI >> K
       - Parallel shift
         - Parallel output
-          - Just add an output for each flip-flop 
-        - Parallel load 
+          - Just add an output for each flip-flop
+        - Parallel load
           - Use combinational logic to control the load (MUX)
           - $Shift:Q \leftarrow shift (Q)$
             $\overline{Shift} \cdot Load: Q \leftarrow D$
-            $\overline{Shift} \cdot \overline{Load}: Q \leftarrow Q$  
+            $\overline{Shift} \cdot \overline{Load}: Q \leftarrow Q$
       - Bidirectional shift
-        - Add a control signal to control the direction of shift 
+        - Add a control signal to control the direction of shift
         - $\overline{S_1} S_0: D \leftarrow SL(Q)$
           $S_1 \overline{S_0}: D \leftarrow SR(Q)$
           $S_1 S_0: D \leftarrow Input$
           $\overline{S_1} \overline{S_0}: D \leftarrow Q$
   - **Counter**
+
     - Ripple counter
       - $C_{i+1} = \overline{Q_i}(add)/Q_i(dec)$
         $D_i = \overline{Q_i}$
       - Consider every time Q flips, the next flip-flop will be triggered
     - Serial counter
       - Same clock
-      - Control the D input of each flip-flop, but D relies on the previous flip-flop 
+      - Control the D input of each flip-flop, but D relies on the previous flip-flop
     - Parallel counter
       - Update all in a single clock cycle
-      - More efficient than serial counter 
+      - More efficient than serial counter
     - Other counter
       - Modulo-N counter
       - BCD counter
-
 - **Memory**
+
   - Some terminology
+
     - Word
-      -  A groups of bits that are accessed together
+      - A groups of bits that are accessed together
     - Width (Memory width)
       - The number of bits in a word
     - Depth (Address width)
-      - The number of words in a memory 
+      - The number of words in a memory
     - **Memory size = Width * Depth**
     - Memory data path width
       - The number of bits that can be transferred in a bus
-    - Latency time 
+    - Latency time
       - From application of row address until first word available
     - Burst size
-      - The number of words/bits transferred in a burst 
+      - The number of words/bits transferred in a burst
     - Memory bandwidth
-      - Speed of data transfer 
+      - Speed of data transfer
       - **Bandwidth = Burst size / (Latency time + Burst Size * Cycle time)**   (Busrt size plus 2 if it's DDR)
   - Read / Write
+
     - CS (Chip Select)
       - Enable the memory
     - Address line
@@ -416,33 +436,40 @@ gates, that perform data-processing tasks.
     - Data line
       - Read / Write the data
     - Access time
-      - Time from address to output data 
-    - Write cycle time   
+      - Time from address to output data
+    - Write cycle time
       - Time between successive writes
   - Special Technicals
+
     - bidirectional pins for data line
       - Use three-state gates
     - Coincidence selection
       - 2D array : Access by row address and column address
       - **Often the address line is used for both row select and column select, not row line and column line**
   - Extension
+
     - Word extension
       - Just parallel the data line
     - Depth extension
-      - Use a decoder with CS to choose the memory    
- 
+      - Use a decoder with CS to choose the memory
   - SRAM
+
     > Static Random Access Memory
+    >
+
     - Structure
       - Storage on S-R Latch
-      - Dual input & output 
+      - Dual input & output
     - Volatile
     - Expensive
-  - DRAM 
+  - DRAM
+
     > Dynamic Random Access Memory
+    >
+
     - Structure
       - Storage on capacitor
-      - Single input & output 
+      - Single input & output
     - Cheap
     - Dense
     - Read / Write
@@ -452,14 +479,14 @@ gates, that perform data-processing tasks.
       - Control by $\overline{RAS}$ & $\overline{CAS}$ of outside devices (0 triggered)
       - Methods
         - RAS-only refresh
-          - Refresh the whole row 
+          - Refresh the whole row
           - The row address is controlled by IC
           - $RAS =0,CAS =1$
         - CAS-before-RAS refresh
           - Controlled by inner counter
           - $CAS =0 \rightarrow RAS = 0$
         - Hidden refresh
-          - CAS-before-RAS refresh following a normal read / write 
+          - CAS-before-RAS refresh following a normal read / write
       - Mode
         - Burst mode
           - stop the work and refresh all memory for a while
@@ -467,11 +494,30 @@ gates, that perform data-processing tasks.
           - Refresh the memory in a distributed way
           - space out refresh one row at a time, thus avoid blocking memory for a long time
     - SDRAM
+
     > Synchronous DRAM
+    >
+
     - Burst length
-      - Number of words accessed in a single access (burst read) 
-  - DDR SDRAM 
+      - Number of words accessed in a single access (burst read)
+  - DDR SDRAM
+
     > Double Data Rate SDRAM
+    >
+
     - Transfer data on both rising and falling edges of the clock
   - **RDRAM*
-    > Rambus DRAM  
+
+    > Rambus DRAM
+    >
+
+## Labs
+- 74LS138
+  - 3-8 decoder
+  - 3 inputs, 8 outputs (negative one-hot logic)
+  - 3 enable inputs $G,\overline{G2A},\overline{G2B}$
+
+- MC14495
+  - 4 bit Hex - 7 segment decoder
+  - negative logic
+  - a - f clockwise, g in the middle, p is point
