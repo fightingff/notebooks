@@ -25,18 +25,25 @@
     - Final result of 1's
   - MSB & LSB
     - Most/Least Significant Bit
-- **Radix Complement(补码)**
+- **Unsigned integer**
+  - **Radix Complement(补码)**
 
-  - r’s complement for radix r
-  - 2’s complement in binary
-  - Defined as $r^N - x$
-  - *In Binary, as (~x + 1)*
-- **Diminished Radix Complement（反码）**
+    - r’s complement for radix r
+    - 2’s complement in binary
+    - Defined as $r^N - x$
+    - *In Binary, as (~x + 1)*
+  - **Diminished Radix Complement（反码）**
 
-  - (r - 1)’s complement for radix r
-  - 1’s complement for radix 2
-  - Defined as $r^N - 1 - x$ , "flipping" every bit actually
+    - (r - 1)’s complement for radix r
+    - 1’s complement for radix 2
+    - Defined as $r^N - 1 - x$ , "flipping" every bit actually
 
+- **Signed integer**
+  - positive
+    - Both 1's and 2's complement are the same as true code
+  - negative
+    - 1's complement is flipping every bit follow the sign bit
+    - 2's complement is 1's complement + 1
 ## Arithmetic System
 
 - In computer system, it's actually a **"$mod \ r^N$"** system for N bit calculation
