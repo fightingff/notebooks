@@ -3,3 +3,4 @@ markdown: kramdown
 plugins:
 - jekyll-remote-theme
 - jekyll-spaceship
+- jekyll-mathjax-csp
