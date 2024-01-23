@@ -521,72 +521,56 @@
 <h2 id="git_1">git架构</h2>
 <p><img alt="" src="../git_structure.png" /></p>
 <ul>
-<li>
-<p>workspace：工作区，实际工作目录</p>
-</li>
-<li>
-<p>index：暂存区，通过add添加</p>
-</li>
-<li>
-<p>repository：版本库</p>
-</li>
-<li>
-<p>remote：远程仓库</p>
-</li>
-<li>
-<p>branch：分支</p>
-</li>
-<li>
-<p>HEAD：指向当前分支的指针</p>
-</li>
-<li>
-<p><em>origin：默认远程仓库</em></p>
-</li>
-<li>
-<p><em>master: 默认主分支</em></p>
-</li>
+<li>workspace：工作区，实际工作目录</li>
+<li>index：暂存区，通过add添加</li>
+<li>repository：版本库</li>
+<li>remote：远程仓库</li>
+<li>branch：分支</li>
+<li>HEAD：指向当前分支的指针</li>
+<li><em>origin：默认远程仓库</em></li>
+<li><em>master: 默认主分支</em></li>
 </ul>
 <h2 id="_2">常用命令</h2>
 <ul>
-<li>
-<p>git pull <remote> <branch> </p>
+<li><strong>git pull \&lt;remote&gt; \&lt;branch&gt;</strong></li>
+</ul>
 <blockquote>
 <p>约等于 git clone + git merge,一般用于将远程仓库克隆到本地</p>
 </blockquote>
-</li>
-<li>
-<p>git push (-u) <remote> <branch></p>
+<ul>
+<li><strong>git push (-u) \&lt;remote&gt; \&lt;branch&gt;</strong></li>
+</ul>
 <blockquote>
 <p>将本地的仓库（repository）推送到远程仓库的分支上，-u参数表示将本地分支与远程分支关联起来</p>
 </blockquote>
-</li>
-<li>
-<p>git add <file></p>
+<ul>
+<li><strong>git add \&lt;file&gt;</strong></li>
+</ul>
 <blockquote>
-<p>将工作区的文件添加到暂存区（index） </p>
+<p>将工作区的文件添加到暂存区（index）</p>
 </blockquote>
-</li>
-<li>
-<p>git commit -m <message></p>
+<ul>
+<li><strong>git commit -m \&lt;message&gt;</strong></li>
+</ul>
 <blockquote>
 <p>将暂存区的文件提交到本地仓库（repository）
 message是提交的说明，一般是对本次提交的精简描述</p>
 </blockquote>
-</li>
-<li>
-<p>git init</p>
+<ul>
+<li><strong>git init</strong></li>
+</ul>
 <blockquote>
 <p>初始化一个本地仓库</p>
 </blockquote>
-</li>
-<li>
-<p>git clone</p>
+<ul>
+<li><strong>git clone</strong></li>
+</ul>
 <blockquote>
 <p>将远程仓库克隆到本地</p>
 </blockquote>
-</li>
-<li>
-<p>git branch</p>
+<ul>
+<li>git branch</li>
+</ul>
 <blockquote>
 <p>查看分支
 -a 查看所有分支
@@ -594,27 +578,25 @@ message是提交的说明，一般是对本次提交的精简描述</p>
 -d 删除分支
 后加分支名可新建分支</p>
 </blockquote>
-</li>
-<li>
-<p>git checkout <branch></p>
+<ul>
+<li><strong>git checkout \&lt;branch&gt;</strong></li>
+</ul>
 <blockquote>
 <p>（新建且）切换分支</p>
 </blockquote>
-</li>
-<li>
-<p>git merge <branch></p>
+<ul>
+<li><strong>git merge \&lt;branch&gt;</strong></li>
+</ul>
 <blockquote>
-<p>将<branch>分支合并到当前分支</p>
+<p>将\&lt;branch&gt;分支合并到当前分支</p>
 </blockquote>
-</li>
-<li>
-<p>git rebase</p>
+<ul>
+<li><strong>git rebase</strong></li>
+</ul>
 <blockquote>
-<p>将当前分支的提交记录移动到<branch>分支的最后
+<p>将当前分支的提交记录移动到\&lt;branch&gt;分支的最后
 使得提交记录更加清晰</p>
 </blockquote>
-</li>
-</ul>
 <h2 id="_3">常用操作</h2>
 <ul>
 <li>新建一个本地仓库并与远程仓库关联</li>
@@ -635,8 +617,8 @@ git push -u origin master
 <ul>
 <li>从远程仓库拉取分支并完成合并</li>
 </ul>
-<pre><code class="language-bash">git pull origin &lt;branch&gt;
-git merge &lt;branch&gt;
+<pre><code class="language-bash">git pull origin \&lt;branch\&gt;
+git merge \&lt;branch\&gt;
 git add *
 git commit -m &quot;...&quot;
 git push -u origin master
