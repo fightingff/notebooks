@@ -2,8 +2,11 @@ site_name: FF's Notebooks
 site_url: https://fightingff.github.io/notebooks
 nav:
   - Home: index.md
-  - X86 Asm: ASM.md 
-  - Digit Logic Design: DigitLogic.md
+  - Courses:
+      - x86 Asm: ASM.md 
+      - Digit Logic Design: DigitLogic.md
+  - Tools:
+      - Git: Git.md
 theme:
   name: material
 markdown_extensions:
