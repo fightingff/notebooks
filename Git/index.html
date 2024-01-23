@@ -597,6 +597,12 @@ message是提交的说明，一般是对本次提交的精简描述</p>
 <p>将当前分支的提交记录移动到&lt;branch&gt;分支的最后
 使得提交记录更加清晰</p>
 </blockquote>
+<ul>
+<li><strong>git log (--oneline)</strong><blockquote>
+<p>查看提交记录</p>
+</blockquote>
+</li>
+</ul>
 <h2 id="_3">常用操作</h2>
 <ul>
 <li>新建一个本地仓库并与远程仓库关联</li>
@@ -622,6 +628,7 @@ git merge &lt;branch\&gt;
 git add *
 git commit -m &quot;...&quot;
 git push -u origin master
+git push --delete origin &lt;branch\&gt; # 删除远程分支
 </code></pre>
 
 
