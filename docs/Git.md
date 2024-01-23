@@ -26,32 +26,25 @@ git 是一个分布式版本控制系统，即每个人的本地都是一个完�
 ## 常用命令
 
 - **git pull <remote\> <branch\>**
-
 > 约等于 git clone + git merge,一般用于将远程仓库克隆到本地
 
 - **git push (-u) <remote\> <branch\>**
-
 > 将本地的仓库（repository）推送到远程仓库的分支上，-u参数表示将本地分支与远程分支关联起来
 
 - **git add <file\>**
-
 > 将工作区的文件添加到暂存区（index）
 
 - **git commit -m <message\>**
-
 > 将暂存区的文件提交到本地仓库（repository）
 > message是提交的说明，一般是对本次提交的精简描述
 
 - **git init**
-
 > 初始化一个本地仓库
 
 - **git clone**
-
 > 将远程仓库克隆到本地
 
 - **git branch**
-
 > 查看分支
 > -a 查看所有分支
 > -r 查看远程分支
@@ -59,15 +52,12 @@ git 是一个分布式版本控制系统，即每个人的本地都是一个完�
 > 后加分支名可新建分支
 
 - **git checkout <branch\>**
-
 > （新建且）切换分支
 
 - **git merge <branch\>**
-
 > 将<branch\>分支合并到当前分支
 
 - **git rebase**
-
 > 将当前分支的提交记录移动到<branch\>分支的最后
 > 使得提交记录更加清晰
 
