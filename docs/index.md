@@ -9,3 +9,10 @@
 - Digit Logic Design
     - Taught by CM, one of the best teacher I've met.
     - Concretely learn the basic digit design, and some basic hardware programming (Verilog)
+
+## Some useful tools in learning
+
+- Git
+    - Undoubtedly one of the most useful tools as distributed version control system
+    - Workspace history recorded
+    - Remote workspace storage & cooperation
