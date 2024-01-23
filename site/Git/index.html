@@ -532,25 +532,25 @@
 </ul>
 <h2 id="_2">常用命令</h2>
 <ul>
-<li><strong>git pull \&lt;remote&gt; \&lt;branch&gt;</strong></li>
+<li><strong>git pull &lt;remote&gt; &lt;branch&gt;</strong></li>
 </ul>
 <blockquote>
 <p>约等于 git clone + git merge,一般用于将远程仓库克隆到本地</p>
 </blockquote>
 <ul>
-<li><strong>git push (-u) \&lt;remote&gt; \&lt;branch&gt;</strong></li>
+<li><strong>git push (-u) &lt;remote&gt; &lt;branch&gt;</strong></li>
 </ul>
 <blockquote>
 <p>将本地的仓库（repository）推送到远程仓库的分支上，-u参数表示将本地分支与远程分支关联起来</p>
 </blockquote>
 <ul>
-<li><strong>git add \&lt;file&gt;</strong></li>
+<li><strong>git add &lt;file&gt;</strong></li>
 </ul>
 <blockquote>
 <p>将工作区的文件添加到暂存区（index）</p>
 </blockquote>
 <ul>
-<li><strong>git commit -m \&lt;message&gt;</strong></li>
+<li><strong>git commit -m &lt;message&gt;</strong></li>
 </ul>
 <blockquote>
 <p>将暂存区的文件提交到本地仓库（repository）
@@ -569,7 +569,7 @@ message是提交的说明，一般是对本次提交的精简描述</p>
 <p>将远程仓库克隆到本地</p>
 </blockquote>
 <ul>
-<li>git branch</li>
+<li><strong>git branch</strong></li>
 </ul>
 <blockquote>
 <p>查看分支
@@ -579,22 +579,22 @@ message是提交的说明，一般是对本次提交的精简描述</p>
 后加分支名可新建分支</p>
 </blockquote>
 <ul>
-<li><strong>git checkout \&lt;branch&gt;</strong></li>
+<li><strong>git checkout &lt;branch&gt;</strong></li>
 </ul>
 <blockquote>
 <p>（新建且）切换分支</p>
 </blockquote>
 <ul>
-<li><strong>git merge \&lt;branch&gt;</strong></li>
+<li><strong>git merge &lt;branch&gt;</strong></li>
 </ul>
 <blockquote>
-<p>将\&lt;branch&gt;分支合并到当前分支</p>
+<p>将&lt;branch&gt;分支合并到当前分支</p>
 </blockquote>
 <ul>
 <li><strong>git rebase</strong></li>
 </ul>
 <blockquote>
-<p>将当前分支的提交记录移动到\&lt;branch&gt;分支的最后
+<p>将当前分支的提交记录移动到&lt;branch&gt;分支的最后
 使得提交记录更加清晰</p>
 </blockquote>
 <h2 id="_3">常用操作</h2>
@@ -617,8 +617,8 @@ git push -u origin master
 <ul>
 <li>从远程仓库拉取分支并完成合并</li>
 </ul>
-<pre><code class="language-bash">git pull origin \&lt;branch\&gt;
-git merge \&lt;branch\&gt;
+<pre><code class="language-bash">git pull origin &lt;branch\&gt;
+git merge &lt;branch\&gt;
 git add *
 git commit -m &quot;...&quot;
 git push -u origin master
