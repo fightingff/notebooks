@@ -10,6 +10,9 @@
     - Taught by CM, one of the best teacher I've met.
     - Concretely learn the basic digit design, and some basic hardware programming (Verilog)
 
+- CS231n
+    - My work in learning CS231n
+
 ## Some useful tools in learning
 
 - Git
