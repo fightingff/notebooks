@@ -3,8 +3,9 @@ site_url: https://fightingff.github.io/notebooks
 nav:
   - Home: index.md
   - Courses:
-      - x86 Asm: ASM.md 
+      - x86 Asm: ASM.md
       - Digit Logic Design: DigitLogic.md
+      - CS 231n: CS231n.md
   - Tools:
       - Git: Git.md
 theme:
