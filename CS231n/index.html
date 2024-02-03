@@ -355,6 +355,39 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Some newly-learned thoughts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#training-sets-validation-sets-test-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Training sets, validation sets &amp; test sets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters-in-linear-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parameters in Linear Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#svm-support-vector-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      SVM (Support Vector Machine)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -373,6 +406,30 @@
       Assignment 1
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Assignment 1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#k-nn-k-nearest-neighbors" class="md-nav__link">
+    <span class="md-ellipsis">
+      K-NN (K Nearest Neighbors)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#svm-support-vector-machine_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      SVM (Support Vector Machine)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -504,6 +561,39 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Some newly-learned thoughts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#training-sets-validation-sets-test-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Training sets, validation sets &amp; test sets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters-in-linear-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parameters in Linear Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#svm-support-vector-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      SVM (Support Vector Machine)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -522,6 +612,30 @@
       Assignment 1
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Assignment 1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#k-nn-k-nearest-neighbors" class="md-nav__link">
+    <span class="md-ellipsis">
+      K-NN (K Nearest Neighbors)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#svm-support-vector-machine_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      SVM (Support Vector Machine)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -558,55 +672,67 @@
 </ul>
 <hr />
 <h2 id="some-newly-learned-thoughts">Some newly-learned thoughts</h2>
+<h3 id="training-sets-validation-sets-test-sets">Training sets, validation sets &amp; test sets</h3>
 <ul>
 <li>
-<p>Training sets, validation sets &amp; test sets</p>
-<ul>
-<li>We should isolate the test sets with the training process, "just test the final model at the very end" to avoid overfitting</li>
-<li>Often validation sets are extracted from training sets </li>
-</ul>
+<p>We should isolate the test sets with the training process, "just test the final model at the very end" to avoid overfitting</p>
 </li>
 <li>
-<p>Parameters in Linear Model</p>
-<ul>
-<li>We can view the Weight Matrix as a set of templates, and the scores as the similarity between the input and the templates</li>
-<li>So when printing the weights, we can somehow visualize the templates we learned </li>
-<li>Picture below is what we learned from the CIFAR-10 dataset using SVM
-<img alt="template" src="../template.png" /></li>
+<p>Often validation sets are extracted from training sets </p>
+</li>
 </ul>
+<h3 id="parameters-in-linear-model">Parameters in Linear Model</h3>
+<ul>
+<li>
+<p>We can view the Weight Matrix as a set of templates, and the scores as the similarity between the input and the templates</p>
 </li>
 <li>
-<p>SVM (Support Vector Machine)</p>
-<ul>
-<li><strong>Hinge Loss</strong>: <span class="arithmatex">\(L_i = \sum_{j\neq y_i} \max(0, s_j - s_{y_i} + margin)\)</span>, so-called <strong>max-margin loss</strong> because it encourages the correct class to have a score higher than the incorrect class by at least a margin</li>
-<li>The hinge loss is "easy to be satisfied" since it only cares about the margin, not the exact value of the score (<em>e.g. [1,0] &amp; [100,-100] both have the same loss when the margin is 1</em>)</li>
+<p>So when printing the weights, we can somehow visualize the templates we learned </p>
+</li>
+<li>
+<p>Picture below is what we learned from the CIFAR-10 dataset using SVM
+    <img alt="template" src="../template.png" /></p>
+</li>
 </ul>
+<h3 id="svm-support-vector-machine">SVM (Support Vector Machine)</h3>
+<ul>
+<li>
+<p><strong>Hinge Loss</strong>: <span class="arithmatex">\(L_i = \sum_{j\neq y_i} \max(0, s_j - s_{y_i} + margin)\)</span>, so-called <strong>max-margin loss</strong> because it encourages the correct class to have a score higher than the incorrect class by at least a margin</p>
+</li>
+<li>
+<p>The hinge loss is "easy to be satisfied" since it only cares about the margin, not the exact value of the score (<em>e.g. [1,0] &amp; [100,-100] both have the same loss when the margin is 1</em>)</p>
 </li>
 </ul>
 <hr />
 <h2 id="assignment">Assignment</h2>
 <hr />
 <h3 id="assignment-1">Assignment 1</h3>
+<h4 id="k-nn-k-nearest-neighbors">K-NN (K Nearest Neighbors)</h4>
 <ul>
 <li>
-<p>K-NN (K Nearest Neighbors)</p>
-<ul>
-<li>No training, just memorizing the data</li>
-<li>In prediction, compute the <strong>Distance</strong> with every sample (<strong>Costly</strong>)</li>
-<li>Use K-fold cross validation to find the best K. Concretely speaking, split the training sets into K folds, and choose each as validation set, and evaluate the model finally. </li>
-</ul>
+<p>No training, just memorizing the data</p>
 </li>
 <li>
-<p>SVM (Support Vector Machine)</p>
+<p>In prediction, compute the <strong>Distance</strong> with every sample (<strong>Costly</strong>)</p>
+</li>
+<li>
+<p>Use K-fold cross validation to find the best K. Concretely speaking, split the training sets into K folds, and choose each as validation set, and evaluate the model finally. </p>
+</li>
+</ul>
+<h4 id="svm-support-vector-machine_1">SVM (Support Vector Machine)</h4>
 <ul>
-<li><strong>Hinge Loss</strong>: <span class="arithmatex">\(L_i = \sum_{j\neq y_i} \max(0, s_j - s_{y_i} + margin)\)</span></li>
-<li><strong>Regularization</strong>: <span class="arithmatex">\(L = \frac{1}{N} \sum_i L_i + \frac{1}{2}\lambda |W|^2\)</span>, where <span class="arithmatex">\(\lambda\)</span> is the regularization strength</li>
-<li><strong>Gradient Descent</strong>: <ul>
+<li>
+<p><strong>Hinge Loss</strong>: <span class="arithmatex">\(L_i = \sum_{j\neq y_i} \max(0, s_j - s_{y_i} + margin)\)</span></p>
+</li>
+<li>
+<p><strong>Regularization</strong>: <span class="arithmatex">\(L = \frac{1}{N} \sum_i L_i + \frac{1}{2}\lambda |W|^2\)</span>, where <span class="arithmatex">\(\lambda\)</span> is the regularization strength</p>
+</li>
+<li>
+<p><strong>Gradient Descent</strong>: </p>
+<ul>
 <li><span class="arithmatex">\(W -= \alpha \nabla_W L\)</span>,</li>
 <li><span class="arithmatex">\(\nabla_W L_{yi} = - \Sigma_{j \neq y_i}1(w_jx_i + \Delta &gt; 0)x_i\)</span></li>
 <li><span class="arithmatex">\(\nabla_W L_i = 1(w_jx_i + \Delta &gt; 0)x_i\)</span></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
