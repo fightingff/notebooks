@@ -549,21 +549,43 @@
 <blockquote>
 <p>Systematical learning <strong>Machine Learning in CV</strong></p>
 </blockquote>
+<hr />
 <h2 id="resources">Resources</h2>
 <ul>
 <li><a href="https://github.com/fightingff/CS231n">My Repository</a></li>
 <li><a href="https://cs231n.github.io">Official Notes</a></li>
 <li><a href="http://cs231n.stanford.edu/">Course Website</a></li>
 </ul>
+<hr />
 <h2 id="some-newly-learned-thoughts">Some newly-learned thoughts</h2>
 <ul>
-<li>Training sets, validation sets &amp; test sets<ul>
+<li>
+<p>Training sets, validation sets &amp; test sets</p>
+<ul>
 <li>We should isolate the test sets with the training process, "just test the final model at the very end" to avoid overfitting</li>
 <li>Often validation sets are extracted from training sets </li>
 </ul>
 </li>
+<li>
+<p>Parameters in Linear Model</p>
+<ul>
+<li>We can view the Weight Matrix as a set of templates, and the scores as the similarity between the input and the templates</li>
+<li>So when printing the weights, we can somehow visualize the templates we learned </li>
+<li>Picture below is what we learned from the CIFAR-10 dataset using SVM
+<img alt="template" src="../template.png" /></li>
 </ul>
+</li>
+<li>
+<p>SVM (Support Vector Machine)</p>
+<ul>
+<li><strong>Hinge Loss</strong>: <span class="arithmatex">\(L_i = \sum_{j\neq y_i} \max(0, s_j - s_{y_i} + margin)\)</span>, so-called <strong>max-margin loss</strong> because it encourages the correct class to have a score higher than the incorrect class by at least a margin</li>
+<li>The hinge loss is "easy to be satisfied" since it only cares about the margin, not the exact value of the score (<em>e.g. [1,0] &amp; [100,-100] both have the same loss when the margin is 1</em>)</li>
+</ul>
+</li>
+</ul>
+<hr />
 <h2 id="assignment">Assignment</h2>
+<hr />
 <h3 id="assignment-1">Assignment 1</h3>
 <ul>
 <li>
@@ -572,6 +594,19 @@
 <li>No training, just memorizing the data</li>
 <li>In prediction, compute the <strong>Distance</strong> with every sample (<strong>Costly</strong>)</li>
 <li>Use K-fold cross validation to find the best K. Concretely speaking, split the training sets into K folds, and choose each as validation set, and evaluate the model finally. </li>
+</ul>
+</li>
+<li>
+<p>SVM (Support Vector Machine)</p>
+<ul>
+<li><strong>Hinge Loss</strong>: <span class="arithmatex">\(L_i = \sum_{j\neq y_i} \max(0, s_j - s_{y_i} + margin)\)</span></li>
+<li><strong>Regularization</strong>: <span class="arithmatex">\(L = \frac{1}{N} \sum_i L_i + \frac{1}{2}\lambda |W|^2\)</span>, where <span class="arithmatex">\(\lambda\)</span> is the regularization strength</li>
+<li><strong>Gradient Descent</strong>: <ul>
+<li><span class="arithmatex">\(W -= \alpha \nabla_W L\)</span>,</li>
+<li><span class="arithmatex">\(\nabla_W L_{yi} = - \Sigma_{j \neq y_i}1(w_jx_i + \Delta &gt; 0)x_i\)</span></li>
+<li><span class="arithmatex">\(\nabla_W L_i = 1(w_jx_i + \Delta &gt; 0)x_i\)</span></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
