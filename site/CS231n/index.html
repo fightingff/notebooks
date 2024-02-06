@@ -428,6 +428,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#softmax" class="md-nav__link">
+    <span class="md-ellipsis">
+      Softmax
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -634,6 +643,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#softmax" class="md-nav__link">
+    <span class="md-ellipsis">
+      Softmax
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -734,6 +752,15 @@
 <li><span class="arithmatex">\(\nabla_W L_{yi} = - \Sigma_{j \neq y_i}1(w_jx_i + \Delta &gt; 0)x_i\)</span></li>
 <li><span class="arithmatex">\(\nabla_W L_i = 1(w_jx_i + \Delta &gt; 0)x_i\)</span></li>
 </ul>
+</li>
+</ul>
+<h4 id="softmax">Softmax</h4>
+<ul>
+<li>
+<p><strong>Cross Entropy Loss</strong>: <span class="arithmatex">\(L_i = -\log(\frac{e^{score_{y_i}}}{\Sigma_j e^{score_j}})\)</span></p>
+</li>
+<li>
+<p><strong>Gradient Descent</strong>: <span class="arithmatex">\(W -= \alpha \nabla_W L\)</span>, where <span class="arithmatex">\(\nabla_W L_i = -x_i(\frac{e^{score_{y_i}}}{\Sigma_j e^{score_j}} - 1)\)</span> </p>
 </li>
 </ul>
 
