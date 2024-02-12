@@ -385,6 +385,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#differentiation-on-vectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Differentiation on Vectors
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -432,6 +441,15 @@
   <a href="#softmax" class="md-nav__link">
     <span class="md-ellipsis">
       Softmax
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-layer-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      2-Layer Network
     </span>
   </a>
   
@@ -600,6 +618,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#differentiation-on-vectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Differentiation on Vectors
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -647,6 +674,15 @@
   <a href="#softmax" class="md-nav__link">
     <span class="md-ellipsis">
       Softmax
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-layer-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      2-Layer Network
     </span>
   </a>
   
@@ -721,6 +757,20 @@
 <p>The hinge loss is "easy to be satisfied" since it only cares about the margin, not the exact value of the score (<em>e.g. [1,0] &amp; [100,-100] both have the same loss when the margin is 1</em>)</p>
 </li>
 </ul>
+<h3 id="differentiation-on-vectors">Differentiation on Vectors</h3>
+<ul>
+<li>
+<p><strong>Split</strong>: Trying to do the differentiation on a smaller vector or even a single element instead of a matrix.</p>
+<blockquote>
+<p>For example, solving Softmax - Cross Entropy Loss:
+<span class="arithmatex">\(x\)</span> is a 1-D linear vector
+<span class="arithmatex">\(\frac{\partial{Loss}}{\partial{x}}=\frac{\partial{Loss}}{\partial{score}} \frac{\partial{score}}{\partial{x}}= -\frac{1}{score_i} \frac{\partial{score_i}}{\partial{x_i}}=-\frac{1}{score_i} score_i (score_i - (y_i == i))\)</span></p>
+</blockquote>
+</li>
+<li>
+<p><strong>Dimension</strong>: Use Dimension to check or gain a overview of the result.</p>
+</li>
+</ul>
 <hr />
 <h2 id="assignment">Assignment</h2>
 <hr />
@@ -762,6 +812,12 @@
 <li>
 <p><strong>Gradient Descent</strong>: <span class="arithmatex">\(W -= \alpha \nabla_W L\)</span>, where <span class="arithmatex">\(\nabla_W L_i = -x_i(\frac{e^{score_{y_i}}}{\Sigma_j e^{score_j}} - 1)\)</span> </p>
 </li>
+</ul>
+<h4 id="2-layer-network">2-Layer Network</h4>
+<ul>
+<li>Combination of the lessons above. Not so hard to complete.</li>
+<li><em>Softmax gradient, however, seems hard to do right? But the final implement of training 2-layer network runs well and achieves the accuray of about 50%</em></li>
+<li><img alt="The visualized template" src="../network.png" /></li>
 </ul>
 
 
