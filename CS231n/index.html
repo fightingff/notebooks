@@ -394,6 +394,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Process
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -450,6 +459,15 @@
   <a href="#2-layer-network" class="md-nav__link">
     <span class="md-ellipsis">
       2-Layer Network
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feature-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Feature Extraction
     </span>
   </a>
   
@@ -627,6 +645,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Process
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -683,6 +710,15 @@
   <a href="#2-layer-network" class="md-nav__link">
     <span class="md-ellipsis">
       2-Layer Network
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feature-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Feature Extraction
     </span>
   </a>
   
@@ -771,6 +807,24 @@
 <p><strong>Dimension</strong>: Use Dimension to check or gain a overview of the result.</p>
 </li>
 </ul>
+<h3 id="process">Process</h3>
+<ul>
+<li><strong>Preprocessing matters a lot.</strong> </li>
+<li>Mean subtraction: Subtract the mean of the data, thus the data should be centered around the origin</li>
+<li>Normalization: Divide the data by the standard deviation, thus the data should be normalized to a similar scale</li>
+<li>PCA: Reduce the dimension of the data, thus the data should be more efficient to compute.For example, SVD etc.</li>
+<li>Feature extraction: Extract the features from the raw data, thus the data should be more informative to the model. For example, HOG, Color Histogram etc.</li>
+<li>
+<p>Data Augmentation: Generate more data from the original data, thus the model should be more robust to the noise. For example, flip, rotate, crop etc.</p>
+</li>
+<li>
+<p><strong>Training</strong></p>
+</li>
+<li><strong>Optimization</strong>: The gradient descent, the stochastic gradient descent, the mini-batch gradient descent, the momentum, the RMSprop, the Adam etc. </li>
+<li><strong>Hyparameter Debug</strong>: The learning rate, the regularization strength, the number of hidden units, the number of layers, the number of epochs, the batch size etc.</li>
+<li><strong>Monitor the Process</strong>: The loss, the accuracy, the gradient, the weights, the features etc.</li>
+<li><strong>Visualize the Result</strong>: The weights, the features, the templates etc.   </li>
+</ul>
 <hr />
 <h2 id="assignment">Assignment</h2>
 <hr />
@@ -819,6 +873,13 @@
 <li><em>Softmax gradient, however, seems hard to do right? But the final implement of training 2-layer network runs well and achieves the accuray of about 50%</em></li>
 <li><img alt="The visualized template" src="../network.png" /></li>
 </ul>
+<h4 id="feature-extraction">Feature Extraction</h4>
+<ul>
+<li><strong>Color Histogram</strong>: Count the number of pixels in each color channel</li>
+<li><strong>HOG (Histogram of Oriented Gradients)</strong>: Count the number of gradients in each direction</li>
+<li><strong>Training on raw pixel V/S on features</strong>: After extracting the features, the model can outperform the raw pixel model a lot.</li>
+</ul>
+<hr />
 
 
 
