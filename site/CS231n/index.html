@@ -478,6 +478,30 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#assignment-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assignment 2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Assignment 2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fully-connected-neural-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fully Connected Neural Network
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -729,6 +753,30 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#assignment-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assignment 2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Assignment 2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fully-connected-neural-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fully Connected Neural Network
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -884,6 +932,40 @@
 <li><strong>Training on raw pixel V/S on features</strong>: After extracting the features, the model can outperform the raw pixel model a lot.</li>
 </ul>
 <hr />
+<h3 id="assignment-2">Assignment 2</h3>
+<h4 id="fully-connected-neural-network">Fully Connected Neural Network</h4>
+<ul>
+<li>Multi-layer packaged class</li>
+<li><strong>Optimization</strong><ul>
+<li><strong>SGD</strong>(Stochastic Gradient Descent): 
+    &gt; <span class="arithmatex">\(W -= \alpha \ d_W\)</span><ul>
+<li>Simplest way (converge slowly)</li>
+</ul>
+</li>
+<li><strong>SGD_Momentum</strong>: 
+    &gt; <span class="arithmatex">\(v = \beta v - \alpha \ d_W\)</span>
+    &gt; <span class="arithmatex">\(W += v\)</span><ul>
+<li>Simulate the physical process as ball rolling down the hill</li>
+</ul>
+</li>
+<li><strong>RMSprop</strong>: 
+    &gt; <span class="arithmatex">\(cache = \beta cache + (1-\beta) d_W^2\)</span>
+    &gt; <span class="arithmatex">\(W -= \alpha \frac{d_W}{\sqrt{cache} + \epsilon}\)</span> (<span class="arithmatex">\(\epsilon\)</span> avoids division by zero)<ul>
+<li>Adjust the learning rate adaptively, but the gradient may become too small</li>
+</ul>
+</li>
+<li><strong>Adam</strong>: 
+    &gt; <span class="arithmatex">\(m = \beta_1 m + (1-\beta_1) d_W\)</span>
+    &gt; <span class="arithmatex">\(v = \beta_2 v + (1-\beta_2) d_W^2\)</span>
+    &gt; <span class="arithmatex">\(mt = \frac{m}{1-\beta_1^t}\)</span>
+    &gt; <span class="arithmatex">\(vt = \frac{v}{1-\beta_2^t}\)</span>
+    &gt; <span class="arithmatex">\(W -= \alpha \frac{mt}{\sqrt{vt} + \epsilon}\)</span><ul>
+<li>Combine the advantages of <strong>RMSprop</strong> and <strong>Momentum</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
 
 
