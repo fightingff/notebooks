@@ -515,6 +515,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#convolutional-neural-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      Convolutional Neural Network
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -808,6 +817,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#convolutional-neural-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      Convolutional Neural Network
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -848,70 +866,54 @@
 <h2 id="some-newly-learned-thoughts">Some newly-learned thoughts</h2>
 <h3 id="training-sets-validation-sets-test-sets">Training sets, validation sets &amp; test sets</h3>
 <ul>
-<li>
-<p>We should isolate the test sets with the training process, "just test the final model at the very end" to avoid overfitting</p>
-</li>
-<li>
-<p>Often validation sets are extracted from training sets </p>
-</li>
+<li>We should isolate the test sets with the training process, "just test the final model at the very end" to avoid overfitting</li>
+<li>Often validation sets are extracted from training sets</li>
 </ul>
 <h3 id="parameters-in-linear-model">Parameters in Linear Model</h3>
 <ul>
-<li>
-<p>We can view the Weight Matrix as a set of templates, and the scores as the similarity between the input and the templates</p>
-</li>
-<li>
-<p>So when printing the weights, we can somehow visualize the templates we learned </p>
-</li>
-<li>
-<p>Picture below is what we learned from the CIFAR-10 dataset using SVM
-    <img alt="template" src="../template.png" /></p>
-</li>
+<li>We can view the Weight Matrix as a set of templates, and the scores as the similarity between the input and the templates</li>
+<li>So when printing the weights, we can somehow visualize the templates we learned</li>
+<li>Picture below is what we learned from the CIFAR-10 dataset using SVM
+  <img alt="template" src="../template.png" /></li>
 </ul>
 <h3 id="svm-support-vector-machine">SVM (Support Vector Machine)</h3>
 <ul>
-<li>
-<p><strong>Hinge Loss</strong>: <span class="arithmatex">\(L_i = \sum_{j\neq y_i} \max(0, s_j - s_{y_i} + margin)\)</span>, so-called <strong>max-margin loss</strong> because it encourages the correct class to have a score higher than the incorrect class by at least a margin</p>
-</li>
-<li>
-<p>The hinge loss is "easy to be satisfied" since it only cares about the margin, not the exact value of the score (<em>e.g. [1,0] &amp; [100,-100] both have the same loss when the margin is 1</em>)</p>
-</li>
+<li><strong>Hinge Loss</strong>: <span class="arithmatex">\(L_i = \sum_{j\neq y_i} \max(0, s_j - s_{y_i} + margin)\)</span>, so-called <strong>max-margin loss</strong> because it encourages the correct class to have a score higher than the incorrect class by at least a margin</li>
+<li>The hinge loss is "easy to be satisfied" since it only cares about the margin, not the exact value of the score (<em>e.g. [1,0] &amp; [100,-100] both have the same loss when the margin is 1</em>)</li>
 </ul>
 <h3 id="differentiation-on-vectors">Differentiation on Vectors</h3>
 <ul>
-<li>
-<p><strong>Split</strong>: Trying to do the differentiation on a smaller vector or even a single element instead of a matrix.</p>
+<li><strong>Split</strong>: Trying to do the differentiation on a smaller vector or even a single element instead of a matrix.</li>
+</ul>
 <blockquote>
 <p>For example, solving Softmax - Cross Entropy Loss:
 <span class="arithmatex">\(x\)</span> is a 1-D linear vector
 <span class="arithmatex">\(\frac{\partial{Loss}}{\partial{x}}=\frac{\partial{Loss}}{\partial{score}} \frac{\partial{score}}{\partial{x}}= -\frac{1}{score_i} \frac{\partial{score_i}}{\partial{x_i}}=-\frac{1}{score_i} score_i (score_i - (y_i == i))\)</span></p>
 </blockquote>
-</li>
-<li>
-<p><strong>Dimension</strong>: Use Dimension to check or gain a overview of the result.</p>
-</li>
+<ul>
+<li><strong>Dimension</strong>: Use Dimension to check or gain a overview of the result.</li>
 </ul>
 <h3 id="process">Process</h3>
 <ul>
 <li>
-<p><strong>Preprocessing matters a lot.</strong> </p>
-<ul>
-<li><strong>Mean subtraction</strong>: Subtract the mean of the data, thus the data should be centered around the origin</li>
+<p><strong>Preprocessing matters a lot.</strong></p>
+</li>
+<li>
+<p><strong>Mean subtraction</strong>: Subtract the mean of the data, thus the data should be centered around the origin</p>
+</li>
 <li><strong>Normalization</strong>: Divide the data by the standard deviation, thus the data should be normalized to a similar scale</li>
 <li><strong>PCA</strong>: Reduce the dimension of the data, thus the data should be more efficient to compute.For example, SVD etc.</li>
 <li><strong>Feature extraction</strong>: Extract the features from the raw data, thus the data should be more informative to the model. For example, HOG, Color Histogram etc.</li>
 <li><strong>Data Augmentation</strong>: Generate more data from the original data, thus the model should be more robust to the noise. For example, flip, rotate, crop etc.</li>
-</ul>
-</li>
 <li>
 <p><strong>Training</strong></p>
-<ul>
-<li><strong>Optimization</strong>: The gradient descent, the stochastic gradient descent, the mini-batch gradient descent, the momentum, the RMSprop, the Adam etc. </li>
+</li>
+<li>
+<p><strong>Optimization</strong>: The gradient descent, the stochastic gradient descent, the mini-batch gradient descent, the momentum, the RMSprop, the Adam etc.</p>
+</li>
 <li><strong>Hyparameter Debug</strong>: The learning rate, the regularization strength, the number of hidden units, the number of layers, the number of epochs, the batch size etc.</li>
 <li><strong>Monitor the Process</strong>: The loss, the accuracy, the gradient, the weights, the features etc.</li>
-<li><strong>Visualize the Result</strong>: The weights, the features, the templates etc.   </li>
-</ul>
-</li>
+<li><strong>Visualize the Result</strong>: The weights, the features, the templates etc.</li>
 </ul>
 <hr />
 <h2 id="assignment">Assignment</h2>
@@ -919,41 +921,27 @@
 <h3 id="assignment-1">Assignment 1</h3>
 <h4 id="k-nn-k-nearest-neighbors">K-NN (K Nearest Neighbors)</h4>
 <ul>
-<li>
-<p>No training, just memorizing the data</p>
-</li>
-<li>
-<p>In prediction, compute the <strong>Distance</strong> with every sample (<strong>Costly</strong>)</p>
-</li>
-<li>
-<p>Use K-fold cross validation to find the best K. Concretely speaking, split the training sets into K folds, and choose each as validation set, and evaluate the model finally. </p>
-</li>
+<li>No training, just memorizing the data</li>
+<li>In prediction, compute the <strong>Distance</strong> with every sample (<strong>Costly</strong>)</li>
+<li>Use K-fold cross validation to find the best K. Concretely speaking, split the training sets into K folds, and choose each as validation set, and evaluate the model finally.</li>
 </ul>
 <h4 id="svm-support-vector-machine_1">SVM (Support Vector Machine)</h4>
 <ul>
+<li><strong>Hinge Loss</strong>: <span class="arithmatex">\(L_i = \sum_{j\neq y_i} \max(0, s_j - s_{y_i} + margin)\)</span></li>
+<li><strong>Regularization</strong>: <span class="arithmatex">\(L = \frac{1}{N} \sum_i L_i + \frac{1}{2}\lambda |W|^2\)</span>, where <span class="arithmatex">\(\lambda\)</span> is the regularization strength</li>
 <li>
-<p><strong>Hinge Loss</strong>: <span class="arithmatex">\(L_i = \sum_{j\neq y_i} \max(0, s_j - s_{y_i} + margin)\)</span></p>
+<p><strong>Gradient Descent</strong>:</p>
 </li>
 <li>
-<p><strong>Regularization</strong>: <span class="arithmatex">\(L = \frac{1}{N} \sum_i L_i + \frac{1}{2}\lambda |W|^2\)</span>, where <span class="arithmatex">\(\lambda\)</span> is the regularization strength</p>
+<p><span class="arithmatex">\(W -= \alpha \nabla_W L\)</span>,</p>
 </li>
-<li>
-<p><strong>Gradient Descent</strong>: </p>
-<ul>
-<li><span class="arithmatex">\(W -= \alpha \nabla_W L\)</span>,</li>
 <li><span class="arithmatex">\(\nabla_W L_{yi} = - \Sigma_{j \neq y_i}1(w_jx_i + \Delta &gt; 0)x_i\)</span></li>
 <li><span class="arithmatex">\(\nabla_W L_i = 1(w_jx_i + \Delta &gt; 0)x_i\)</span></li>
 </ul>
-</li>
-</ul>
 <h4 id="softmax">Softmax</h4>
 <ul>
-<li>
-<p><strong>Cross Entropy Loss</strong>: <span class="arithmatex">\(L_i = -\log(\frac{e^{score_{y_i}}}{\Sigma_j e^{score_j}})\)</span></p>
-</li>
-<li>
-<p><strong>Gradient Descent</strong>: <span class="arithmatex">\(W -= \alpha \nabla_W L\)</span>, where <span class="arithmatex">\(\nabla_W L_i = -x_i(\frac{e^{score_{y_i}}}{\Sigma_j e^{score_j}} - 1)\)</span> </p>
-</li>
+<li><strong>Cross Entropy Loss</strong>: <span class="arithmatex">\(L_i = -\log(\frac{e^{score_{y_i}}}{\Sigma_j e^{score_j}})\)</span></li>
+<li><strong>Gradient Descent</strong>: <span class="arithmatex">\(W -= \alpha \nabla_W L\)</span>, where <span class="arithmatex">\(\nabla_W L_i = -x_i(\frac{e^{score_{y_i}}}{\Sigma_j e^{score_j}} - 1)\)</span></li>
 </ul>
 <h4 id="2-layer-network">2-Layer Network</h4>
 <ul>
@@ -972,88 +960,145 @@
 <h4 id="fully-connected-neural-network">Fully Connected Neural Network</h4>
 <ul>
 <li>Multi-layer packaged class</li>
+<li><strong>Optimization</strong></li>
 <li>
-<p><strong>Optimization</strong></p>
-<ul>
-<li>
-<p><strong>SGD</strong>(Stochastic Gradient Descent): </p>
+<p><strong>SGD</strong>(Stochastic Gradient Descent):</p>
 <blockquote>
-<p><span class="arithmatex">\(W -= \alpha \ d_W\)</span></p>
+<p><span class="arithmatex">\(W -= \alpha \ d_W\)</span>
+</p>
 </blockquote>
 <ul>
 <li>Simplest way (converge slowly)</li>
+<li><strong>SGD_Momentum</strong>:</li>
 </ul>
-</li>
-<li>
-<p><strong>SGD_Momentum</strong>: </p>
 <blockquote>
-<p><span class="arithmatex">\(v = \beta v - \alpha \ d_W\)</span></p>
-<p><span class="arithmatex">\(W += v\)</span></p>
+<p><span class="arithmatex">\(v = \beta v - \alpha \ d_W\)</span>
+</p>
+<p><span class="arithmatex">\(W += v\)</span>
+</p>
 </blockquote>
 <ul>
 <li>Simulate the physical process as ball rolling down the hill</li>
+<li><strong>RMSprop</strong>:</li>
 </ul>
-</li>
-<li>
-<p><strong>RMSprop</strong>: </p>
 <blockquote>
-<p><span class="arithmatex">\(cache = \beta cache + (1-\beta) d_W^2\)</span></p>
-<p><span class="arithmatex">\(W -= \alpha \frac{d_W}{\sqrt{cache} + \epsilon}\)</span> (<span class="arithmatex">\(\epsilon\)</span> avoids division by zero)</p>
+<p><span class="arithmatex">\(cache = \beta cache + (1-\beta) d_W^2\)</span>
+</p>
+<p><span class="arithmatex">\(W -= \alpha \frac{d_W}{\sqrt{cache} + \epsilon}\)</span> (<span class="arithmatex">\(\epsilon\)</span> avoids division by zero)
+</p>
 </blockquote>
 <ul>
 <li>Adjust the learning rate adaptively, but the gradient may become too small</li>
+<li><strong>Adam</strong>:</li>
 </ul>
-</li>
-<li>
-<p><strong>Adam</strong>: </p>
 <blockquote>
-<p><span class="arithmatex">\(m = \beta_1 m + (1-\beta_1) d_W\)</span></p>
-<p><span class="arithmatex">\(v = \beta_2 v + (1-\beta_2) d_W^2\)</span></p>
-<p><span class="arithmatex">\(mt = \frac{m}{1-\beta_1^t}\)</span></p>
-<p><span class="arithmatex">\(vt = \frac{v}{1-\beta_2^t}\)</span></p>
-<p><span class="arithmatex">\(W -= \alpha \frac{mt}{\sqrt{vt} + \epsilon}\)</span></p>
+<p><span class="arithmatex">\(m = \beta_1 m + (1-\beta_1) d_W\)</span>
+</p>
+<p><span class="arithmatex">\(v = \beta_2 v + (1-\beta_2) d_W^2\)</span>
+</p>
+<p><span class="arithmatex">\(mt = \frac{m}{1-\beta_1^t}\)</span>
+</p>
+<p><span class="arithmatex">\(vt = \frac{v}{1-\beta_2^t}\)</span>
+</p>
+<p><span class="arithmatex">\(W -= \alpha \frac{mt}{\sqrt{vt} + \epsilon}\)</span>
+</p>
 </blockquote>
 <ul>
 <li>Combine the advantages of <strong>RMSprop</strong> and <strong>Momentum</strong></li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
 <h4 id="normalization"><strong>Normalization</strong></h4>
 <ul>
 <li>
-<p><strong>Batch Normalization</strong>: </p>
-<ul>
-<li>Normalize the input of each layer, thus the model should be more robust to the noise and the gradient should be more stable, - But the performance depends on the batch size a lot.</li>
-<li><a href="https://kratzert.github.io/2016/02/12/understanding-the-gradient-flow-through-the-batch-normalization-layer.html">Gradient reference</a> </li>
-</ul>
+<p><strong>Batch Normalization</strong>:</p>
 </li>
 <li>
-<p><strong>Layer Normalization</strong>: </p>
-<ul>
-<li>Normalize the input of each sample, thus the model should be more robust to the noise and the gradient should be more stable.</li>
+<p>Normalize the input of each layer, thus the model should be more robust to the noise and the gradient should be more stable, - But the performance depends on the batch size a lot.</p>
+</li>
+<li><a href="https://kratzert.github.io/2016/02/12/understanding-the-gradient-flow-through-the-batch-normalization-layer.html">Gradient reference</a></li>
+<li>
+<p><strong>Layer Normalization</strong>:</p>
+</li>
+<li>
+<p>Normalize the input of each sample, thus the model should be more robust to the noise and the gradient should be more stable.</p>
+</li>
 <li>But the performance may be influenced by the feature dimensions.</li>
 <li>Gradient is easy. We can transpose the matrix and transform the problem into the batch normalization.</li>
-<li><strong>(N,D) -&gt; (D,N)</strong>  </li>
-</ul>
-</li>
-<li>
-<p><em>Problem: The result of my code seems somewhat strange, like normalization works worse than without normalization. I think the problem may be the learning rate or the batch size, but I have no energy to debug it.</em>
-<img alt="batch" src="../normalization1.png" />
-<img alt="layer" src="../normalization2.png" /></p>
-</li>
+<li><strong>(N,D) -&gt; (D,N)</strong></li>
+<li><em>Problem: The result of my code seems somewhat strange, like normalization works worse than without normalization. I think the problem may be the learning rate or the batch size, but I have no energy to debug it.</em>
+  <img alt="batch" src="../normalization1.png" />
+  <img alt="layer" src="../normalization2.png" /></li>
 </ul>
 <h4 id="dropout"><strong>Dropout</strong></h4>
 <ul>
+<li>Randomly set some neurons to zero, thus the model should be more robust to the noise and the overfitting should be avoided.</li>
+<li><code>mask = (np.random.rand(*x.shape) &lt; p) / p</code></li>
+<li><code>p</code> is the probability of keeping a neuron active, and thus the mean of the output (or mathematical expectation) should be the same as the input.</li>
+</ul>
+<h4 id="convolutional-neural-network"><strong>Convolutional Neural Network</strong></h4>
+<ul>
 <li>
-<p>Randomly set some neurons to zero, thus the model should be more robust to the noise and the overfitting should be avoided.</p>
+<p><strong>Convolution Layer</strong></p>
+<ul>
+<li>
+<p>Filter</p>
+<ul>
+<li>The learned template to extract the features</li>
+<li>Often <span class="arithmatex">\(3*3*C\)</span> with stride 1</li>
+<li><strong>Share parameters</strong>. Using the same filter to do convolution on the whole input, thus the model should be more efficient to compute and the number of parameters should be highly reduced.</li>
+<li><em>Too large filter may lead to a linear model, and costs more memory.</em></li>
+<li>Examples of features
+<img alt="cnn_feature" src="../cnn_feature.png" /></li>
+</ul>
 </li>
 <li>
-<p><code>mask = (np.random.rand(*x.shape) &lt; p) / p</code> </p>
+<p>Padding</p>
+<ul>
+<li>Add some zeros around the input, thus the output should be the same size as the input, which is convenient for the next layer to compute.</li>
+<li>Avoid the information loss on edges.</li>
+<li><span class="arithmatex">\(P = \frac{F-1}{2}\)</span>, where <span class="arithmatex">\(F\)</span> is the size of the filter</li>
+</ul>
 </li>
 <li>
-<p><code>p</code> is the probability of keeping a neuron active, and thus the mean of the output (or mathematical expectation) should be the same as the input.</p>
+<p>Pooling</p>
+<ul>
+<li>Max Pooling: <span class="arithmatex">\(max(x)\)</span> (Popular in practice, often <span class="arithmatex">\(2 * 2\)</span>)</li>
+<li>Average Pooling: <span class="arithmatex">\(mean(x)\)</span></li>
+<li>Reduce the size of the input, thus the model should be more efficient to compute and the number of parameters should be highly reduced.</li>
+<li>Avoid the overfitting and the noise.</li>
+</ul>
+</li>
+<li>
+<p><strong>Layer Strutcture</strong></p>
+<ul>
+<li>Input: <span class="arithmatex">\(N * C * H * W\)</span></li>
+<li>Filter: <span class="arithmatex">\(F * C * HH * WW\)</span></li>
+<li>Output: <span class="arithmatex">\(N * F * H' * W'\)</span></li>
+<li>Activation (often Relu): <span class="arithmatex">\(N * F * H' * W'\)</span></li>
+<li>Pooling: <span class="arithmatex">\(N * F * H'' * W''\)</span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Normalization</strong></p>
+<ul>
+<li>
+<p>Spatial Batch Normalization</p>
+<ul>
+<li>Similar to Batch Normalization.</li>
+<li><code>X = x.transpose(0, 2, 3, 1).reshape(-1, C)</code></li>
+</ul>
+</li>
+<li>
+<p>Group Normalization</p>
+<ul>
+<li>Similar to Layer Normalization.</li>
+<li><code>X = x.reshape(N*G, -1)</code> </li>
+</ul>
+</li>
+</ul>
 </li>
 </ul>
 
