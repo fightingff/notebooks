@@ -1138,15 +1138,22 @@
 </li>
 <li><code>optim.Adam</code></li>
 <li><code>optim.RMSprop</code></li>
-<li>
+<li>Backward Propagation</li>
+</ul>
 <p>```python
-    optimizer.zero_grad() # clear</p>
+      optimizer.zero_grad() # clear</p>
+<pre><code>  loss.backward()       # backpropagation
+
+  optimizer.step()      # update
+</code></pre>
+<p>```</p>
+<blockquote>
+<p>optimizer.zero_grad() # clear</p>
 <p>loss.backward()       # backpropagation</p>
 <p>optimizer.step()      # update
-```
+    ```
 - <strong>Training</strong></p>
-</li>
-</ul>
+</blockquote>
 
 
 
