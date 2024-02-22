@@ -1058,7 +1058,7 @@
 <ul>
 <li>
 <p><strong>Convolution Layer</strong></p>
-<ul>
+</li>
 <li>
 <p>Filter</p>
 <ul>
@@ -1068,101 +1068,83 @@
 <li><em>Too large filter may lead to a linear model, and costs more memory.</em></li>
 <li>Examples of features</li>
 </ul>
-<p><img alt="cnn_feature" src="../cnn_feature.png" /></p>
-</li>
-<li>
-<p>Padding</p>
+<p><img alt="cnn_feature" src="../cnn_feature.png" />
+  - Padding</p>
 <ul>
 <li>Add some zeros around the input, thus the output should be the same size as the input, which is convenient for the next layer to compute.</li>
 <li>Avoid the information loss on edges.</li>
 <li><span class="arithmatex">\(P = \frac{F-1}{2}\)</span>, where <span class="arithmatex">\(F\)</span> is the size of the filter</li>
-</ul>
-</li>
 <li>
 <p>Pooling</p>
-<ul>
-<li>Max Pooling: <span class="arithmatex">\(max(x)\)</span> (Popular in practice, often <span class="arithmatex">\(2 * 2\)</span>)</li>
+</li>
+<li>
+<p>Max Pooling: <span class="arithmatex">\(max(x)\)</span> (Popular in practice, often <span class="arithmatex">\(2 * 2\)</span>)</p>
+</li>
 <li>Average Pooling: <span class="arithmatex">\(mean(x)\)</span></li>
 <li>Reduce the size of the input, thus the model should be more efficient to compute and the number of parameters should be highly reduced.</li>
 <li>Avoid the overfitting and the noise.</li>
-</ul>
-</li>
 <li>
 <p><strong>Layer Strutcture</strong></p>
-<ul>
-<li>Input: <span class="arithmatex">\(N * C * H * W\)</span></li>
+</li>
+<li>
+<p>Input: <span class="arithmatex">\(N * C * H * W\)</span></p>
+</li>
 <li>Filter: <span class="arithmatex">\(F * C * HH * WW\)</span></li>
 <li>Output: <span class="arithmatex">\(N * F * H' * W'\)</span></li>
 <li>Activation (often Relu): <span class="arithmatex">\(N * F * H' * W'\)</span></li>
 <li>Pooling: <span class="arithmatex">\(N * F * H'' * W''\)</span></li>
+<li><strong>Normalization</strong></li>
 </ul>
 </li>
-</ul>
-</li>
-<li>
-<p><strong>Normalization</strong></p>
-<ul>
 <li>
 <p>Spatial Batch Normalization</p>
 <ul>
 <li>Similar to Batch Normalization.</li>
 <li><code>X = x.transpose(0, 2, 3, 1).reshape(-1, C)</code></li>
-</ul>
-</li>
 <li>
 <p>Group Normalization</p>
-<ul>
-<li>Similar to Layer Normalization.</li>
-<li><code>X = x.reshape(N*G, -1)</code> </li>
-</ul>
 </li>
+<li>
+<p>Similar to Layer Normalization.</p>
+</li>
+<li><code>X = x.reshape(N*G, -1)</code></li>
 </ul>
 </li>
 </ul>
 <h4 id="pytorch"><strong>PyTorch</strong></h4>
 <ul>
-<li>
-<p>Useful tool to build the model and train the model</p>
-</li>
-<li>
-<p><a href="https://pytorch.org/tutorials/">Tutorial</a></p>
-</li>
-<li>
-<p><a href="https://pytorch.org/docs/stable/index.html">Docs</a></p>
-</li>
+<li>Useful tool to build the model and train the model</li>
+<li><a href="https://pytorch.org/tutorials/">Tutorial</a></li>
+<li><a href="https://pytorch.org/docs/stable/index.html">Docs</a></li>
 <li>
 <p><strong>Structure</strong></p>
-<ul>
+</li>
 <li>
 <p><code>nn.Module</code></p>
 <ul>
 <li>Personalized model, more flexible</li>
 <li>Implement <code>forward</code> function</li>
-</ul>
-</li>
 <li>
 <p><code>nn.Sequential</code></p>
-<ul>
-<li>Simple model, just concatenate the layers</li>
-</ul>
 </li>
+<li>
+<p>Simple model, just concatenate the layers</p>
+</li>
+<li><strong>Optimization</strong></li>
 </ul>
 </li>
 <li>
-<p><strong>Optimization</strong></p>
-<ul>
-<li><code>optim.SGD</code></li>
+<p><code>optim.SGD</code></p>
+</li>
 <li><code>optim.Adam</code></li>
-<li><code>optim.RMSprop</code> </li>
-<li>```python</li>
-</ul>
-<p>optimizer.zero_grad() # clear</p>
-<p>loss.backward()       # backpropagation</p>
-<p>optimizer.step()      # update</p>
-<p>```</p>
-</li>
+<li><code>optim.RMSprop</code></li>
 <li>
-<p><strong>Training</strong></p>
+<p>```python
+    optimizer.zero_grad() # clear</p>
+<p>loss.backward()       # backpropagation</p>
+<p>optimizer.step()      # update
+```
+- <strong>Training</strong></p>
 </li>
 </ul>
 
