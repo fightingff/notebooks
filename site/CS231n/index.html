@@ -557,6 +557,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#rnn-captioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      RNN Captioning
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -892,6 +901,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#rnn-captioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      RNN Captioning
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1222,7 +1240,20 @@
 <ul>
 <li>We can also synthesize an image to maximize the classification score of a particular class </li>
 <li>Or say, visualizes what the network thinks various classes look like.</li>
-<li><em>Looks like AIGC images</em> </li>
+<li><em>Looks like AIGC images</em></li>
+</ul>
+</li>
+</ul>
+<h4 id="rnn-captioning">RNN Captioning</h4>
+<ul>
+<li>
+<p><strong>Vanilla RNN</strong></p>
+<ul>
+<li>The simplest RNN, but the gradient may vanish or explode.</li>
+<li>Use the hidden state to store the information of the previous time step, and use the input to update the hidden state.</li>
+<li><span class="arithmatex">\(h_t = \tanh(W_{hh}h_{t-1} + W_{xh}x_t)\)</span></li>
+<li><span class="arithmatex">\(y_t = W_{hy}h_t\)</span></li>
+<li><em>The gradient is easy to compute, but the performance is not so good.</em></li>
 </ul>
 </li>
 </ul>
