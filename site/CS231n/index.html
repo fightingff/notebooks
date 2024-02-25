@@ -1015,12 +1015,12 @@
 <li><strong>Regularization</strong>: <span class="arithmatex">\(L = \frac{1}{N} \sum_i L_i + \frac{1}{2}\lambda |W|^2\)</span>, where <span class="arithmatex">\(\lambda\)</span> is the regularization strength</li>
 <li>
 <p><strong>Gradient Descent</strong>:</p>
-</li>
-<li>
-<p><span class="arithmatex">\(W -= \alpha \nabla_W L\)</span>,</p>
-</li>
+<ul>
+<li><span class="arithmatex">\(W -= \alpha \nabla_W L\)</span>,</li>
 <li><span class="arithmatex">\(\nabla_W L_{yi} = - \Sigma_{j \neq y_i}1(w_jx_i + \Delta &gt; 0)x_i\)</span></li>
 <li><span class="arithmatex">\(\nabla_W L_i = 1(w_jx_i + \Delta &gt; 0)x_i\)</span></li>
+</ul>
+</li>
 </ul>
 <h4 id="softmax">Softmax</h4>
 <ul>
@@ -1044,7 +1044,9 @@
 <h4 id="fully-connected-neural-network">Fully Connected Neural Network</h4>
 <ul>
 <li>Multi-layer packaged class</li>
-<li><strong>Optimization</strong></li>
+<li>
+<p><strong>Optimization</strong></p>
+<ul>
 <li>
 <p><strong>SGD</strong>(Stochastic Gradient Descent):</p>
 <blockquote>
@@ -1053,8 +1055,10 @@
 </blockquote>
 <ul>
 <li>Simplest way (converge slowly)</li>
-<li><strong>SGD_Momentum</strong>:</li>
 </ul>
+</li>
+<li>
+<p><strong>SGD_Momentum</strong>:</p>
 <blockquote>
 <p><span class="arithmatex">\(v = \beta v - \alpha \ d_W\)</span>
 </p>
@@ -1063,8 +1067,10 @@
 </blockquote>
 <ul>
 <li>Simulate the physical process as ball rolling down the hill</li>
-<li><strong>RMSprop</strong>:</li>
 </ul>
+</li>
+<li>
+<p><strong>RMSprop</strong>:</p>
 <blockquote>
 <p><span class="arithmatex">\(cache = \beta cache + (1-\beta) d_W^2\)</span>
 </p>
@@ -1073,8 +1079,10 @@
 </blockquote>
 <ul>
 <li>Adjust the learning rate adaptively, but the gradient may become too small</li>
-<li><strong>Adam</strong>:</li>
 </ul>
+</li>
+<li>
+<p><strong>Adam</strong>:</p>
 <blockquote>
 <p><span class="arithmatex">\(m = \beta_1 m + (1-\beta_1) d_W\)</span>
 </p>
@@ -1092,27 +1100,31 @@
 </ul>
 </li>
 </ul>
+</li>
+</ul>
 <h4 id="normalization"><strong>Normalization</strong></h4>
 <ul>
 <li>
 <p><strong>Batch Normalization</strong>:</p>
-</li>
-<li>
-<p>Normalize the input of each layer, thus the model should be more robust to the noise and the gradient should be more stable, - But the performance depends on the batch size a lot.</p>
-</li>
+<ul>
+<li>Normalize the input of each layer, thus the model should be more robust to the noise and the gradient should be more stable, - But the performance depends on the batch size a lot.</li>
 <li><a href="https://kratzert.github.io/2016/02/12/understanding-the-gradient-flow-through-the-batch-normalization-layer.html">Gradient reference</a></li>
+</ul>
+</li>
 <li>
 <p><strong>Layer Normalization</strong>:</p>
-</li>
-<li>
-<p>Normalize the input of each sample, thus the model should be more robust to the noise and the gradient should be more stable.</p>
-</li>
+<ul>
+<li>Normalize the input of each sample, thus the model should be more robust to the noise and the gradient should be more stable.</li>
 <li>But the performance may be influenced by the feature dimensions.</li>
 <li>Gradient is easy. We can transpose the matrix and transform the problem into the batch normalization.</li>
 <li><strong>(N,D) -&gt; (D,N)</strong></li>
-<li><em>Problem: The result of my code seems somewhat strange, like normalization works worse than without normalization. I think the problem may be the learning rate or the batch size, but I have no energy to debug it.</em>
+</ul>
+</li>
+<li>
+<p><em>Problem: The result of my code seems somewhat strange, like normalization works worse than without normalization. I think the problem may be the learning rate or the batch size, but I have no energy to debug it.</em>
   <img alt="batch" src="../normalization1.png" />
-  <img alt="layer" src="../normalization2.png" /></li>
+  <img alt="layer" src="../normalization2.png" /></p>
+</li>
 </ul>
 <h4 id="dropout"><strong>Dropout</strong></h4>
 <ul>
@@ -1124,7 +1136,7 @@
 <ul>
 <li>
 <p><strong>Convolution Layer</strong></p>
-</li>
+<ul>
 <li>
 <p>Filter</p>
 <ul>
@@ -1135,22 +1147,26 @@
 <li>Examples of features</li>
 </ul>
 <p><img alt="cnn_feature" src="../cnn_feature.png" />
-  - Padding</p>
+    - Padding</p>
 <ul>
 <li>Add some zeros around the input, thus the output should be the same size as the input, which is convenient for the next layer to compute.</li>
 <li>Avoid the information loss on edges.</li>
-<li><span class="arithmatex">\(P = \frac{F-1}{2}\)</span>, where <span class="arithmatex">\(F\)</span> is the size of the filter</li>
 <li>
-<p>Pooling</p>
+<p><span class="arithmatex">\(P = \frac{F-1}{2}\)</span>, where <span class="arithmatex">\(F\)</span> is the size of the filter</p>
+<ul>
+<li>Pooling</li>
+</ul>
 </li>
 <li>
 <p>Max Pooling: <span class="arithmatex">\(max(x)\)</span> (Popular in practice, often <span class="arithmatex">\(2 * 2\)</span>)</p>
 </li>
 <li>Average Pooling: <span class="arithmatex">\(mean(x)\)</span></li>
 <li>Reduce the size of the input, thus the model should be more efficient to compute and the number of parameters should be highly reduced.</li>
-<li>Avoid the overfitting and the noise.</li>
 <li>
-<p><strong>Layer Strutcture</strong></p>
+<p>Avoid the overfitting and the noise.</p>
+<ul>
+<li><strong>Layer Strutcture</strong></li>
+</ul>
 </li>
 <li>
 <p>Input: <span class="arithmatex">\(N * C * H * W\)</span></p>
@@ -1166,14 +1182,18 @@
 <p>Spatial Batch Normalization</p>
 <ul>
 <li>Similar to Batch Normalization.</li>
-<li><code>X = x.transpose(0, 2, 3, 1).reshape(-1, C)</code></li>
 <li>
-<p>Group Normalization</p>
+<p><code>X = x.transpose(0, 2, 3, 1).reshape(-1, C)</code></p>
+<ul>
+<li>Group Normalization</li>
+</ul>
 </li>
 <li>
 <p>Similar to Layer Normalization.</p>
 </li>
 <li><code>X = x.reshape(N*G, -1)</code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1184,14 +1204,16 @@
 <li><a href="https://pytorch.org/docs/stable/index.html">Docs</a></li>
 <li>
 <p><strong>Structure</strong></p>
-</li>
+<ul>
 <li>
 <p><code>nn.Module</code></p>
 <ul>
 <li>Personalized model, more flexible</li>
-<li>Implement <code>forward</code> function</li>
 <li>
-<p><code>nn.Sequential</code></p>
+<p>Implement <code>forward</code> function</p>
+<ul>
+<li><code>nn.Sequential</code></li>
+</ul>
 </li>
 <li>
 <p>Simple model, just concatenate the layers</p>
@@ -1207,15 +1229,17 @@
 <li>Backward Propagation</li>
 </ul>
 <p>```</p>
-<pre><code>  optimizer.zero_grad() # clear
+<pre><code>optimizer.zero_grad() # clear
 
-  loss.backward()       # backpropagation
+loss.backward()       # backpropagation
 
-  optimizer.step()      # update
+optimizer.step()      # update
 </code></pre>
 <p>```</p>
-<ul>
-<li><strong>Training</strong></li>
+</li>
+<li>
+<p><strong>Training</strong></p>
+</li>
 </ul>
 <h3 id="assignment-3">Assignment 3</h3>
 <h4 id="visualizing">Visualizing</h4>
