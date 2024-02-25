@@ -1251,9 +1251,30 @@
 <ul>
 <li>The simplest RNN, but the gradient may vanish or explode.</li>
 <li>Use the hidden state to store the information of the previous time step, and use the input to update the hidden state.</li>
-<li><span class="arithmatex">\(h_t = \tanh(W_{hh}h_{t-1} + W_{xh}x_t)\)</span></li>
-<li><span class="arithmatex">\(y_t = W_{hy}h_t\)</span></li>
+<li>
+<blockquote>
+<p><span class="arithmatex">\(h_t = \tanh(W_{hh}h_{t-1} + W_{xh}x_t)\)</span></p>
+<p><span class="arithmatex">\(y_t = W_{hy}h_t\)</span></p>
+</blockquote>
+</li>
 <li><em>The gradient is easy to compute, but the performance is not so good.</em></li>
+</ul>
+</li>
+<li>
+<p><strong>LSTM</strong></p>
+<ul>
+<li>The most popular RNN, with the forget gate, the input gate, the output gate.</li>
+<li>The gradient is easy to compute, and the performance is good.</li>
+<li>
+<blockquote>
+<p><span class="arithmatex">\(f_t = \sigma(W_{hf}h_{t-1} + W_{xf}x_t + b_f)\)</span></p>
+<p><span class="arithmatex">\(i_t = \sigma(W_{hi}h_{t-1} + W_{xi}x_t + b_i)\)</span></p>
+<p><span class="arithmatex">\(o_t = \sigma(W_{ho}h_{t-1} + W_{xo}x_t + b_o)\)</span></p>
+<p><span class="arithmatex">\(g_t = \tanh(W_{hg}h_{t-1} + W_{xg}x_t + b_g)\)</span></p>
+<p><span class="arithmatex">\(c_t = f_t \odot c_{t-1} + i_t \odot g_t\)</span></p>
+<p><span class="arithmatex">\(h_t = o_t \odot \tanh(c_t)\)</span></p>
+</blockquote>
+</li>
 </ul>
 </li>
 </ul>
