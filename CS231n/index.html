@@ -1146,51 +1146,51 @@
 <li><em>Too large filter may lead to a linear model, and costs more memory.</em></li>
 <li>Examples of features</li>
 </ul>
-<p><img alt="cnn_feature" src="../cnn_feature.png" />
-    - Padding</p>
+<p><img alt="cnn_feature" src="../cnn_feature.png" /></p>
+</li>
+<li>
+<p>Padding</p>
 <ul>
 <li>Add some zeros around the input, thus the output should be the same size as the input, which is convenient for the next layer to compute.</li>
 <li>Avoid the information loss on edges.</li>
-<li>
-<p><span class="arithmatex">\(P = \frac{F-1}{2}\)</span>, where <span class="arithmatex">\(F\)</span> is the size of the filter</p>
-<ul>
-<li>Pooling</li>
+<li><span class="arithmatex">\(P = \frac{F-1}{2}\)</span>, where <span class="arithmatex">\(F\)</span> is the size of the filter</li>
 </ul>
 </li>
 <li>
-<p>Max Pooling: <span class="arithmatex">\(max(x)\)</span> (Popular in practice, often <span class="arithmatex">\(2 * 2\)</span>)</p>
-</li>
+<p>Pooling</p>
+<ul>
+<li>Max Pooling: <span class="arithmatex">\(max(x)\)</span> (Popular in practice, often <span class="arithmatex">\(2 * 2\)</span>)</li>
 <li>Average Pooling: <span class="arithmatex">\(mean(x)\)</span></li>
 <li>Reduce the size of the input, thus the model should be more efficient to compute and the number of parameters should be highly reduced.</li>
-<li>
-<p>Avoid the overfitting and the noise.</p>
-<ul>
-<li><strong>Layer Strutcture</strong></li>
+<li>Avoid the overfitting and the noise.</li>
 </ul>
 </li>
 <li>
-<p>Input: <span class="arithmatex">\(N * C * H * W\)</span></p>
-</li>
+<p><strong>Layer Strutcture</strong></p>
+<ul>
+<li>Input: <span class="arithmatex">\(N * C * H * W\)</span></li>
 <li>Filter: <span class="arithmatex">\(F * C * HH * WW\)</span></li>
 <li>Output: <span class="arithmatex">\(N * F * H' * W'\)</span></li>
 <li>Activation (often Relu): <span class="arithmatex">\(N * F * H' * W'\)</span></li>
 <li>Pooling: <span class="arithmatex">\(N * F * H'' * W''\)</span></li>
-<li><strong>Normalization</strong></li>
 </ul>
 </li>
+</ul>
+</li>
+<li>
+<p><strong>Normalization</strong></p>
+<ul>
 <li>
 <p>Spatial Batch Normalization</p>
 <ul>
 <li>Similar to Batch Normalization.</li>
-<li>
-<p><code>X = x.transpose(0, 2, 3, 1).reshape(-1, C)</code></p>
-<ul>
-<li>Group Normalization</li>
+<li><code>X = x.transpose(0, 2, 3, 1).reshape(-1, C)</code></li>
 </ul>
 </li>
 <li>
-<p>Similar to Layer Normalization.</p>
-</li>
+<p>Group Normalization</p>
+<ul>
+<li>Similar to Layer Normalization.</li>
 <li><code>X = x.reshape(N*G, -1)</code></li>
 </ul>
 </li>
