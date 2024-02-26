@@ -665,7 +665,7 @@
 </li>
 </ul>
 <p>```cpp</p>
-<pre><code>struct Node{
+<div class="language-text highlight"><pre><span></span><code>struct Node{
     int data, H;
     Node *Ls, *Rs;
     Node(int data): data(data), H(0), Ls(NULL), Rs(NULL){}
@@ -718,18 +718,18 @@ struct AVL{
 
     // For Debug
     void Print(Node *x){
-        printf("%d ",x-&gt;data);
+        printf(&quot;%d &quot;,x-&gt;data);
         if(x-&gt;Ls) Print(x-&gt;Ls);
         if(x-&gt;Rs) Print(x-&gt;Rs);
     }
 
     // User
     void Clear(){if(Rot) Clear(Rot);Rot = NULL;}
-    void PrintRoot(){printf("%d\n",Rot-&gt;data);}
+    void PrintRoot(){printf(&quot;%d\n&quot;,Rot-&gt;data);}
     void Insert(int x){Rot = Insert(Rot, x);}
 }Tree;
 ```
-</code></pre>
+</code></pre></div>
 </li>
 </ul>
 <h3 id="splay">Splay</h3>
