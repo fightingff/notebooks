@@ -668,33 +668,31 @@
 <p>(同一个段与多个段寄存器有关联时:ds &gt; ss &gt; es &gt; cs)</p>
 <p>例如assume ds:data即将data:自动替换为ds:
   所以一般程序开头有</p>
-<p><code>asm
-  mov ax,data
-  mov ds,ax</code></p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">mov</span><span class="w"> </span><span class="no">ax</span><span class="p">,</span><span class="no">data</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nf">mov</span><span class="w"> </span><span class="no">ds</span><span class="p">,</span><span class="no">ax</span>
+</span></code></pre></div>
 <h2 id="_2">数据存储</h2>
 <ul>
 <li>内存中<strong>小端规则</strong>，低位在前，高位在后</li>
 </ul>
 <p>如    1234H  ---&gt;      34   12</p>
 <p>可用下面两段C语言代码验证</p>
-<pre><code class="language-c">
-   unsigned short int a = 0x1234;
-   unsigned char *p;
-   p = (unsigned char *)&amp;a;
-   printf(&quot;%X %X&quot;, p[0], p[1]);
-
-
-   unsigned char a[2]={0x12, 0x34};
-   unsigned short int *p;
-   p = (unsigned short int *)a;
-   printf(&quot;%X&quot;, *p);
-
-</code></pre>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="w">   </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x1234</span><span class="p">;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">   </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">   </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">a</span><span class="p">;</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">   </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%X %X&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">   </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mh">0x12</span><span class="p">,</span><span class="w"> </span><span class="mh">0x34</span><span class="p">};</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">   </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">;</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">   </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">a</span><span class="p">;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">   </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%X&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">);</span>
+</span></code></pre></div>
 <ul>
 <li>符号不区分</li>
 </ul>
-<pre><code>a db 0FFh
-</code></pre>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>a db 0FFh
+</span></code></pre></div>
 <p>到底代表255还是-1,在定义时并不确定</p>
 <p>但是在引用变量a时可以用指令来区分它是非符号还是有符号</p>
 <p>例如 <code>imul  a</code>指令表示乘以  -1 ，而 <code>mul a</code>指令则表示乘以 255</p>
@@ -720,15 +718,16 @@
 </li>
 <li>
 <p>lea &amp; offset</p>
-<p>```asm
-设abc的偏移地址=1000h
-lea dx, abc         ; lea dx, [1000h]
-mov dx, offset abc  ; mov dx, 1000h</p>
-<p>mov dx, offset ds:[bx+si+3]   ; 语法错误
-lea dx, ds:[bx+si+3]          ; dx=bx+si+3
-mov dx, bx+si+3               ; 错误</p>
-<p>lea eax, [eax+eax<em>4]          ; EAX=EAX</em>5 用lea做乘法
-```
+<p><div class="language-asm highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="err">设</span><span class="nf">abc的偏移地址</span><span class="err">=</span><span class="mi">1000</span><span class="no">h</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nf">lea</span><span class="w"> </span><span class="no">dx</span><span class="p">,</span><span class="w"> </span><span class="no">abc</span><span class="w">         </span><span class="c1">; lea dx, [1000h]</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nf">mov</span><span class="w"> </span><span class="no">dx</span><span class="p">,</span><span class="w"> </span><span class="no">offset</span><span class="w"> </span><span class="no">abc</span><span class="w">  </span><span class="c1">; mov dx, 1000h</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="nf">mov</span><span class="w"> </span><span class="no">dx</span><span class="p">,</span><span class="w"> </span><span class="no">offset</span><span class="w"> </span><span class="no">ds</span><span class="p">:[</span><span class="no">bx</span><span class="err">+</span><span class="no">si</span><span class="err">+</span><span class="mi">3</span><span class="p">]</span><span class="w">   </span><span class="c1">; 语法错误</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="nf">lea</span><span class="w"> </span><span class="no">dx</span><span class="p">,</span><span class="w"> </span><span class="no">ds</span><span class="p">:[</span><span class="no">bx</span><span class="err">+</span><span class="no">si</span><span class="err">+</span><span class="mi">3</span><span class="p">]</span><span class="w">          </span><span class="c1">; dx=bx+si+3</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="nf">mov</span><span class="w"> </span><span class="no">dx</span><span class="p">,</span><span class="w"> </span><span class="no">bx</span><span class="err">+</span><span class="no">si</span><span class="err">+</span><span class="mi">3</span><span class="w">               </span><span class="c1">; 错误</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="nf">lea</span><span class="w"> </span><span class="no">eax</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">eax</span><span class="err">+</span><span class="no">eax</span><span class="p">*</span><span class="mi">4</span><span class="p">]</span><span class="w">          </span><span class="c1">; EAX=EAX*5 用lea做乘法</span>
+</span></code></pre></div>
   - lds &amp; les</p>
 <p>取远指针，并分别把段地址赋给ds/es，偏移地址赋给相应目标
 - 远近指针</p>
@@ -752,64 +751,67 @@ mov dx, bx+si+3               ; 错误</p>
 <li><code>mul x</code> 单目运算
   根据x宽度确定乘法宽度</li>
 </ul>
-<p><code>asm
-  mul [1]     ah:al   = al * x
-  mul [2]     dx:ax   = ax * x
-  mul [4]     edx:eax = eax *x</code>
+<p><div class="language-asm highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nf">mul</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w">     </span><span class="no">ah</span><span class="p">:</span><span class="no">al</span><span class="w">   </span><span class="err">=</span><span class="w"> </span><span class="no">al</span><span class="w"> </span><span class="p">*</span><span class="w"> </span><span class="no">x</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nf">mul</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w">     </span><span class="no">dx</span><span class="p">:</span><span class="no">ax</span><span class="w">   </span><span class="err">=</span><span class="w"> </span><span class="no">ax</span><span class="w"> </span><span class="p">*</span><span class="w"> </span><span class="no">x</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nf">mul</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w">     </span><span class="no">edx</span><span class="p">:</span><span class="no">eax</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="no">eax</span><span class="w"> </span><span class="p">*</span><span class="no">x</span>
+</span></code></pre></div>
 - <code>div x</code> 单目运算</p>
 <p>基本可视为乘法的逆运算，其中dx存余数，ax存商</p>
 <p>（注意dx的清空，否则易出现<strong>divide overflow</strong>报错）</p>
 <p>32位十进制输出</p>
-<p><code>asm
-     mov di, 0; 数组s的下标
-     mov eax, abc
-     mov cx, 0; 统计push的次数
-  again:
-     mov edx, 0; 被除数为EDX:EAX
-     mov ebx, 10
-     div ebx; EAX=商, EDX=余数
-     add dl, '0'
-     push dx
-     inc cx; 相当于add cx, 1
-     cmp eax, 0
-     jne again
-  pop_again:
-     pop dx
-     mov s[di], dl
-     inc di
-     dec cx; 相当于sub cx, 1
-     jnz pop_again</code>
+<p><div class="language-asm highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="w">   </span><span class="nf">mov</span><span class="w"> </span><span class="no">di</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="c1">; 数组s的下标</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">   </span><span class="nf">mov</span><span class="w"> </span><span class="no">eax</span><span class="p">,</span><span class="w"> </span><span class="no">abc</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">   </span><span class="nf">mov</span><span class="w"> </span><span class="no">cx</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="c1">; 统计push的次数</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nl">again:</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">   </span><span class="nf">mov</span><span class="w"> </span><span class="no">edx</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="c1">; 被除数为EDX:EAX</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">   </span><span class="nf">mov</span><span class="w"> </span><span class="no">ebx</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">   </span><span class="nf">div</span><span class="w"> </span><span class="no">ebx</span><span class="c1">; EAX=商, EDX=余数</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">   </span><span class="nf">add</span><span class="w"> </span><span class="no">dl</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="mi">0</span><span class="err">&#39;</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">   </span><span class="nf">push</span><span class="w"> </span><span class="no">dx</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">   </span><span class="nf">inc</span><span class="w"> </span><span class="no">cx</span><span class="c1">; 相当于add cx, 1</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">   </span><span class="nf">cmp</span><span class="w"> </span><span class="no">eax</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">   </span><span class="nf">jne</span><span class="w"> </span><span class="no">again</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="nl">pop_again:</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">   </span><span class="nf">pop</span><span class="w"> </span><span class="no">dx</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">   </span><span class="nf">mov</span><span class="w"> </span><span class="no">s</span><span class="p">[</span><span class="no">di</span><span class="p">],</span><span class="w"> </span><span class="no">dl</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">   </span><span class="nf">inc</span><span class="w"> </span><span class="no">di</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">   </span><span class="nf">dec</span><span class="w"> </span><span class="no">cx</span><span class="c1">; 相当于sub cx, 1</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">   </span><span class="nf">jnz</span><span class="w"> </span><span class="no">pop_again</span>
+</span></code></pre></div>
 - <code>&amp;     |     ^      ~      &lt;&lt;     &gt;&gt;
   and   or    xor    not    shl    shr</code></p>
 <p>简单位运算</p>
 <p>（移位运算最后移出的一位存到CF中）
-- <code>rol       ror</code></p>
-<p>循环移位</p>
-<p><code>c
-  C语言
-  rol()  return x&lt;&lt;n | x&gt;&gt;(sizeof(x)*8-n)
-  ror()  return x&gt;&gt;n | x&lt;&lt;(sizeof(x)*8-n)</code></p>
+- ```
+  rol       ror
+  <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>循环移位
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>```c
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>C语言
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>rol()  return x&lt;&lt;n | x&gt;&gt;(sizeof(x)*8-n)
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>ror()  return x&gt;&gt;n | x&lt;&lt;(sizeof(x)*8-n)
+</span></code></pre></div></p>
 <p>用这些指令来完成十六进制输出：</p>
-<p><code>asm
-  again:
-     rol ax, 4  ;取出最高4位到低位
-     push ax
-     and ax, 000Fh
-     cmp ax, 10
-     jb is_digit
-  is_alpha:
-     sub al, 10
-     add al, 'A'
-     jmp finish_4bits
-  is_digit:
-     add al, '0'
-  finish_4bits:
-     mov s[di], al
-     pop ax
-     pop cx
-     add di, 1
-     sub cx, 1
-     jnz again</code>
+<p><div class="language-asm highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nl">again:</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">   </span><span class="nf">rol</span><span class="w"> </span><span class="no">ax</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w">  </span><span class="c1">;取出最高4位到低位</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">   </span><span class="nf">push</span><span class="w"> </span><span class="no">ax</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">   </span><span class="nf">and</span><span class="w"> </span><span class="no">ax</span><span class="p">,</span><span class="w"> </span><span class="mi">000</span><span class="no">Fh</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">   </span><span class="nf">cmp</span><span class="w"> </span><span class="no">ax</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">   </span><span class="nf">jb</span><span class="w"> </span><span class="no">is_digit</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="nl">is_alpha:</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">   </span><span class="nf">sub</span><span class="w"> </span><span class="no">al</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">   </span><span class="nf">add</span><span class="w"> </span><span class="no">al</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="no">A</span><span class="err">&#39;</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">   </span><span class="nf">jmp</span><span class="w"> </span><span class="no">finish_4bits</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="nl">is_digit:</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">   </span><span class="nf">add</span><span class="w"> </span><span class="no">al</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="mi">0</span><span class="err">&#39;</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="nl">finish_4bits:</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">   </span><span class="nf">mov</span><span class="w"> </span><span class="no">s</span><span class="p">[</span><span class="no">di</span><span class="p">],</span><span class="w"> </span><span class="no">al</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">   </span><span class="nf">pop</span><span class="w"> </span><span class="no">ax</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">   </span><span class="nf">pop</span><span class="w"> </span><span class="no">cx</span>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">   </span><span class="nf">add</span><span class="w"> </span><span class="no">di</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="w">   </span><span class="nf">sub</span><span class="w"> </span><span class="no">cx</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">   </span><span class="nf">jnz</span><span class="w"> </span><span class="no">again</span>
+</span></code></pre></div>
 - sal: shift arithmetic left  算术左移
   sar: shift arithmetic right 算术右移
   sal及sar是针对符号数的移位运算, 对负数右移的时候要在左边补1, 对正数右移的时候左边补0, 无论对正数还是负数左移右边都补0</p>
@@ -822,10 +824,10 @@ mov dx, bx+si+3               ; 错误</p>
 <p>16位或32位，sp=sp+sizeof(x)
 - <code>pushf &amp; popf</code> 保护FL状态寄存器
 - 手动定义堆栈空间</p>
-<p><code>asm
-  stk segment stack
-  db 200h dup(0)    ;或写成dw 100h dup(0)
-  stk ends</code></p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nf">stk</span><span class="w"> </span><span class="no">segment</span><span class="w"> </span><span class="no">stack</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nf">db</span><span class="w"> </span><span class="mi">200</span><span class="no">h</span><span class="w"> </span><span class="no">dup</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w">    </span><span class="c1">;或写成dw 100h dup(0)</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nf">stk</span><span class="w"> </span><span class="no">ends</span>
+</span></code></pre></div>
 <h2 id="fl">FL状态寄存器</h2>
 <p>CF ZF SF OF AF PF(状态)
 DF TF IF（控制）</p>
@@ -834,12 +836,12 @@ DF TF IF（控制）</p>
 <li>CF（Carry Flag）
   加法进位，减法借位</li>
 </ul>
-<p><code>asm
-  jc  jnc  (jump if (not)carry flag)
-  adc      (add+CF)
-  sbb      (sub+CF)
-  clc CF=0
-  stc CF=1</code>
+<p><div class="language-asm highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nf">jc</span><span class="w">  </span><span class="no">jnc</span><span class="w">  </span><span class="p">(</span><span class="no">jump</span><span class="w"> </span><span class="no">if</span><span class="w"> </span><span class="p">(</span><span class="no">not</span><span class="p">)</span><span class="no">carry</span><span class="w"> </span><span class="no">flag</span><span class="p">)</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nf">adc</span><span class="w">      </span><span class="p">(</span><span class="no">add</span><span class="err">+</span><span class="no">CF</span><span class="p">)</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="nf">sbb</span><span class="w">      </span><span class="p">(</span><span class="no">sub</span><span class="err">+</span><span class="no">CF</span><span class="p">)</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="nf">clc</span><span class="w"> </span><span class="no">CF</span><span class="err">=</span><span class="mi">0</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="nf">stc</span><span class="w"> </span><span class="no">CF</span><span class="err">=</span><span class="mi">1</span>
+</span></code></pre></div>
 - ZF(Zero Flag)
 - SF (Sign Flag   1 --&gt; - )
 - OF (Overflow Flag)
@@ -849,15 +851,15 @@ DF TF IF（控制）</p>
 <p>辅助进位标志，1 --&gt; 第四位与高四位进位或借位时
 - DF(Direction Flag)
   字符串复制方向</p>
-<p><code>asm
-  cld DF=0 正方向
-  std DF=1 反方向</code>
+<p><div class="language-asm highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nf">cld</span><span class="w"> </span><span class="no">DF</span><span class="err">=</span><span class="mi">0</span><span class="w"> </span><span class="err">正方向</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nf">std</span><span class="w"> </span><span class="no">DF</span><span class="err">=</span><span class="mi">1</span><span class="w"> </span><span class="err">反方向</span>
+</span></code></pre></div>
 - IF(Interrupt Flag)
   1 --&gt; 允许中断</p>
-<p><code>asm
-  cli   (置0)
-  免打扰程序段
-  sti  （置1）</code>
+<p><div class="language-asm highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nf">cli</span><span class="w">   </span><span class="p">(</span><span class="err">置</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="err">免打扰程序段</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="nf">sti</span><span class="w">  </span><span class="err">（置</span><span class="mi">1</span><span class="err">）</span>
+</span></code></pre></div>
 - TF(Trap Flag)
   1 --&gt; 进入单步模式，每条指令后隐含int 1H（callback）
   用于debug，反调试
@@ -876,52 +878,50 @@ DF TF IF（控制）</p>
 - <strong>stosb stosw stosd(宽度不同)</strong></p>
 <p>mov es:[di],     al/ax/eax</p>
 <h2 id="_6">关于循环</h2>
-<pre><code class="language-asm">loop label    ;while(--CX) jmp label
-loopz label   ;while(ZF &amp;&amp; --CX) jmp label
-loopnz label  ;while(!ZF &amp;&amp; --CX) jmp label
-</code></pre>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nf">loop</span><span class="w"> </span><span class="no">label</span><span class="w">    </span><span class="c1">;while(--CX) jmp label</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nf">loopz</span><span class="w"> </span><span class="no">label</span><span class="w">   </span><span class="c1">;while(ZF &amp;&amp; --CX) jmp label</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nf">loopnz</span><span class="w"> </span><span class="no">label</span><span class="w">  </span><span class="c1">;while(!ZF &amp;&amp; --CX) jmp label</span>
+</span></code></pre></div>
 <h2 id="_7">常用中断</h2>
-<pre><code class="language-asm">等效操作
-pushf, push cs, push ip
-tf = 0, if = 0
-ip = word ptr 0:[n*4], cs = word ptr 0:[n*4+2]
-
-mov ah,01H
-int 21H           ;al=getchar()
-
-mov ah,02H
-int 21H           ;putchar(dl)
-
-mov ah,09H
-int 21H           ;cout &lt;&lt; ds:[dx]--&gt;'$'
-
-mov ah,0AH  
-int 21H           ;getline( ds:[dx+2] )
-          ;其中ds:[dx]为最大读入量（记得置一个大数）
-          ;ds:[dx+1] 为实际读到的字符数 
-
-mov ah,4CH
-int 21H           ;exit
-
-mov ah,00H
-int 16H           ;AH = BIOS scan code
-                  ;AL = ASCII character
-
-mov ah,3DH
-int 21H           ;openfile
-
-;AL = access and sharing modes
-;DS:DX -&gt; ASCIZ filename
-;CL = attribute mask of files to look for
-
-;Return:
-;CF clear if successful
-;AX = file handle
-;CF set on error
-;AX = error code (01h,02h,03h,04h,05h,0Ch,56h)
-
-
-</code></pre>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="err">等效操作</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nf">pushf</span><span class="p">,</span><span class="w"> </span><span class="no">push</span><span class="w"> </span><span class="no">cs</span><span class="p">,</span><span class="w"> </span><span class="no">push</span><span class="w"> </span><span class="no">ip</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="nf">tf</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="no">if</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="mi">0</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="nf">ip</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="no">word</span><span class="w"> </span><span class="no">ptr</span><span class="w"> </span><span class="mi">0</span><span class="p">:[</span><span class="no">n</span><span class="p">*</span><span class="mi">4</span><span class="p">],</span><span class="w"> </span><span class="no">cs</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="no">word</span><span class="w"> </span><span class="no">ptr</span><span class="w"> </span><span class="mi">0</span><span class="p">:[</span><span class="no">n</span><span class="p">*</span><span class="mi">4</span><span class="err">+</span><span class="mi">2</span><span class="p">]</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="nf">mov</span><span class="w"> </span><span class="no">ah</span><span class="p">,</span><span class="mi">01</span><span class="no">H</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="nf">int</span><span class="w"> </span><span class="mi">21</span><span class="no">H</span><span class="w">           </span><span class="c1">;al=getchar()</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="nf">mov</span><span class="w"> </span><span class="no">ah</span><span class="p">,</span><span class="mi">02</span><span class="no">H</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="nf">int</span><span class="w"> </span><span class="mi">21</span><span class="no">H</span><span class="w">           </span><span class="c1">;putchar(dl)</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="nf">mov</span><span class="w"> </span><span class="no">ah</span><span class="p">,</span><span class="mi">09</span><span class="no">H</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="nf">int</span><span class="w"> </span><span class="mi">21</span><span class="no">H</span><span class="w">           </span><span class="c1">;cout &lt;&lt; ds:[dx]--&gt;&#39;$&#39;</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="nf">mov</span><span class="w"> </span><span class="no">ah</span><span class="p">,</span><span class="mi">0</span><span class="no">AH</span><span class="w">  </span>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="no">int</span><span class="w"> </span><span class="mi">21</span><span class="no">H</span><span class="w">           </span><span class="c1">;getline( ds:[dx+2] )</span>
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="w">          </span><span class="c1">;其中ds:[dx]为最大读入量（记得置一个大数）</span>
+</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="w">          </span><span class="c1">;ds:[dx+1] 为实际读到的字符数 </span>
+</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>
+</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="nf">mov</span><span class="w"> </span><span class="no">ah</span><span class="p">,</span><span class="mi">4</span><span class="no">CH</span>
+</span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="nf">int</span><span class="w"> </span><span class="mi">21</span><span class="no">H</span><span class="w">           </span><span class="c1">;exit</span>
+</span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>
+</span><span id="__span-13-23"><a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="nf">mov</span><span class="w"> </span><span class="no">ah</span><span class="p">,</span><span class="mi">00</span><span class="no">H</span>
+</span><span id="__span-13-24"><a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a><span class="nf">int</span><span class="w"> </span><span class="mi">16</span><span class="no">H</span><span class="w">           </span><span class="c1">;AH = BIOS scan code</span>
+</span><span id="__span-13-25"><a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a><span class="w">                  </span><span class="c1">;AL = ASCII character</span>
+</span><span id="__span-13-26"><a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a>
+</span><span id="__span-13-27"><a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a><span class="nf">mov</span><span class="w"> </span><span class="no">ah</span><span class="p">,</span><span class="mi">3</span><span class="no">DH</span>
+</span><span id="__span-13-28"><a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a><span class="nf">int</span><span class="w"> </span><span class="mi">21</span><span class="no">H</span><span class="w">           </span><span class="c1">;openfile</span>
+</span><span id="__span-13-29"><a id="__codelineno-13-29" name="__codelineno-13-29" href="#__codelineno-13-29"></a>
+</span><span id="__span-13-30"><a id="__codelineno-13-30" name="__codelineno-13-30" href="#__codelineno-13-30"></a><span class="c1">;AL = access and sharing modes</span>
+</span><span id="__span-13-31"><a id="__codelineno-13-31" name="__codelineno-13-31" href="#__codelineno-13-31"></a><span class="c1">;DS:DX -&gt; ASCIZ filename</span>
+</span><span id="__span-13-32"><a id="__codelineno-13-32" name="__codelineno-13-32" href="#__codelineno-13-32"></a><span class="c1">;CL = attribute mask of files to look for</span>
+</span><span id="__span-13-33"><a id="__codelineno-13-33" name="__codelineno-13-33" href="#__codelineno-13-33"></a>
+</span><span id="__span-13-34"><a id="__codelineno-13-34" name="__codelineno-13-34" href="#__codelineno-13-34"></a><span class="c1">;Return:</span>
+</span><span id="__span-13-35"><a id="__codelineno-13-35" name="__codelineno-13-35" href="#__codelineno-13-35"></a><span class="c1">;CF clear if successful</span>
+</span><span id="__span-13-36"><a id="__codelineno-13-36" name="__codelineno-13-36" href="#__codelineno-13-36"></a><span class="c1">;AX = file handle</span>
+</span><span id="__span-13-37"><a id="__codelineno-13-37" name="__codelineno-13-37" href="#__codelineno-13-37"></a><span class="c1">;CF set on error</span>
+</span><span id="__span-13-38"><a id="__codelineno-13-38" name="__codelineno-13-38" href="#__codelineno-13-38"></a><span class="c1">;AX = error code (01h,02h,03h,04h,05h,0Ch,56h)</span>
+</span></code></pre></div>
 <h2 id="bcd">关于BCD码</h2>
 <p>一种用十六进制表示十进制数的方法，比如端口中时钟</p>
 <p>15H   <code>&lt;----&gt;</code>   15D</p>
@@ -934,9 +934,9 @@ int 21H           ;openfile
     具体地</p>
 </li>
 </ul>
-<p><code>cpp
-  if((AL &amp; 0FH) &gt;= 0AH) AL += 6H     //低位
-  if((AL &amp; 0F0H) &gt;= 0AH) AL += 60H   //高位</code>
+<p><div class="language-cpp highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">if</span><span class="p">((</span><span class="n">AL</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mf">0F</span><span class="n">H</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="n">AH</span><span class="p">)</span><span class="w"> </span><span class="n">AL</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">6</span><span class="n">H</span><span class="w">     </span><span class="c1">//低位</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="k">if</span><span class="p">((</span><span class="n">AL</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mf">0F</span><span class="mi">0</span><span class="n">H</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="n">AH</span><span class="p">)</span><span class="w"> </span><span class="n">AL</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">60</span><span class="n">H</span><span class="w">   </span><span class="c1">//高位</span>
+</span></code></pre></div>
   - das 减法调整类似
 - 非压缩BCD     8位表示一个十进制位</p>
 <p>8个二进制位的高四位没用</p>
@@ -945,21 +945,21 @@ int 21H           ;openfile
 <li>aaa  加法调整</li>
 <li>具体地</li>
 </ul>
-<p><code>cpp
-  if((AL &amp; 0FH) &gt;= 0AH) AL += 6 , AH++</code>
+<p><div class="language-cpp highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">if</span><span class="p">((</span><span class="n">AL</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mf">0F</span><span class="n">H</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="n">AH</span><span class="p">)</span><span class="w"> </span><span class="n">AL</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">AH</span><span class="o">++</span>
+</span></code></pre></div>
   - aas 减法调整类似
   - aam 乘法调整</p>
-<pre><code>```cpp
+<div class="language-text highlight"><pre><span></span><code>```cpp
 AH /= 10
 AL %= 10
 ```
-</code></pre>
+</code></pre></div>
 <ul>
 <li>
 <p>aad 除法 <strong>前</strong> 预先调整</p>
-<p><code>cpp
-AL = (AH * 10 + AL) &amp; 0FFH
-AH = 0</code></p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">AL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">AH</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">AL</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mf">0F</span><span class="n">FH</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">AH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+</span></code></pre></div>
 </li>
 </ul>
 
