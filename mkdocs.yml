@@ -6,6 +6,7 @@ nav:
       - x86 Asm: ASM.md
       - Digit Logic Design: DigitLogic.md
       - CS 231n: CS231n.md
+      - ADS: ADS.md
   - Tools:
       - Git: Git.md
 theme:

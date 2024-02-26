@@ -13,6 +13,11 @@
 - CS231n
     - My work in learning CS231n
 
+- ADS
+    - Taught by CH, my senior and a intelligent researcher 
+    - Learn some advanced data structures, algorithm, and some advanced analysis
+    - Despite of my experience in Informatics Olympiad, I still feel it challenging
+
 ## Some useful tools in learning
 
 - Git
