@@ -664,22 +664,23 @@
 <p>Code</p>
 </li>
 </ul>
-<p>```cpp
-    struct Node{
-        int data, H;
-        Node <em>Ls, </em>Rs;
-        Node(int data): data(data), H(0), Ls(NULL), Rs(NULL){}
-        int Update(){
-            int HL = -1, HR = -1;
-            if(Ls != NULL) HL = Ls-&gt;H;
-            if(Rs != NULL) HR = Rs-&gt;H;
-            H = max(HL, HR) + 1;
-            return abs(HL - HR);
-        }
-    };
-    struct AVL{
-        Node *Rot;</p>
-<pre><code>    //Structure
+<p>```cpp</p>
+<pre><code>struct Node{
+    int data, H;
+    Node *Ls, *Rs;
+    Node(int data): data(data), H(0), Ls(NULL), Rs(NULL){}
+    int Update(){
+        int HL = -1, HR = -1;
+        if(Ls != NULL) HL = Ls-&gt;H;
+        if(Rs != NULL) HR = Rs-&gt;H;
+        H = max(HL, HR) + 1;
+        return abs(HL - HR);
+    }
+};
+struct AVL{
+    Node *Rot;
+
+    //Structure
     void Clear(Node *x){
         if(x-&gt;Ls) Clear(x-&gt;Ls);
         if(x-&gt;Rs) Clear(x-&gt;Rs);

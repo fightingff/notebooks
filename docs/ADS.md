@@ -43,6 +43,7 @@
     - Code
 
       ```cpp
+
         struct Node{
             int data, H;
             Node *Ls, *Rs;
