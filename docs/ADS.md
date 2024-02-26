@@ -188,5 +188,5 @@
         
         - 对三种旋转操作进行分别分析，可以证明，每次旋转的摊还代价为 $O(logN)$
         
-        - ![Proof](Splay.png)
+        - ![Proof](splay.png)
 
