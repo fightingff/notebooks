@@ -1512,14 +1512,16 @@
 <ul>
 <li>
 <p><strong>2 Multi-Head Attention</strong></p>
-<ol>
-<li>Self. </li>
-</ol>
+<ul>
+<li>
+<p>Self. </p>
 <p>Compute the attention score with multi-head attention, where the query, the key and the value are all derived from the output features.</p>
-<ol>
-<li>Combine.</li>
-</ol>
+</li>
+<li>
+<p>Combine.</p>
 <p>Compute the attention score with multi-head attention, where the query is derived from the output features, and the key and the value are derived from the input features.</p>
+</li>
+</ul>
 </li>
 <li>
 <p><strong>Multi-layers</strong></p>
@@ -1532,7 +1534,7 @@
 </li>
 <li>
 <p><strong>Prediction</strong></p>
-</li>
+<ul>
 <li>
 <p>Output starts with a <start> token.</p>
 </li>
@@ -1541,6 +1543,8 @@
 </li>
 <li>
 <p>Repeat until the <end> token is picked.</p>
+</li>
+</ul>
 </li>
 <li>
 <p><em>Some thoughts of my opnion</em></p>
