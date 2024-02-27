@@ -568,6 +568,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#transformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transformer
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -928,6 +937,15 @@
   <a href="#rnn-captioning" class="md-nav__link">
     <span class="md-ellipsis">
       RNN Captioning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transformer
     </span>
   </a>
   
@@ -1319,6 +1337,223 @@
 <p><span class="arithmatex">\(c_t = f_t \odot c_{t-1} + i_t \odot g_t\)</span></p>
 <p><span class="arithmatex">\(h_t = o_t \odot \tanh(c_t)\)</span></p>
 </blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="transformer">Transformer</h4>
+<ul>
+<li>
+<p><a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a></p>
+</li>
+<li>
+<p><em>Actually I havn't understood it well yet today, 2024.2.27</em></p>
+</li>
+<li>
+<p><strong>Structure</strong></p>
+<ul>
+<li>Basic structure in paper:</li>
+</ul>
+<p><img alt="transformer" src="../transformer.png" /></p>
+<ul>
+<li>Abstract structure:</li>
+</ul>
+<p><img alt="Abstract" src="../Abstract.png" /></p>
+</li>
+<li>
+<p><strong>Attention Mechanism</strong></p>
+<ul>
+<li>
+<p><strong>Self-Attention</strong></p>
+<ul>
+<li>Scaled Dot-Product Attention</li>
+</ul>
+<blockquote>
+<p><span class="arithmatex">\(Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V\)</span></p>
+<p>Q is the query, K is the key, V is the value </p>
+</blockquote>
+<p><img alt="self-attention" src="../self-attention.png" /></p>
+<ul>
+<li>
+<p>Use Dot-Product to compute the relationship between the query and the key, and use the softmax to normalize the result.</p>
+</li>
+<li>
+<p>Finally multiply the value with the normalized result, converting the attention score to the output. </p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Multi-Head Attention</strong></p>
+<ul>
+<li>Compute the attention score with multiple parallel attention mechanisms, and concatenate the result.</li>
+</ul>
+<p><img alt="multi-attention" src="../multi-attention.png" /></p>
+<ul>
+<li>Thus the model should be more expressive and the performance should be better, for multiple attention mechanisms can capture different features.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Embedding</p>
+<ul>
+<li>
+<p><strong>Positional Encoding</strong></p>
+<ul>
+<li>
+<p>Since transformer discards the sequential information, we need to add the positional encoding to the input embedding.</p>
+</li>
+<li>
+<p>Just add the position embedding to the input embedding.</p>
+</li>
+</ul>
+<blockquote>
+<p><span class="arithmatex">\(PE(pos,\ 2i) \ \ \ \ \ \ = \sin(pos/10000^{2i/d_{model}})\)</span></p>
+<p><span class="arithmatex">\(PE(pos,2i+1) = \cos(pos/10000^{2i/d_{model}})\)</span></p>
+</blockquote>
+<ul>
+<li>Use the sine and cosine function to encode the position information, because it's easy to add length when training length changes.</li>
+</ul>
+</li>
+<li>
+<p>Word Embedding</p>
+<ul>
+<li>
+<p>Use the pre-trained word embedding, or train the word embedding with the model.</p>
+</li>
+<li>
+<p>Similar to that of RNN.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Other Tricks</p>
+<ul>
+<li>
+<p>Residual Connection</p>
+</li>
+<li>
+<p>Normalization</p>
+</li>
+<li>
+<p>Feed Forward Network</p>
+</li>
+<li>
+<p>Optimizer </p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Training</strong></p>
+<ul>
+<li>
+<p><strong>Input features</strong></p>
+<ul>
+<li>
+<p><strong>Embedding</strong></p>
+<ul>
+<li>Embedding the features annd positional encoding</li>
+</ul>
+</li>
+<li>
+<p><strong>Encoders</strong> </p>
+<ul>
+<li>
+<p><strong>Multi-Head Attention</strong></p>
+<ul>
+<li>Compute the attention score with multi-head attention, where both the query, the key and the value are derived from the input features</li>
+</ul>
+<p><img alt="input" src="../input.png" /></p>
+<ul>
+<li>It looks like the input query with itself, or say, the input features are used to compute the attention score (relationships) with itself, so it's called self-attention. </li>
+</ul>
+</li>
+<li>
+<p><strong>Multi-layers</strong> </p>
+<ul>
+<li>Multiple feed forward network with residual connection and normalization</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Output words (Expected Answers)</p>
+<ul>
+<li>
+<p><strong>Embedding</strong></p>
+<ul>
+<li><strong>Feed in the Output in parallel</strong></li>
+</ul>
+<blockquote>
+<p>For example </p>
+<p>Split a sentence into N datas where <span class="arithmatex">\(O_i\)</span> contains the first <span class="arithmatex">\(i\)</span> words, and is to predict the next one. </p>
+<p>Thus the model should be more efficient to train in parallel.</p>
+</blockquote>
+<ul>
+<li>
+<p><strong>Mask</strong></p>
+<ul>
+<li>
+<p>To train the model in parallel, we need to mask the future words, otherwise the model may cheat.</p>
+</li>
+<li>
+<p>A trilled matrix is great to mask the future words.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Decoders</strong></p>
+<ul>
+<li>
+<p><strong>2 Multi-Head Attention</strong></p>
+<ul>
+<li>
+<p>Self. </p>
+<p>Compute the attention score with multi-head attention, where the query, the key and the value are all derived from the output features.</p>
+</li>
+<li>
+<p>Combine.</p>
+<p>Compute the attention score with multi-head attention, where the query is derived from the output features, and the key and the value are derived from the input features.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Multi-layers</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Prediction</strong></p>
+<ul>
+<li>
+<p>Output starts with a <start> token.</p>
+</li>
+<li>
+<p>Use the model to pick the next most possible word, and feed it back to the model.</p>
+</li>
+<li>
+<p>Repeat until the <end> token is picked.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><em>Some thoughts of my opnion</em></p>
+<ul>
+<li>
+<p>Compared to CNN, the transformer can access the global information, ganining the ability to capture the long-range dependencies, and thus the performance should be better.</p>
+</li>
+<li>
+<p>Compared to RNN, the transformer can train in parallel instead of sequentially, and thus the model should be more efficient to train.</p>
 </li>
 </ul>
 </li>
