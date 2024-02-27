@@ -1354,11 +1354,11 @@
 <ul>
 <li>Basic structure in paper:</li>
 </ul>
-<p><img alt="transformer" src="transformer.png" /></p>
+<p><img alt="transformer" src="../transformer.png" /></p>
 <ul>
 <li>Abstract structure:</li>
 </ul>
-<p><img alt="Abstract" src="Abstract.png" /></p>
+<p><img alt="Abstract" src="../Abstract.png" /></p>
 </li>
 <li>
 <p><strong>Attention Mechanism</strong></p>
@@ -1372,7 +1372,7 @@
 <p><span class="arithmatex">\(Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V\)</span></p>
 <p>Q is the query, K is the key, V is the value </p>
 </blockquote>
-<p><img alt="self-attention" src="self-attention.png" /></p>
+<p><img alt="self-attention" src="../self-attention.png" /></p>
 <ul>
 <li>
 <p>Use Dot-Product to compute the relationship between the query and the key, and use the softmax to normalize the result.</p>
@@ -1387,7 +1387,7 @@
 <ul>
 <li>Compute the attention score with multiple parallel attention mechanisms, and concatenate the result.</li>
 </ul>
-<p><img alt="multi-attention" src="multi-attention.png" /></p>
+<p><img alt="multi-attention" src="../multi-attention.png" /></p>
 <ul>
 <li>Thus the model should be more expressive and the performance should be better, for multiple attention mechanisms can capture different features.</li>
 </ul>
@@ -1465,7 +1465,7 @@
 <ul>
 <li>Compute the attention score with multi-head attention, where both the query, the key and the value are derived from the input features</li>
 </ul>
-<p><img alt="input" src="input.png" /></p>
+<p><img alt="input" src="../input.png" /></p>
 <ul>
 <li>It looks like the input query with itself, or say, the input features are used to compute the attention score (relationships) with itself, so it's called self-attention. </li>
 </ul>
