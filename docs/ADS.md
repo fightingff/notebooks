@@ -40,74 +40,74 @@
         
         - ![LR / RL Rotation](LR.png)
     
-    - Code
+- Code
 
-      ```cpp
+```cpp
 
-        struct Node{
-            int data, H;
-            Node *Ls, *Rs;
-            Node(int data): data(data), H(0), Ls(NULL), Rs(NULL){}
-            int Update(){
-                int HL = -1, HR = -1;
-                if(Ls != NULL) HL = Ls->H;
-                if(Rs != NULL) HR = Rs->H;
-                H = max(HL, HR) + 1;
-                return abs(HL - HR);
-            }
-        };
-        struct AVL{
-            Node *Rot;
-            
-            //Structure
-            void Clear(Node *x){
-                if(x->Ls) Clear(x->Ls);
-                if(x->Rs) Clear(x->Rs);
-                delete x;
-            }
-            Node *Insert(Node *p, int x){
-                if(p == NULL) return new Node(x);
-                if(x < p->data) p->Ls = Insert(p->Ls, x);else p->Rs = Insert(p->Rs, x);
+struct Node{
+    int data, H;
+    Node *Ls, *Rs;
+    Node(int data): data(data), H(0), Ls(NULL), Rs(NULL){}
+    int Update(){
+        int HL = -1, HR = -1;
+        if(Ls != NULL) HL = Ls->H;
+        if(Rs != NULL) HR = Rs->H;
+        H = max(HL, HR) + 1;
+        return abs(HL - HR);
+    }
+};
+struct AVL{
+    Node *Rot;
+    
+    //Structure
+    void Clear(Node *x){
+        if(x->Ls) Clear(x->Ls);
+        if(x->Rs) Clear(x->Rs);
+        delete x;
+    }
+    Node *Insert(Node *p, int x){
+        if(p == NULL) return new Node(x);
+        if(x < p->data) p->Ls = Insert(p->Ls, x);else p->Rs = Insert(p->Rs, x);
 
-                if(p->Update() > 1) return Balance(p,x);
-                return p;
-            }
-            void Rotate(Node **X, Node **Y, bool p){
-                // p = 0 -> Left, p = 1 -> Right
-                // rotate X to Y
-                // mind the order of the following two lines
-                if(!p){
-                    (*Y)->Ls = (*X)->Rs;
-                    (*X)->Rs = *Y;
-                }else{
-                    (*Y)->Rs = (*X)->Ls;
-                    (*X)->Ls = *Y;
-                }
-                (*Y)->Update(), (*X)->Update();
-            }
-            Node *Balance(Node *Trouble, int x){
-                Node *G = Trouble, *F, *X;
-                bool p, q;
-                if(x < G->data) F = G->Ls, p = 0;else F = G->Rs, p = 1;
-                if(x < F->data) X = F->Ls, q = 0;else X = F->Rs, q = 1;
-                if(p ^ q) Rotate(&X, &F, q), Rotate(&X, &G, p);
-                    else Rotate(&F, &G, p), X = F;
-                return X;
-            }
+        if(p->Update() > 1) return Balance(p,x);
+        return p;
+    }
+    void Rotate(Node **X, Node **Y, bool p){
+        // p = 0 -> Left, p = 1 -> Right
+        // rotate X to Y
+        if(!p){
+            (*Y)->Ls = (*X)->Rs;
+            (*X)->Rs = *Y;
+        }else{
+            (*Y)->Rs = (*X)->Ls;
+            (*X)->Ls = *Y;
+        }
+        (*Y)->Update(), (*X)->Update();
+    }
+    Node *Balance(Node *Trouble, int x){
+        Node *G = Trouble, *F, *X;
+        bool p, q;
+        if(x < G->data) F = G->Ls, p = 0;else F = G->Rs, p = 1;
+        if(x < F->data) X = F->Ls, q = 0;else X = F->Rs, q = 1;
+        if(p ^ q) Rotate(&X, &F, q), Rotate(&X, &G, p);
+            else Rotate(&F, &G, p), X = F;
+        return X;
+    }
 
-            // For Debug
-            void Print(Node *x){
-                printf("%d ",x->data);
-                if(x->Ls) Print(x->Ls);
-                if(x->Rs) Print(x->Rs);
-            }
+    void Print(Node *x){
+        printf("%d ",x->data);
+        if(x->Ls) Print(x->Ls);
+        if(x->Rs) Print(x->Rs);
+    }
 
-            // User
-            void Clear(){if(Rot) Clear(Rot);Rot = NULL;}
-            void PrintRoot(){printf("%d\n",Rot->data);}
-            void Insert(int x){Rot = Insert(Rot, x);}
-        }Tree;
-        ```
+    // User
+    void Clear(){if(Rot) Clear(Rot);Rot = NULL;}
+    void PrintRoot(){printf("%d\n",Rot->data);}
+    void Insert(int x){Rot = Insert(Rot, x);}
+    
+}Tree;
+
+```
 
 ### Splay
 
@@ -144,6 +144,66 @@
         - 也可以看成直接将当前节点往最上面一提，两个儿子被父节点和祖先节点均分，从而趋向平衡
         
         - ![ZigZag](ZigZag.png) 
+
+- Code (Not checked yet)
+
+```cpp
+
+struct Node{
+    Node *fa, *v[2];
+    int data;
+    Node (int x, Node *F, Node *Pivot):data(x),fa(F),v{Pivot, Pivot}{}
+};
+typedef Node *Pt;
+Pt NUL;// A trick to avoid NULL pointer
+struct SplayTree{
+    Pt Rot;
+    void Print(Pt i){// Preorder
+        if(i == NUL) return;
+        cout << i->data << " ";
+        Print(i->v[0]), Print(i->v[1]);
+    }
+    bool Is(Pt i){return (i->fa->v[1] == i);}// 0: left son, 1: right son
+    void Rotate(Pt i){ // Rotate i to its father
+        Pt F = i->fa, G = F->fa; bool p = Is(i), q = Is(F);
+        F->v[p] = i->v[p ^ 1], i->v[p^1]->fa = F;
+        F->fa = i, i->v[p^1] = F;
+        G->v[q] = i, i->fa = G;
+    }
+    void Splay(Pt i){// Splay i to the root
+        while(i->fa != NUL){
+            if(i->fa->fa != NUL) Rotate(Is(i) == Is(i->fa) ? i->fa : i), Rotate(i);
+                else Rotate(i);
+        }
+        Rot = i;
+    }
+    void Insert(Pt &i, Pt F, int x){
+        if(i == NUL) return (void)(Splay(i = new Node(x, F, NUL)));
+        Insert(i->v[x > i->data], i, x);
+    }
+
+    // User Interface
+    void Clear(){Rot = NUL = new Node(-1, NULL, NULL);}
+    void Print(){Print(Rot);cout << endl;}
+    void Insert(int x){Insert(Rot, NUL, x);}
+    void Find(int x){
+        Pt i = Rot;
+        while(i != NUL && i->data != x) i = i->v[x > i->data];
+        if(i != NUL) Splay(i);
+    }
+    void Delete(int x){
+        Find(x);// Splay x to the root
+        if(Rot->v[0] == NUL) Rot = Rot->v[1], Rot->fa = NUL;
+        else{
+            Pt i = Rot->v[0], X = Rot;
+            while(i->v[1] != NUL) i = i->v[1];// Find the maximum in the left subtree
+            Splay(i);
+            i->v[1] = X->v[1], X->v[1]->fa = i;
+        }
+    }
+}Tree;
+
+```
 
 ## Algorithm
 
