@@ -586,6 +586,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#self-supervised-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Supervised Learning
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -964,6 +973,15 @@
   <a href="#gan-generative-adversarial-network" class="md-nav__link">
     <span class="md-ellipsis">
       GAN (Generative Adversarial Network)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-supervised-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Supervised Learning
     </span>
   </a>
   
@@ -1592,7 +1610,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="gan-generative-adversarial-network"><strong>GAN (Generative Adversarial Network)</strong></h4>
+<h4 id="gan-generative-adversarial-network">GAN (Generative Adversarial Network)</h4>
 <ul>
 <li>
 <p><a href="https://arxiv.org/abs/1406.2661">Paper</a></p>
@@ -1724,7 +1742,88 @@
 <p>Results on MNIST</p>
 </li>
 </ul>
-<p><img alt="Results" src="../GAN_output.png" /> </p>
+<p><img alt="Results" src="../GAN_output.png" /></p>
+</li>
+</ul>
+<h4 id="self-supervised-learning">Self-Supervised Learning</h4>
+<ul>
+<li>
+<p><strong>Main Idea</strong></p>
+<ul>
+<li>Use the data without labels to self-supervise the model.</li>
+</ul>
+</li>
+<li>
+<p><strong>Contrastive Learning</strong></p>
+<ul>
+<li>
+<p><strong>Main Idea</strong></p>
+<ul>
+<li>
+<p>Doing Augumentation on the input data to get a positive pair, and combine the loss of both positive pairs and negative pairs to train the model. </p>
+</li>
+<li>
+<p>That is, when distinguishing a totally different data, the model may easily do it by grabbing some unimportant features. So we feed them with similar data, force the model to extract the significant features.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>SimCLR (Simple Contrastive Learning)</strong></p>
+<ul>
+<li>
+<p><a href="https://arxiv.org/abs/2002.05709">Paper</a></p>
+</li>
+<li>
+<p><strong>Structure</strong></p>
+<ul>
+<li>
+<p>Two branches to generate the positive pairs</p>
+</li>
+<li>
+<p><span class="arithmatex">\(f()\)</span> to extract the features</p>
+</li>
+<li>
+<p><span class="arithmatex">\(g()\)</span> to project the features, or say, a typical classifier</p>
+</li>
+<li>
+<p><img alt="SimCLR" src="../SimCLR.png" />     </p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Training</strong></p>
+<ul>
+<li>
+<p>Generate positive pairs (seemed quite important in training) </p>
+<p><img alt="Gen" src="../SimCLR_Gen.png" /></p>
+</li>
+<li>
+<p>Feed in the batched 2*N datas, where larger N preferred</p>
+</li>
+<li>
+<p>Minimize the loss (Maximize the agreement)</p>
+<ul>
+<li>
+<div class="arithmatex">\[\ell = -\frac{1}{2N}\sum_{i=1}^{N}\left[\log\frac{\exp(sim(f(x_i),f(x_{i^+}))/ \tau)}{\sum_{j=1}^{2N} (j!=i) \exp(sim(f(x_i),f(x_j))/ \tau)}\right]\]</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Results</strong></p>
+<ul>
+<li>
+<p>Improved the performance of a pre-trained model a lot.</p>
+</li>
+<li>
+<p><img alt="SimCLR_Output" src="../SimCLR_output.png" /> </p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </li>
 </ul>
 
