@@ -1369,7 +1369,11 @@
 <p><a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a></p>
 </li>
 <li>
+<p><a href="https://www.youtube.com/watch?v=ugWDIIOHtPA">Highly Recommend Movie By Hung-yi Lee</a> </p>
+</li>
+<li>
 <p><em>Actually I havn't understood it well yet today, 2024.2.27</em></p>
+<p><em>After watching the lecture of Lee, now I got some new thoughts, 2024.2.28</em></p>
 </li>
 <li>
 <p><strong>Structure</strong></p>
@@ -1392,12 +1396,15 @@
 </ul>
 <blockquote>
 <p><span class="arithmatex">\(Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V\)</span></p>
-<p>Q is the query, K is the key, V is the value </p>
+<p>Q is the query to match others, K is the key to be matched, V is the value to be extracted </p>
 </blockquote>
 <p><img alt="self-attention" src="../self-attention.png" /></p>
 <ul>
 <li>
 <p>Use Dot-Product to compute the relationship between the query and the key, and use the softmax to normalize the result.</p>
+</li>
+<li>
+<p><strong>Concretely, <span class="arithmatex">\(Q_i\)</span> will be used to compute the attention score with all <span class="arithmatex">\(K_j\)</span>, and the corresponding result <span class="arithmatex">\(score_{i, j}\)</span> will be used to compute the weighted sum of all <span class="arithmatex">\(V_j\)</span>, which is the output</strong></p>
 </li>
 <li>
 <p>Finally multiply the value with the normalized result, converting the attention score to the output. </p>
@@ -1407,11 +1414,16 @@
 <li>
 <p><strong>Multi-Head Attention</strong></p>
 <ul>
-<li>Compute the attention score with multiple parallel attention mechanisms, and concatenate the result.</li>
+<li>
+<p>Split the input/output dimension into multiple <strong>smaller</strong> heads.</p>
+</li>
+<li>
+<p>Compute the attention score with multiple parallel attention mechanisms, and concatenate the result.</p>
+</li>
 </ul>
 <p><img alt="multi-attention" src="../multi-attention.png" /></p>
 <ul>
-<li>Thus the model should be more expressive and the performance should be better, for multiple attention mechanisms can capture different features.</li>
+<li>Thus the model should be more expressive and the performance should be better, for multiple smller attention mechanisms can capture different features and run more efficiently.</li>
 </ul>
 </li>
 </ul>
@@ -1512,7 +1524,7 @@
 </ul>
 <blockquote>
 <p>For example </p>
-<p>Split a sentence into N datas where <span class="arithmatex">\(O_i\)</span> contains the first <span class="arithmatex">\(i\)</span> words, and is to predict the next one. </p>
+<p>With mask, it's just like spliting a sentence into N datas where <span class="arithmatex">\(O_i\)</span> contains the first <span class="arithmatex">\(i\)</span> words, and is to predict the next one. </p>
 <p>Thus the model should be more efficient to train in parallel.</p>
 </blockquote>
 <ul>
