@@ -577,6 +577,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#gan-generative-adversarial-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      GAN (Generative Adversarial Network)
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -946,6 +955,15 @@
   <a href="#transformer" class="md-nav__link">
     <span class="md-ellipsis">
       Transformer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gan-generative-adversarial-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      GAN (Generative Adversarial Network)
     </span>
   </a>
   
@@ -1560,6 +1578,141 @@
 <p>Compared to RNN, the transformer can train in parallel instead of sequentially, and thus the model should be more efficient to train.</p>
 </li>
 </ul>
+</li>
+</ul>
+<h4 id="gan-generative-adversarial-network"><strong>GAN (Generative Adversarial Network)</strong></h4>
+<ul>
+<li>
+<p><a href="https://arxiv.org/abs/1406.2661">Paper</a></p>
+</li>
+<li>
+<p><strong>Structure</strong></p>
+<ul>
+<li>
+<p><strong>Generator</strong></p>
+<ul>
+<li>
+<p>To generate the fake data.</p>
+</li>
+<li>
+<p>Viewed as a possibility distribution, trying to fit the real data distribution. </p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Discriminator</strong></p>
+<ul>
+<li>To distinguish the real data from the fake data through learning the real data distribution.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Main Idea</strong></p>
+<ul>
+<li>
+<p>A Min-Max Game</p>
+<ul>
+<li>
+<p>The generator tries to generate the fake data to cheat the discriminator</p>
+<p>The discriminator tries to distinguish the real data from the fake data.</p>
+</li>
+<li>
+<div class="arithmatex">\[\underset{G}{\text{minimize}}\; \underset{D}{\text{maximize}}\; \mathbb{E}_{x \sim p_\text{data}}\left[\log D(x)\right] + \mathbb{E}_{z \sim p(z)}\left[\log \left(1-D(G(z))\right)\right]\]</div>
+</li>
+<li>
+<p>The two are just like playing aganist each other, and thus both models should be trained to be better and better to "beat" the other one.</p>
+<p>Finally the generator should be able to fit the real data distribution well while the discriminator should just be fooled as a random guesser (with 50% possibility).</p>
+</li>
+<li>
+<p><img alt="Train" src="../GAN_train.png" /></p>
+<p><em>Black points denote real data</em></p>
+<p><em>Green ones denote generator distribution</em></p>
+<p><em>Blue ones denote output of the discriminator (possibility to be real)</em></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Training</strong></p>
+<ul>
+<li>
+<p>Build the generator and the discriminator</p>
+</li>
+<li>
+<p><strong>Key Steps</strong></p>
+<ul>
+<li>
+<p>Generate the fake data using the generator</p>
+</li>
+<li>
+<p>Use the real-fake data loss to train the discriminator for P steps</p>
+<ul>
+<li>
+<div class="arithmatex">\[ \ell_D = -\mathbb{E}_{x \sim p_\text{data}}\left[\log D(x)\right] - \mathbb{E}_{z \sim p(z)}\left[\log \left(1-D(G(z))\right)\right]\]</div>
+</li>
+</ul>
+</li>
+<li>
+<p>Use the fake data loss to train the generator for Q steps</p>
+<ul>
+<li>
+<div class="arithmatex">\[ \ell_G = -\mathbb{E}_{z \sim p(z)}\left[\log \left(D(G(z))\right)\right]\]</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Important tricks on loss functions</strong></p>
+<ul>
+<li>
+<p>Here we actually convert the min-max game to a min-min (mind the minus) game, because a min-max game is hard to train and may fall into a cycle.</p>
+</li>
+<li>
+<p>We use batch average to approximate the expectation, highly reducing the cost of computation.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><em>PS: The training optimization and tricks of normal deep learning are still useful, and many so-called improved GAN models are based on these tricks.</em></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Some improved models</p>
+<ul>
+<li>
+<p>LSGAN (Least Squares GAN)</p>
+<ul>
+<li>
+<p><a href="https://arxiv.org/abs/1611.04076">Paper</a></p>
+</li>
+<li>
+<p>Use the least squares loss instead of the binary cross entropy loss, thus the gradient should be more stable and sharp.</p>
+</li>
+<li>
+<div class="arithmatex">\[\underset{G}{\text{minimize}}\; \underset{D}{\text{maximize}}\; \mathbb{E}_{x \sim p_\text{data}}\left[(D(x)-1)^2\right] + \mathbb{E}_{z \sim p(z)}\left[D(G(z))^2\right]\]</div>
+</li>
+</ul>
+</li>
+<li>
+<p>DC-GAN (Deep Convolutional GAN)</p>
+<ul>
+<li>
+<p><a href="https://arxiv.org/abs/1511.06434">Paper</a></p>
+</li>
+<li>
+<p>Use the convolutional neural network to build the generator and the discriminator, bettering the performance.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Results on MNIST</p>
+</li>
+</ul>
+<p><img alt="Results" src="../GAN_output.png" /> </p>
 </li>
 </ul>
 
