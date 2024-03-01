@@ -12,9 +12,9 @@
 
 - Interface: 接口
 
-- Cohesion: 內聚
+- Cohesion: 內聚, 一个类内的功能高度相关
 
-- Coupling: 耦合
+- Coupling: 耦合， 不同类之间的关联程度
 
 - Collection classes: 容器
 

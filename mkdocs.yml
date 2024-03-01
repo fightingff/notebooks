@@ -10,6 +10,7 @@ nav:
       - OOP: OOP.md
   - Tools:
       - Git: Git.md
+      - Makefile & CMake: Make.md
 
 theme:
   name: material

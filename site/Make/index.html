@@ -1,0 +1,1170 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://fightingff.github.io/notebooks/Make/">
+      
+      
+        <link rel="prev" href="../Git/">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
+    
+    
+      
+        <title>Makefile & CMake - FF's Notebooks</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#makefile-cmake" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="FF&#39;s Notebooks" class="md-header__button md-logo" aria-label="FF's Notebooks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FF's Notebooks
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Makefile & CMake
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="FF&#39;s Notebooks" class="md-nav__button md-logo" aria-label="FF's Notebooks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    FF's Notebooks
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Courses
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Courses
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ASM/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x86 Asm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitLogic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Digit Logic Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CS231n/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CS 231n
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ADS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OOP/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OOP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tools
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Git/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Git
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Makefile & CMake
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Makefile & CMake
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#compile-link-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compile &amp; Link (C++)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple-files-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multiple Files (C++)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#makefile" class="md-nav__link">
+    <span class="md-ellipsis">
+      Makefile
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Makefile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#varible" class="md-nav__link">
+    <span class="md-ellipsis">
+      Varible
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sign" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sign
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rule
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      其他高阶用法
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exampleoop-lab1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example(以OOP Lab1为例)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#compile-link-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compile &amp; Link (C++)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple-files-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multiple Files (C++)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#makefile" class="md-nav__link">
+    <span class="md-ellipsis">
+      Makefile
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Makefile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#varible" class="md-nav__link">
+    <span class="md-ellipsis">
+      Varible
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sign" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sign
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rule
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      其他高阶用法
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exampleoop-lab1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example(以OOP Lab1为例)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="makefile-cmake">Makefile &amp; CMake</h1>
+<hr />
+<blockquote>
+<p>人始终还是<strong>惰性动物</strong>，虽然寒假里已经强迫自己学了一些基本的<code>Makefile</code>，但是当真的面对一个project进行应用的时候，还是举步维艰。因此就借着OOP Lab1的push, 重新整理一下对于<code>Makefile</code>的理解。</p>
+<p>至于<code>CMake</code>，等将最近专业课的太多作业处理一下再整理。
+</p>
+</blockquote>
+<hr />
+<h2 id="compile-link-c">Compile &amp; Link (C++)</h2>
+<p>首先整理一下代码源文件到可执行文件的过程：</p>
+<ul>
+<li>
+<p><strong>Preprocessing</strong>：预处理，将<code>#include</code>的头文件所指引的源文件插入到对应文件中，进行宏定义的替换，并删除注释，生成临时文件<code>*.i</code>。</p>
+</li>
+<li>
+<p><strong>Compilation</strong>：编译，将预处理后的文件转换为汇编代码<code>*.s</code>。</p>
+<ul>
+<li><code>g++ -S *.cpp</code> </li>
+</ul>
+</li>
+<li>
+<p><strong>Assembly</strong>：汇编，将汇编代码转换为目标文件<code>*.o</code>。</p>
+<ul>
+<li>
+<p><code>g++ -c *.s</code> </p>
+</li>
+<li>
+<p><code>g++ -c *.cpp</code> </p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Linking</strong>：链接，将目标文件链接为可执行文件。</p>
+<ul>
+<li><code>g++ -o *(.exe) *.o</code> </li>
+</ul>
+</li>
+<li>
+<p><em>PS: -o 选项只是指定输出文件名，并没有其他特殊的意义，因此前面几条命令也可以使用-o选项指定输出文件名。</em> </p>
+</li>
+</ul>
+<hr />
+<h2 id="multiple-files-c">Multiple Files (C++)</h2>
+<ul>
+<li>
+<p>*.h</p>
+<ul>
+<li>
+<p>只是作为该功能模块的接口，<strong>一般</strong>不包含具体的实现，通过<code>#include</code>指引到对应的源文件中。</p>
+</li>
+<li>
+<p>很多时候感觉由于翻译问题，”定义“、”声明“、”实现“之类的感觉完全分不清，但是一般可以简单理解为<strong>在头文件中不能开辟内存空间</strong>即可。</p>
+</li>
+<li>
+<p><strong>主要内容：</strong></p>
+<ul>
+<li>
+<p>头文件保护 <code>#ifndef</code> <code>#define</code> <code>#endif</code></p>
+</li>
+<li>
+<p>结构体、类的声明（<strong>重载运算符似乎需要直接实现，其他内部函数只需要声明</strong>）</p>
+</li>
+<li>
+<p>函数的声明</p>
+</li>
+<li>
+<p>宏定义</p>
+</li>
+<li>
+<p>全局量的声明 <code>extern</code> （不可赋值，否则就需要占用内存空间了）      </p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>*.cpp（功能模块源文件）</p>
+<ul>
+<li>
+<p>对头文件声明的部分进行具体实现</p>
+</li>
+<li>
+<p><strong>主要内容：</strong></p>
+<ul>
+<li>
+<p>头文件引用</p>
+<ul>
+<li>
+<p>上述同名头文件</p>
+</li>
+<li>
+<p><strong>其他需要的头文件</strong>，这样可以由该模块直接生成对应的OBJ目标文件，方便整个工程后续的链接。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>结构体、类的实现，不能重复出现声明部分，需要用<code>name::</code>指定 </p>
+</li>
+<li>
+<p>函数的实现</p>
+</li>
+<li>
+<p>全局量的定义（赋值）</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Main.cpp </p>
+<ul>
+<li>
+<p>主函数，调用其他模块的函数，实现整个程序的功能。</p>
+</li>
+<li>
+<p>正常情况下，只需要引用对应的头文件，然后调用对应的函数即可。  </p>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="makefile">Makefile</h2>
+<blockquote>
+<p><strong>Make loves c compilation. And every time it expresses its love, things get confusing.</strong></p>
+</blockquote>
+<ul>
+<li>
+<p><a href="https://makefiletutorial.com/">Tutorial</a> （通过大量举例，非常通俗易懂且形象</p>
+</li>
+<li>
+<p><a href="https://www.gnu.org/software/make/manual/make.html">Docs</a> （官方文档，详细全面，但是有点枯燥）</p>
+</li>
+<li>
+<p>Makefile 我的理解，本质上就是一个<strong>自动化编译的脚本</strong>，通过指定一系列的规则和命令，来实现对于源文件的编译、链接等操作。下面我就简单整理了一下自己认为比较重要比较常用的一些点。</p>
+</li>
+</ul>
+<hr />
+<h3 id="varible">Varible</h3>
+<ul>
+<li>
+<p>常用全部大写，用<code>(:)=</code>赋值</p>
+<ul>
+<li><code>:=</code> 会立即展开，而<code>=</code>则是在使用时才展开 (因此可以用于递归定义)</li>
+</ul>
+</li>
+<li>
+<p><code>+=</code> 追加赋值</p>
+</li>
+<li>
+<p>用用<code>$()</code>引用</p>
+</li>
+</ul>
+<h3 id="sign">Sign</h3>
+<ul>
+<li>
+<p>特殊变量</p>
+<ul>
+<li>
+<p><code>$@</code> 目标文件</p>
+</li>
+<li>
+<p><code>$^</code> 所有的依赖文件</p>
+</li>
+<li>
+<p><code>$&lt;</code> 第一个依赖文件</p>
+</li>
+<li>
+<p><em><code>$?</code> 所有比目标文件新的依赖文件</em></p>
+</li>
+<li>
+<p><em><code>$*</code> 无后缀的目标文件名</em></p>
+</li>
+</ul>
+</li>
+<li>
+<p>通配符</p>
+<ul>
+<li>
+<p><code>*</code> 匹配任意长度的字符串</p>
+</li>
+<li>
+<p><code>?</code> 匹配单个字符</p>
+</li>
+<li>
+<p><code>%</code> 匹配任意有长度的字符串,<strong>并且往往应用在Pattern Rule</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="rule">Rule</h3>
+<ul>
+<li>
+<p><strong>Basic Rule</strong></p>
+<div class="highlight"><span class="filename">Makefile</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">target</span><span class="p">:</span> <span class="n">prerequisites</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">command</span>
+</code></pre></div>
+<ul>
+<li>
+<p><strong>Target</strong>：</p>
+<ul>
+<li>
+<p>目标, 本质上是一个标号，用于指定一个规则的名字</p>
+</li>
+<li>
+<p>特殊的，'all'为默认目标，'clean'为清理目标</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Prerequisites</strong>：依赖文件，依赖文件变化才会执行相应命令</p>
+</li>
+<li>
+<p><strong>Command</strong>：命令 </p>
+</li>
+</ul>
+</li>
+<li>
+<p>Pattern Rule</p>
+<div class="highlight"><span class="filename">Makefile</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">%.</span><span class="n">o</span><span class="p">:</span> <span class="o">%.</span><span class="n">c</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">CFLAG</span><span class="p">)</span> <span class="o">-</span><span class="n">c</span> <span class="err">$</span><span class="o">&lt;</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="o">@</span>
+</code></pre></div>
+<ul>
+<li>
+<p><strong>%.o</strong>：通配符，表示所有的.o文件</p>
+</li>
+<li>
+<p><strong>%.c</strong>：通配符，表示所有的.c文件</p>
+</li>
+<li>
+<p>这里相当于将目录中所有的.c文件编译为对应的.o文件，而不需要一个个指定</p>
+</li>
+<li>
+<p><strong>虽然看起来相当高效，但是由于这样没有规则标号，难以控制，因此在实际应用中并不常用</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Static Pattern Rule</strong></p>
+<div class="highlight"><span class="filename">Makefile</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">targets</span><span class="p">:</span> <span class="n">target</span><span class="o">-</span><span class="n">pattern</span><span class="p">:</span> <span class="n">prereq</span><span class="o">-</span><span class="n">patterns</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">command</span>
+</code></pre></div>
+<ul>
+<li>
+<p><strong>targets</strong>: 这里往往是一个列表，表示一系列的目标文件</p>
+</li>
+<li>
+<p><strong>target-pattern</strong>: 一般使用<code>%</code>通配符来获取文件信息</p>
+</li>
+<li>
+<p><strong>prereq-patterns</strong>: 同上，一般使用<code>%</code>通配符来获取文件信息 </p>
+</li>
+<li>
+<p><strong>command</strong>: 感觉非常像Verilog中的generate语句，通过一系列的规则来生成相似的功能模块（详见下方例子）</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Pattern Filter</strong></p>
+<ul>
+<li>
+<p><code>$(filter pattern, text)</code>: 从text中筛选出符合pattern的部分 </p>
+</li>
+<li>
+<p>可以配合上方的Pattern Rule使用，替换targets来实现更加灵活的功能</p>
+</li>
+</ul>
+<div class="highlight"><span class="filename">Makefile</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Ex 1: .o files depend on .c files. Though we don&#39;t actually make the .o file.</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="err">$</span><span class="p">(</span><span class="nb">filter</span> <span class="o">%.</span><span class="n">o</span><span class="p">,</span><span class="err">$</span><span class="p">(</span><span class="n">obj_files</span><span class="p">)):</span> <span class="o">%.</span><span class="n">o</span><span class="p">:</span> <span class="o">%.</span><span class="n">c</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">echo</span> <span class="s2">&quot;target: $@ prereq: $&lt;&quot;</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># Ex 2: .result files depend on .raw files. Though we don&#39;t actually make the .result file.</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="err">$</span><span class="p">(</span><span class="nb">filter</span> <span class="o">%.</span><span class="n">result</span><span class="p">,</span><span class="err">$</span><span class="p">(</span><span class="n">obj_files</span><span class="p">)):</span> <span class="o">%.</span><span class="n">result</span><span class="p">:</span> <span class="o">%.</span><span class="n">raw</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">echo</span> <span class="s2">&quot;target: $@ prereq: $&lt;&quot;</span> 
+</code></pre></div>
+</li>
+</ul>
+<h3 id="function">Function</h3>
+<ul>
+<li>
+<p><code>$(wildcard pattern)</code></p>
+<ul>
+<li>通配符，获取当前目录下所有符合pattern的文件名</li>
+</ul>
+</li>
+<li>
+<p><code>$(patsubst pattern, replacement, text)</code></p>
+<ul>
+<li>替换，将text中符合pattern的部分替换为replacement</li>
+</ul>
+</li>
+<li>
+<p><code>$(addprefix prefix, names)</code></p>
+<ul>
+<li>添加前缀，将names中的每个元素都添加上prefix</li>
+</ul>
+</li>
+<li>
+<p><code>$(addsuffix suffix, names)</code></p>
+<ul>
+<li>添加后缀，将names中的每个元素都添加上suffix </li>
+</ul>
+</li>
+<li>
+<p><code>$(shell command)</code></p>
+<ul>
+<li>执行命令，将命令的输出作为函数的返回值</li>
+</ul>
+</li>
+</ul>
+<h3 id="_1">其他高阶用法</h3>
+<ul>
+<li>~~还没学~~</li>
+</ul>
+<h3 id="exampleoop-lab1">Example(以OOP Lab1为例)</h3>
+<ul>
+<li>
+<p>项目简介：</p>
+<ul>
+<li>
+<p>实现一个简单的文本管理系统，要求生成<code>pdadd</code>、<code>pdlist</code>、<code>pdremove</code>、<code>pdshow</code> 4个可执行文件</p>
+</li>
+<li>
+<p>编程时创建了一个file类，用于与文本文件进行交互，因此四个可执行文件都需要引用该类的头文件 </p>
+</li>
+</ul>
+</li>
+<li>
+<p>【最简单粗暴版】</p>
+</li>
+</ul>
+<div class="highlight"><span class="filename">Makefile</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>  <span class="n">CC</span> <span class="o">=</span> <span class="n">g</span><span class="o">++</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  <span class="n">CFLAG</span> <span class="o">=</span> <span class="o">-</span><span class="n">std</span><span class="o">=</span><span class="n">c</span><span class="o">++</span><span class="mi">11</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  <span class="n">SRC</span> <span class="o">=</span> <span class="o">.</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  <span class="n">OD</span> <span class="o">=</span> <span class="o">..</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  <span class="n">FILE_ASSIST</span> <span class="o">=</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span><span class="o">/</span><span class="n">file</span><span class="o">.</span><span class="n">cpp</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  <span class="c1"># 直接两两文件一绑，然后直接编译</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>  <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdadd</span><span class="p">:</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span><span class="o">/</span><span class="n">pdadd</span><span class="o">.</span><span class="n">cpp</span> <span class="err">$</span><span class="p">(</span><span class="n">FILE_ASSIST</span><span class="p">)</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>      <span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">CFLAG</span><span class="p">)</span> <span class="err">$</span><span class="o">^</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdadd</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>  <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdlist</span><span class="p">:</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span><span class="o">/</span><span class="n">pdlist</span><span class="o">.</span><span class="n">cpp</span> <span class="err">$</span><span class="p">(</span><span class="n">FILE_ASSIST</span><span class="p">)</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>      <span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">CFLAG</span><span class="p">)</span> <span class="err">$</span><span class="o">^</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdlist</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>  <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdshow</span><span class="p">:</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span><span class="o">/</span><span class="n">pdshow</span><span class="o">.</span><span class="n">cpp</span> <span class="err">$</span><span class="p">(</span><span class="n">FILE_ASSIST</span><span class="p">)</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>      <span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">CFLAG</span><span class="p">)</span> <span class="err">$</span><span class="o">^</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdshow</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>  <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdremove</span><span class="p">:</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span><span class="o">/</span><span class="n">pdremove</span><span class="o">.</span><span class="n">cpp</span> <span class="err">$</span><span class="p">(</span><span class="n">FILE_ASSIST</span><span class="p">)</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>      <span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">CFLAG</span><span class="p">)</span> <span class="err">$</span><span class="o">^</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdremove</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>  <span class="n">clean</span><span class="p">:</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>      <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdadd</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdlist</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdremove</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdshow</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>      <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span><span class="o">/*.</span><span class="n">o</span> 
+</code></pre></div>
+<ul>
+<li>【正常编译程序版】</li>
+</ul>
+<div class="highlight"><span class="filename">Makefile</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>  <span class="n">CC</span> <span class="o">=</span> <span class="n">g</span><span class="o">++</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  <span class="n">CFLAG</span> <span class="o">=</span> <span class="o">-</span><span class="n">std</span><span class="o">=</span><span class="n">c</span><span class="o">++</span><span class="mi">11</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  <span class="n">SRC</span> <span class="o">=</span> <span class="o">.</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  <span class="n">OD</span> <span class="o">=</span> <span class="o">..</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  <span class="n">OBJ</span> <span class="o">=</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span><span class="o">/</span><span class="n">file</span><span class="o">.</span><span class="n">o</span>         <span class="c1">#   object files of file assist</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>  <span class="n">ADDOBJ</span> <span class="o">=</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span><span class="o">/</span><span class="n">pdadd</span><span class="o">.</span><span class="n">o</span>     <span class="c1">#   object file for pdadd</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>  <span class="n">LISTOBJ</span> <span class="o">=</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span><span class="o">/</span><span class="n">pdlist</span><span class="o">.</span><span class="n">o</span>       <span class="c1">#   object file for pdlist</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>  <span class="n">REMOVEOBJ</span> <span class="o">=</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span><span class="o">/</span><span class="n">pdremove</span><span class="o">.</span><span class="n">o</span>   <span class="c1">#   object file for pdremove</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>  <span class="n">SHOWOBJ</span> <span class="o">=</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span><span class="o">/</span><span class="n">pdshow</span><span class="o">.</span><span class="n">o</span>       <span class="c1">#   object file for pdshow</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>  <span class="nb">all</span><span class="p">:</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdadd</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdlist</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdremove</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdshow</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>  <span class="c1"># 通过.o文件链接得到可执行文件，避免了重复编译</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>  <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdadd</span><span class="p">:</span> <span class="err">$</span><span class="p">(</span><span class="n">ADDOBJ</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">OBJ</span><span class="p">)</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>      <span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">CFLAG</span><span class="p">)</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdadd</span> <span class="err">$</span><span class="p">(</span><span class="n">ADDOBJ</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">OBJ</span><span class="p">)</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>  <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdlist</span><span class="p">:</span> <span class="err">$</span><span class="p">(</span><span class="n">LISTOBJ</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">OBJ</span><span class="p">)</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>      <span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">CFLAG</span><span class="p">)</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdlist</span> <span class="err">$</span><span class="p">(</span><span class="n">LISTOBJ</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">OBJ</span><span class="p">)</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>  <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdremove</span><span class="p">:</span> <span class="err">$</span><span class="p">(</span><span class="n">REMOVEOBJ</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">OBJ</span><span class="p">)</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>      <span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">CFLAG</span><span class="p">)</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdremove</span> <span class="err">$</span><span class="p">(</span><span class="n">REMOVEOBJ</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">OBJ</span><span class="p">)</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>  <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdshow</span><span class="p">:</span> <span class="err">$</span><span class="p">(</span><span class="n">SHOWOBJ</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">OBJ</span><span class="p">)</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>      <span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">CFLAG</span><span class="p">)</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdshow</span> <span class="err">$</span><span class="p">(</span><span class="n">SHOWOBJ</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">OBJ</span><span class="p">)</span>    
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>  <span class="c1"># 通过从.cpp文件编译得到.o文件</span>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>  <span class="o">.</span><span class="n">cpp</span><span class="o">.</span><span class="n">o</span><span class="p">:</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>      <span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">CFLAG</span><span class="p">)</span> <span class="o">-</span><span class="n">c</span> <span class="err">$</span><span class="o">&lt;</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="o">@</span>
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>  <span class="n">clean</span><span class="p">:</span>
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>      <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">(</span><span class="n">OBJ</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">ADDOBJ</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">LISTOBJ</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">REMOVEOBJ</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">SHOWOBJ</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdadd</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdlist</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdremove</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="n">pdshow</span>
+</code></pre></div>
+<ul>
+<li>【高效版】</li>
+</ul>
+<div class="highlight"><span class="filename">Makefile</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>  <span class="n">CC</span> <span class="o">=</span> <span class="n">g</span><span class="o">++</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  <span class="n">CFLAG</span> <span class="o">=</span> <span class="o">-</span><span class="n">std</span><span class="o">=</span><span class="n">c</span><span class="o">++</span><span class="mi">11</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  <span class="n">SRC</span> <span class="o">=</span> <span class="o">.</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  <span class="n">OD</span> <span class="o">=</span> <span class="o">..</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  <span class="n">OBJ</span> <span class="o">=</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span><span class="o">/</span><span class="n">file</span><span class="o">.</span><span class="n">o</span>         <span class="c1">#   object files of file assist</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  <span class="n">TARGETS</span> <span class="o">=</span> <span class="n">pdadd</span> <span class="n">pdlist</span> <span class="n">pdremove</span> <span class="n">pdshow</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  <span class="n">OBJS</span> <span class="o">=</span> <span class="err">$</span><span class="p">(</span><span class="n">addsuffix</span> <span class="o">.</span><span class="n">o</span><span class="p">,</span> <span class="err">$</span><span class="p">(</span><span class="n">TARGETS</span><span class="p">))</span> <span class="n">file</span><span class="o">.</span><span class="n">o</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>  <span class="nb">all</span><span class="p">:</span> <span class="err">$</span><span class="p">(</span><span class="n">OBJS</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">TARGETS</span><span class="p">)</span> 
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>  <span class="c1"># 通过static pattern rule，大大简化了生成*.o 和 *(.exe)的过程</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>  <span class="err">$</span><span class="p">(</span><span class="n">TARGETS</span><span class="p">):</span> <span class="o">%</span><span class="p">:</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span><span class="o">/%.</span><span class="n">o</span> <span class="err">$</span><span class="p">(</span><span class="n">OBJ</span><span class="p">)</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>      <span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">CFLAG</span><span class="p">)</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span><span class="o">/</span><span class="err">$</span><span class="o">@</span> <span class="err">$</span><span class="o">^</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>  <span class="err">$</span><span class="p">(</span><span class="n">OBJS</span><span class="p">):</span> <span class="o">%.</span><span class="n">o</span><span class="p">:</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span><span class="o">/%.</span><span class="n">cpp</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>      <span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">CFLAG</span><span class="p">)</span> <span class="o">-</span><span class="n">c</span> <span class="err">$</span><span class="o">&lt;</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span><span class="o">/</span><span class="err">$</span><span class="o">@</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>  <span class="n">clean</span><span class="p">:</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>      <span class="n">cd</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">(</span><span class="n">OBJS</span><span class="p">)</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>      <span class="n">cd</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">(</span><span class="n">TARGETS</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.7389ff0e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

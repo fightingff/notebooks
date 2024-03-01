@@ -33,3 +33,7 @@
     - Undoubtedly one of the most useful tools as distributed version control system
     - Workspace history recorded
     - Remote workspace storage & cooperation
+
+- Makefile & CMake
+    - Makefile is a tool to compile and link multiple source codes
+    - CMake is a efficient tool to help generate Makefile (Not written yet)
