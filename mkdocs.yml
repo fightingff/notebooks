@@ -7,6 +7,7 @@ nav:
       - Digit Logic Design: DigitLogic.md
       - CS 231n: CS231n.md
       - ADS: ADS.md
+      - OOP: OOP.md
   - Tools:
       - Git: Git.md
 

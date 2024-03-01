@@ -23,6 +23,10 @@
     - Learn some advanced data structures, algorithm, and some advanced analysis
     - Despite of my experience in Informatics Olympiad, I still feel it challenging
 
+- OOP
+    - Taught by WK, a famous teacher in ZJU
+    - Learn some basic OOP concepts and some advanced design patterns using C++
+
 ## Some useful tools in learning
 
 - Git
