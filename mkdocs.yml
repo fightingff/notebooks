@@ -8,7 +8,7 @@ nav:
       - CS 231n: CS231n.md
       - ADS: ADS.md
       - OOP: OOP.md
-      - Info: Info.md
+      - Information Theory: Info.md
   - Tools:
       - Git: Git.md
       - Makefile & CMake: Make.md
