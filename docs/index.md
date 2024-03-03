@@ -27,6 +27,10 @@
     - Taught by WK, a famous teacher in ZJU
     - Learn some basic OOP concepts and some advanced design patterns using C++
 
+- Information theory
+    - Taught by YGD, a professor in ZJU
+    - Learn some basic information theory, which is significant in machine learning theory especially in proof, so I think it's necessary to take this course carefully and take notes
+
 ## Some useful tools in learning
 
 - Git
