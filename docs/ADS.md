@@ -4,6 +4,8 @@
 
 ## Data Structrure
 
+----
+
 ### AVL
 
 - 定义：任意节点左右子树**高度差**不大于1
@@ -42,7 +44,7 @@
     
 - Code
 
-```cpp
+```cpp title="AVL Tree" linenums="1"
 
 struct Node{
     int data, H;
@@ -109,6 +111,8 @@ struct AVL{
 
 ```
 
+----
+
 ### Splay
 
 - 每次查询时，将查询的节点旋转到根节点，从而在过程中将树展平
@@ -147,7 +151,7 @@ struct AVL{
 
 - Code (Not checked yet)
 
-```cpp
+```cpp title="Splay Tree" linenums="1"
 
 struct Node{
     Node *fa, *v[2];
@@ -205,7 +209,141 @@ struct SplayTree{
 
 ```
 
+----
+
+### B+ Tree
+
+> 一种多路搜索树，常用于数据库索引、文件系统等
+
+- **特征** （Order of M）
+
+    - 根节点有$[2,M]$个子节点
+    
+    - 其余非叶节点有$[[\frac{M+1}{2}],M]$个子节点，用 K - 1 个关键字进行区间划分
+    
+    - 所有叶节点在同一层，且都在最底层, 且都有$[[\frac{M+1}{2}],M]$个关键字
+
+- 优势：
+
+    - 可以看出，B+树的高度非常低，整棵树总体上非常“扁平”，因而查询效率非常高
+
+    - 由于叶节点都在同一层，若对兄弟节点间建立指针，可以很方便的进行范围查询
+
+- 维护
+
+    - 插入
+
+        - 从根节点开始，找到合适的叶节点，插入关键字
+        
+        - 若叶节点关键字数目超过上限，将节点均分为$[\frac{M+1}{2}],[\frac{M}{2}]$两部分，并更新划分关键字为右半边的最小值
+        
+        - 递归向上，若父节点关键字数目超过上限，分裂为$[\frac{M+1}{2}],[\frac{M}{2}]$两部分，并更新父节点处关键字为**中间剩余的一个划分关键字**
+        
+        - 若到达根节点，则新建节点，即全树高度加一
+    
+    - 删除
+    
+        - 从根节点开始，找到合适的叶节点，删除关键字
+        
+        - 若叶节点关键字数目低于下限，找到兄弟节点，若兄弟节点关键字数目大于下限，将兄弟节点的一个关键字移动到当前节点
+        
+        - 若兄弟节点关键字数目也低于下限，将当前节点与兄弟节点合并，删除父节点处的一个关键字
+        
+        - 递归向上，对父节点进行相同操作
+        
+        - 若到达根节点，且根节点关键字数目为0，删除根节点，即全树高度减一        
+        
+- Code (Not fully implemented yet)
+
+```cpp title="B+ Tree" linenums="1"
+const int Order = 3;
+struct Node{
+    int M;                  //  Number of keys
+    int Key[Order + 1];     //  Keys
+    Node* Child[Order + 1]; //  Children
+    Node *Ls, *Rs;          //  Left and Right Sibling
+    int Height;              //  Height of the node for printing
+    Node(){
+        M = Height = 0;
+        Ls = Rs = NULL;
+        for(int i = 0; i <= Order; i++) Child[i] = NULL, Key[i] = 0;
+    }
+    Node *Split(){
+        Node *j = new Node();
+        j->Height = Height;
+        j->Rs = Rs, Rs = j, j->Ls = this;
+        if(Height){ // Internal Node
+            for(int k = (Order + 1 >> 1); k < M ; k++){
+                j->Key[j->M] = Key[k], j->Child[j->M] = Child[k];
+                j->M++;
+            }
+            j->Child[j->M] = Child[M], M = (M - 1 >> 1);
+        }else{  // Leaf Node
+            for(int k = (Order + 1 >> 1); k < M ; k++) j->Key[j->M++] = Key[k];
+            M = (M + 1 >> 1);
+        }
+        return j;
+    }
+};
+struct BpTree{
+    Node *Rot;
+    #define IsLeaf(x) ((x)->Height == 0)
+    void Insert(Node *i, Node *F, int x){
+        int k;
+        if(IsLeaf(i)){// Leaf Node can contain more keys
+            for(k = 0; k < i->M; k++) if(i->Key[k] == x) return (void)(printf("Key %d is duplicated\n", x));
+            while(k && i->Key[k - 1] > x) i->Key[k] = i->Key[k - 1], k--;
+            i->Key[k] = x, i->M++;
+            return;
+        }
+
+        // search for the child to insert
+        for(k = 0; k < i->M; k++) if(i->Key[k] > x) break;
+        Insert(i->Child[k], i, x);
+        if(i->Child[k]->M - (IsLeaf(i->Child[k])) < Order) return;
+
+        // split the child
+        Node *j = i->Child[k]->Split();
+        for(int t = i->M; t > k; t--) i->Child[t + 1] = i->Child[t], i->Key[t] = i->Key[t - 1];
+        i->Child[k + 1] = j, i->Key[k] = i->Child[k]->Key[i->Child[k]->M], i->M++;
+    }
+
+    // interface for user
+    void Clear(){Rot = new Node();}
+    void Insert(int x){
+        Insert(Rot, NULL, x);
+        Node *i = Rot;
+        if(i->M - IsLeaf(i) >= Order){// Split the root if necessary
+            Rot = new Node();
+            Node *j = i->Split();
+            Rot->Key[0] = i->Key[i->M], Rot->M = 1, Rot->Child[0] = i, Rot->Child[1] = j;
+            Rot->Height = i->Height + 1;
+        }
+    }
+
+    // TODO: Implement Delete
+
+    void Print(){// BFS
+        queue<Node*> Q;
+        Q.push(Rot);
+        int lst = Rot->Height;
+        while(!Q.empty()){
+            Node *x = Q.front(); Q.pop();
+            if(x->Height != lst) putchar('\n'), lst = x->Height;
+            putchar('[');
+            for(int i = 0; i < x->M - 1; i++) printf("%d,", x->Key[i]);
+            printf("%d]", x->Key[x->M - 1]);
+            for(int i = 0; i <= x->M; i++) if(x->Child[i] != NULL) Q.push(x->Child[i]);
+        }
+    }
+}B;
+```
+
+----
+
 ## Algorithm
+
+----
 
 ### Amortized Analysis (摊还分析)
 
@@ -251,3 +389,4 @@ struct SplayTree{
         
         - ![Proof](splay.png)
 
+----
