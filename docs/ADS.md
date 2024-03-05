@@ -245,7 +245,7 @@ struct SplayTree{
     
         - 从根节点开始，找到合适的叶节点，删除关键字
         
-        - 若叶节点关键字数目低于下限，找到兄弟节点，若兄弟节点关键字数目大于下限，将兄弟节点的一个关键字移动到当前节点
+        - 若叶节点关键字数目低于下限，找到兄弟节点，若兄弟节点关键字数目大于下限，和兄弟平分节点
         
         - 若兄弟节点关键字数目也低于下限，将当前节点与兄弟节点合并，删除父节点处的一个关键字
         
@@ -253,10 +253,16 @@ struct SplayTree{
         
         - 若到达根节点，且根节点关键字数目为0，删除根节点，即全树高度减一        
         
-- Code (Not fully implemented yet)
+- Code (Delete Not Carefully Checked yet)
+
+我觉得B+树最恶心的一点就在于他的内部节点与叶结点定义的不一致性，导致编写代码非常麻烦（*对于我这种具有“统一性写法”强迫症的人来说*）
+
+结果就是白白花费数小时去写掺杂着各种 IsLeaf 运算的式子，和无穷无尽的Debug
+
+因此，**惨痛教训：很多时候可以通过简单分类，增加代码长度，大大降低编码复杂度！！！** 
 
 ```cpp title="B+ Tree" linenums="1"
-const int Order = 3;
+const int Order = 5;
 struct Node{
     int M;                  //  Number of keys
     int Key[Order + 1];     //  Keys
@@ -285,6 +291,7 @@ struct Node{
         return j;
     }
 };
+int tp[Order << 1]; Node *tq[Order << 1];
 struct BpTree{
     Node *Rot;
     #define IsLeaf(x) ((x)->Height == 0)
@@ -307,6 +314,65 @@ struct BpTree{
         for(int t = i->M; t > k; t--) i->Child[t + 1] = i->Child[t], i->Key[t] = i->Key[t - 1];
         i->Child[k + 1] = j, i->Key[k] = i->Child[k]->Key[i->Child[k]->M], i->M++;
     }
+    int GetChild(Node *F, Node *i){
+        for(int k = 0; k <= F->M; k++) if(F->Child[k] == i) return k;
+        return -1;
+    }
+    void Delete(Node *i, Node *F, int x){
+        int k;
+        if(IsLeaf(i)){
+            for(k = 0; k < i->M; k++) if(i->Key[k] >= x) break;
+            if(i->Key[k] != x) return;
+            i->M--;
+            for(; k < i->M; k++) i->Key[k] = i->Key[k + 1];
+            return;
+        }
+        for(k = 0; k < i->M ; k++) if(i->Key[k] > x) break;
+        Node *s = i->Child[k], *t = k == i->M ? i->Child[k - 1] : i->Child[k + 1];
+        Delete(s, i, x);
+        if(s->M + 1 - IsLeaf(s) >= (Order + 1 >> 1)) return;
+        
+        if(k == i->M) swap(s,t), k--;// s --> t
+        if(IsLeaf(s)){ // cope with leaf node
+            if(s->M + t->M > Order){// Borrow from sibling
+                int cnt = (s->M + t->M >> 1), M = 0;
+                for(int j = 0; j < s->M; j++) tp[++M] = s->Key[j];
+                for(int j = 0; j < t->M; j++) tp[++M] = t->Key[j];//merge together
+
+                s->M = t->M = 0;
+                for(int j = 1;j <= cnt; j++) s->Key[s->M++] = tp[j];//average
+                for(int j = cnt + 1; j <= M; j++) t->Key[t->M++] = tp[j];
+                i->Key[k] = t->Key[0];
+            }else{ // merge leaf
+                for(int j = 0; j < t->M; j++) s->Key[s->M++] = t->Key[j];
+                i->M--;
+                for(int j = k; j < i->M; j++) i->Key[j] = i->Key[j + 1], i->Child[j + 1] = i->Child[j + 2];
+                s->Rs = t->Rs;
+                if(t->Rs != NULL) t->Rs->Ls = s;
+            }
+        }else{
+            if(s->M + 1 + t->M + 1 > Order){// Borrow from sibling(average with sibling)
+                int cnt = (s->M + t->M >> 1), M = 0;
+                for(int j = 0; j < s->M; j++) tp[++M] = s->Key[j], tq[M] = s->Child[j];
+                tp[++M] = i->Key[k], tq[M] = s->Child[s->M];
+                for(int j = 0; j < t->M; j++) tp[++M] = t->Key[j], tq[M] = t->Child[j];
+                tq[M + 1] = t->Child[t->M];//merge together
+                
+                s->M = t->M = 0;
+                for(int j = 1; j <= cnt; j++) s->Key[s->M] = tp[j], s->Child[s->M++] = tq[j];
+                s->Child[s->M] = tq[cnt + 1];
+                for(int j = cnt + 2; j <= M; j++) t->Key[t->M] = tp[j], t->Child[t->M++] = tq[j];
+                t->Child[t->M] = tq[M + 1];//average
+                i->Key[k] = tp[cnt + 1];
+            }else{
+                s->Key[s->M] = i->Key[k];
+                for(int j = 0; j < t->M; j++) s->Key[++s->M] = t->Key[j], s->Child[s->M] = t->Child[j];
+                s->Child[++s->M] = t->Child[t->M];
+                i->M--;
+                for(int j = k; j < i->M; j++) i->Key[j] = i->Key[j + 1], i->Child[j + 1] = i->Child[j + 2];
+            }
+        }
+    }
 
     // interface for user
     void Clear(){Rot = new Node();}
@@ -321,9 +387,13 @@ struct BpTree{
         }
     }
 
-    // TODO: Implement Delete
-
+    void Delete(int x){
+        if(Rot == NULL) return(void)(puts("Empty"));
+        Delete(Rot, NULL, x);
+        if(!Rot->M) Rot = Rot->Child[0];
+    }
     void Print(){// BFS
+        if(Rot == NULL) return (void)(puts("Empty"));
         queue<Node*> Q;
         Q.push(Rot);
         int lst = Rot->Height;
@@ -335,6 +405,7 @@ struct BpTree{
             printf("%d]", x->Key[x->M - 1]);
             for(int i = 0; i <= x->M; i++) if(x->Child[i] != NULL) Q.push(x->Child[i]);
         }
+        puts("");
     }
 }B;
 ```
@@ -461,6 +532,8 @@ struct BpTree{
 
                 ![Delete4](delete4.png)   
 
+    - *上面提到的都是自底向上调整的方法，还有一种自顶向下的办法，即在用循环插入/寻找关键字的同时对树的形态进行维护和调整，使得插入/删除后树的形态直接满足要求，这种方法会跑得更快一点*
+
 - Code 
 
 *面向Luogu P3369平衡树模板题写的，跑得嘎嘎快，这就是RBTree! 但是花了我一下午debug！！！*
@@ -468,8 +541,6 @@ struct BpTree{
 **主要注意空节点的一些处理（提前将对应指针记下来防止后面被更改），以及及时更新根节点的指针**
 
 ```cpp title="Red Black Tree" linenums="1"
-#include<bits/stdc++.h>
-using namespace std;
 const int INF = 1e9;
 enum Color {RED, BLACK};
 struct Node{
