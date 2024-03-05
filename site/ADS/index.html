@@ -402,7 +402,7 @@
           <li class="md-nav__item">
   <a href="#rb-tree" class="md-nav__link">
     <span class="md-ellipsis">
-      RB-Tree
+      RB Tree
     </span>
   </a>
   
@@ -647,7 +647,7 @@
           <li class="md-nav__item">
   <a href="#rb-tree" class="md-nav__link">
     <span class="md-ellipsis">
-      RB-Tree
+      RB Tree
     </span>
   </a>
   
@@ -1304,7 +1304,7 @@
 <a id="__codelineno-2-81" name="__codelineno-2-81"></a><span class="p">}</span><span class="n">B</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div>
 <hr />
-<h3 id="rb-tree">RB-Tree</h3>
+<h3 id="rb-tree">RB Tree</h3>
 <p><em>第二节课就讲手撕红黑树 &amp; B+树，这就是ZJU的ADS, 恐怖如斯……</em></p>
 <blockquote>
 <p>一种自平衡二叉查找树，常用于C++ STL中的set和map，以及Linux内核中的进程调度等</p>
@@ -1454,7 +1454,7 @@
 <li>
 <p>Case 1</p>
 <ul>
-<li>兄弟节点为红色，则进行一次上述的不变旋转，将兄弟节点变为黑色，父节点变为红色（红节点上方，原来必黑），转化为下面要讨论的情形</li>
+<li>兄弟节点为红色，则进行一次上述的不变旋转，将兄弟节点变为黑色，父节点变为红色（红节点上方下方，原来必黑），转化为下面要讨论的情形</li>
 </ul>
 <p><img alt="Delete1" src="../delete1.png" /></p>
 </li>
@@ -1475,10 +1475,9 @@
 <li>
 <p>Case 4</p>
 <ul>
-<li>兄弟节点为黑色，且兄弟节点的异侧子节点为红色，此时将父节点旋转下来强制染黑来补偿子树黑高，兄弟节点旋转到上方并继承父节点的颜色，维护其余子树的黑高不变，直接Over（可以检查每颗子树所经过的路径，恰好完美符合，<strong>过于巧妙！</strong>）</li>
+<li>兄弟节点为黑色，且兄弟节点的异侧子节点为红色，此时将父节点旋转下来强制染黑来补偿子树黑高，兄弟节点旋转到上方并继承父节点的颜色，<strong>并将剩下的一个儿子也染黑</strong>，维护其余子树的黑高不变，直接Over（可以检查每颗子树所经过的路径，恰好完美符合，<strong>过于巧妙！</strong>）</li>
 </ul>
-<p><img alt="Delete4" src="../delete4.png" /> <br />
-- Code (None yet)</p>
+<p><img alt="Delete4" src="../delete4.png" />   </p>
 </li>
 </ul>
 </li>
@@ -1486,7 +1485,300 @@
 </li>
 </ul>
 </li>
+<li>
+<p>Code </p>
+</li>
 </ul>
+<p><em>面向Luogu P3369平衡树模板题写的，跑得嘎嘎快，这就是RBTree! 但是花了我一下午debug！！！</em></p>
+<p><strong>主要注意空节点的一些处理（提前将对应指针记下来防止后面被更改），以及及时更新根节点的指针</strong></p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Red Black Tree</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">  1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">  2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">  3</a></span>
+<span class="normal"><a href="#__codelineno-3-4">  4</a></span>
+<span class="normal"><a href="#__codelineno-3-5">  5</a></span>
+<span class="normal"><a href="#__codelineno-3-6">  6</a></span>
+<span class="normal"><a href="#__codelineno-3-7">  7</a></span>
+<span class="normal"><a href="#__codelineno-3-8">  8</a></span>
+<span class="normal"><a href="#__codelineno-3-9">  9</a></span>
+<span class="normal"><a href="#__codelineno-3-10"> 10</a></span>
+<span class="normal"><a href="#__codelineno-3-11"> 11</a></span>
+<span class="normal"><a href="#__codelineno-3-12"> 12</a></span>
+<span class="normal"><a href="#__codelineno-3-13"> 13</a></span>
+<span class="normal"><a href="#__codelineno-3-14"> 14</a></span>
+<span class="normal"><a href="#__codelineno-3-15"> 15</a></span>
+<span class="normal"><a href="#__codelineno-3-16"> 16</a></span>
+<span class="normal"><a href="#__codelineno-3-17"> 17</a></span>
+<span class="normal"><a href="#__codelineno-3-18"> 18</a></span>
+<span class="normal"><a href="#__codelineno-3-19"> 19</a></span>
+<span class="normal"><a href="#__codelineno-3-20"> 20</a></span>
+<span class="normal"><a href="#__codelineno-3-21"> 21</a></span>
+<span class="normal"><a href="#__codelineno-3-22"> 22</a></span>
+<span class="normal"><a href="#__codelineno-3-23"> 23</a></span>
+<span class="normal"><a href="#__codelineno-3-24"> 24</a></span>
+<span class="normal"><a href="#__codelineno-3-25"> 25</a></span>
+<span class="normal"><a href="#__codelineno-3-26"> 26</a></span>
+<span class="normal"><a href="#__codelineno-3-27"> 27</a></span>
+<span class="normal"><a href="#__codelineno-3-28"> 28</a></span>
+<span class="normal"><a href="#__codelineno-3-29"> 29</a></span>
+<span class="normal"><a href="#__codelineno-3-30"> 30</a></span>
+<span class="normal"><a href="#__codelineno-3-31"> 31</a></span>
+<span class="normal"><a href="#__codelineno-3-32"> 32</a></span>
+<span class="normal"><a href="#__codelineno-3-33"> 33</a></span>
+<span class="normal"><a href="#__codelineno-3-34"> 34</a></span>
+<span class="normal"><a href="#__codelineno-3-35"> 35</a></span>
+<span class="normal"><a href="#__codelineno-3-36"> 36</a></span>
+<span class="normal"><a href="#__codelineno-3-37"> 37</a></span>
+<span class="normal"><a href="#__codelineno-3-38"> 38</a></span>
+<span class="normal"><a href="#__codelineno-3-39"> 39</a></span>
+<span class="normal"><a href="#__codelineno-3-40"> 40</a></span>
+<span class="normal"><a href="#__codelineno-3-41"> 41</a></span>
+<span class="normal"><a href="#__codelineno-3-42"> 42</a></span>
+<span class="normal"><a href="#__codelineno-3-43"> 43</a></span>
+<span class="normal"><a href="#__codelineno-3-44"> 44</a></span>
+<span class="normal"><a href="#__codelineno-3-45"> 45</a></span>
+<span class="normal"><a href="#__codelineno-3-46"> 46</a></span>
+<span class="normal"><a href="#__codelineno-3-47"> 47</a></span>
+<span class="normal"><a href="#__codelineno-3-48"> 48</a></span>
+<span class="normal"><a href="#__codelineno-3-49"> 49</a></span>
+<span class="normal"><a href="#__codelineno-3-50"> 50</a></span>
+<span class="normal"><a href="#__codelineno-3-51"> 51</a></span>
+<span class="normal"><a href="#__codelineno-3-52"> 52</a></span>
+<span class="normal"><a href="#__codelineno-3-53"> 53</a></span>
+<span class="normal"><a href="#__codelineno-3-54"> 54</a></span>
+<span class="normal"><a href="#__codelineno-3-55"> 55</a></span>
+<span class="normal"><a href="#__codelineno-3-56"> 56</a></span>
+<span class="normal"><a href="#__codelineno-3-57"> 57</a></span>
+<span class="normal"><a href="#__codelineno-3-58"> 58</a></span>
+<span class="normal"><a href="#__codelineno-3-59"> 59</a></span>
+<span class="normal"><a href="#__codelineno-3-60"> 60</a></span>
+<span class="normal"><a href="#__codelineno-3-61"> 61</a></span>
+<span class="normal"><a href="#__codelineno-3-62"> 62</a></span>
+<span class="normal"><a href="#__codelineno-3-63"> 63</a></span>
+<span class="normal"><a href="#__codelineno-3-64"> 64</a></span>
+<span class="normal"><a href="#__codelineno-3-65"> 65</a></span>
+<span class="normal"><a href="#__codelineno-3-66"> 66</a></span>
+<span class="normal"><a href="#__codelineno-3-67"> 67</a></span>
+<span class="normal"><a href="#__codelineno-3-68"> 68</a></span>
+<span class="normal"><a href="#__codelineno-3-69"> 69</a></span>
+<span class="normal"><a href="#__codelineno-3-70"> 70</a></span>
+<span class="normal"><a href="#__codelineno-3-71"> 71</a></span>
+<span class="normal"><a href="#__codelineno-3-72"> 72</a></span>
+<span class="normal"><a href="#__codelineno-3-73"> 73</a></span>
+<span class="normal"><a href="#__codelineno-3-74"> 74</a></span>
+<span class="normal"><a href="#__codelineno-3-75"> 75</a></span>
+<span class="normal"><a href="#__codelineno-3-76"> 76</a></span>
+<span class="normal"><a href="#__codelineno-3-77"> 77</a></span>
+<span class="normal"><a href="#__codelineno-3-78"> 78</a></span>
+<span class="normal"><a href="#__codelineno-3-79"> 79</a></span>
+<span class="normal"><a href="#__codelineno-3-80"> 80</a></span>
+<span class="normal"><a href="#__codelineno-3-81"> 81</a></span>
+<span class="normal"><a href="#__codelineno-3-82"> 82</a></span>
+<span class="normal"><a href="#__codelineno-3-83"> 83</a></span>
+<span class="normal"><a href="#__codelineno-3-84"> 84</a></span>
+<span class="normal"><a href="#__codelineno-3-85"> 85</a></span>
+<span class="normal"><a href="#__codelineno-3-86"> 86</a></span>
+<span class="normal"><a href="#__codelineno-3-87"> 87</a></span>
+<span class="normal"><a href="#__codelineno-3-88"> 88</a></span>
+<span class="normal"><a href="#__codelineno-3-89"> 89</a></span>
+<span class="normal"><a href="#__codelineno-3-90"> 90</a></span>
+<span class="normal"><a href="#__codelineno-3-91"> 91</a></span>
+<span class="normal"><a href="#__codelineno-3-92"> 92</a></span>
+<span class="normal"><a href="#__codelineno-3-93"> 93</a></span>
+<span class="normal"><a href="#__codelineno-3-94"> 94</a></span>
+<span class="normal"><a href="#__codelineno-3-95"> 95</a></span>
+<span class="normal"><a href="#__codelineno-3-96"> 96</a></span>
+<span class="normal"><a href="#__codelineno-3-97"> 97</a></span>
+<span class="normal"><a href="#__codelineno-3-98"> 98</a></span>
+<span class="normal"><a href="#__codelineno-3-99"> 99</a></span>
+<span class="normal"><a href="#__codelineno-3-100">100</a></span>
+<span class="normal"><a href="#__codelineno-3-101">101</a></span>
+<span class="normal"><a href="#__codelineno-3-102">102</a></span>
+<span class="normal"><a href="#__codelineno-3-103">103</a></span>
+<span class="normal"><a href="#__codelineno-3-104">104</a></span>
+<span class="normal"><a href="#__codelineno-3-105">105</a></span>
+<span class="normal"><a href="#__codelineno-3-106">106</a></span>
+<span class="normal"><a href="#__codelineno-3-107">107</a></span>
+<span class="normal"><a href="#__codelineno-3-108">108</a></span>
+<span class="normal"><a href="#__codelineno-3-109">109</a></span>
+<span class="normal"><a href="#__codelineno-3-110">110</a></span>
+<span class="normal"><a href="#__codelineno-3-111">111</a></span>
+<span class="normal"><a href="#__codelineno-3-112">112</a></span>
+<span class="normal"><a href="#__codelineno-3-113">113</a></span>
+<span class="normal"><a href="#__codelineno-3-114">114</a></span>
+<span class="normal"><a href="#__codelineno-3-115">115</a></span>
+<span class="normal"><a href="#__codelineno-3-116">116</a></span>
+<span class="normal"><a href="#__codelineno-3-117">117</a></span>
+<span class="normal"><a href="#__codelineno-3-118">118</a></span>
+<span class="normal"><a href="#__codelineno-3-119">119</a></span>
+<span class="normal"><a href="#__codelineno-3-120">120</a></span>
+<span class="normal"><a href="#__codelineno-3-121">121</a></span>
+<span class="normal"><a href="#__codelineno-3-122">122</a></span>
+<span class="normal"><a href="#__codelineno-3-123">123</a></span>
+<span class="normal"><a href="#__codelineno-3-124">124</a></span>
+<span class="normal"><a href="#__codelineno-3-125">125</a></span>
+<span class="normal"><a href="#__codelineno-3-126">126</a></span>
+<span class="normal"><a href="#__codelineno-3-127">127</a></span>
+<span class="normal"><a href="#__codelineno-3-128">128</a></span>
+<span class="normal"><a href="#__codelineno-3-129">129</a></span>
+<span class="normal"><a href="#__codelineno-3-130">130</a></span>
+<span class="normal"><a href="#__codelineno-3-131">131</a></span>
+<span class="normal"><a href="#__codelineno-3-132">132</a></span>
+<span class="normal"><a href="#__codelineno-3-133">133</a></span>
+<span class="normal"><a href="#__codelineno-3-134">134</a></span>
+<span class="normal"><a href="#__codelineno-3-135">135</a></span>
+<span class="normal"><a href="#__codelineno-3-136">136</a></span>
+<span class="normal"><a href="#__codelineno-3-137">137</a></span>
+<span class="normal"><a href="#__codelineno-3-138">138</a></span>
+<span class="normal"><a href="#__codelineno-3-139">139</a></span>
+<span class="normal"><a href="#__codelineno-3-140">140</a></span>
+<span class="normal"><a href="#__codelineno-3-141">141</a></span>
+<span class="normal"><a href="#__codelineno-3-142">142</a></span>
+<span class="normal"><a href="#__codelineno-3-143">143</a></span>
+<span class="normal"><a href="#__codelineno-3-144">144</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="cp">#include</span><span class="cpf">&lt;bits/stdc++.h&gt;</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">INF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e9</span><span class="p">;</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="k">enum</span><span class="w"> </span><span class="nc">Color</span><span class="w"> </span><span class="p">{</span><span class="n">RED</span><span class="p">,</span><span class="w"> </span><span class="n">BLACK</span><span class="p">};</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="k">struct</span><span class="w"> </span><span class="nc">Node</span><span class="p">{</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="c1">// size denotes the number of nodes in subtree x</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="w">    </span><span class="n">Color</span><span class="w"> </span><span class="n">color</span><span class="p">;</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="w">    </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="o">*</span><span class="n">F</span><span class="p">;</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="w">    </span><span class="n">Node</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">Color</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLACK</span><span class="p">,</span><span class="w"> </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">fa</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">NIL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">){</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="w">        </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">F</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fa</span><span class="p">;</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="w">        </span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NIL</span><span class="p">;</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">Update</span><span class="p">(){</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;}</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="p">};</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="k">typedef</span><span class="w"> </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">Pt</span><span class="p">;</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="n">Pt</span><span class="w"> </span><span class="n">NIL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Node</span><span class="p">(</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="n">BLACK</span><span class="p">,</span><span class="w"> </span><span class="n">NIL</span><span class="p">,</span><span class="w"> </span><span class="n">NIL</span><span class="p">);</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="k">struct</span><span class="w"> </span><span class="nc">RBTree</span><span class="p">{</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18"></a><span class="w">    </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">Rot</span><span class="p">;</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19"></a><span class="w">    </span><span class="cp">#define Is(i) ((i)-&gt;F-&gt;v[1] == (i))</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Rotate</span><span class="p">(</span><span class="n">Pt</span><span class="w"> </span><span class="n">i</span><span class="p">){</span><span class="w"> </span><span class="c1">// Rotate i to i-&gt;F</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21"></a><span class="w">        </span><span class="n">Pt</span><span class="w"> </span><span class="n">F</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">F</span><span class="p">;</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Is</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="n">q</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Is</span><span class="p">(</span><span class="n">F</span><span class="p">);</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22"></a><span class="w">        </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">F</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F</span><span class="p">;</span><span class="c1">// first cope with external nodes</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23"></a><span class="w">        </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">F</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">F</span><span class="p">,</span><span class="w"> </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">F</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">q</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w">               </span><span class="c1">// then i and F</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24"></a><span class="w">        </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">F</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F</span><span class="p">;</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25"></a><span class="w">        </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">Update</span><span class="p">(),</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">Update</span><span class="p">();</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">F</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Rot</span><span class="p">)</span><span class="w"> </span><span class="n">Rot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<a id="__codelineno-3-27" name="__codelineno-3-27"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-28" name="__codelineno-3-28"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">FixUp_Insert</span><span class="p">(</span><span class="n">Pt</span><span class="w"> </span><span class="n">i</span><span class="p">){</span>
+<a id="__codelineno-3-29" name="__codelineno-3-29"></a><span class="w">        </span><span class="k">while</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">F</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">RED</span><span class="p">){</span>
+<a id="__codelineno-3-30" name="__codelineno-3-30"></a><span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Is</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="n">q</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Is</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">F</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-3-31" name="__codelineno-3-31"></a><span class="w">            </span><span class="n">Pt</span><span class="w"> </span><span class="n">F</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">F</span><span class="p">,</span><span class="w"> </span><span class="n">U</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">F</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">q</span><span class="p">];</span>
+<a id="__codelineno-3-32" name="__codelineno-3-32"></a>
+<a id="__codelineno-3-33" name="__codelineno-3-33"></a><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">U</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">RED</span><span class="p">){</span><span class="w"> </span><span class="c1">// case 1: uncle is red, black down</span>
+<a id="__codelineno-3-34" name="__codelineno-3-34"></a><span class="w">                </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">U</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLACK</span><span class="p">;</span>
+<a id="__codelineno-3-35" name="__codelineno-3-35"></a><span class="w">                </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">F</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RED</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">F</span><span class="p">;</span>
+<a id="__codelineno-3-36" name="__codelineno-3-36"></a><span class="w">                </span><span class="k">continue</span><span class="p">;</span>
+<a id="__codelineno-3-37" name="__codelineno-3-37"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-3-38" name="__codelineno-3-38"></a>
+<a id="__codelineno-3-39" name="__codelineno-3-39"></a><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">q</span><span class="p">){</span><span class="w"> </span><span class="c1">// case 2: uncle is black but same side, rotate to case 3</span>
+<a id="__codelineno-3-40" name="__codelineno-3-40"></a><span class="w">                </span><span class="n">Rotate</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<a id="__codelineno-3-41" name="__codelineno-3-41"></a><span class="w">                </span><span class="n">swap</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">F</span><span class="p">),</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">^=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-3-42" name="__codelineno-3-42"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-3-43" name="__codelineno-3-43"></a>
+<a id="__codelineno-3-44" name="__codelineno-3-44"></a><span class="w">            </span><span class="c1">// case 3: uncle is black and different side, rotate and recolor</span>
+<a id="__codelineno-3-45" name="__codelineno-3-45"></a><span class="w">            </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLACK</span><span class="p">,</span><span class="w"> </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">F</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RED</span><span class="p">;</span>
+<a id="__codelineno-3-46" name="__codelineno-3-46"></a><span class="w">            </span><span class="n">Rotate</span><span class="p">(</span><span class="n">F</span><span class="p">);</span>
+<a id="__codelineno-3-47" name="__codelineno-3-47"></a><span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<a id="__codelineno-3-48" name="__codelineno-3-48"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-3-49" name="__codelineno-3-49"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-50" name="__codelineno-3-50"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Insert</span><span class="p">(</span><span class="n">Pt</span><span class="w"> </span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">Pt</span><span class="w"> </span><span class="n">fa</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">){</span>
+<a id="__codelineno-3-51" name="__codelineno-3-51"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NIL</span><span class="p">){</span>
+<a id="__codelineno-3-52" name="__codelineno-3-52"></a><span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Node</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">RED</span><span class="p">,</span><span class="w"> </span><span class="n">fa</span><span class="p">,</span><span class="w"> </span><span class="n">NIL</span><span class="p">),</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-3-53" name="__codelineno-3-53"></a><span class="w">            </span><span class="n">FixUp_Insert</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<a id="__codelineno-3-54" name="__codelineno-3-54"></a><span class="w">            </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-3-55" name="__codelineno-3-55"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-3-56" name="__codelineno-3-56"></a><span class="w">        </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">size</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">Insert</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">],</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);</span>
+<a id="__codelineno-3-57" name="__codelineno-3-57"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-58" name="__codelineno-3-58"></a><span class="w">    </span><span class="n">Pt</span><span class="w"> </span><span class="nf">Find</span><span class="p">(</span><span class="n">Pt</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">){</span>
+<a id="__codelineno-3-59" name="__codelineno-3-59"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NIL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">NIL</span><span class="p">;</span>
+<a id="__codelineno-3-60" name="__codelineno-3-60"></a><span class="w">        </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">size</span><span class="o">--</span><span class="p">;</span>
+<a id="__codelineno-3-61" name="__codelineno-3-61"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">data</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<a id="__codelineno-3-62" name="__codelineno-3-62"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Find</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">],</span><span class="w"> </span><span class="n">x</span><span class="p">);</span>
+<a id="__codelineno-3-63" name="__codelineno-3-63"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-64" name="__codelineno-3-64"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">FixUp_Delete</span><span class="p">(</span><span class="n">Pt</span><span class="w"> </span><span class="n">i</span><span class="p">){</span>
+<a id="__codelineno-3-65" name="__codelineno-3-65"></a><span class="w">        </span><span class="c1">// Print();</span>
+<a id="__codelineno-3-66" name="__codelineno-3-66"></a><span class="w">        </span><span class="k">while</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Rot</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">BLACK</span><span class="p">){</span>
+<a id="__codelineno-3-67" name="__codelineno-3-67"></a><span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Is</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<a id="__codelineno-3-68" name="__codelineno-3-68"></a><span class="w">            </span><span class="n">Pt</span><span class="w"> </span><span class="n">F</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">F</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
+<a id="__codelineno-3-69" name="__codelineno-3-69"></a><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">S</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">RED</span><span class="p">){</span><span class="w"> </span><span class="c1">// case 1: sibling is red</span>
+<a id="__codelineno-3-70" name="__codelineno-3-70"></a><span class="w">                </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLACK</span><span class="p">,</span><span class="w"> </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RED</span><span class="p">;</span>
+<a id="__codelineno-3-71" name="__codelineno-3-71"></a><span class="w">                </span><span class="n">Rotate</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>
+<a id="__codelineno-3-72" name="__codelineno-3-72"></a><span class="w">                </span><span class="n">S</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
+<a id="__codelineno-3-73" name="__codelineno-3-73"></a><span class="w">                </span><span class="c1">// if(S == NIL) assert(i != NIL);</span>
+<a id="__codelineno-3-74" name="__codelineno-3-74"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-3-75" name="__codelineno-3-75"></a>
+<a id="__codelineno-3-76" name="__codelineno-3-76"></a><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">S</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">BLACK</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">BLACK</span><span class="p">){</span><span class="w"> </span><span class="c1">// case 2: sibling is black and both children are black</span>
+<a id="__codelineno-3-77" name="__codelineno-3-77"></a><span class="w">                </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RED</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F</span><span class="p">;</span>
+<a id="__codelineno-3-78" name="__codelineno-3-78"></a><span class="w">                </span><span class="k">continue</span><span class="p">;</span>
+<a id="__codelineno-3-79" name="__codelineno-3-79"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-3-80" name="__codelineno-3-80"></a>
+<a id="__codelineno-3-81" name="__codelineno-3-81"></a><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">S</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">BLACK</span><span class="p">){</span><span class="w"> </span><span class="c1">// case 3: sibling is black and the child in the opposite side is black</span>
+<a id="__codelineno-3-82" name="__codelineno-3-82"></a><span class="w">                </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLACK</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RED</span><span class="p">;</span>
+<a id="__codelineno-3-83" name="__codelineno-3-83"></a><span class="w">                </span><span class="n">Rotate</span><span class="p">(</span><span class="n">S</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">p</span><span class="p">]);</span><span class="c1">// rotate to case 4</span>
+<a id="__codelineno-3-84" name="__codelineno-3-84"></a><span class="w">                </span><span class="n">S</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
+<a id="__codelineno-3-85" name="__codelineno-3-85"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-3-86" name="__codelineno-3-86"></a>
+<a id="__codelineno-3-87" name="__codelineno-3-87"></a><span class="w">            </span><span class="c1">// case 4: sibling is black and the child in the opposite side is red</span>
+<a id="__codelineno-3-88" name="__codelineno-3-88"></a><span class="w">            </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">color</span><span class="p">,</span><span class="w"> </span><span class="n">F</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLACK</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLACK</span><span class="p">;</span>
+<a id="__codelineno-3-89" name="__codelineno-3-89"></a><span class="w">            </span><span class="n">Rotate</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>
+<a id="__codelineno-3-90" name="__codelineno-3-90"></a><span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Rot</span><span class="p">;</span>
+<a id="__codelineno-3-91" name="__codelineno-3-91"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-3-92" name="__codelineno-3-92"></a><span class="w">        </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLACK</span><span class="p">;</span>
+<a id="__codelineno-3-93" name="__codelineno-3-93"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-94" name="__codelineno-3-94"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="nf">Rank</span><span class="p">(</span><span class="n">Pt</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">){</span>
+<a id="__codelineno-3-95" name="__codelineno-3-95"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NIL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-3-96" name="__codelineno-3-96"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">data</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Rank</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">x</span><span class="p">);</span>
+<a id="__codelineno-3-97" name="__codelineno-3-97"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Rank</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">x</span><span class="p">);</span>
+<a id="__codelineno-3-98" name="__codelineno-3-98"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-99" name="__codelineno-3-99"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="nf">Kth</span><span class="p">(</span><span class="n">Pt</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">){</span>
+<a id="__codelineno-3-100" name="__codelineno-3-100"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+<a id="__codelineno-3-101" name="__codelineno-3-101"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">Kth</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<a id="__codelineno-3-102" name="__codelineno-3-102"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Kth</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">k</span><span class="p">);</span>
+<a id="__codelineno-3-103" name="__codelineno-3-103"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-104" name="__codelineno-3-104"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="nf">Pre</span><span class="p">(</span><span class="n">Pt</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">){</span>
+<a id="__codelineno-3-105" name="__codelineno-3-105"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NIL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="o">-</span><span class="n">INF</span><span class="p">;</span>
+<a id="__codelineno-3-106" name="__codelineno-3-106"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">data</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">max</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">Pre</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">x</span><span class="p">));</span>
+<a id="__codelineno-3-107" name="__codelineno-3-107"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Pre</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">x</span><span class="p">);</span>
+<a id="__codelineno-3-108" name="__codelineno-3-108"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-109" name="__codelineno-3-109"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="nf">Next</span><span class="p">(</span><span class="n">Pt</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">){</span>
+<a id="__codelineno-3-110" name="__codelineno-3-110"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NIL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">INF</span><span class="p">;</span>
+<a id="__codelineno-3-111" name="__codelineno-3-111"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">data</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">Next</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">x</span><span class="p">));</span>
+<a id="__codelineno-3-112" name="__codelineno-3-112"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Next</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">x</span><span class="p">);</span>
+<a id="__codelineno-3-113" name="__codelineno-3-113"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-114" name="__codelineno-3-114"></a>
+<a id="__codelineno-3-115" name="__codelineno-3-115"></a><span class="w">    </span><span class="c1">// interface for user</span>
+<a id="__codelineno-3-116" name="__codelineno-3-116"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Clear</span><span class="p">(){</span><span class="n">Rot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NIL</span><span class="p">;}</span>
+<a id="__codelineno-3-117" name="__codelineno-3-117"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Insert</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">){</span>
+<a id="__codelineno-3-118" name="__codelineno-3-118"></a><span class="w">        </span><span class="n">Insert</span><span class="p">(</span><span class="n">Rot</span><span class="p">,</span><span class="w"> </span><span class="n">NIL</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);</span>
+<a id="__codelineno-3-119" name="__codelineno-3-119"></a><span class="w">        </span><span class="n">Rot</span><span class="o">-&gt;</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLACK</span><span class="p">;</span>
+<a id="__codelineno-3-120" name="__codelineno-3-120"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-121" name="__codelineno-3-121"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Delete</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">){</span>
+<a id="__codelineno-3-122" name="__codelineno-3-122"></a><span class="w">        </span><span class="n">Pt</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Find</span><span class="p">(</span><span class="n">Rot</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);</span>
+<a id="__codelineno-3-123" name="__codelineno-3-123"></a><span class="w">        </span><span class="n">Color</span><span class="w"> </span><span class="n">dc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">color</span><span class="p">;</span><span class="c1">// deleted color</span>
+<a id="__codelineno-3-124" name="__codelineno-3-124"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NIL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-3-125" name="__codelineno-3-125"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NIL</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NIL</span><span class="p">){</span><span class="w"> </span><span class="c1">// i has at most one child</span>
+<a id="__codelineno-3-126" name="__codelineno-3-126"></a><span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">NIL</span><span class="p">);</span>
+<a id="__codelineno-3-127" name="__codelineno-3-127"></a><span class="w">            </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">F</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">F</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">F</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">Is</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">p</span><span class="p">];</span>
+<a id="__codelineno-3-128" name="__codelineno-3-128"></a><span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">p</span><span class="p">];</span>
+<a id="__codelineno-3-129" name="__codelineno-3-129"></a><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">F</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NIL</span><span class="p">)</span><span class="w"> </span><span class="n">Rot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<a id="__codelineno-3-130" name="__codelineno-3-130"></a><span class="w">        </span><span class="p">}</span><span class="k">else</span><span class="p">{</span>
+<a id="__codelineno-3-131" name="__codelineno-3-131"></a><span class="w">            </span><span class="n">Pt</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="n">j</span><span class="o">-&gt;</span><span class="n">size</span><span class="o">--</span><span class="p">;</span>
+<a id="__codelineno-3-132" name="__codelineno-3-132"></a><span class="w">            </span><span class="k">while</span><span class="p">(</span><span class="n">j</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">NIL</span><span class="p">)</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">j</span><span class="o">-&gt;</span><span class="n">size</span><span class="o">--</span><span class="p">;</span><span class="c1">// maximum in left subtree</span>
+<a id="__codelineno-3-133" name="__codelineno-3-133"></a>
+<a id="__codelineno-3-134" name="__codelineno-3-134"></a><span class="w">            </span><span class="n">dc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="o">-&gt;</span><span class="n">color</span><span class="p">;</span>
+<a id="__codelineno-3-135" name="__codelineno-3-135"></a><span class="w">            </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span><span class="c1">// replace i with j</span>
+<a id="__codelineno-3-136" name="__codelineno-3-136"></a><span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">F</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="o">-&gt;</span><span class="n">F</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="o">-&gt;</span><span class="n">F</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">[</span><span class="n">Is</span><span class="p">(</span><span class="n">j</span><span class="p">)]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="c1">// delete j</span>
+<a id="__codelineno-3-137" name="__codelineno-3-137"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-3-138" name="__codelineno-3-138"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">dc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">BLACK</span><span class="p">)</span><span class="w"> </span><span class="n">FixUp_Delete</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<a id="__codelineno-3-139" name="__codelineno-3-139"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-140" name="__codelineno-3-140"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="nf">Rank</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">){</span><span class="k">return</span><span class="w"> </span><span class="n">Rank</span><span class="p">(</span><span class="n">Rot</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);}</span>
+<a id="__codelineno-3-141" name="__codelineno-3-141"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="nf">Kth</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">){</span><span class="k">return</span><span class="w"> </span><span class="n">Kth</span><span class="p">(</span><span class="n">Rot</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">);}</span>
+<a id="__codelineno-3-142" name="__codelineno-3-142"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="nf">Pre</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">){</span><span class="k">return</span><span class="w"> </span><span class="n">Pre</span><span class="p">(</span><span class="n">Rot</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);}</span>
+<a id="__codelineno-3-143" name="__codelineno-3-143"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="nf">Next</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">){</span><span class="k">return</span><span class="w"> </span><span class="n">Next</span><span class="p">(</span><span class="n">Rot</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);}</span>
+<a id="__codelineno-3-144" name="__codelineno-3-144"></a><span class="p">}</span><span class="n">Tree</span><span class="p">;</span>
+</code></pre></div></td></tr></table></div>
 <hr />
 <h2 id="algorithm">Algorithm</h2>
 <hr />

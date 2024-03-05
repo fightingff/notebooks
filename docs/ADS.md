@@ -341,7 +341,7 @@ struct BpTree{
 
 ----
 
-### RB-Tree
+### RB Tree
 
 *第二节课就讲手撕红黑树 & B+树，这就是ZJU的ADS, 恐怖如斯……*
 
@@ -439,7 +439,7 @@ struct BpTree{
         
             - Case 1
                 
-                - 兄弟节点为红色，则进行一次上述的不变旋转，将兄弟节点变为黑色，父节点变为红色（红节点上方，原来必黑），转化为下面要讨论的情形
+                - 兄弟节点为红色，则进行一次上述的不变旋转，将兄弟节点变为黑色，父节点变为红色（红节点上方下方，原来必黑），转化为下面要讨论的情形
 
                 ![Delete1](delete1.png)
 
@@ -457,10 +457,163 @@ struct BpTree{
                 
             - Case 4
             
-                - 兄弟节点为黑色，且兄弟节点的异侧子节点为红色，此时将父节点旋转下来强制染黑来补偿子树黑高，兄弟节点旋转到上方并继承父节点的颜色，维护其余子树的黑高不变，直接Over（可以检查每颗子树所经过的路径，恰好完美符合，**过于巧妙！**）
+                - 兄弟节点为黑色，且兄弟节点的异侧子节点为红色，此时将父节点旋转下来强制染黑来补偿子树黑高，兄弟节点旋转到上方并继承父节点的颜色，**并将剩下的一个儿子也染黑**，维护其余子树的黑高不变，直接Over（可以检查每颗子树所经过的路径，恰好完美符合，**过于巧妙！**）
 
                 ![Delete4](delete4.png)   
-- Code (None yet)
+
+- Code 
+
+*面向Luogu P3369平衡树模板题写的，跑得嘎嘎快，这就是RBTree! 但是花了我一下午debug！！！*
+
+**主要注意空节点的一些处理（提前将对应指针记下来防止后面被更改），以及及时更新根节点的指针**
+
+```cpp title="Red Black Tree" linenums="1"
+#include<bits/stdc++.h>
+using namespace std;
+const int INF = 1e9;
+enum Color {RED, BLACK};
+struct Node{
+    int data, size; // size denotes the number of nodes in subtree x
+    Color color;
+    Node *v[2], *F;
+    Node(int x = 0, Color c = BLACK, Node *fa = NULL, Node *NIL = NULL){
+        data = x, size = 0, color = c, F = fa;
+        v[0] = v[1] = NIL;
+    }
+    void Update(){size = v[0]->size + v[1]->size + 1;}
+};
+typedef Node *Pt;
+Pt NIL = new Node(-1, BLACK, NIL, NIL);
+struct RBTree{
+    Node *Rot;
+    #define Is(i) ((i)->F->v[1] == (i))
+    void Rotate(Pt i){ // Rotate i to i->F
+        Pt F = i->F; bool p = Is(i), q = Is(F);
+        F->v[p] = i->v[p ^ 1], i->v[p ^ 1]->F = F;// first cope with external nodes
+        i->F = F->F, F->F->v[q] = i;               // then i and F
+        F->F = i, i->v[p ^ 1] = F;
+        F->Update(), i->Update();
+        if(F == Rot) Rot = i;
+    }
+    void FixUp_Insert(Pt i){
+        while(i->F->color == RED){
+            bool p = Is(i), q = Is(i->F) ^ 1;
+            Pt F = i->F, U = F->F->v[q];
+            
+            if(U->color == RED){ // case 1: uncle is red, black down
+                F->color = U->color = BLACK;
+                F->F->color = RED, i = F->F;
+                continue;
+            }
+
+            if(p == q){ // case 2: uncle is black but same side, rotate to case 3
+                Rotate(i);
+                swap(i, F), p ^= 1;
+            }
+
+            // case 3: uncle is black and different side, rotate and recolor
+            F->color = BLACK, F->F->color = RED;
+            Rotate(F);
+            break;
+        }
+    }
+    void Insert(Pt &i, Pt fa, int x){
+        if(i == NIL){
+            i = new Node(x, RED, fa, NIL), i->size = 1;
+            FixUp_Insert(i);
+            return;
+        }
+        i->size++, Insert(i->v[x > i->data], i, x);
+    }
+    Pt Find(Pt i, int x){
+        if(i == NIL) return NIL;
+        i->size--;
+        if(i->data == x) return i;
+        return Find(i->v[x > i->data], x);
+    }
+    void FixUp_Delete(Pt i){
+        // Print();
+        while(i != Rot && i->color == BLACK){
+            bool p = Is(i);
+            Pt F = i->F, S = F->v[p ^ 1];
+            if(S->color == RED){ // case 1: sibling is red
+                S->color = BLACK, F->color = RED;
+                Rotate(S);
+                S = F->v[p ^ 1];
+                // if(S == NIL) assert(i != NIL);
+            }
+            
+            if(S->v[0]->color == BLACK && S->v[1]->color == BLACK){ // case 2: sibling is black and both children are black
+                S->color = RED, i = F;
+                continue;
+            }
+
+            if(S->v[p ^ 1]->color == BLACK){ // case 3: sibling is black and the child in the opposite side is black
+                S->v[p]->color = BLACK, S->color = RED;
+                Rotate(S->v[p]);// rotate to case 4
+                S = F->v[p ^ 1];
+            }
+
+            // case 4: sibling is black and the child in the opposite side is red
+            S->color = F->color, F->color = BLACK, S->v[p ^ 1]->color = BLACK;
+            Rotate(S);
+            i = Rot;
+        }
+        i->color = BLACK;
+    }
+    int Rank(Pt i, int x){
+        if(i == NIL) return 0;
+        if(i->data < x) return i->v[0]->size + 1 + Rank(i->v[1], x);
+        return Rank(i->v[0], x);
+    }
+    int Kth(Pt i, int k){
+        if(i->v[0]->size + 1 == k) return i->data;
+        if(i->v[0]->size + 1 < k) return Kth(i->v[1], k - i->v[0]->size - 1);
+        return Kth(i->v[0], k);
+    }
+    int Pre(Pt i, int x){
+        if(i == NIL) return -INF;
+        if(i->data < x) return max(i->data, Pre(i->v[1], x));
+        return Pre(i->v[0], x);
+    }
+    int Next(Pt i, int x){
+        if(i == NIL) return INF;
+        if(i->data > x) return min(i->data, Next(i->v[0], x));
+        return Next(i->v[1], x);
+    }
+
+    // interface for user
+    void Clear(){Rot = NIL;}
+    void Insert(int x){
+        Insert(Rot, NIL, x);
+        Rot->color = BLACK;
+    }
+    void Delete(int x){
+        Pt i = Find(Rot, x);
+        Color dc = i->color;// deleted color
+        if(i == NIL) return;
+        if(i->v[0] == NIL || i->v[1] == NIL){ // i has at most one child
+            bool p = (i->v[1] != NIL);
+            i->v[p]->F = i->F, i->F->v[Is(i)] = i->v[p];
+            i = i->v[p];
+            if(i->F == NIL) Rot = i;
+        }else{
+            Pt j = i->v[0];j->size--;
+            while(j->v[1] != NIL) j = j->v[1], j->size--;// maximum in left subtree
+
+            dc = j->color;
+            i->data = j->data;// replace i with j
+            i = j->v[0], i->F = j->F, j->F->v[Is(j)] = i; // delete j
+        }
+        if(dc == BLACK) FixUp_Delete(i);
+    }
+    int Rank(int x){return Rank(Rot, x);}
+    int Kth(int k){return Kth(Rot, k);}
+    int Pre(int x){return Pre(Rot, x);}
+    int Next(int x){return Next(Rot, x);}
+}Tree;
+
+```
 
 ----
 
