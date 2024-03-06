@@ -99,6 +99,25 @@
 
 - 用用`$()`引用
 
+- 关于值的传入（从WK老师的补充资料里学到的）
+
+    - `make`命令后面可以直接跟上变量的赋值`NAME=VALUE`，这样可以在`Makefile`中使用这个变量`$(NAME)`
+
+    - `make`命令后面直接跟上变量的赋值`NAME=VALUE`，还可以当作C语言代码的宏定义，这样编译结果会不同
+    
+        C 语言可以通过`-D`，用宏定义选项传入对应的变量值 
+        
+        例如下面代码，可以使用`g++ -D ARGS=\"Hello World\" main.c -o main`来编译得到`main`可执行文件(反斜杠是为了转义双引号一起传入避免当成宏定义的赋值)，输出`Hello World`
+
+        ```cpp title="main.c" linenums="1"
+        #include<bits/stdc++.h>
+        using namespace std;
+        int main(){
+            cout << ARGS << endl;
+            return 0;
+        }
+        ```
+
 ### Sign
 
 - 特殊变量
