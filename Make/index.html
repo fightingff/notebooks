@@ -1055,7 +1055,31 @@
 </ul>
 <h3 id="_1">其他高阶用法</h3>
 <ul>
-<li>~~还没学~~</li>
+<li>
+<p>~~还没学~~</p>
+</li>
+<li>
+<p>关于.h文件依赖的问题</p>
+<ul>
+<li>
+<p>修改了<code>.h</code>文件，但是不修改<code>.cpp</code>文件，这时候makefile并不会重新编译对应的<code>.o</code>文件，因为它并不知道<code>.h</code>文件的修改。</p>
+</li>
+<li>
+<p>换句话说，Makefile 只知道<code>.o</code>依赖于对应的<code>.cpp</code>文件，但并不知道该<code>.cpp</code>文件具体依赖于哪些<code>.h</code>文件，因此需要手动指定依赖关系。</p>
+</li>
+<li>
+<p><strong>解决方案</strong></p>
+<ul>
+<li>
+<p>～～<em>手动补全关系</em>～～</p>
+</li>
+<li>
+<p>使用 gcc/g++ 的<code>-MMD</code>选项，可以自动生成依赖关系文件<code>*.d</code>, 然后在Makefile中使用<code>-include</code>引用这些文件，就可以自动更新依赖关系了。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <h3 id="exampleoop-lab1">Example(以OOP Lab1为例)</h3>
 <ul>
