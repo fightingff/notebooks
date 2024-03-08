@@ -575,6 +575,48 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#cmake" class="md-nav__link">
+    <span class="md-ellipsis">
+      CMake
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CMake">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      编译选项
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      多文件组织
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -694,6 +736,48 @@
   <a href="#exampleoop-lab1" class="md-nav__link">
     <span class="md-ellipsis">
       Example(以OOP Lab1为例)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmake" class="md-nav__link">
+    <span class="md-ellipsis">
+      CMake
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CMake">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      编译选项
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      多文件组织
     </span>
   </a>
   
@@ -1180,6 +1264,102 @@
 <a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>      <span class="n">cd</span> <span class="err">$</span><span class="p">(</span><span class="n">SRC</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">(</span><span class="n">OBJS</span><span class="p">)</span>
 <a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>      <span class="n">cd</span> <span class="err">$</span><span class="p">(</span><span class="n">OD</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">(</span><span class="n">TARGETS</span><span class="p">)</span>
 </code></pre></div>
+<hr />
+<h2 id="cmake">CMake</h2>
+<hr />
+<p>目前的感觉就像是一个帮助你生成Makefile的工具，通过CMakeLists.txt文件来指定项目的编译规则，然后通过<code>cmake PROJECT_DIR</code>来生成对应的Makefile等工程文件到当前目录，然后通过<code>make --build .</code>来完成编译链接生成。</p>
+<h3 id="basic">Basic</h3>
+<p>最基本的 CMakeLists.txt 文件架构如下：</p>
+<ul>
+<li>
+<p><code>cmake_minimum_required(VERSION 3.10)</code></p>
+<ul>
+<li>指定CMake的最低版本</li>
+</ul>
+</li>
+<li>
+<p><code>project(PROJECT_NAME VERSION 1.0)</code></p>
+<ul>
+<li>
+<p>指定项目的名称以及版本</p>
+</li>
+<li>
+<p>生成程序对版本的嵌入，可以通过<code>configure_file</code>命令来实现 </p>
+<ul>
+<li>
+<p><code>configure_file(config.h.in config.h)</code></p>
+<div class="highlight"><span class="filename">config.h.in</span><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="cp">#define PROJECT_NAME &quot;@PROJECT_NAME@&quot;</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="cp">#define PROJECT_VERSION &quot;@PROJECT_VERSION@&quot;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="cp">#define Tutorial_VERSION_MAJOR @Tutorial_VERSION_MAJOR@</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="cp">#define Tutorial_VERSION_MINOR @Tutorial_VERSION_MINOR@</span>
+</code></pre></div>
+</li>
+<li>
+<p>这样在编译时便会在当前build目录下<code>config.h</code>中生成对应的版本信息的如上宏定义</p>
+</li>
+<li>
+<p>我们可以通过<code>target_include_directories(PROJECT PUBLIC "${PROJECT_BINARY_DIR}")</code>引入该文件，并在源文件中通过<code>#include "config.h"</code>来引用这些宏定义，完成版本的嵌入  </p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>add_executable(EXECUTABLE_NAME SOURCE_FILES)</code> </p>
+<ul>
+<li>指定生成可执行文件的名称以及对应的源文件</li>
+</ul>
+</li>
+</ul>
+<h3 id="_2">编译选项</h3>
+<ul>
+<li>
+<p><code>set(CMAKE_CXX_STANDARD 11)</code></p>
+<ul>
+<li>
+<p>指定C++的标准版本</p>
+</li>
+<li>
+<p><code>set(CMAKE_CXX_STANDARD_REQUIRED ON)</code></p>
+<ul>
+<li>指定是否强制使用该标准版本 </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>set(CMAKE_CXX_FLAGS "-Wall -Wextra")</code></p>
+<ul>
+<li>指定编译选项 </li>
+</ul>
+</li>
+</ul>
+<h3 id="_3">多文件组织</h3>
+<ul>
+<li>
+<p>添加一个library（子目录）</p>
+<ul>
+<li>
+<p><code>add_library(LIBRARY_NAME STATIC/SHARED SOURCE_FILES)</code></p>
+<ul>
+<li>指定生成静态/动态库的名称以及对应的源文件 (这一步在子目录的CMakeLists.txt中完成)</li>
+</ul>
+</li>
+<li>
+<p><code>target_link_libraries(EXECUTABLE_NAME PUBLIC LIBRARY_NAME)</code></p>
+<ul>
+<li>指定可执行文件链接的库文件</li>
+</ul>
+</li>
+<li>
+<p><code>target_include_subdirectory(EXECUTABLE_NAME DIRS)</code></p>
+<ul>
+<li>将对应目录加入可执行文件的头文件目录</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
 
 
