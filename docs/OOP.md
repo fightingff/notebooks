@@ -42,7 +42,7 @@
             
             - 删除元素时，会将后面的元素向前移动，时间复杂度为 O(n) 
       
-        - vector<int>p(capacity) 
+        - vector<int>p(capacity,(k)) (capacity 个 k) 
         
         - vector [] “可以”越界访问，（因为实际上的容量可能大于它显示的capacity），.at() 会抛出异常
 
@@ -75,6 +75,16 @@
 - Algorithms
 
 - Iterators
+
+    - 输入迭代器：只能读取数据，不能修改数据
+    
+    - 输出迭代器 
+    
+    - 前向迭代器
+    
+    - 双向迭代器
+    
+    - 随机访问迭代器   
 
 ## Container
 

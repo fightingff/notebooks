@@ -400,10 +400,28 @@
 
         - 指定生成静态/动态库的名称以及对应的源文件 (这一步在子目录的CMakeLists.txt中完成)
 
-    - `target_link_libraries(EXECUTABLE_NAME PUBLIC LIBRARY_NAME)`
+    - `target_link_libraries(EXECUTABLE_NAME/LIBRARY_NAME [PUBLIC] LIBRARY_NAME)`
 
         - 指定可执行文件链接的库文件
     
     - `target_include_subdirectory(EXECUTABLE_NAME DIRS)`
 
-        - 将对应目录加入可执行文件的头文件目录
+        - 将对应目录加入可执行文件的头文件目录 
+
+- 利用变量进行灵活控制
+
+    - `option(VARIABLE ["COMMENT"] ON/OFF)`可以产生对应的缓存变量，可以结合`if() endif()`控制编译过程
+    
+- 其他编译选项
+
+    - `Target_compile_features(TARGET PUBLIC cxx_std_11)`
+
+        - 指定编译特性
+    
+    - `target_compile_options(TARGET PUBLIC -Wall -Wextra)`
+
+        - 指定编译选项  
+        
+    - `target_compile_definitions(TARGET PUBLIC MACRO_NAME)`
+
+        - 指定宏定义   
