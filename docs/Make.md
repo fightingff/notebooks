@@ -347,6 +347,8 @@
 
 目前的感觉就像是一个帮助你生成Makefile的工具，通过CMakeLists.txt文件来指定项目的编译规则，然后通过`cmake PROJECT_DIR`来生成对应的Makefile等工程文件到当前目录，然后通过`make --build .`来完成编译链接生成。
 
+- [Tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/index.html) （官方教程，比较全面，但是不是特别好理解感觉，目前进度 STEP3）
+
 ### Basic
 
 最基本的 CMakeLists.txt 文件架构如下：
@@ -392,6 +394,10 @@
 
     - 指定编译选项 
 
+- `add_library(tutorial_compiler_flags INTERFACE)`
+
+    `target_compile_features(tutorial_compiler_flags INTERFACE cxx_std_11)` 来指定编译特性
+
 ### 多文件组织
 
 - 添加一个library（子目录）
@@ -408,9 +414,25 @@
 
         - 将对应目录加入可执行文件的头文件目录 
 
+- 使用**INTERFACE**控制LIBRARY
+
+    - `add_library(LIBRARY_NAME INTERFACE)`
+
+        - 指定生成一个INTERFACE库，不包含源文件，只包含头文件和编译选项
+        
+    - `target_include_directories(LIBRARY_NAME INTERFACE DIRS)`
+
+        - 指定库文件的头文件目录
+        
+    - `target_link_libraries(EXECUTABLE_NAME LIBRARY_NAME)`
+
+        - 这样直接指定可执行文件链接的库文件即可，不用手动处理头文件目录
+    
 - 利用变量进行灵活控制
 
     - `option(VARIABLE ["COMMENT"] ON/OFF)`可以产生对应的缓存变量，可以结合`if() endif()`控制编译过程
+    
+    - *有个小问题就是更新不及时，有时要删除原来的 build 文件才能起作用* 
     
 - 其他编译选项
 
@@ -422,6 +444,6 @@
 
         - 指定编译选项  
         
-    - `target_compile_definitions(TARGET PUBLIC MACRO_NAME)`
+    - `target_compile_definitions(TARGET PUBLIC “MACRO_NAME”)`
 
-        - 指定宏定义   
+        - 指定宏定义 
