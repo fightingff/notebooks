@@ -40,4 +40,4 @@
 
 - **Makefile & CMake**
     - Makefile is a tool to compile and link multiple source codes
-    - CMake is a efficient tool to help generate Makefile (Not written yet)
+    - CMake is a efficient tool to help generate Makefile (Basically learned to tutorial STEP3)
