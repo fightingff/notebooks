@@ -1549,13 +1549,13 @@
 <p>首先，由红黑树定义，<span class="arithmatex">\(h(x) &lt;= 2bh(x)\)</span></p>
 </li>
 <li>
-<p>使用数学归纳法，对于任意节点 x，其子树的节点数目 $ N(x) &gt;= 2^(bh(x)) - 1 $</p>
+<p>使用数学归纳法，对于任意节点 x，其子树的节点数目 <span class="arithmatex">\(N(x) &gt;= 2^{bh(x)} - 1\)</span></p>
 <ul>
 <li>
 <p>因为对于任意节点，其子节点的黑高为 bh(x) 或 bh(x) - 1</p>
 </li>
 <li>
-<p>从而由归纳假设，有 $ N(x) &gt;= 2^(bh(x) - 1) - 1 + 2^(bh(x) - 1) - 1 + 1 = 2^(bh(x)) - 1 $</p>
+<p>从而由归纳假设，有 <span class="arithmatex">\(N(x) &gt;= 2^{bh(x) - 1} - 1 + 2^{bh(x) - 1} - 1 + 1 = 2^{bh(x)} - 1\)</span></p>
 </li>
 </ul>
 </li>

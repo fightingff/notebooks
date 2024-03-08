@@ -1,6 +1,10 @@
 # AI Materials
 
+----
+
 ## CV
+
+----
 
 - [**CNN**](https://arxiv.org/abs/1409.1556)
 
@@ -14,7 +18,11 @@
 
     - The pioneering work of GAN, which introduces the **generator** and **discriminator** mechanism in GAN.
 
+----
+
 ## RNN
+
+----
 
 - [**word2vec**](https://arxiv.org/abs/1411.2738)
 
