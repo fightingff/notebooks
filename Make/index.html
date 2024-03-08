@@ -1346,7 +1346,7 @@
 </ul>
 </li>
 <li>
-<p><code>target_link_libraries(EXECUTABLE_NAME PUBLIC LIBRARY_NAME)</code></p>
+<p><code>target_link_libraries(EXECUTABLE_NAME/LIBRARY_NAME [PUBLIC] LIBRARY_NAME)</code></p>
 <ul>
 <li>指定可执行文件链接的库文件</li>
 </ul>
@@ -1354,7 +1354,36 @@
 <li>
 <p><code>target_include_subdirectory(EXECUTABLE_NAME DIRS)</code></p>
 <ul>
-<li>将对应目录加入可执行文件的头文件目录</li>
+<li>将对应目录加入可执行文件的头文件目录 </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>利用变量进行灵活控制</p>
+<ul>
+<li><code>option(VARIABLE ["COMMENT"] ON/OFF)</code>可以产生对应的缓存变量，可以结合<code>if() endif()</code>控制编译过程</li>
+</ul>
+</li>
+<li>
+<p>其他编译选项</p>
+<ul>
+<li>
+<p><code>Target_compile_features(TARGET PUBLIC cxx_std_11)</code></p>
+<ul>
+<li>指定编译特性</li>
+</ul>
+</li>
+<li>
+<p><code>target_compile_options(TARGET PUBLIC -Wall -Wextra)</code></p>
+<ul>
+<li>指定编译选项  </li>
+</ul>
+</li>
+<li>
+<p><code>target_compile_definitions(TARGET PUBLIC MACRO_NAME)</code></p>
+<ul>
+<li>指定宏定义   </li>
 </ul>
 </li>
 </ul>
