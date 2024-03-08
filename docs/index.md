@@ -41,3 +41,8 @@
 - **Makefile & CMake**
     - Makefile is a tool to compile and link multiple source codes
     - CMake is a efficient tool to help generate Makefile (Basically learned to tutorial STEP3)
+
+## Collections of Materials
+
+- **AI**
+    - Record some useful and famous papers and resources in my AI learning. 
