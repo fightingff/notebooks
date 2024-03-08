@@ -392,6 +392,24 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#stl" class="md-nav__link">
+    <span class="md-ellipsis">
+      STL
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Container
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -550,6 +568,24 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#stl" class="md-nav__link">
+    <span class="md-ellipsis">
+      STL
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Container
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -598,6 +634,104 @@
 <li>
 <p>Responsibility-driven design: 责任驱动设计</p>
 </li>
+<li>
+<p>Generic: 泛型</p>
+</li>
+</ul>
+<h2 id="stl">STL</h2>
+<blockquote>
+<p><strong>Standard Template Library</strong></p>
+</blockquote>
+<ul>
+<li>
+<p><em>工程中慎用<bits/stdc++.h>头文件，降低编译压力</em></p>
+</li>
+<li>
+<p>Containers</p>
+<ul>
+<li>
+<p>vector</p>
+<ul>
+<li>
+<p>内部实现：</p>
+<ul>
+<li>
+<p>动态内存分配，当容量不足时，会将容量扩大为原来的两倍，然后将原来的元素复制到新的内存空间中，释放原来的内存空间。</p>
+</li>
+<li>
+<p>插入均摊时间复杂度为 O(1)</p>
+</li>
+<li>
+<p>删除元素时，会将后面的元素向前移动，时间复杂度为 O(n) </p>
+</li>
+</ul>
+</li>
+<li>
+<p>vector<int>p(capacity) </p>
+</li>
+<li>
+<p>vector [] “可以”越界访问，（因为实际上的容量可能大于它显示的capacity），.at() 会抛出异常</p>
+<p><em>（乱穿马路违法，但是一般没人会来管你。没撞死算幸运，撞死活该。）</em>  </p>
+</li>
+</ul>
+</li>
+<li>
+<p>deque (double ended queue) </p>
+<ul>
+<li>
+<p>内部实现： </p>
+<ul>
+<li>
+<p>使用缓存区块存取元素，使用 map 建立缓存区块的索引，当缓存区块不足时，会重新分配内存空间。</p>
+</li>
+<li>
+<p>两端插入和删除均摊时间复杂度为 O(1)，但实现上比 vector 复杂</p>
+</li>
+<li>
+<p>缓存区内部实现与 vector 类似 </p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>list  (doubly linked list)</p>
+<ul>
+<li>
+<p><code>list.begin() != list.end()</code> (不推荐使用 &lt; ，可能会出错)</p>
+</li>
+<li>
+<p><code>copy(L, R, vector&lt;&gt;it)</code> 链表展平为 vector </p>
+</li>
+</ul>
+</li>
+<li>
+<p>forward_list</p>
+</li>
+<li>
+<p>*string  </p>
+</li>
+<li>
+<p>set</p>
+</li>
+<li>
+<p>map    </p>
+</li>
+</ul>
+</li>
+<li>
+<p>Algorithms</p>
+</li>
+<li>
+<p>Iterators</p>
+</li>
+</ul>
+<h2 id="container">Container</h2>
+<blockquote>
+<p>容器，collection of objects that can store an arbitrary number of other objects.</p>
+</blockquote>
+<ul>
+<li>通常用 size 来表示其中 object 的数量 </li>
 </ul>
 
 

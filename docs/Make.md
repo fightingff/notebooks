@@ -338,4 +338,72 @@
         cd $(SRC) && rm -f $(OBJS)
         cd $(OD) && rm -f $(TARGETS)
   ```
-  
+
+----
+
+## CMake
+
+----
+
+目前的感觉就像是一个帮助你生成Makefile的工具，通过CMakeLists.txt文件来指定项目的编译规则，然后通过`cmake PROJECT_DIR`来生成对应的Makefile等工程文件到当前目录，然后通过`make --build .`来完成编译链接生成。
+
+### Basic
+
+最基本的 CMakeLists.txt 文件架构如下：
+
+- `cmake_minimum_required(VERSION 3.10)`
+
+    - 指定CMake的最低版本
+
+- `project(PROJECT_NAME VERSION 1.0)`
+
+    - 指定项目的名称以及版本
+    
+    - 生成程序对版本的嵌入，可以通过`configure_file`命令来实现 
+    
+        - `configure_file(config.h.in config.h)`
+        
+            ```cpp title="config.h.in"
+            #define PROJECT_NAME "@PROJECT_NAME@"
+            #define PROJECT_VERSION "@PROJECT_VERSION@"
+            #define Tutorial_VERSION_MAJOR @Tutorial_VERSION_MAJOR@
+            #define Tutorial_VERSION_MINOR @Tutorial_VERSION_MINOR@
+            ```  
+        
+        - 这样在编译时便会在当前build目录下`config.h`中生成对应的版本信息的如上宏定义
+        
+        - 我们可以通过`target_include_directories(PROJECT PUBLIC "${PROJECT_BINARY_DIR}")`引入该文件，并在源文件中通过`#include "config.h"`来引用这些宏定义，完成版本的嵌入  
+
+- `add_executable(EXECUTABLE_NAME SOURCE_FILES)` 
+
+    - 指定生成可执行文件的名称以及对应的源文件
+
+### 编译选项
+
+- `set(CMAKE_CXX_STANDARD 11)`
+
+    - 指定C++的标准版本
+    
+    - `set(CMAKE_CXX_STANDARD_REQUIRED ON)`
+
+        - 指定是否强制使用该标准版本 
+
+- `set(CMAKE_CXX_FLAGS "-Wall -Wextra")`
+
+    - 指定编译选项 
+
+### 多文件组织
+
+- 添加一个library（子目录）
+
+    - `add_library(LIBRARY_NAME STATIC/SHARED SOURCE_FILES)`
+
+        - 指定生成静态/动态库的名称以及对应的源文件 (这一步在子目录的CMakeLists.txt中完成)
+
+    - `target_link_libraries(EXECUTABLE_NAME PUBLIC LIBRARY_NAME)`
+
+        - 指定可执行文件链接的库文件
+    
+    - `target_include_subdirectory(EXECUTABLE_NAME DIRS)`
+
+        - 将对应目录加入可执行文件的头文件目录
