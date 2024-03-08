@@ -1268,6 +1268,9 @@
 <h2 id="cmake">CMake</h2>
 <hr />
 <p>目前的感觉就像是一个帮助你生成Makefile的工具，通过CMakeLists.txt文件来指定项目的编译规则，然后通过<code>cmake PROJECT_DIR</code>来生成对应的Makefile等工程文件到当前目录，然后通过<code>make --build .</code>来完成编译链接生成。</p>
+<ul>
+<li><a href="https://cmake.org/cmake/help/latest/guide/tutorial/index.html">Tutorial</a> （官方教程，比较全面，但是不是特别好理解感觉，目前进度 STEP3）</li>
+</ul>
 <h3 id="basic">Basic</h3>
 <p>最基本的 CMakeLists.txt 文件架构如下：</p>
 <ul>
@@ -1333,6 +1336,10 @@
 <li>指定编译选项 </li>
 </ul>
 </li>
+<li>
+<p><code>add_library(tutorial_compiler_flags INTERFACE)</code></p>
+<p><code>target_compile_features(tutorial_compiler_flags INTERFACE cxx_std_11)</code> 来指定编译特性</p>
+</li>
 </ul>
 <h3 id="_3">多文件组织</h3>
 <ul>
@@ -1360,9 +1367,37 @@
 </ul>
 </li>
 <li>
+<p>使用<strong>INTERFACE</strong>控制LIBRARY</p>
+<ul>
+<li>
+<p><code>add_library(LIBRARY_NAME INTERFACE)</code></p>
+<ul>
+<li>指定生成一个INTERFACE库，不包含源文件，只包含头文件和编译选项</li>
+</ul>
+</li>
+<li>
+<p><code>target_include_directories(LIBRARY_NAME INTERFACE DIRS)</code></p>
+<ul>
+<li>指定库文件的头文件目录</li>
+</ul>
+</li>
+<li>
+<p><code>target_link_libraries(EXECUTABLE_NAME LIBRARY_NAME)</code></p>
+<ul>
+<li>这样直接指定可执行文件链接的库文件即可，不用手动处理头文件目录</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
 <p>利用变量进行灵活控制</p>
 <ul>
-<li><code>option(VARIABLE ["COMMENT"] ON/OFF)</code>可以产生对应的缓存变量，可以结合<code>if() endif()</code>控制编译过程</li>
+<li>
+<p><code>option(VARIABLE ["COMMENT"] ON/OFF)</code>可以产生对应的缓存变量，可以结合<code>if() endif()</code>控制编译过程</p>
+</li>
+<li>
+<p><em>有个小问题就是更新不及时，有时要删除原来的 build 文件才能起作用</em> </p>
+</li>
 </ul>
 </li>
 <li>
@@ -1381,9 +1416,9 @@
 </ul>
 </li>
 <li>
-<p><code>target_compile_definitions(TARGET PUBLIC MACRO_NAME)</code></p>
+<p><code>target_compile_definitions(TARGET PUBLIC “MACRO_NAME”)</code></p>
 <ul>
-<li>指定宏定义   </li>
+<li>指定宏定义 </li>
 </ul>
 </li>
 </ul>
