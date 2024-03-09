@@ -13,7 +13,8 @@ nav:
       - Git: Git.md
       - Makefile & CMake: Make.md
   - Materials:
-      - AI: AI_Materials.md
+      - AI Materials: AI_Materials.md
+      - My AI Repository: https://github.com/fightingff/AI
 
 theme:
   name: material

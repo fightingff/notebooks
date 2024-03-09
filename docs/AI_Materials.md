@@ -22,7 +22,7 @@
 
     - [Reference Blog](https://machinelearningmastery.com/how-to-develop-a-conditional-generative-adversarial-network-from-scratch/)
     
-        - Help build a network from scratch 
+        - Help build a network from scrat 
 
 
     - [Deep Generative Image Models using a Laplacian Pyramid of Adversarial Networks](https://arxiv.org/pdf/1506.05751)

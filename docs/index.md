@@ -44,5 +44,9 @@
 
 ## Collections of Materials
 
-- **AI**
+- **AI Materials**
     - Record some useful and famous papers and resources in my AI learning. 
+
+- [**My AI repositoy**](https://github.com/fightingff/AI)
+
+    - Some little notes of my AI trying. 
