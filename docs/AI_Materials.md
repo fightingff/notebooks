@@ -18,6 +18,17 @@
 
     - The pioneering work of GAN, which introduces the **generator** and **discriminator** mechanism in GAN.
 
+- [**cGAN**](https://arxiv.org/abs/1411.1784)
+
+    - [Reference Blog](https://machinelearningmastery.com/how-to-develop-a-conditional-generative-adversarial-network-from-scratch/)
+    
+        - Help build a network from scratch 
+
+
+    - [Deep Generative Image Models using a Laplacian Pyramid of Adversarial Networks](https://arxiv.org/pdf/1506.05751)
+
+    - [ganhacks](https://github.com/soumith/ganhacks)
+
 ----
 
 ## RNN
