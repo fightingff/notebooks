@@ -28,6 +28,16 @@
     - [Deep Generative Image Models using a Laplacian Pyramid of Adversarial Networks](https://arxiv.org/pdf/1506.05751)
 
     - [ganhacks](https://github.com/soumith/ganhacks)
+    
+    - [pix2pix](https://arxiv.org/abs/1611.07004) 
+
+- [**Unsupervised GAN**](https://arxiv.org/abs/1511.06434)
+
+    - [Refernce Blog](https://machinelearningmastery.com/what-are-generative-adversarial-networks-gans/)
+    
+        - A detailed explanation of GAN and its implementation, as well as the **unsupervised GAN**.
+        
+    - [Tutorial: Generative Adversarial Networks](https://arxiv.org/abs/1701.00160) 
 
 ----
 
