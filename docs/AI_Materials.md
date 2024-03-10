@@ -38,6 +38,8 @@
         - A detailed explanation of GAN and its implementation, as well as the **unsupervised GAN**.
         
     - [Tutorial: Generative Adversarial Networks](https://arxiv.org/abs/1701.00160) 
+    
+    - [Cycle GAN (style transfer)](https://arxiv.org/pdf/1703.10593) 
 
 ----
 
