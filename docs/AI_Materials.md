@@ -39,7 +39,9 @@
         
     - [Tutorial: Generative Adversarial Networks](https://arxiv.org/abs/1701.00160) 
     
-    - [Cycle GAN (style transfer)](https://arxiv.org/pdf/1703.10593) 
+    - [CycleGAN (style transfer)](https://arxiv.org/pdf/1703.10593)
+    
+    - [CycleGAN (Chinese font transfer)](https://arxiv.org/pdf/1801.08624.pdf) 
 
 ----
 
@@ -50,3 +52,16 @@
 - [**word2vec**](https://arxiv.org/abs/1411.2738)
 
     - A detailed explanation of word2vec and its implementation **CBOW** & **SG**, as well as two optimization methods, **negative sampling** and **hierarchical softmax**. 
+
+----
+
+## Tips
+
+----
+
+- **CUDA restart**
+
+```bash linenums="1"
+sudo rmmod nvidia_uvm
+sudo modprobe nvidia_uvm
+```

@@ -69,7 +69,7 @@ git 是一个分布式版本控制系统，即每个人的本地都是一个完�
 
 - 新建一个本地仓库并与远程仓库关联
 
-```bash
+```bash linenums="1"
 git init
 git remote add origin <url>
 git pull origin master
@@ -81,13 +81,13 @@ git push -u origin master
 
 - 从远程仓库克隆到本地
 
-```bash
+```bash linenums="1"
 git clone <url>
 ```
 
 - 从远程仓库拉取分支并完成合并
 
-```bash
+```bash linenums="1"
 git pull origin <branch\>
 git merge <branch\>
 git add *
@@ -95,3 +95,28 @@ git commit -m "..."
 git push -u origin master
 git push --delete origin <branch\> # 删除远程分支
 ```
+
+- 处理冲突
+
+    - 放弃本地修改
+    
+    ```bash linenums="1"
+    git fetch --all
+    git reset --hard origin/master
+    git pull
+    ```
+
+    - 未提交，可以暂存当前工作，回退到上一个版本，然后开始合并
+
+    ```bash linenums="1"
+    git stash
+    git pull
+    git stash pop
+    ```
+
+    - 已提交，可以直接merge处理冲突，再重新提交
+    
+    ```bash linenums="1"
+    git merge
+    git add
+    ```  

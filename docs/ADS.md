@@ -688,6 +688,12 @@ struct RBTree{
 
 ----
 
+### Reverse Index
+
+就是一个邻接矩阵一样的感觉，附加了一些简单的优化，没啥好说的
+
+----
+
 ## Algorithm
 
 ----
