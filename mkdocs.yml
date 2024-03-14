@@ -9,6 +9,7 @@ nav:
       - ADS: ADS.md
       - OOP: OOP.md
       - Information Theory: Info.md
+      - Database: Database.md
   - Tools:
       - Git: Git.md
       - Makefile & CMake: Make.md

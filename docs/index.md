@@ -31,6 +31,13 @@
     - Taught by YGD, a professor in ZJU
     - Learn some basic information theory, which is significant in machine learning theory especially in proof, so I think it's necessary to take this course carefully and take notes
 
+- **Database**
+    - Taught by MXY, a gentle professor and Big Data scholar in ZJU
+    - Learn basic and advanced database concepts and SQL programming
+    - Too many points, so I choose to fork other people's notes and take some notes by myself
+    - [link](https://github.com/yile-liu/ZJU_database_system) 
+
+
 ## Some useful tools in learning
 
 - **Git**
