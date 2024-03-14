@@ -1,46 +1,50 @@
-# [Fork Yile Liu](https://github.com/yile-liu/ZJU_database_system)
+# DataBase
+ 
+[Fork Yile Liu](https://github.com/yile-liu/ZJU_database_system)
 
-# 第二章 数据库概念
+----
 
-## 概念引入
+## 第二章 数据库概念
 
-### Table
+### 概念引入
+
+#### Table
 
 可以类比excel，数据库以表的形式组织数据。表中的一列是某一类数据，一行是某一个事物具有的多类数据的集合。一张表是多个集合组成的大集合。
 
 注意根据集合不能有相同元素的要求，一张表中不能出现数据相同的两行，也不能出现意义相同的两列。数据库课程一般不考虑空集。
 
-### Relation
+#### Relation
 
 表的一行是某一个事物具有的多类属性，反过来说多类属性由某个事物关联起来。从这个意义上，一个Relation一般指代一张Table。
 
 Relation又可以分为两个部分：
 
-#### Relation Schema
+##### Relation Schema
 
 Relation Schema指一张表的逻辑设计，包括Table的名字，其中有哪些Attribute，每个Attribute各自的Domain等。Relation Schema不关心表中具体的数据，只关心整体设计。约定用大$R$表示。
 
 例如：Student(Student_ID, Name, Phone_Number), in which Student_ID supposed to be ......这是一个Relation Schema。
 
-#### Relation Instance
+##### Relation Instance
 
 Relation Instance是一张表中具体某几个事物（某几行）的集合。出于集合的定义，Relation Instance是可拆分的，一个Instance从中的某几行组成集合是另一个新的Instance。约定用小$r$表示。
 
 例如：{(3200102708, Liu Siri, 13588089548), (3200102706, Su Houxian, null)}这是一个Relation Instance。
 
-### Tuple
+#### Tuple
 
 直译为元组，指某个表中的一个事物，或者说一行。
 
-### Attribute
+#### Attribute
 
 直译为属性，指某个表中的某一类数据，或者说一列。
 
-#### Domain
+##### Domain
 
 某个Attribute的取值范围。
 
-### Atomic
+#### Atomic
 
 我们要求数据库中任意关系r，其Attribute的Domain必须是Atomic的。某个Domain是Atomic的指其中存储的数据已经是最小单元，不能进一步拆分。
 
@@ -48,7 +52,7 @@ Relation Instance是一张表中具体某几个事物（某几行）的集合。
 
 但是注意，你既可以认为单个电话号为不能继续拆分的最小单位，这时它Atomic；也可以认为电话号又包括了国家编码、区号、分机号等等，不满足Atomic。因此Atomic是一个相对的概念，“能不能继续拆分”取决于设计数据库的具体要求与你看待数据的方式。
 
-### NULL
+#### NULL
 
 注意区别编程语言中NULL与数据库中的NULL的区别。C语言中可以认为NULL与0是等价的，但是对数据库而言NULL代表未知，而0是一个已知的具体的值，两者并不等价。例如成绩（NULL）和成绩（0）。
 
@@ -58,51 +62,51 @@ Relation Instance是一张表中具体某几个事物（某几行）的集合。
 
 - where 中认为 unknown 为 false
 
-### Key
+#### Key
 
 Key是某一个relation中某几个attribute的集合。它的每一个子集也都是不同的Key。
 
-#### Superkey
+##### Superkey
 
 如果在某relation instance中根据一个key能够单独确定一个tuple，它是Superkey。
 
 例如：对relation：Student(Student_ID, Name, Phone_Number)，(Student_ID, Name, Phone_Number) / (Student_ID, Phone_Number) / (Student_ID)都是Superkey；因为可以重名所以(Name)不是Superkey。
 
-#### Candidate Key
+##### Candidate Key
 
 如果一个Superkey，去掉任意一个attribute后不再是Superkey，他就是Candidate Key。上述例子中(Student_ID) / (Phone_Number)都是Primary Key，而(Student_ID, Phone_Number)不是。
 
-#### Primary Key
+##### Primary Key
 
 使用任意Candidate Key都可以方便的查找relation中的某个tuple，但是为了同一操作、规范接口，设计者应该为每个relation在Candidates中选出一个作为Primary Key (a.k.a. Primary Key Constraint)。
 
 Primary Key是relation的固有属性而不仅是attribute的集合，地位发生了变化。
 
-#### Foreign Key Constraint
+##### Foreign Key Constraint
 
 A是关系$r_{1}$的一个key，B是关系$r_{2}$的Primary Key，如果A中每个tuple都在B中都存在，就称A is a **foreign key** from $r_{1}$ referencing $r_{2}$，$r_{1}$ is the **referencing relation** of this foreign-key constraint and $r_{2}$ Is the **referenced relation**.
 
-### Schema Diagram
+#### Schema Diagram
 
 规定某个relation的Primary Key由下划线标出；有向箭头表示Foreign Key Constraint，从referencing relation指向referenced relation。
 
-## 关系代数
+### 关系代数
 
-### 基础操作
+#### 基础操作
 
-#### And Or Not
+##### And Or Not
 
 $\and:and,\ \or:or,\ \neg:not$
 
-#### Select
+##### Select
 
 $\sigma_{selection\  predicate}(relation)$：从relation中选出满足selection predicate的tuple组成一个新的relation。即选行。
 
-#### Project
+##### Project
 
 $\Pi_{A1,A2...}(relation)$：从relation中选出名称为A1、A2……的attribute组成一个新的relation。即选列。注意去掉某几列之后新表中可能存在重复的tuple，**需要去重**。
 
-#### Union（集合的加法）
+##### Union（集合的加法）
 
 $r \cup s=\{t\ |\ t\in r\ or\ t\in s\}$
 
@@ -111,19 +115,19 @@ $r \cup s=\{t\ |\ t\in r\ or\ t\in s\}$
 - 合并后需要去重
 - 待合并的两张表应该应该相同的列数，并且对应列的数据类型及取值范围不冲突。
 
-#### Set Difference（集合的减法）
+##### Set Difference（集合的减法）
 
 $r-s=\{t\ |\ t\in r\ and\ t\notin s\}$
 
 同样要求待合并的两张表应该应该相同的列数，并且对应列的数据类型及取值范围不冲突。
 
-#### Cartesian-Product（集合的乘法）
+##### Cartesian-Product（集合的乘法）
 
 $r\times s=\{tq\ |\ t\in r\ and\ q\in s\}$
 
 使用笛卡尔积时注意两个表如果有相同名称的列，需要改名。
 
-#### Rename
+##### Rename
 
 $\rho_{x(A_{1},A_{2}...)}(E)$：将名为E的表重命名为x，并将其每一列重命名为A1、A2……
 
@@ -132,9 +136,9 @@ $\rho_{x(A_{1},A_{2}...)}(E)$：将名为E的表重命名为x，并将其每一�
 - 下标$(A_{1},A_{2}...)$不是必须的，不写这一部分表示只改表名不改列名。
 - 这个函数的返回值是原来那张表，这意味着它可以与此前的操作配合使用。
 
-### 复合操作
+#### 复合操作
 
-#### Join
+##### Join
 
 Join可以直接包含条件语句，语法如下：$r\bowtie_{predicate}s=\sigma_{predicate}(r\times s)$
 
@@ -146,29 +150,31 @@ Join可以直接包含条件语句，语法如下：$r\bowtie_{predicate}s=\sigm
     - Right Outer Join: $r\ ⟖\ s$
     - Full Outer Join: $r\ ⟗\ s$
 
-#### Set-Insertion
+##### Set-Insertion
 
 $r\cap s=\{t\ |\ t\in r\ and\ t\in s\}=r-(r-s)$
 
 注意区别交集和集合的减法。
 
-#### Assignment
+##### Assignment
 
 $d\leftarrow expression$：将表达式的结果或者说返回值存放在临时的区域d中，以便后续复用。这个操作一般用于简化公式和增强可读性。
 
 注意数据库所有的返回值都是**表**，包括代数操作。例如$Temp \leftarrow g_{min(score)}(student)$，Temp是一行一列的表而不是一个值；因此后续使用时应该形如$\Pi_{name}(\sigma_{age=minage}(student\bowtie(\rho _{T(minage)}(Temp))))$区分表和列（值），而不能写成$\Pi_{name}(\sigma_{age=Temp}(student))$。
 
-#### Division
+##### Division
 
 let $r(ID,course.ID)$ and $s(course.ID)$,  then $r\div s$ gives us ID who have taken all courses in the relation $s$.
 
-### 代数操作
+#### 代数操作
 
 常见的代数操作有avg, min, max, sum, count等，基本语法$_{G_1,G-2...}\mathcal{G}_{F_1(...),F_2(...)...}(E)$。前半部分为分组依据，后半部分为所需函数，语义见图：![image-20220302211044444](%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220302211044444.png)
 
-# 第三章 SQL基础
+----
 
-## SQL数据类型
+## 第三章 SQL基础
+
+### SQL数据类型
 
 - char(n): 定长为n的字符串
 - varchar(n): variable-lenth char 最大长度为n的可变长字符串
@@ -179,15 +185,15 @@ let $r(ID,course.ID)$ and $s(course.ID)$,  then $r\div s$ gives us ID who have t
 
 **注意：以上是教科书中的内容，其中char/varchar/int基本全世界通用，但是其他的数据类型在不同DBMS中语法及用法可能各有不同。**
 
-## SQL语句
+### SQL语句
 
-### 前言
+#### 前言
 
 所有SQL语句以及表名、列名等标识符都是大小写不敏感的。但是表的内容，例如字符串等，大小写敏感。
 
 以下只记录易错点，不涵盖所有语法。
 
-### select
+#### select
 
 select可以细分为select all与select distinct，区别是是否为结果去重，select不使用后缀时默认为select all。select distinct与关系代数的$\Pi$等价，而select all不等价。
 
@@ -199,13 +205,13 @@ select结果可以使用order by ATTRIBUTE_NAME (desc/asc)子句排序，desc/as
 
 - *集合操作默认 去重*
 
-### as
+#### as
 
 as可以为同一个对象赋两个别名以实现自我对比，但是别名的作用域仅限于单条语句，实际名称并不会被更改，下图中的select语句完成后表名仍然叫instructor。as有时可以省略不写。
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/IMG_D6F8CEB5100B-1.jpeg" alt="IMG_D6F8CEB5100B-1" style="zoom:43%;" />
 
-### string
+#### string
 
 like是模糊搜索的关键字。SQL字符串查找最常用的两个记号为$\%$和$\_$，用法如图。
 
@@ -217,13 +223,13 @@ like是模糊搜索的关键字。SQL字符串查找最常用的两个记号为$
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/IMG_C7A3E21317B3-1.jpeg" alt="IMG_C7A3E21317B3-1" style="zoom:43%;" />
 
-### union/intersect/except
+#### union/intersect/except
 
 他们三者各自都又有all和distinct两个版本，区别是结果是否去重，**但是他们默认是去重的**，这与select不同。
 
 $union/interset/except\ distinct$分别等价于交集、并集、集合的减法。
 
-### group by
+#### group by
 
 配合各类代数操作，功能等价于第二章中$\mathcal{G}$前部的下标。
 
@@ -257,7 +263,7 @@ group by先于select进行，创建一个仅包含代数操作列与group by列�
     select ID, max(salary) from instructor group by ID;
     ```
 
-### where/having
+#### where/having
 
 - where在group by之前进行，不满足条件的tuble不会参与group by进入临时表。
 - having在group by之后进行，产生临时表中筛选，只返回满足的tuble。
@@ -266,13 +272,13 @@ group by先于select进行，创建一个仅包含代数操作列与group by列�
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220316134950029.png" alt="image-20220316134950029" style="zoom:40%;" />
 
-### NULL
+#### NULL
 
 NULL值不参与对列的代数函数，全NULL的tuple不会被count( )计数。
 
 没有非NULL元素时代数操作返回NULL，count( )返回0。
 
-### some/all
+#### some/all
 
 some/all跟在$<,\le,>,\ge,=,\ne$之后，当其后的表中存在/全部元素满足关系则返回true。
 
@@ -290,7 +296,7 @@ some/all跟在$<,\le,>,\ge,=,\ne$之后，当其后的表中存在/全部元素�
 //(!=all) == not in but (=all) != in 
 ```
 
-### with
+#### with
 
 ```mysql
 with temp_table_name(attribute_name1, attibute_name2...) as alias select...
@@ -298,9 +304,9 @@ with temp_table_name(attribute_name1, attibute_name2...) as alias select...
 
 建立一个作用域为一条语句的临时的表用于简化逻辑表达式增加可读性。相当于关系代数中的Assignment。select可以不出现。
 
-# 第四章 SQL进阶
+## 第四章 SQL进阶
 
-## Join详解
+### Join详解
 
 Join语句的基本功能是将两张表中的tuple按一定规则进行匹配，将他们相同的列保留其一，不同的列全部保留，合成一个大tuple。它的控制符可以分为两类：
 
@@ -334,7 +340,7 @@ natural full outer join（full outer join using (course_id)与之等价，因为
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220316151014204.png" alt="image-20220316151014204" style="zoom:33%;" />
 
-## View
+### View
 
 ```mysql
 create view view_name(attribute_name1, attibute_name2...) as alias select...
@@ -347,7 +353,7 @@ view一般用于查找以及接口，语法和with相同，作用也基本相同
 
 - 部分SQL也支持materialize view，view此时是一张真实存在的表，这一般是为了用空间换时间。物化视图相关的表发生变化时，它自己也必须同时更新，以维持一般view的特性。
 
-## Index
+### Index
 
 ```mysql
 CREATE INDEX index_name ON table_name ( column1, column2.....);//创建
@@ -358,7 +364,7 @@ ALTER TABLE table_name DROP INDEX index_name;//删除
 
 但索引并不是尽善尽美，例如update之后，索引需要同步维护；同时索引是一种物理结构，有额外的空间与IO开销。不适当的索引设置反而会降低效率。
 
-## Integrity Constraint
+### Integrity Constraint
 
 完整性约束即对attribute内容的约束，不满足约束条件的tuple不能被插入。一般有4类约束方法：
 
@@ -369,21 +375,21 @@ ALTER TABLE table_name DROP INDEX index_name;//删除
 
 对数据类型的约束既可以在定义表时规定，也可以后期通过domain关键字增删改。具体语法在此不表。
 
-## 特殊数据类型
+### 特殊数据类型
 
-### time
+#### time
 
 SQL自带时间相关的特殊数据类型。
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220323114743247.png" alt="image-20220323114743247" style="zoom:45%;" />
 
-### large number
+#### large number
 
 对于尤其空间尤其巨大的值，传指针比直接传数据本身高效得多。在此理解即可。
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220323115826665.png" alt="image-20220323115826665" style="zoom:45%;" />
 
-## 权限
+### 权限
 
 授予/收回权限的基本语法是：
 
@@ -402,15 +408,15 @@ on <relation name or view name> to <user list>;//收回
 
 有多个同类用户需要做统一的权限调整时，列出\<user list>的使用方式显然不便，此时就需要role。role是权限组成的集合，你可以像赋予单个权限一样将role赋予用户。修改某个role对应的权限集合时，所有被赋予这个role身份的用户权限都会同时被修改。
 
-# 第五章 高级SQL
+## 第五章 高级SQL
 
-## SQL Injection
+### SQL Injection
 
 SQL用户端常常需要将用户的输入拼接为完整的sql语句。借助用户端输入框直接输入未预期的sql指令，又由于字符串拼接的缘故这条语句能够被后台执行，这称为sql注入。
 
 比变sql注入的办法是，不要将用户的输入直接作为数据库语句，而是套用一定的模板。
 
-## Stored Procedure
+### Stored Procedure
 
 通过用户界面的前后端构建、传递、执行、回传sql代码带来大量的开销，所以现代sql都支持Stored Procedure。你可以将它理解为一种内建的小型编程语言，支持if-else、for、while等简单编程逻辑，用于构造执行一些sql语句，最终返回结果。sql还支持function，作用与之基本类似。
 
@@ -433,13 +439,13 @@ declare d_count integer;
 call dept_count_proc('physics', d_count)
 ```
 
-## Trigger
+### Trigger
 
 trigger是在满足某些条件后自动执行的sql，可以视为对数据库操作的监视或者说副作用。但是现代sql数据库流行的风格是不写trigger，下面列出了trigger的弊端和一些替代品。
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220402221052922.png" alt="image-20220402221052922" style="zoom:45%;" />
 
-# 第六章 数据库设计范式一
+## 第六章 数据库设计范式一
 
 本章主要介绍**Entity-Relationship Model**设计方式。不同于直接建表的做法，实际开发中我们更喜欢先用entity和relationship两类概念构建逻辑关系，再建表。
 
@@ -450,9 +456,9 @@ trigger是在满足某些条件后自动执行的sql，可以视为对数据库�
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411092249561.png" alt="image-20220411092249561" style="zoom:50%;" />
 
-## 补充定义
+### 补充定义
 
-### Attribute Type
+#### Attribute Type
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411082934800.png" alt="image-20220411082934800" style="zoom:40%;" />
 
@@ -462,13 +468,13 @@ trigger是在满足某些条件后自动执行的sql，可以视为对数据库�
 - 单值的和多值的
 - 派生的
 
-### Degree of Relationship
+#### Degree of Relationship
 
 某个关系与多少个Entity有关，就称它的Degree是多少。
 
 Degree大于2的relationship是很少见的。
 
-### Binary Relationship Type
+#### Binary Relationship Type
 
 - One to One
 - One to Many
@@ -477,9 +483,9 @@ Degree大于2的relationship是很少见的。
 
 根据两Entity之间的联系对二元关系进行分类。不同的二元关系会对随后建表的方式有影响。
 
-## E-R Diagram
+### E-R Diagram
 
-### Attribute
+#### Attribute
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411084206205.png" alt="image-20220411084206205" style="zoom:33%;" />
 
@@ -487,7 +493,7 @@ Degree大于2的relationship是很少见的。
 - 多值的属性用大括号表示
 - 派生的属性在后方加上括号抽象为函数
 
-### Entity-Relation
+#### Entity-Relation
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411084618951.png" alt="image-20220411084618951" style="zoom:40%;" />
 
@@ -495,7 +501,7 @@ Degree大于2的relationship是很少见的。
 - Relationship用菱形表示，其中的文字是Relationship的名字。
 - Relationship需要额外的属性时，用方框+**虚线**表示
 
-### 连线
+#### 连线
 
 - 单向箭头：多对一
 - 双向箭头：一对一
@@ -509,13 +515,13 @@ Degree大于2的relationship是很少见的。
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411084919250.png" alt="image-20220411084919250" style="zoom:33%;" />
 
-### Role
+#### Role
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411085102057.png" alt="image-20220411085102057" style="zoom:40%;" />
 
 Role是连线或者箭头的标签。关系对应的Entities应该是唯一的，当关系与某个实体有多重逻辑联系时就需要为表达逻辑联系的线或箭头加上标签作为区分。
 
-### Total Participation
+#### Total Participation
 
 如果相关实体中的每一个元素都参与了某个关系至少一次，就称这个关系是Total Parcitipation，否则称为Partial Participation。**完全参与的关系用双线标记菱形**。例如下图表示每个学期都有课，且每门课程都在某些学期中，这是一个完全参与的关系。
 
@@ -523,7 +529,7 @@ Role是连线或者箭头的标签。关系对应的Entities应该是唯一的�
 
 与之对比，本节之前出现的三E-R图张中的关系都是部分参与的。课程可以没有预修要求，导师可以不带任何学生。
 
-### Weak Entity Set
+#### Weak Entity Set
 
 没有主键的Entity Set称为Weak，它一般是为了增加复用性。但Weak Entity Set的存在需要外界帮助：
 
@@ -535,7 +541,7 @@ Role是连线或者箭头的标签。关系对应的Entities应该是唯一的�
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411085741235.png" alt="image-20220411085741235" style="zoom:40%;" />
 
-### 特殊的E-R图
+#### 特殊的E-R图
 
 - 可以继承
 
@@ -547,30 +553,30 @@ Role是连线或者箭头的标签。关系对应的Entities应该是唯一的�
 
 两者一般都是为了减少冗余，但这都只是特殊逻辑关系的简化表达，并不常见，完全可以用常规的图代替。
 
-## Reduction to Relational Schemas
+### Reduction to Relational Schemas
 
 本节中我们探讨如何根据E-R图建立数据库表结构。下面为推荐的实现方式，但是途径并不唯一。
 
-### Entity
+#### Entity
 
 - 每个实体至少一张表
 - 复合属性扁平化
 - 多值属性单独建表，外键连回去
 
-### Relationship
+#### Relationship
 
 - 带额外属性的Relationship单独建表
 - Many to Many必须单独建表
 - One to Many在Many侧加上One的主键，外键连回去
 - One to One任选一侧作Many，同上
 
-# 第七章 数据库设计范式二
+## 第七章 数据库设计范式二
 
 如果说前一章节描述了如何建立一个表，那么本章将着重于如何根据函数依赖判断一张表的好坏，以及如何拆分一张表。
 
 1NF～BCNF部分主要参考了：数据库第一二三范式到底在说什么？ - 刘慰的文章 - 知乎 https://zhuanlan.zhihu.com/p/20028672
 
-## Function Dependency
+### Function Dependency
 
 前面说到派生属性可以理解为函数，重点在于一对一的映射关系。相同的A一定有相同的B，记为$A\rightarrow B$，B可以视为A的派生属性，或者说B是A的函数依赖。
 
@@ -591,7 +597,7 @@ Role是连线或者箭头的标签。关系对应的Entities应该是唯一的�
 
 对R holds on F，取R1为R的一个子集，F中左右两侧的属性都在R1中的函数依赖组成的集合称为F在R1上的投影。
 
-### Closure of Function
+#### Closure of Function
 
 给定一个由函数依赖组成的集合$F$，它与它的所有推论组成的集合称为Closure of F，记为$F^+$，例如：
 $$
@@ -603,7 +609,7 @@ $$
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220413230359330.png" alt="image-20220413230359330" style="zoom: 33%;" />
 
-### Closure of Attribute
+#### Closure of Attribute
 
 给定一个由属性组成的集合$A$，它由函数集$F$中的依赖关系能够关联的属性组成的集合称为Closure of A under F，记为$A^+$，例如：
 
@@ -616,12 +622,12 @@ $$
 - 验证函数依赖是否成立（依赖属性是否在被依赖属性的闭包中）
 - 找函数的闭包（遍历属性的子集，挨个找闭包，闭包中多出来的属性就对原属性构成依赖）
 
-### Redundancy
+#### Redundancy
 
 - 在一个函数依赖集中，如果某一个依赖关系可以由其他依赖推得，那么他就是冗余的。
 - 在单个依赖关系中，如果去掉一个属性（左右两侧至少要留下一个），仍然可以由其关系集中的其他依赖推得原式，那么就称这一个属性是冗余的。冗余的属性也可以用**extraneous**形容，直译为多余的。
 
-### Canonical Cover
+#### Canonical Cover
 
 正则覆盖，记为$F_c$，指给定一组函数依赖F，去除所有冗余的函数依赖与属性后剩余的部分。将正则覆盖中所有左侧属性相同的依赖合并，剩余的部分称为**最小函数依赖集**，记为$F_m$。
 
@@ -632,13 +638,13 @@ $$
 3. **消除所有冗余属性：**因为经过第一步分解，依赖右侧只有一个属性，所以冗余属性一定在左侧。只需要逐一假设左侧某个属性是多余的，找左侧剩余属性的闭包，如果闭包内包含被假设多余的属性那么它的确是多余的。
 4. **如果第3步消除了至少一个冗余属性，回到2重新检查冗余依赖，如此循环直到找不出冗余属性。**
 
-## How to Find Candidate Key
+### How to Find Candidate Key
 
-### Primary Attribute
+#### Primary Attribute
 
 出现在至少一个candidate key中的属性称为主属性。反之为非主属性。
 
-#### 第一步-先找主属性
+##### 第一步-先找主属性
 
 先找出$F_c$或$F_m$，然后将所有属性分为以下四类：
 
@@ -647,16 +653,16 @@ $$
 - **N类：**没有在任何函数依赖中出现过，一定是主属性，且存在于任何一个候选码中
 - **LR类：**同时出现在了依赖两侧，**待定**
 
-### 第二步-找Candidate Key
+#### 第二步-找Candidate Key
 
 这里是根据$F_c\ or\ F_m$分类，可以直接将L类和N类属性合并，检查其是不是candidate key。如果是根据原始关系集F分类，那么还需要逐一对N类属性与L类的所有子集的并集检查是不是candidate key，并不建议这么做。
 
 - 如果仅靠L类和N类就可以确定candidate key，则不需要考虑LR类。
 - 如果L类与N类的并集不是candidate key，那么这个并集与LR类的所有子集逐一取并集检查是不是candidate key。确定一个candidate key后，真包含它的所有集合都不是candidate key，可以减少一些运算量。
 
-## Decomposition
+### Decomposition
 
-### Lossless Decomposition
+#### Lossless Decomposition
 
 假设表R被拆分为若干个表R1、R2……Rn，当且仅当R1 nature join R2…… nature join Rn等于R时，称这个这个拆分操作是无损的。
 
@@ -666,7 +672,7 @@ $$
 
 - 当分解为超过两个表时，使用判定表法：https://blog.csdn.net/weixin_42492218/article/details/106218720
 
-### Dependancy Presevation
+#### Dependancy Presevation
 
 假设表R被拆分为若干个表R1、R2……Rn，函数依赖集F中左右两侧的属性都在R1、R2……中的子集为F1、F2……，称为F在R1、R2……上的投影。当$F^+=F_1^+\cup F_2^+\cup...$时称这个拆分满足依赖保持.
 
@@ -674,11 +680,11 @@ $$
 
 第三范式是满足依赖保持的最高范式。
 
-## 第一范式
+### 第一范式
 
 要求每一个attribue的domain都是atomic的，不能继续分割，同时每一个relation都应该有primary key。这是所有关系型数据库最基础的范式要求。
 
-## 第二范式
+### 第二范式
 
 在第一范式的基础上，要求非主属性对所有candidate key不能有部分依赖。例如下面这个关系：
 
@@ -686,7 +692,7 @@ $$
 
 （学号，课名）是一个candidate key，但是姓名、系名都是对学号的函数依赖，即对候选键的部分依赖，所以上面这个数据库不满足第二范式，但是满足第一范式。
 
-## 第三范式
+### 第三范式
 
 在第二范式的基础上，要求非主属性对所有候选键不能有传递依赖。例如下面这个关系：
 
@@ -694,7 +700,7 @@ $$
 
 学号->系名->系主任是一个传递依赖关系，所以上面这个数据库不满足第三范式但是满足第二范式。
 
-### 分解为3NF
+#### 分解为3NF
 
 1. 找出$F_c\ or\ F_m$
 2. 找出所有candidate key
@@ -705,7 +711,7 @@ $$
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220413210604899.png" alt="image-20220413210604899" style="zoom:20%;" />
 
-## BCNF
+### BCNF
 
 在第三范式的基础上，要求主属性对所有候选键不能有部分依赖，或者通俗地说，对F+中的任意一组依赖关系$X\rightarrow Y$，X一定是candidate key之一。对下面这个例子：
 
@@ -725,7 +731,7 @@ $$
 - 管理（仓库名， 管理员）
 - 储存（仓库名，物品名，数量）
 
-### 分解为BCNF
+#### 分解为BCNF
 
 1. 如果一个集合满足BCNF，返回它本身
 2. **对违反范式的依赖关系（注意四个范式是层层递进的，不仅要检查BCNF，还要检查123NF）**，假设为X→Y，计算X+
@@ -733,11 +739,11 @@ $$
 4. 求R1和R2的FD集，分别记为S1和S2，递归地检查R1和R2是否满足BCNF
 5. 这些分解得到每一个小集合一张表
 
-# 十二章 物理储存介质
+## 十二章 物理储存介质
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427111506198.png" alt="image-20220427111506198" style="zoom:45%;" />
 
-## 储存的分类
+### 储存的分类
 
 **储存可以根据易失性分为：**
 
@@ -756,7 +762,7 @@ $$
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427102240054.png" alt="image-20220427102240054" style="zoom:45%;" />
 
-## 磁盘性能评价
+### 磁盘性能评价
 
 **磁盘性能从以下维度评价：**
 
@@ -776,15 +782,15 @@ $$
 - File Organization 针对HDD，文件整理，使数据分布尽可能有序
 - Wear Leveling 针对NVM和SSD，因为擦写寿命相对有限，需要实现负载均衡
 
-# 十三章 数据储存结构
+## 十三章 数据储存结构
 
 一方面，你如何储存一个数据库，是每一张表对应一个文件，还是一个数据库对应一个大文件，还是其他的实现方式？在特定实现方式上怎么优化增删查改？
 
 另一方面你的数据结构怎么与储存介质相配合优化，比如最重要的怎么以扇区为单位大小读写？
 
-## 单条记录
+### 单条记录
 
-### 定长数据
+#### 定长数据
 
 按行存放（**Row-Oriented Storage**）的定长数据的增查改都容易实现，删除一般有两种方式：
 
@@ -801,7 +807,7 @@ $$
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427135738878.png" alt="image-20220427135738878" style="zoom:55%;" />
 
-### 不定长数据
+#### 不定长数据
 
 - 用null-bit map解决允许为NULL的数据储存。n个允许为空的属性需要n个bit的空位图，空位图中某一bit为0/1意味着对应的属性不是/是空的。
 
@@ -817,7 +823,7 @@ $$
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427105742228.png" alt="image-20220427105742228" style="zoom:45%;" />
 
-## 数据页
+### 数据页
 
 定长数据非常容易构建数据页。
 
@@ -829,13 +835,13 @@ $$
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427110832599.png" alt="image-20220427110832599" style="zoom:40%;" />
 
-## 文件组织
+### 文件组织
 
 需要设计单条数据和数据页如何分布在文件内部。下图是几种常见的结构：
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427113558547.png" alt="image-20220427113558547" style="zoom:45%;" />
 
-### Heap
+#### Heap
 
 Heap常用的优化方式是Free-space map，剩余空间图中的元素表示对应的block中还有多少剩余空间。例如下图中first level表示从第0个块开始，块内剩余空间分别为4、2、1、4、7...个单位。
 
@@ -843,7 +849,7 @@ Heap常用的优化方式是Free-space map，剩余空间图中的元素表示�
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427114314620.png" alt="image-20220427114314620" style="zoom:60%;" />
 
-### Sequential
+#### Sequential
 
 这里的Sequential不是指储存空间上有序，而是指每一条数据逻辑关系上有序。在数据经常按某种排序先后取用时，可以考虑顺序文件系统。先后逻辑一般用类似指针的结构实现。
 
@@ -855,21 +861,21 @@ Heap常用的优化方式是Free-space map，剩余空间图中的元素表示�
 
 因为存在上图所示问题，在多次插入和删除之后指针系统会变得很低效，因此顺序文件系统需要适时Reorganize。
 
-### Multitable Clustering
+#### Multitable Clustering
 
 例如一个班级，我可以同时维护姓名排序、学号排序、成绩排序三张表供不同的场合使用。Multitable Clustering File Organization就是这么做的。同时维护多个不同结构的文件（一个大文件内部分为不同部分同理），视请求决定应该使用哪一个。
 
 这可以提高查找的速度，但也意味着成倍的空间和增删改成本。
 
-### Table Partitioning
+#### Table Partitioning
 
 某一些表可以从物理上分为多个文件以配合实际使用情况。例如选课信息表，虽然从逻辑上所有学年的选课信息都在同一张表上，但是因为往年的数据几乎不需要增删查改，数据操作集中于当前学年，所以按照学年物理划分为多个储存文件将有助于提高性能。
 
-### B+ Tree File Index
+#### B+ Tree File Index
 
 B+树不仅可以作为索引的结构，还可以直接作为文件组织的结构。在下一章中会进行介绍。
 
-## Data Dictionary Storage
+### Data Dictionary Storage
 
 上面的三类文件组织都是对库中的实例而言的，但是数据库还有一些框架性的全局的信息需要储存，我们称为Metadata。
 
@@ -879,7 +885,7 @@ B+树不仅可以作为索引的结构，还可以直接作为文件组织的结
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427135142957.png" alt="image-20220427135142957" style="zoom:40%;" />
 
-## Buffer Management
+### Buffer Management
 
 最常用的是LUR策略，（**L.east R.ecently U.sed Stratergy**），即根据“最近访问过的内容更有可能再次被访问”的原则管理缓存内容。需要理解下图所示buffer的变化：
 
@@ -889,13 +895,13 @@ B+树不仅可以作为索引的结构，还可以直接作为文件组织的结
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220502162913758.png" alt="image-20220502162913758" style="zoom:40%;" />
 
-# 十四章 索引
+## 十四章 索引
 
 索引的基本结构如下，注意这里的指针是对储存文件而言的，和内存指针略有不同。
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220502163411215.png" alt="image-20220502163411215" style="zoom:50%;" />
 
-## 顺序/无序索引
+### 顺序/无序索引
 
 指key有一定顺序的索引。与之对应的，典型的非顺序作引例如哈希索引。顺序索引可以根据不同的排序规则进一步分类：
 
@@ -909,7 +915,7 @@ B+树不仅可以作为索引的结构，还可以直接作为文件组织的结
     
     但是当原表发生了变化，所有与之相关的辅助索引指针（以偏移量形式实现）都需要更新，所以Secondary Index的另一种实现方式是存放对应记录主键的值而不是二级指针，建立与主索引的映射关系。
 
-## 稠密/稀疏索引
+### 稠密/稀疏索引
 
 Dence Index指每一个tuple都有索引。
 
@@ -921,7 +927,7 @@ Dence Index指每一个tuple都有索引。
 
 稀疏索引可以多级嵌套，配合顺序索引就是B+树（还要求节点半满不然应该合并）。
 
-## B+树索引
+### B+树索引
 
 下面是一个B+树索引的例子。
 
@@ -937,7 +943,7 @@ $$
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220529134912186.png" alt="image-20220529134912186" style="zoom:70%;" />
 
-## 相关优化
+### 相关优化
 
 - 批量插入：
 
@@ -965,7 +971,7 @@ $$
     
         <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220503203714854.png" alt="image-20220503203714854" style="zoom:40%;" />
 
-# 十五章 查询操作
+## 十五章 查询操作
 
 对数据库的任何一个查询操作都大致可以分为一下三个步骤：
 
@@ -975,7 +981,7 @@ $$
 
 本章的目的是介绍三种最常用的查询语句内部可供选择的实现方法，以及对应的复杂度计算，最后简要介绍语句存在复杂嵌套时的流水线执行方法。
 
-## Seek
+### Seek
 
 Seek时间包含磁盘寻道（ts）和数据读取（tr）两部分开销。根据经验，对HDD，一次寻道所需的时间约等于40单位数据读取所需的时间，而对SSD这个数字大约是10。
 
@@ -987,15 +993,15 @@ Seek时间包含磁盘寻道（ts）和数据读取（tr）两部分开销。根
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/IMG_783C25A55D82-1.jpeg" alt="IMG_783C25A55D82-1" style="zoom: 50%;" />
 
-### 详解
+#### 详解
 
-#### A1 (Linear Scan)
+##### A1 (Linear Scan)
 
 即线性搜索，每一次seek所需的最坏时间是$b_r\times t_r+t_s$，其中br是总数据量。
 
 意义是，如果假定所有数据顺序存放，顺序查找只需要一次寻道，但是可能需要完整读取所有数据才能找到所查找的量。
 
-#### A2/A3 (Primary Index Scan)
+##### A2/A3 (Primary Index Scan)
 
 本节讨论查询的条件包含主键的情况。
 
@@ -1007,7 +1013,7 @@ Seek时间包含磁盘寻道（ts）和数据读取（tr）两部分开销。根
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220507185140262.png" alt="image-20220507185140262" style="zoom:45%;" />
 
-#### A4 (Secondary Index scan)
+##### A4 (Secondary Index scan)
 
 利用辅助索引进行搜索。
 
@@ -1017,7 +1023,7 @@ Seek时间包含磁盘寻道（ts）和数据读取（tr）两部分开销。根
 
     <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220507185649613.png" alt="image-20220507185649613" style="zoom:45%;" />
 
-#### A5/A6 (Scan With Comparison)
+##### A5/A6 (Scan With Comparison)
 
 本节讨论的是含单一比较条件的查询。
 
@@ -1029,13 +1035,13 @@ Seek时间包含磁盘寻道（ts）和数据读取（tr）两部分开销。根
 
     <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220507190158968.png" alt="image-20220507190158968" style="zoom:45%;" />
 
-#### A7/A8/A9 (Scan With Complex Comparisons)
+##### A7/A8/A9 (Scan With Complex Comparisons)
 
 本节讨论的是比较条件较为复杂时的做法，了解即可。
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220507190336139.png" alt="image-20220507190336139" style="zoom:45%;" />
 
-## Sort
+### Sort
 
 归并排序是DBMS中最常用的排序方法，它分组进行、并行性好的特性非常适合数据量很大的场合。本节着重讨论归并排序的开销。
 
@@ -1049,9 +1055,9 @@ Seek时间包含磁盘寻道（ts）和数据读取（tr）两部分开销。根
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508120131954.png" alt="image-20220508120131954" style="zoom:50%;" />
 
-## Join
+### Join
 
-### Nested-Loop Join
+#### Nested-Loop Join
 
 以tuple为外关系的单位进行Join
 
@@ -1059,7 +1065,7 @@ Seek时间包含磁盘寻道（ts）和数据读取（tr）两部分开销。根
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508121513548.png" alt="image-20220508121513548" style="zoom:33%;" />
 
-### Block Nested-Loop Join
+#### Block Nested-Loop Join
 
 仍然是循环结构，但是以block为外关系的单位。
 
@@ -1071,20 +1077,20 @@ Seek时间包含磁盘寻道（ts）和数据读取（tr）两部分开销。根
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508121904940.png" alt="image-20220508121904940" style="zoom:33%;" />
 
-### Indexed Nested-Loop Join
+#### Indexed Nested-Loop Join
 
 join需要匹配的量如果编制了索引，join的做法可以从遍历变为查找。利用索引进行join的复杂度主要取决于nr的大小。
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508122039944.png" alt="image-20220508122039944" style="zoom: 50%;" />
 
 其中c指利用索引seek的开销，视索引的种类而定。
-### Merge Join
+#### Merge Join
 
 用类似归并排序的方法进行join，注意这里讨论的是两张表中按需要匹配的列顺序存放的情况，如果不是则还要先排序。其中bb是各自使用的缓冲块的数量，实际join双方使用的缓冲块数量可以不相等。
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508122509781.png" alt="image-20220508122509781" style="zoom:33%;" />
 
-### Hash Join
+#### Hash Join
 
 哈希join是为join中需要匹配的属性编制哈希表，然后逐哈希表分块进行。比较特别的是，哈希分块的大小和block大小不一定匹配，会有空间的浪费，因此计算分块数量时需要补一个修正因子。
 
@@ -1102,7 +1108,7 @@ join需要匹配的量如果编制了索引，join的做法可以从遍历变为
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508125807655.png" alt="image-20220508125807655" style="zoom: 33%;" />
 
-## Pipeline
+### Pipeline
 
 流水线是每一条查询操作内部的抽象实现方式。
 
@@ -1114,7 +1120,7 @@ join需要匹配的量如果编制了索引，join的做法可以从遍历变为
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508131646363.png" alt="image-20220508131646363" style="zoom:33%;" />
 
-# 十六章 查询优化
+## 十六章 查询优化
 
 对数据库的任何一个查询操作都大致可以分为一下三个步骤：
 
@@ -1130,7 +1136,7 @@ join需要匹配的量如果编制了索引，join的做法可以从遍历变为
 
 2. 快速估算每一种执行方案的复杂度并选其中最优的一种
 
-## Equivalence Rules
+### Equivalence Rules
 
 常用的逻辑层面的等价关系有：
 
@@ -1193,13 +1199,13 @@ join需要匹配的量如果编制了索引，join的做法可以从遍历变为
 
 实际使用中往往是引用经验式的规则，想要列出所有可能的实现逻辑一般是不可能的。
 
-## Statistical Cost Estimation
+### Statistical Cost Estimation
 
 以下是常用的用于估算复杂度的表信息，对数据库中的表这些数据往往是现成并且定期更新的，难点在于中间结果的信息估算。
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516203128145.png" alt="image-20220516203128145" style="zoom:50%;" />
 
-### Selection Size Estimation
+#### Selection Size Estimation
 
 - 单个属性选择认为数据均匀分布：
     - 等于条件查询，$\frac{返回Size}{整个表Size}=\frac{1}{查询条件总数}$
@@ -1208,7 +1214,7 @@ join需要匹配的量如果编制了索引，join的做法可以从遍历变为
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516204056582.png" alt="image-20220516204056582" style="zoom:50%;" />
 
-### Join Size Estimation
+#### Join Size Estimation
 
 - 两张表没有用于匹配的列时，返回大小是两者大小之积
 
@@ -1220,19 +1226,19 @@ join需要匹配的量如果编制了索引，join的做法可以从遍历变为
 
 - 两张表用于匹配的列是其一的Key时，返回值不大于另一张表的大小
 
-### Other Estimations
+#### Other Estimations
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516205048326.png" alt="image-20220516205048326" style="zoom:50%;" />
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516205108732.png" alt="image-20220516205108732" style="zoom:50%;" />
 
-### Estimation of Distinct Value
+#### Estimation of Distinct Value
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516205443571.png" alt="image-20220516205443571" style="zoom:50%;" />
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516205453043.png" alt="image-20220516205453043" style="zoom:50%;" />
 
-## Cost Base Optimize
+### Cost Base Optimize
 
 主要思想如下：
 
@@ -1243,7 +1249,7 @@ join需要匹配的量如果编制了索引，join的做法可以从遍历变为
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516211342064.png" alt="image-20220516211342064" style="zoom:50%;" />
 
-### Join-Order Selection
+#### Join-Order Selection
 
 连续Join的顺序选择是最经典的一类优化问题。
 
@@ -1261,13 +1267,13 @@ join需要匹配的量如果编制了索引，join的做法可以从遍历变为
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516213946420.png" alt="image-20220516213946420" style="zoom:50%;" />
 
-### Heuristic Optimize
+#### Heuristic Optimize
 
 使用一般性的经验做启发性的优化，本节了解常见的优化习惯即可。
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516214112004.png" alt="image-20220516214112004" style="zoom:50%;" />
 
-### Nested Subqueries Optimize
+#### Nested Subqueries Optimize
 
 首先了解**相关变量**和**相关执行**两个词的含义：
 
@@ -1284,7 +1290,7 @@ join需要匹配的量如果编制了索引，join的做法可以从遍历变为
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516215306548.png" alt="image-20220516215306548" style="zoom:50%;" />
 
-## Materialized View Maintainance
+### Materialized View Maintainance
 
 差分维护：只需要处理更新的tuple与其他表的数据关系即可，不需要全体重新计算。下图中ir、dr指新加入、新删除的tuple，有其他关系代数的view处理逻辑也是相同的，在此仅用最简单的Join做例子。
 
@@ -1292,11 +1298,11 @@ join需要匹配的量如果编制了索引，join的做法可以从遍历变为
 
 维护含Aggregate Operation的view注意有时需要额外维护过程量，例如view中有平均值时可以额外维护sum和count便于后续有插入和删除时能够差分更新而不需要全表重新统计。
 
-# 十七章 Transaction
+## 十七章 Transaction
 
 Transaction直译为事物，是一次数据库操作若干执行操作组成的抽象概念。Transaction的提出是为了维护数据的完整性。
 
-## ACID
+### ACID
 
 Transation的实现要求四个特性**ACID**：
 
@@ -1320,7 +1326,7 @@ Transation的实现要求四个特性**ACID**：
 
 **ACID中最难实现的是并发控制**，这也是本章的重点内容。
 
-## 并发控制
+### 并发控制
 
 首先引入**Schedule**的概念：指并发Transaction的各个子操作在DBMS内部的具体执行步骤。
 
@@ -1336,7 +1342,7 @@ Transation的实现要求四个特性**ACID**：
 
     <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519145927738.png" alt="image-20220519145927738" style="zoom:50%;" />
 
-## Schedule Serialize
+### Schedule Serialize
 
 本书并不考虑多条指令并发的“真·并行调度”，只关注我们以什么策略来生成单条执行序列。
 
@@ -1344,7 +1350,7 @@ Transation的实现要求四个特性**ACID**：
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519163515566.png" alt="image-20220519163515566" style="zoom:40%;" />
 
-### Conflict Serializability
+#### Conflict Serializability
 
 - 如果S可以通过交换相互不冲突的语句转换为S‘，或者说S与S‘所有相互冲突的Instructions以相同的顺序排列，称S和S‘是**冲突等价（conflict equivalent）**的。
 
@@ -1360,7 +1366,7 @@ Transation的实现要求四个特性**ACID**：
 
 - 当以一个并发调度序列中，如果一个txn从另外一个调txn的结果中读取数据，那么它应该在另外txn的commit之后commit。满足这一条件的调度称为**Recoverable可恢复的**。
 
-## Precedence Graph
+### Precedence Graph
 
 当且仅当Precidence图中无环（注意这是有向图的环）时，某个schedule是冲突可串的。
 
@@ -1372,17 +1378,17 @@ Transation的实现要求四个特性**ACID**：
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220525100614094.png" alt="image-20220525100614094" style="zoom:50%;" />
 
-## Trade Off
+### Trade Off
 
 第一节中就提到了，串行调度数据安全性强而性能弱，并行调度反之。实际使用中这往往不是一个选择题，而是取折中的问题。下面列出了常见的四种并行化的层次。
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519164900362.png" alt="image-20220519164900362" style="zoom:50%;" />
 
-# 十八章 并发控制
+## 十八章 并发控制
 
 前一章从调度原理上介绍了并发控制，而本章是讲解其具体的实现步骤。
 
-## Lock-Based Protocols
+### Lock-Based Protocols
 
 锁是Transaction对某个数据的权限申请，由并发管理器控制。
 
@@ -1391,13 +1397,13 @@ Transation的实现要求四个特性**ACID**：
 
 根据上述逻辑，对某一块数据，没有X锁时可以分享多把S锁给不同Transaction，但是存在一把X锁后就不能再有任何其他锁。这种做法一定程度上避免了混乱的读写。
 
-### 内部实现
+#### 内部实现
 
 锁策略一般的是Lock Table实现，用哈希表归类数据，每个数据下辖链表储存当前锁的情况。例如下图中17数据派锁给T23，123数据派锁给T1、T8而T2在等待。
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220522100650187.png" alt="image-20220522100650187" style="zoom:40%;" />
 
-### 常见问题
+#### 常见问题
 
 - **Dead Lock**：锁协议最大的问题是死锁不能被完全避免。
 
@@ -1405,7 +1411,7 @@ Transation的实现要求四个特性**ACID**：
 
 - **Startvation**：另一种常见的情况是，派出了过多的S锁，导致出现一个X锁请求时，必须等待此前S锁全部收回，造成时间浪费。
 
-### Two-phase Lock Protocols
+#### Two-phase Lock Protocols
 
 为了解决各个Transaction在任意时刻随意加锁解锁带来前一节中提到的问题，出现了二阶段的锁策略：
 
@@ -1431,7 +1437,7 @@ Transation的实现要求四个特性**ACID**：
 
 - **Rigorous Two-phase Locking**：一个Transaction会保留它的所有锁直到commit/abort之前。 
 
-### Tree-Based Protocol
+#### Tree-Based Protocol
 
 树协议的要求是：
 
@@ -1454,7 +1460,7 @@ Transation的实现要求四个特性**ACID**：
 
 - 有时会给不需要访问的数据项加锁（要求先给父节点加锁），会增加锁开销
 
-## Multiple Granularity
+### Multiple Granularity
 
 Granularity译为粒度。锁协议相关内容中，我们将加锁的对象泛指为“数据”，但是实际上“数据“指代的内容量可大可小，下图便是一个例子，从整个数据库到每一个tuple，可以用一个树型结构表示。其中的每一个节点都可以视为“数据”。
 
@@ -1470,7 +1476,7 @@ Granularity译为粒度。锁协议相关内容中，我们将加锁的对象泛
     - IS/IX可以共存。某数据上IS、IX两把锁都存在时，习惯上合并写为SIX
     - <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220529155708270.png" alt="image-20220529155708270" style="zoom:50%;" />
 
-## Handling Deadlock
+### Handling Deadlock
 
 死锁是锁协议必须要解决的问题。解决思路一般有：
 
@@ -1485,15 +1491,15 @@ Granularity译为粒度。锁协议相关内容中，我们将加锁的对象泛
 - **Wound-wait Scheme**：两个事务相互死锁，先开始的回滚给后开始的让路
     - 缺点是先开始一般意味着已经执行的操作更多，所以回滚的成本更高
 
-## 检测死锁
+### 检测死锁
 
 用类似前序图的等待图关联各个事务。箭头从Ti指向Tj意味着Ti正在等待Tj解锁某个数据，自己才能加锁以继续执行操作。注意与前序图不同的是，前序图随Schedule的确定而确定，执行过程中不会变化；而等待图在运行过程中时时可能改动。
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220529174421930.png" alt="image-20220529174421930" style="zoom:50%;" />
 
-# 十九章 错误恢复
+## 十九章 错误恢复
 
-## 日志
+### 日志
 
 对每一个事务的每一个write做记录：
 
@@ -1511,7 +1517,7 @@ Granularity译为粒度。锁协议相关内容中，我们将加锁的对象泛
 
 本书中我们只讨论immediate的做法。
 
-## 日志恢复
+### 日志恢复
 
 - **Undo**：指Transaction未Commit时的回滚，需要对每一个写操作利用上面的四元组做回滚，它保证了数据库的原子性。
     - **Undo按时间倒序做**
@@ -1534,7 +1540,7 @@ Granularity译为粒度。锁协议相关内容中，我们将加锁的对象泛
 
 多个Transaction同时回滚时先将未完成的Undo再将已完成的Redo。
 
-### Check Point
+#### Check Point
 
 上面说到，一种需要Redo的典型场景是Commit后一段时间里新数据可能还在buff里没有写入Disk，这时如果发生断电就需要利用Redo Log来保障数据持久性。但是这也带来一个问题，数据在buff中的时间是有限的，迟早会进入非易失的存储器中，Redo已经进入Disk的事务是浪费。
 
@@ -1546,7 +1552,7 @@ Granularity译为粒度。锁协议相关内容中，我们将加锁的对象泛
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220601164936523.png" alt="image-20220601164936523" style="zoom:50%;" />
 
-### Fuzzy Check Point
+#### Fuzzy Check Point
 
 常规Check Point写disk时会停止Schedule造成性能浪费，因此有了Fuzzy Checkpoint这一改进策略：
 
@@ -1562,7 +1568,7 @@ Granularity译为粒度。锁协议相关内容中，我们将加锁的对象泛
 
 从指针指向的Check Point作为恢复的起点即可。
 
-### Log Buffer
+#### Log Buffer
 
 上面提到我们总是希望日志被写到Disk中以保证数据可靠，但是这样会对Disk造成很大的压力，所以Log也需要Buffer。
 
@@ -1574,14 +1580,14 @@ Granularity译为粒度。锁协议相关内容中，我们将加锁的对象泛
 
 这样仍然保证了Log一定先于Data进入磁盘，所以不影响安全性。
 
-## 磁盘恢复
+### 磁盘恢复
 
 前一节主要解决回滚的实现和易失性存储入Mem的恢复。现在非易失性储存入Disk失效时的恢复：
 
 - 定期拷贝磁盘作为备份，称Dump
 - 类似于Check Point之于内存，恢复时找到最近的Dump和恢复Log，只做Redo
 
-## Logical Undo
+### Logical Undo
 
 例如插入索引，新建表等操作，是不能用此前提到的记录数据块新旧值的方法来做Undo的。要Undo这些操作，我们需要为每一个操作定义一个反操作，例如插入索引对删除索引，新建表对Drop表等，Undo某个操作即执行它的反操作。这就是Logical Undo。**因为反操作是一个相对独立的操作，所以有Logical Undo对提前释放锁有帮助。**
 
@@ -1591,15 +1597,15 @@ Logical Undo和Physical Undo又可以相嵌套。
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220601194658127.png" alt="image-20220601194658127" style="zoom:50%;" />
 
-## ARIES
+### ARIES
 
 **Log Sequence Number (LSN)** 可以看作是Log的身份证号。 
 
-### Physiological Redo
+#### Physiological Redo
 
 合并多次Redo。例如两个事务将A从500改到600，又从600改到800，两者都commit后Redo Log可以合一为A从500到800，这对恢复没有影响。这种做法被称为半逻辑Redo，指不像逻辑Undo一样独立，但也不是完全物理的Redo。
 
-### ARIES Data Structure
+#### ARIES Data Structure
 
 - Buff和Disk中的每一个页都保存其数据对应的最新的LSN。
 - Dirty Page Table中PageID是当前所有的脏页，PageLSN是更改PageID数据的最新LSN，**RecLSN是写Disk之后改Buff的最早的一条Log的LSN。**
@@ -1610,7 +1616,7 @@ Logical Undo和Physical Undo又可以相嵌套。
 
 <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220601202354910.png" alt="image-20220601202354910" style="zoom:50%;" />
 
-### ARIES具体步骤
+#### ARIES具体步骤
 
 1. 一般的Check Point
 
