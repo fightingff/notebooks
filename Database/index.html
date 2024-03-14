@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#fork-yile-liu" class="md-skip">
+        <a href="#database" class="md-skip">
           Skip to content
         </a>
       
@@ -391,6 +391,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Database
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -400,6 +411,1813 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      第二章 数据库概念
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第二章 数据库概念">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      概念引入
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="概念引入">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Relation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relation-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relation Schema
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relation-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relation Instance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tuple" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tuple
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attribute" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attribute
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Attribute">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Domain
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#atomic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Atomic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#null" class="md-nav__link">
+    <span class="md-ellipsis">
+      NULL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#superkey" class="md-nav__link">
+    <span class="md-ellipsis">
+      Superkey
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#candidate-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Candidate Key
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#primary-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Primary Key
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#foreign-key-constraint" class="md-nav__link">
+    <span class="md-ellipsis">
+      Foreign Key Constraint
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schema Diagram
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      关系代数
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="关系代数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      基础操作
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="基础操作">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#and-or-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      And Or Not
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#select" class="md-nav__link">
+    <span class="md-ellipsis">
+      Select
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Project
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#union" class="md-nav__link">
+    <span class="md-ellipsis">
+      Union（集合的加法）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set-difference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Set Difference（集合的减法）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cartesian-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cartesian-Product（集合的乘法）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rename" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rename
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      复合操作
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="复合操作">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set-insertion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Set-Insertion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assignment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#division" class="md-nav__link">
+    <span class="md-ellipsis">
+      Division
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      代数操作
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      第三章 SQL基础
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第三章 SQL基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sql_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      SQL数据类型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sql_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      SQL语句
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SQL语句">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      前言
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#select_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      select
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#as" class="md-nav__link">
+    <span class="md-ellipsis">
+      as
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#string" class="md-nav__link">
+    <span class="md-ellipsis">
+      string
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unionintersectexcept" class="md-nav__link">
+    <span class="md-ellipsis">
+      union/intersect/except
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-by" class="md-nav__link">
+    <span class="md-ellipsis">
+      group by
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wherehaving" class="md-nav__link">
+    <span class="md-ellipsis">
+      where/having
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#null_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      NULL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#someall" class="md-nav__link">
+    <span class="md-ellipsis">
+      some/all
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with" class="md-nav__link">
+    <span class="md-ellipsis">
+      with
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sql_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      第四章 SQL进阶
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第四章 SQL进阶">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#join_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Join详解
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#view" class="md-nav__link">
+    <span class="md-ellipsis">
+      View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index" class="md-nav__link">
+    <span class="md-ellipsis">
+      Index
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integrity-constraint" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integrity Constraint
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      特殊数据类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="特殊数据类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#time" class="md-nav__link">
+    <span class="md-ellipsis">
+      time
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#large-number" class="md-nav__link">
+    <span class="md-ellipsis">
+      large number
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      权限
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sql_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      第五章 高级SQL
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第五章 高级SQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sql-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      SQL Injection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stored-procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stored Procedure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trigger
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      第六章 数据库设计范式一
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第六章 数据库设计范式一">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      补充定义
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="补充定义">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attribute-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attribute Type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#degree-of-relationship" class="md-nav__link">
+    <span class="md-ellipsis">
+      Degree of Relationship
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#binary-relationship-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binary Relationship Type
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-r-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      E-R Diagram
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="E-R Diagram">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attribute_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attribute
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entity-relation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entity-Relation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      连线
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#role" class="md-nav__link">
+    <span class="md-ellipsis">
+      Role
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#total-participation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Total Participation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weak-entity-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      Weak Entity Set
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-r" class="md-nav__link">
+    <span class="md-ellipsis">
+      特殊的E-R图
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reduction-to-relational-schemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reduction to Relational Schemas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reduction to Relational Schemas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#entity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relationship" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relationship
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      第七章 数据库设计范式二
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第七章 数据库设计范式二">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-dependency" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Dependency
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function Dependency">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#closure-of-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Closure of Function
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#closure-of-attribute" class="md-nav__link">
+    <span class="md-ellipsis">
+      Closure of Attribute
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redundancy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redundancy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#canonical-cover" class="md-nav__link">
+    <span class="md-ellipsis">
+      Canonical Cover
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-find-candidate-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Find Candidate Key
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How to Find Candidate Key">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-attribute" class="md-nav__link">
+    <span class="md-ellipsis">
+      Primary Attribute
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Primary Attribute">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      第一步-先找主属性
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-candidate-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      第二步-找Candidate Key
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decomposition
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decomposition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lossless-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lossless Decomposition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependancy-presevation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dependancy Presevation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      第一范式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      第二范式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      第三范式
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第三范式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3nf" class="md-nav__link">
+    <span class="md-ellipsis">
+      分解为3NF
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bcnf" class="md-nav__link">
+    <span class="md-ellipsis">
+      BCNF
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BCNF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bcnf_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      分解为BCNF
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      十二章 物理储存介质
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十二章 物理储存介质">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      储存的分类
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      磁盘性能评价
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      十三章 数据储存结构
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十三章 数据储存结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      单条记录
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="单条记录">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      定长数据
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      不定长数据
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      数据页
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      文件组织
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="文件组织">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#heap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Heap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequential" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sequential
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multitable-clustering" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multitable Clustering
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-partitioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table Partitioning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-tree-file-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      B+ Tree File Index
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-dictionary-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Dictionary Storage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buffer-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Buffer Management
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      十四章 索引
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十四章 索引">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      顺序/无序索引
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      稠密/稀疏索引
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      B+树索引
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      相关优化
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      十五章 查询操作
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十五章 查询操作">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#seek" class="md-nav__link">
+    <span class="md-ellipsis">
+      Seek
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Seek">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    <span class="md-ellipsis">
+      详解
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a1-linear-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      A1 (Linear Scan)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a2a3-primary-index-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      A2/A3 (Primary Index Scan)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a4-secondary-index-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      A4 (Secondary Index scan)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a5a6-scan-with-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      A5/A6 (Scan With Comparison)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a7a8a9-scan-with-complex-comparisons" class="md-nav__link">
+    <span class="md-ellipsis">
+      A7/A8/A9 (Scan With Complex Comparisons)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sort
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#join_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Join
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Join">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nested-loop-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nested-Loop Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#block-nested-loop-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Block Nested-Loop Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#indexed-nested-loop-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Indexed Nested-Loop Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merge-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Merge Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hash-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hash Join
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    <span class="md-ellipsis">
+      十六章 查询优化
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十六章 查询优化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#equivalence-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Equivalence Rules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#statistical-cost-estimation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Statistical Cost Estimation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Statistical Cost Estimation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selection-size-estimation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Selection Size Estimation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#join-size-estimation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Join Size Estimation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-estimations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other Estimations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estimation-of-distinct-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estimation of Distinct Value
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cost-base-optimize" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cost Base Optimize
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cost Base Optimize">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#join-order-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Join-Order Selection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heuristic-optimize" class="md-nav__link">
+    <span class="md-ellipsis">
+      Heuristic Optimize
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nested-subqueries-optimize" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nested Subqueries Optimize
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#materialized-view-maintainance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Materialized View Maintainance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      十七章 Transaction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十七章 Transaction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#acid" class="md-nav__link">
+    <span class="md-ellipsis">
+      ACID
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    <span class="md-ellipsis">
+      并发控制
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schedule-serialize" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schedule Serialize
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Schedule Serialize">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conflict-serializability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conflict Serializability
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#precedence-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Precedence Graph
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trade-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trade Off
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    <span class="md-ellipsis">
+      十八章 并发控制
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十八章 并发控制">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lock-based-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lock-Based Protocols
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lock-Based Protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_35" class="md-nav__link">
+    <span class="md-ellipsis">
+      内部实现
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_36" class="md-nav__link">
+    <span class="md-ellipsis">
+      常见问题
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#two-phase-lock-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two-phase Lock Protocols
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tree-based-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tree-Based Protocol
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-granularity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multiple Granularity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handling-deadlock" class="md-nav__link">
+    <span class="md-ellipsis">
+      Handling Deadlock
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_37" class="md-nav__link">
+    <span class="md-ellipsis">
+      检测死锁
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_38" class="md-nav__link">
+    <span class="md-ellipsis">
+      十九章 错误恢复
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十九章 错误恢复">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_39" class="md-nav__link">
+    <span class="md-ellipsis">
+      日志
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_40" class="md-nav__link">
+    <span class="md-ellipsis">
+      日志恢复
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="日志恢复">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#check-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check Point
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fuzzy-check-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fuzzy Check Point
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log-buffer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Log Buffer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_41" class="md-nav__link">
+    <span class="md-ellipsis">
+      磁盘恢复
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logical-undo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logical Undo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aries" class="md-nav__link">
+    <span class="md-ellipsis">
+      ARIES
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ARIES">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#physiological-redo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Physiological Redo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aries-data-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      ARIES Data Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aries_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ARIES具体步骤
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -605,6 +2423,1802 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      第二章 数据库概念
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第二章 数据库概念">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      概念引入
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="概念引入">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Relation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relation-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relation Schema
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relation-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relation Instance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tuple" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tuple
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attribute" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attribute
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Attribute">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Domain
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#atomic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Atomic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#null" class="md-nav__link">
+    <span class="md-ellipsis">
+      NULL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#superkey" class="md-nav__link">
+    <span class="md-ellipsis">
+      Superkey
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#candidate-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Candidate Key
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#primary-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Primary Key
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#foreign-key-constraint" class="md-nav__link">
+    <span class="md-ellipsis">
+      Foreign Key Constraint
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schema Diagram
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      关系代数
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="关系代数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      基础操作
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="基础操作">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#and-or-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      And Or Not
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#select" class="md-nav__link">
+    <span class="md-ellipsis">
+      Select
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Project
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#union" class="md-nav__link">
+    <span class="md-ellipsis">
+      Union（集合的加法）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set-difference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Set Difference（集合的减法）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cartesian-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cartesian-Product（集合的乘法）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rename" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rename
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      复合操作
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="复合操作">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set-insertion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Set-Insertion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assignment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#division" class="md-nav__link">
+    <span class="md-ellipsis">
+      Division
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      代数操作
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      第三章 SQL基础
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第三章 SQL基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sql_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      SQL数据类型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sql_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      SQL语句
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SQL语句">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      前言
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#select_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      select
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#as" class="md-nav__link">
+    <span class="md-ellipsis">
+      as
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#string" class="md-nav__link">
+    <span class="md-ellipsis">
+      string
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unionintersectexcept" class="md-nav__link">
+    <span class="md-ellipsis">
+      union/intersect/except
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-by" class="md-nav__link">
+    <span class="md-ellipsis">
+      group by
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wherehaving" class="md-nav__link">
+    <span class="md-ellipsis">
+      where/having
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#null_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      NULL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#someall" class="md-nav__link">
+    <span class="md-ellipsis">
+      some/all
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with" class="md-nav__link">
+    <span class="md-ellipsis">
+      with
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sql_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      第四章 SQL进阶
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第四章 SQL进阶">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#join_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Join详解
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#view" class="md-nav__link">
+    <span class="md-ellipsis">
+      View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index" class="md-nav__link">
+    <span class="md-ellipsis">
+      Index
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integrity-constraint" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integrity Constraint
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      特殊数据类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="特殊数据类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#time" class="md-nav__link">
+    <span class="md-ellipsis">
+      time
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#large-number" class="md-nav__link">
+    <span class="md-ellipsis">
+      large number
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      权限
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sql_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      第五章 高级SQL
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第五章 高级SQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sql-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      SQL Injection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stored-procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stored Procedure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trigger
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      第六章 数据库设计范式一
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第六章 数据库设计范式一">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      补充定义
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="补充定义">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attribute-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attribute Type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#degree-of-relationship" class="md-nav__link">
+    <span class="md-ellipsis">
+      Degree of Relationship
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#binary-relationship-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binary Relationship Type
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-r-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      E-R Diagram
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="E-R Diagram">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attribute_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attribute
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entity-relation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entity-Relation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      连线
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#role" class="md-nav__link">
+    <span class="md-ellipsis">
+      Role
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#total-participation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Total Participation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weak-entity-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      Weak Entity Set
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-r" class="md-nav__link">
+    <span class="md-ellipsis">
+      特殊的E-R图
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reduction-to-relational-schemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reduction to Relational Schemas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reduction to Relational Schemas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#entity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relationship" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relationship
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      第七章 数据库设计范式二
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第七章 数据库设计范式二">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-dependency" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Dependency
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function Dependency">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#closure-of-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Closure of Function
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#closure-of-attribute" class="md-nav__link">
+    <span class="md-ellipsis">
+      Closure of Attribute
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redundancy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redundancy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#canonical-cover" class="md-nav__link">
+    <span class="md-ellipsis">
+      Canonical Cover
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-find-candidate-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Find Candidate Key
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How to Find Candidate Key">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-attribute" class="md-nav__link">
+    <span class="md-ellipsis">
+      Primary Attribute
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Primary Attribute">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      第一步-先找主属性
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-candidate-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      第二步-找Candidate Key
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decomposition
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decomposition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lossless-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lossless Decomposition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependancy-presevation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dependancy Presevation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      第一范式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      第二范式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      第三范式
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第三范式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3nf" class="md-nav__link">
+    <span class="md-ellipsis">
+      分解为3NF
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bcnf" class="md-nav__link">
+    <span class="md-ellipsis">
+      BCNF
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BCNF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bcnf_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      分解为BCNF
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      十二章 物理储存介质
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十二章 物理储存介质">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      储存的分类
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      磁盘性能评价
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      十三章 数据储存结构
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十三章 数据储存结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      单条记录
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="单条记录">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      定长数据
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      不定长数据
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      数据页
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      文件组织
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="文件组织">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#heap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Heap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequential" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sequential
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multitable-clustering" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multitable Clustering
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-partitioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table Partitioning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-tree-file-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      B+ Tree File Index
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-dictionary-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Dictionary Storage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buffer-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Buffer Management
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      十四章 索引
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十四章 索引">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      顺序/无序索引
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      稠密/稀疏索引
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      B+树索引
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      相关优化
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      十五章 查询操作
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十五章 查询操作">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#seek" class="md-nav__link">
+    <span class="md-ellipsis">
+      Seek
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Seek">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    <span class="md-ellipsis">
+      详解
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a1-linear-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      A1 (Linear Scan)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a2a3-primary-index-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      A2/A3 (Primary Index Scan)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a4-secondary-index-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      A4 (Secondary Index scan)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a5a6-scan-with-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      A5/A6 (Scan With Comparison)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a7a8a9-scan-with-complex-comparisons" class="md-nav__link">
+    <span class="md-ellipsis">
+      A7/A8/A9 (Scan With Complex Comparisons)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sort
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#join_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Join
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Join">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nested-loop-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nested-Loop Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#block-nested-loop-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Block Nested-Loop Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#indexed-nested-loop-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Indexed Nested-Loop Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merge-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Merge Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hash-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hash Join
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    <span class="md-ellipsis">
+      十六章 查询优化
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十六章 查询优化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#equivalence-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Equivalence Rules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#statistical-cost-estimation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Statistical Cost Estimation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Statistical Cost Estimation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selection-size-estimation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Selection Size Estimation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#join-size-estimation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Join Size Estimation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-estimations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other Estimations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estimation-of-distinct-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estimation of Distinct Value
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cost-base-optimize" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cost Base Optimize
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cost Base Optimize">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#join-order-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Join-Order Selection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heuristic-optimize" class="md-nav__link">
+    <span class="md-ellipsis">
+      Heuristic Optimize
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nested-subqueries-optimize" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nested Subqueries Optimize
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#materialized-view-maintainance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Materialized View Maintainance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      十七章 Transaction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十七章 Transaction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#acid" class="md-nav__link">
+    <span class="md-ellipsis">
+      ACID
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    <span class="md-ellipsis">
+      并发控制
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schedule-serialize" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schedule Serialize
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Schedule Serialize">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conflict-serializability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conflict Serializability
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#precedence-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Precedence Graph
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trade-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trade Off
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    <span class="md-ellipsis">
+      十八章 并发控制
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十八章 并发控制">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lock-based-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lock-Based Protocols
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lock-Based Protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_35" class="md-nav__link">
+    <span class="md-ellipsis">
+      内部实现
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_36" class="md-nav__link">
+    <span class="md-ellipsis">
+      常见问题
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#two-phase-lock-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two-phase Lock Protocols
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tree-based-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tree-Based Protocol
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-granularity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multiple Granularity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handling-deadlock" class="md-nav__link">
+    <span class="md-ellipsis">
+      Handling Deadlock
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_37" class="md-nav__link">
+    <span class="md-ellipsis">
+      检测死锁
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_38" class="md-nav__link">
+    <span class="md-ellipsis">
+      十九章 错误恢复
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十九章 错误恢复">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_39" class="md-nav__link">
+    <span class="md-ellipsis">
+      日志
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_40" class="md-nav__link">
+    <span class="md-ellipsis">
+      日志恢复
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="日志恢复">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#check-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check Point
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fuzzy-check-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fuzzy Check Point
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log-buffer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Log Buffer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_41" class="md-nav__link">
+    <span class="md-ellipsis">
+      磁盘恢复
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logical-undo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logical Undo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aries" class="md-nav__link">
+    <span class="md-ellipsis">
+      ARIES
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ARIES">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#physiological-redo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Physiological Redo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aries-data-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      ARIES Data Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aries_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ARIES具体步骤
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -618,32 +4232,34 @@
                   
 
 
-<h1 id="fork-yile-liu"><a href="https://github.com/yile-liu/ZJU_database_system">Fork Yile Liu</a></h1>
-<h1 id="_1">第二章 数据库概念</h1>
-<h2 id="_2">概念引入</h2>
-<h3 id="table">Table</h3>
+<h1 id="database">DataBase</h1>
+<p><a href="https://github.com/yile-liu/ZJU_database_system">Fork Yile Liu</a></p>
+<hr />
+<h2 id="_1">第二章 数据库概念</h2>
+<h3 id="_2">概念引入</h3>
+<h4 id="table">Table</h4>
 <p>可以类比excel，数据库以表的形式组织数据。表中的一列是某一类数据，一行是某一个事物具有的多类数据的集合。一张表是多个集合组成的大集合。</p>
 <p>注意根据集合不能有相同元素的要求，一张表中不能出现数据相同的两行，也不能出现意义相同的两列。数据库课程一般不考虑空集。</p>
-<h3 id="relation">Relation</h3>
+<h4 id="relation">Relation</h4>
 <p>表的一行是某一个事物具有的多类属性，反过来说多类属性由某个事物关联起来。从这个意义上，一个Relation一般指代一张Table。</p>
 <p>Relation又可以分为两个部分：</p>
-<h4 id="relation-schema">Relation Schema</h4>
+<h5 id="relation-schema">Relation Schema</h5>
 <p>Relation Schema指一张表的逻辑设计，包括Table的名字，其中有哪些Attribute，每个Attribute各自的Domain等。Relation Schema不关心表中具体的数据，只关心整体设计。约定用大<span class="arithmatex">\(R\)</span>表示。</p>
 <p>例如：Student(Student_ID, Name, Phone_Number), in which Student_ID supposed to be ......这是一个Relation Schema。</p>
-<h4 id="relation-instance">Relation Instance</h4>
+<h5 id="relation-instance">Relation Instance</h5>
 <p>Relation Instance是一张表中具体某几个事物（某几行）的集合。出于集合的定义，Relation Instance是可拆分的，一个Instance从中的某几行组成集合是另一个新的Instance。约定用小<span class="arithmatex">\(r\)</span>表示。</p>
 <p>例如：{(3200102708, Liu Siri, 13588089548), (3200102706, Su Houxian, null)}这是一个Relation Instance。</p>
-<h3 id="tuple">Tuple</h3>
+<h4 id="tuple">Tuple</h4>
 <p>直译为元组，指某个表中的一个事物，或者说一行。</p>
-<h3 id="attribute">Attribute</h3>
+<h4 id="attribute">Attribute</h4>
 <p>直译为属性，指某个表中的某一类数据，或者说一列。</p>
-<h4 id="domain">Domain</h4>
+<h5 id="domain">Domain</h5>
 <p>某个Attribute的取值范围。</p>
-<h3 id="atomic">Atomic</h3>
+<h4 id="atomic">Atomic</h4>
 <p>我们要求数据库中任意关系r，其Attribute的Domain必须是Atomic的。某个Domain是Atomic的指其中存储的数据已经是最小单元，不能进一步拆分。</p>
 <p>例如：对于Attribue(Phone_Number)，如果允许多个电话号的集合同时存储在该列某行中，那么这个Attribute就不满足Atomic，于是这张表也不满足数据库的设计规范，因为一般认为这个集合可以进一步拆分成一个个电话号。</p>
 <p>但是注意，你既可以认为单个电话号为不能继续拆分的最小单位，这时它Atomic；也可以认为电话号又包括了国家编码、区号、分机号等等，不满足Atomic。因此Atomic是一个相对的概念，“能不能继续拆分”取决于设计数据库的具体要求与你看待数据的方式。</p>
-<h3 id="null">NULL</h3>
+<h4 id="null">NULL</h4>
 <p>注意区别编程语言中NULL与数据库中的NULL的区别。C语言中可以认为NULL与0是等价的，但是对数据库而言NULL代表未知，而0是一个已知的具体的值，两者并不等价。例如成绩（NULL）和成绩（0）。</p>
 <ul>
 <li>
@@ -656,50 +4272,50 @@
 <p>where 中认为 unknown 为 false</p>
 </li>
 </ul>
-<h3 id="key">Key</h3>
+<h4 id="key">Key</h4>
 <p>Key是某一个relation中某几个attribute的集合。它的每一个子集也都是不同的Key。</p>
-<h4 id="superkey">Superkey</h4>
+<h5 id="superkey">Superkey</h5>
 <p>如果在某relation instance中根据一个key能够单独确定一个tuple，它是Superkey。</p>
 <p>例如：对relation：Student(Student_ID, Name, Phone_Number)，(Student_ID, Name, Phone_Number) / (Student_ID, Phone_Number) / (Student_ID)都是Superkey；因为可以重名所以(Name)不是Superkey。</p>
-<h4 id="candidate-key">Candidate Key</h4>
+<h5 id="candidate-key">Candidate Key</h5>
 <p>如果一个Superkey，去掉任意一个attribute后不再是Superkey，他就是Candidate Key。上述例子中(Student_ID) / (Phone_Number)都是Primary Key，而(Student_ID, Phone_Number)不是。</p>
-<h4 id="primary-key">Primary Key</h4>
+<h5 id="primary-key">Primary Key</h5>
 <p>使用任意Candidate Key都可以方便的查找relation中的某个tuple，但是为了同一操作、规范接口，设计者应该为每个relation在Candidates中选出一个作为Primary Key (a.k.a. Primary Key Constraint)。</p>
 <p>Primary Key是relation的固有属性而不仅是attribute的集合，地位发生了变化。</p>
-<h4 id="foreign-key-constraint">Foreign Key Constraint</h4>
+<h5 id="foreign-key-constraint">Foreign Key Constraint</h5>
 <p>A是关系<span class="arithmatex">\(r_{1}\)</span>的一个key，B是关系<span class="arithmatex">\(r_{2}\)</span>的Primary Key，如果A中每个tuple都在B中都存在，就称A is a <strong>foreign key</strong> from <span class="arithmatex">\(r_{1}\)</span> referencing <span class="arithmatex">\(r_{2}\)</span>，<span class="arithmatex">\(r_{1}\)</span> is the <strong>referencing relation</strong> of this foreign-key constraint and <span class="arithmatex">\(r_{2}\)</span> Is the <strong>referenced relation</strong>.</p>
-<h3 id="schema-diagram">Schema Diagram</h3>
+<h4 id="schema-diagram">Schema Diagram</h4>
 <p>规定某个relation的Primary Key由下划线标出；有向箭头表示Foreign Key Constraint，从referencing relation指向referenced relation。</p>
-<h2 id="_3">关系代数</h2>
-<h3 id="_4">基础操作</h3>
-<h4 id="and-or-not">And Or Not</h4>
+<h3 id="_3">关系代数</h3>
+<h4 id="_4">基础操作</h4>
+<h5 id="and-or-not">And Or Not</h5>
 <p><span class="arithmatex">\(\and:and,\ \or:or,\ \neg:not\)</span></p>
-<h4 id="select">Select</h4>
+<h5 id="select">Select</h5>
 <p><span class="arithmatex">\(\sigma_{selection\  predicate}(relation)\)</span>：从relation中选出满足selection predicate的tuple组成一个新的relation。即选行。</p>
-<h4 id="project">Project</h4>
+<h5 id="project">Project</h5>
 <p><span class="arithmatex">\(\Pi_{A1,A2...}(relation)\)</span>：从relation中选出名称为A1、A2……的attribute组成一个新的relation。即选列。注意去掉某几列之后新表中可能存在重复的tuple，<strong>需要去重</strong>。</p>
-<h4 id="union">Union（集合的加法）</h4>
+<h5 id="union">Union（集合的加法）</h5>
 <p><span class="arithmatex">\(r \cup s=\{t\ |\ t\in r\ or\ t\in s\}\)</span></p>
 <p>注意：</p>
 <ul>
 <li>合并后需要去重</li>
 <li>待合并的两张表应该应该相同的列数，并且对应列的数据类型及取值范围不冲突。</li>
 </ul>
-<h4 id="set-difference">Set Difference（集合的减法）</h4>
+<h5 id="set-difference">Set Difference（集合的减法）</h5>
 <p><span class="arithmatex">\(r-s=\{t\ |\ t\in r\ and\ t\notin s\}\)</span></p>
 <p>同样要求待合并的两张表应该应该相同的列数，并且对应列的数据类型及取值范围不冲突。</p>
-<h4 id="cartesian-product">Cartesian-Product（集合的乘法）</h4>
+<h5 id="cartesian-product">Cartesian-Product（集合的乘法）</h5>
 <p><span class="arithmatex">\(r\times s=\{tq\ |\ t\in r\ and\ q\in s\}\)</span></p>
 <p>使用笛卡尔积时注意两个表如果有相同名称的列，需要改名。</p>
-<h4 id="rename">Rename</h4>
+<h5 id="rename">Rename</h5>
 <p><span class="arithmatex">\(\rho_{x(A_{1},A_{2}...)}(E)\)</span>：将名为E的表重命名为x，并将其每一列重命名为A1、A2……</p>
 <p>注意：</p>
 <ul>
 <li>下标<span class="arithmatex">\((A_{1},A_{2}...)\)</span>不是必须的，不写这一部分表示只改表名不改列名。</li>
 <li>这个函数的返回值是原来那张表，这意味着它可以与此前的操作配合使用。</li>
 </ul>
-<h3 id="_5">复合操作</h3>
-<h4 id="join">Join</h4>
+<h4 id="_5">复合操作</h4>
+<h5 id="join">Join</h5>
 <p>Join可以直接包含条件语句，语法如下：<span class="arithmatex">\(r\bowtie_{predicate}s=\sigma_{predicate}(r\times s)\)</span></p>
 <p>除直接写出筛选条件的用法之外还有四种默认用法，在这里只需要熟悉符号，具体含义将会在第四章讲解：</p>
 <ul>
@@ -711,18 +4327,19 @@
 </ul>
 </li>
 </ul>
-<h4 id="set-insertion">Set-Insertion</h4>
+<h5 id="set-insertion">Set-Insertion</h5>
 <p><span class="arithmatex">\(r\cap s=\{t\ |\ t\in r\ and\ t\in s\}=r-(r-s)\)</span></p>
 <p>注意区别交集和集合的减法。</p>
-<h4 id="assignment">Assignment</h4>
+<h5 id="assignment">Assignment</h5>
 <p><span class="arithmatex">\(d\leftarrow expression\)</span>：将表达式的结果或者说返回值存放在临时的区域d中，以便后续复用。这个操作一般用于简化公式和增强可读性。</p>
 <p>注意数据库所有的返回值都是<strong>表</strong>，包括代数操作。例如<span class="arithmatex">\(Temp \leftarrow g_{min(score)}(student)\)</span>，Temp是一行一列的表而不是一个值；因此后续使用时应该形如<span class="arithmatex">\(\Pi_{name}(\sigma_{age=minage}(student\bowtie(\rho _{T(minage)}(Temp))))\)</span>区分表和列（值），而不能写成<span class="arithmatex">\(\Pi_{name}(\sigma_{age=Temp}(student))\)</span>。</p>
-<h4 id="division">Division</h4>
+<h5 id="division">Division</h5>
 <p>let <span class="arithmatex">\(r(ID,course.ID)\)</span> and <span class="arithmatex">\(s(course.ID)\)</span>,  then <span class="arithmatex">\(r\div s\)</span> gives us ID who have taken all courses in the relation <span class="arithmatex">\(s\)</span>.</p>
-<h3 id="_6">代数操作</h3>
+<h4 id="_6">代数操作</h4>
 <p>常见的代数操作有avg, min, max, sum, count等，基本语法<span class="arithmatex">\(_{G_1,G-2...}\mathcal{G}_{F_1(...),F_2(...)...}(E)\)</span>。前半部分为分组依据，后半部分为所需函数，语义见图：<img alt="image-20220302211044444" src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220302211044444.png" /></p>
-<h1 id="sql">第三章 SQL基础</h1>
-<h2 id="sql_1">SQL数据类型</h2>
+<hr />
+<h2 id="sql">第三章 SQL基础</h2>
+<h3 id="sql_1">SQL数据类型</h3>
 <ul>
 <li>char(n): 定长为n的字符串</li>
 <li>varchar(n): variable-lenth char 最大长度为n的可变长字符串</li>
@@ -732,11 +4349,11 @@
 <li>float(n): 至少有n个数字的浮点数。注意区别SQL的float与常见编程语言的float。</li>
 </ul>
 <p><strong>注意：以上是教科书中的内容，其中char/varchar/int基本全世界通用，但是其他的数据类型在不同DBMS中语法及用法可能各有不同。</strong></p>
-<h2 id="sql_2">SQL语句</h2>
-<h3 id="_7">前言</h3>
+<h3 id="sql_2">SQL语句</h3>
+<h4 id="_7">前言</h4>
 <p>所有SQL语句以及表名、列名等标识符都是大小写不敏感的。但是表的内容，例如字符串等，大小写敏感。</p>
 <p>以下只记录易错点，不涵盖所有语法。</p>
-<h3 id="select_1">select</h3>
+<h4 id="select_1">select</h4>
 <p>select可以细分为select all与select distinct，区别是是否为结果去重，select不使用后缀时默认为select all。select distinct与关系代数的<span class="arithmatex">\(\Pi\)</span>等价，而select all不等价。</p>
 <p>select选择的内容可以是表达式，例如select salary/1000 from teacher; 返回的是salary/1000的结果。也因此select可以没有from子句，一般用于展示数据或者赋值并展示结果，例如select 12345/5; 单纯打印这个表达式的结果数字。</p>
 <p>select结果可以使用order by ATTRIBUTE_NAME (desc/asc)子句排序，desc/asc表示按照降/升序，不写默认为asc。order by后面可以跟多个attribute，以逗号分隔，靠前的优先。</p>
@@ -748,19 +4365,19 @@
 <p><em>集合操作默认 去重</em></p>
 </li>
 </ul>
-<h3 id="as">as</h3>
+<h4 id="as">as</h4>
 <p>as可以为同一个对象赋两个别名以实现自我对比，但是别名的作用域仅限于单条语句，实际名称并不会被更改，下图中的select语句完成后表名仍然叫instructor。as有时可以省略不写。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/IMG_D6F8CEB5100B-1.jpeg" alt="IMG_D6F8CEB5100B-1" style="zoom:43%;" /></p>
-<h3 id="string">string</h3>
+<h4 id="string">string</h4>
 <p>like是模糊搜索的关键字。SQL字符串查找最常用的两个记号为<span class="arithmatex">\(\%\)</span>和<span class="arithmatex">\(\_\)</span>，用法如图。</p>
 <p>需要字符串查找内容本身包含<span class="arithmatex">\(\%\)</span>或<span class="arithmatex">\(\_\)</span>时使用逃逸字符\%、\_。</p>
 <p>字符串内容匹配默认区分大小写。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/IMG_D7BF72733339-1.jpeg" alt="IMG_D7BF72733339-1" style="zoom:43%;" /></p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/IMG_C7A3E21317B3-1.jpeg" alt="IMG_C7A3E21317B3-1" style="zoom:43%;" /></p>
-<h3 id="unionintersectexcept">union/intersect/except</h3>
+<h4 id="unionintersectexcept">union/intersect/except</h4>
 <p>他们三者各自都又有all和distinct两个版本，区别是结果是否去重，<strong>但是他们默认是去重的</strong>，这与select不同。</p>
 <p><span class="arithmatex">\(union/interset/except\ distinct\)</span>分别等价于交集、并集、集合的减法。</p>
-<h3 id="group-by">group by</h3>
+<h4 id="group-by">group by</h4>
 <p>配合各类代数操作，功能等价于第二章中<span class="arithmatex">\(\mathcal{G}\)</span>前部的下标。</p>
 <p>group by先于select进行，创建一个仅包含代数操作列与group by列的临时表，select操作在这个临时表中进行。这带来两个特性：</p>
 <ul>
@@ -788,17 +4405,17 @@
 </code></pre></div>
 </li>
 </ul>
-<h3 id="wherehaving">where/having</h3>
+<h4 id="wherehaving">where/having</h4>
 <ul>
 <li>where在group by之前进行，不满足条件的tuble不会参与group by进入临时表。</li>
 <li>having在group by之后进行，产生临时表中筛选，只返回满足的tuble。</li>
 </ul>
 <p>因此引申出exists只能跟where；代数操作做条件只能跟having；同样的语句在where和having之后效果不一定相同。下面是一个正面例子：</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220316134950029.png" alt="image-20220316134950029" style="zoom:40%;" /></p>
-<h3 id="null_1">NULL</h3>
+<h4 id="null_1">NULL</h4>
 <p>NULL值不参与对列的代数函数，全NULL的tuple不会被count( )计数。</p>
 <p>没有非NULL元素时代数操作返回NULL，count( )返回0。</p>
-<h3 id="someall">some/all</h3>
+<h4 id="someall">some/all</h4>
 <p>some/all跟在<span class="arithmatex">\(&lt;,\le,&gt;,\ge,=,\ne\)</span>之后，当其后的表中存在/全部元素满足关系则返回true。</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="mi">5</span><span class="w">  </span><span class="o">&lt;</span><span class="w"> </span><span class="k">some</span><span class="err">{[</span><span class="mi">0</span><span class="err">]</span><span class="p">,</span><span class="w"> </span><span class="err">[</span><span class="mi">5</span><span class="err">]</span><span class="p">,</span><span class="w"> </span><span class="err">[</span><span class="mi">6</span><span class="err">]}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="mi">5</span><span class="w">  </span><span class="o">&lt;</span><span class="w"> </span><span class="k">some</span><span class="err">{[</span><span class="mi">0</span><span class="err">]</span><span class="p">,</span><span class="w"> </span><span class="err">[</span><span class="mi">5</span><span class="err">]}</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="no">false</span>
@@ -812,12 +4429,12 @@
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="mi">5</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">all</span><span class="err">{[</span><span class="mi">0</span><span class="err">]</span><span class="p">,</span><span class="w"> </span><span class="err">[</span><span class="mi">4</span><span class="err">]}</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="o">//</span><span class="p">(</span><span class="o">!=</span><span class="k">all</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="p">(</span><span class="o">=</span><span class="k">all</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>
 </code></pre></div>
-<h3 id="with">with</h3>
+<h4 id="with">with</h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">with</span><span class="w"> </span><span class="n">temp_table_name</span><span class="p">(</span><span class="n">attribute_name1</span><span class="p">,</span><span class="w"> </span><span class="n">attibute_name2</span><span class="p">...)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">alias</span><span class="w"> </span><span class="k">select</span><span class="p">...</span>
 </code></pre></div>
 <p>建立一个作用域为一条语句的临时的表用于简化逻辑表达式增加可读性。相当于关系代数中的Assignment。select可以不出现。</p>
-<h1 id="sql_3">第四章 SQL进阶</h1>
-<h2 id="join_1">Join详解</h2>
+<h2 id="sql_3">第四章 SQL进阶</h2>
+<h3 id="join_1">Join详解</h3>
 <p>Join语句的基本功能是将两张表中的tuple按一定规则进行匹配，将他们相同的列保留其一，不同的列全部保留，合成一个大tuple。它的控制符可以分为两类：</p>
 <ul>
 <li>Join Conditions控制哪一些列或条件用于匹配两张表中的tuple<ul>
@@ -844,7 +4461,7 @@
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220316150505000.png" alt="image-20220316150505000" style="zoom:33%;" /></p>
 <p><em>course</em> left outer join <em>prereq</em> on course.course_id = prereq.course_id 得：</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220316151014204.png" alt="image-20220316151014204" style="zoom:33%;" /></p>
-<h2 id="view">View</h2>
+<h3 id="view">View</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">create</span><span class="w"> </span><span class="k">view</span><span class="w"> </span><span class="n">view_name</span><span class="p">(</span><span class="n">attribute_name1</span><span class="p">,</span><span class="w"> </span><span class="n">attibute_name2</span><span class="p">...)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">alias</span><span class="w"> </span><span class="k">select</span><span class="p">...</span>
 </code></pre></div>
 <p>view一般用于查找以及接口，语法和with相同，作用也基本相同。唯一的区别是view一经定义则一直可用，而with的作用域仅有单条语句。这为view带来了几点特性：</p>
@@ -857,13 +4474,13 @@
 <p>部分SQL也支持materialize view，view此时是一张真实存在的表，这一般是为了用空间换时间。物化视图相关的表发生变化时，它自己也必须同时更新，以维持一般view的特性。</p>
 </li>
 </ul>
-<h2 id="index">Index</h2>
+<h3 id="index">Index</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">index_name</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">column1</span><span class="p">,</span><span class="w"> </span><span class="n">column2</span><span class="p">.....);</span><span class="o">//</span><span class="n">创建</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">index_name</span><span class="p">;</span><span class="o">//</span><span class="n">删除</span>
 </code></pre></div>
 <p>索引的原理类似于书的目录，要查找某个词不需要从头开始阅读书籍，可以从目录查到页码直接跳转，于是加快了查找的速度。其具体实现方式不需要深究。一个表可以创建多个索引，一个索引可以包含多个列。</p>
 <p>但索引并不是尽善尽美，例如update之后，索引需要同步维护；同时索引是一种物理结构，有额外的空间与IO开销。不适当的索引设置反而会降低效率。</p>
-<h2 id="integrity-constraint">Integrity Constraint</h2>
+<h3 id="integrity-constraint">Integrity Constraint</h3>
 <p>完整性约束即对attribute内容的约束，不满足约束条件的tuple不能被插入。一般有4类约束方法：</p>
 <ul>
 <li>not NULL：非空。</li>
@@ -872,14 +4489,14 @@
 <li>Foreign Key (attribute_name1, attribute_name2 ...) references table_name：自定的若干个attribute组成的tuple一定是table_name的主键之一。</li>
 </ul>
 <p>对数据类型的约束既可以在定义表时规定，也可以后期通过domain关键字增删改。具体语法在此不表。</p>
-<h2 id="_8">特殊数据类型</h2>
-<h3 id="time">time</h3>
+<h3 id="_8">特殊数据类型</h3>
+<h4 id="time">time</h4>
 <p>SQL自带时间相关的特殊数据类型。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220323114743247.png" alt="image-20220323114743247" style="zoom:45%;" /></p>
-<h3 id="large-number">large number</h3>
+<h4 id="large-number">large number</h4>
 <p>对于尤其空间尤其巨大的值，传指针比直接传数据本身高效得多。在此理解即可。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220323115826665.png" alt="image-20220323115826665" style="zoom:45%;" /></p>
-<h2 id="_9">权限</h2>
+<h3 id="_9">权限</h3>
 <p>授予/收回权限的基本语法是：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">grant</span><span class="w"> </span><span class="o">&lt;</span><span class="n">priviledge</span><span class="w"> </span><span class="k">list</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">role</span><span class="w"> </span><span class="k">name</span><span class="o">&gt;</span><span class="w"> </span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">on</span><span class="w"> </span><span class="o">&lt;</span><span class="n">relation</span><span class="w"> </span><span class="k">name</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">view</span><span class="w"> </span><span class="k">name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="o">&lt;</span><span class="k">user</span><span class="w"> </span><span class="k">list</span><span class="o">&gt;</span><span class="p">;</span><span class="o">//</span><span class="n">授予</span>
@@ -893,11 +4510,11 @@
 <li>权限的基本单位是relation，需要授予某个数据库内所有relation的权限时可以使用DB_name.*。</li>
 </ul>
 <p>有多个同类用户需要做统一的权限调整时，列出\<user list>的使用方式显然不便，此时就需要role。role是权限组成的集合，你可以像赋予单个权限一样将role赋予用户。修改某个role对应的权限集合时，所有被赋予这个role身份的用户权限都会同时被修改。</p>
-<h1 id="sql_4">第五章 高级SQL</h1>
-<h2 id="sql-injection">SQL Injection</h2>
+<h2 id="sql_4">第五章 高级SQL</h2>
+<h3 id="sql-injection">SQL Injection</h3>
 <p>SQL用户端常常需要将用户的输入拼接为完整的sql语句。借助用户端输入框直接输入未预期的sql指令，又由于字符串拼接的缘故这条语句能够被后台执行，这称为sql注入。</p>
 <p>比变sql注入的办法是，不要将用户的输入直接作为数据库语句，而是套用一定的模板。</p>
-<h2 id="stored-procedure">Stored Procedure</h2>
+<h3 id="stored-procedure">Stored Procedure</h3>
 <p>通过用户界面的前后端构建、传递、执行、回传sql代码带来大量的开销，所以现代sql都支持Stored Procedure。你可以将它理解为一种内建的小型编程语言，支持if-else、for、while等简单编程逻辑，用于构造执行一些sql语句，最终返回结果。sql还支持function，作用与之基本类似。</p>
 <p>因为它们是内建的，且大多采用类似C语言的编译执行方式，性能往往远高于在用户端拼接字符串构建并执行sql语句。</p>
 <p>Stored Procedure与function中还可以创建cursor，以完成一些复杂的数据库操作。</p>
@@ -913,10 +4530,10 @@
 <a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="k">declare</span><span class="w"> </span><span class="n">d_count</span><span class="w"> </span><span class="kt">integer</span><span class="p">;</span>
 <a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="k">call</span><span class="w"> </span><span class="n">dept_count_proc</span><span class="p">(</span><span class="s1">&#39;physics&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">d_count</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="trigger">Trigger</h2>
+<h3 id="trigger">Trigger</h3>
 <p>trigger是在满足某些条件后自动执行的sql，可以视为对数据库操作的监视或者说副作用。但是现代sql数据库流行的风格是不写trigger，下面列出了trigger的弊端和一些替代品。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220402221052922.png" alt="image-20220402221052922" style="zoom:45%;" /></p>
-<h1 id="_10">第六章 数据库设计范式一</h1>
+<h2 id="_10">第六章 数据库设计范式一</h2>
 <p>本章主要介绍<strong>Entity-Relationship Model</strong>设计方式。不同于直接建表的做法，实际开发中我们更喜欢先用entity和relationship两类概念构建逻辑关系，再建表。</p>
 <ul>
 <li>Entity的每一行应该是一个实体，例如学生信息表，教师信息表。</li>
@@ -924,8 +4541,8 @@
 </ul>
 <p>先根据需求画出E-R关系图，再开始建表会比直接写表连外键逻辑更清晰。下面是一个E-R图的例子：</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411092249561.png" alt="image-20220411092249561" style="zoom:50%;" /></p>
-<h2 id="_11">补充定义</h2>
-<h3 id="attribute-type">Attribute Type</h3>
+<h3 id="_11">补充定义</h3>
+<h4 id="attribute-type">Attribute Type</h4>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411082934800.png" alt="image-20220411082934800" style="zoom:40%;" /></p>
 <p>本节中Attribute的定义有所扩展。可以分为：</p>
 <ul>
@@ -933,10 +4550,10 @@
 <li>单值的和多值的</li>
 <li>派生的</li>
 </ul>
-<h3 id="degree-of-relationship">Degree of Relationship</h3>
+<h4 id="degree-of-relationship">Degree of Relationship</h4>
 <p>某个关系与多少个Entity有关，就称它的Degree是多少。</p>
 <p>Degree大于2的relationship是很少见的。</p>
-<h3 id="binary-relationship-type">Binary Relationship Type</h3>
+<h4 id="binary-relationship-type">Binary Relationship Type</h4>
 <ul>
 <li>One to One</li>
 <li>One to Many</li>
@@ -944,22 +4561,22 @@
 <li>Many to Many</li>
 </ul>
 <p>根据两Entity之间的联系对二元关系进行分类。不同的二元关系会对随后建表的方式有影响。</p>
-<h2 id="e-r-diagram">E-R Diagram</h2>
-<h3 id="attribute_1">Attribute</h3>
+<h3 id="e-r-diagram">E-R Diagram</h3>
+<h4 id="attribute_1">Attribute</h4>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411084206205.png" alt="image-20220411084206205" style="zoom:33%;" /></p>
 <ul>
 <li>复合的属性用缩进表达层级关系</li>
 <li>多值的属性用大括号表示</li>
 <li>派生的属性在后方加上括号抽象为函数</li>
 </ul>
-<h3 id="entity-relation">Entity-Relation</h3>
+<h4 id="entity-relation">Entity-Relation</h4>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411084618951.png" alt="image-20220411084618951" style="zoom:40%;" /></p>
 <ul>
 <li>Entity的画法与原来建表相同</li>
 <li>Relationship用菱形表示，其中的文字是Relationship的名字。</li>
 <li>Relationship需要额外的属性时，用方框+<strong>虚线</strong>表示</li>
 </ul>
-<h3 id="_12">连线</h3>
+<h4 id="_12">连线</h4>
 <ul>
 <li>单向箭头：多对一</li>
 <li>双向箭头：一对一</li>
@@ -972,14 +4589,14 @@
 <li>一个instructor可以有多个student（如果只能有一个那就是一对一关系，应该用双向箭头），也可以没有（如果必须有那就是完全参与，应该用双直线）。</li>
 </ul>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411084919250.png" alt="image-20220411084919250" style="zoom:33%;" /></p>
-<h3 id="role">Role</h3>
+<h4 id="role">Role</h4>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411085102057.png" alt="image-20220411085102057" style="zoom:40%;" /></p>
 <p>Role是连线或者箭头的标签。关系对应的Entities应该是唯一的，当关系与某个实体有多重逻辑联系时就需要为表达逻辑联系的线或箭头加上标签作为区分。</p>
-<h3 id="total-participation">Total Participation</h3>
+<h4 id="total-participation">Total Participation</h4>
 <p>如果相关实体中的每一个元素都参与了某个关系至少一次，就称这个关系是Total Parcitipation，否则称为Partial Participation。<strong>完全参与的关系用双线标记菱形</strong>。例如下图表示每个学期都有课，且每门课程都在某些学期中，这是一个完全参与的关系。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411085741235.png" alt="image-20220411085741235" style="zoom:40%;" /></p>
 <p>与之对比，本节之前出现的三E-R图张中的关系都是部分参与的。课程可以没有预修要求，导师可以不带任何学生。</p>
-<h3 id="weak-entity-set">Weak Entity Set</h3>
+<h4 id="weak-entity-set">Weak Entity Set</h4>
 <p>没有主键的Entity Set称为Weak，它一般是为了增加复用性。但Weak Entity Set的存在需要外界帮助：</p>
 <ul>
 <li>存在至少一个非Weak的<strong>Identifying Entity Set</strong>，通过一个<strong>完全参与的、一对多的</strong>关系，指认Weak Entity Set中的元素。这个关系称为<strong>Identifying Relationship</strong>。</li>
@@ -988,7 +4605,7 @@
 </ul>
 <p>画E-R图时，因为这是完全参与关系，用双线菱形标记关系，同时弱实体集一侧必须完全参与，所以用双线连接，Discriminator用虚下划线。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411085741235.png" alt="image-20220411085741235" style="zoom:40%;" /></p>
-<h3 id="e-r">特殊的E-R图</h3>
+<h4 id="e-r">特殊的E-R图</h4>
 <ul>
 <li>可以继承</li>
 </ul>
@@ -998,25 +4615,25 @@
 </ul>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411124741633.png" alt="image-20220411124741633" style="zoom:33%;" /></p>
 <p>两者一般都是为了减少冗余，但这都只是特殊逻辑关系的简化表达，并不常见，完全可以用常规的图代替。</p>
-<h2 id="reduction-to-relational-schemas">Reduction to Relational Schemas</h2>
+<h3 id="reduction-to-relational-schemas">Reduction to Relational Schemas</h3>
 <p>本节中我们探讨如何根据E-R图建立数据库表结构。下面为推荐的实现方式，但是途径并不唯一。</p>
-<h3 id="entity">Entity</h3>
+<h4 id="entity">Entity</h4>
 <ul>
 <li>每个实体至少一张表</li>
 <li>复合属性扁平化</li>
 <li>多值属性单独建表，外键连回去</li>
 </ul>
-<h3 id="relationship">Relationship</h3>
+<h4 id="relationship">Relationship</h4>
 <ul>
 <li>带额外属性的Relationship单独建表</li>
 <li>Many to Many必须单独建表</li>
 <li>One to Many在Many侧加上One的主键，外键连回去</li>
 <li>One to One任选一侧作Many，同上</li>
 </ul>
-<h1 id="_13">第七章 数据库设计范式二</h1>
+<h2 id="_13">第七章 数据库设计范式二</h2>
 <p>如果说前一章节描述了如何建立一个表，那么本章将着重于如何根据函数依赖判断一张表的好坏，以及如何拆分一张表。</p>
 <p>1NF～BCNF部分主要参考了：数据库第一二三范式到底在说什么？ - 刘慰的文章 - 知乎 https://zhuanlan.zhihu.com/p/20028672</p>
-<h2 id="function-dependency">Function Dependency</h2>
+<h3 id="function-dependency">Function Dependency</h3>
 <p>前面说到派生属性可以理解为函数，重点在于一对一的映射关系。相同的A一定有相同的B，记为<span class="arithmatex">\(A\rightarrow B\)</span>，B可以视为A的派生属性，或者说B是A的函数依赖。</p>
 <ul>
 <li>
@@ -1039,7 +4656,7 @@
 <li>r(relation instance) <strong>satisfyies</strong> F</li>
 </ul>
 <p>对R holds on F，取R1为R的一个子集，F中左右两侧的属性都在R1中的函数依赖组成的集合称为F在R1上的投影。</p>
-<h3 id="closure-of-function">Closure of Function</h3>
+<h4 id="closure-of-function">Closure of Function</h4>
 <p>给定一个由函数依赖组成的集合<span class="arithmatex">\(F\)</span>，它与它的所有推论组成的集合称为Closure of F，记为<span class="arithmatex">\(F^+\)</span>，例如：
 $$
 F(A\rightarrow B,\ B\rightarrow C)\
@@ -1047,7 +4664,7 @@ F^+(A\rightarrow B,\ B\rightarrow C,\ A\rightarrow C)
 $$</p>
 <p>找函数闭包一般是<strong>Armstrong's Axioms</strong>三条轮着套：</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220413230359330.png" alt="image-20220413230359330" style="zoom: 33%;" /></p>
-<h3 id="closure-of-attribute">Closure of Attribute</h3>
+<h4 id="closure-of-attribute">Closure of Attribute</h4>
 <p>给定一个由属性组成的集合<span class="arithmatex">\(A\)</span>，它由函数集<span class="arithmatex">\(F\)</span>中的依赖关系能够关联的属性组成的集合称为Closure of A under F，记为<span class="arithmatex">\(A^+\)</span>，例如：</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220413231124852.png" alt="image-20220413231124852" style="zoom:30%;" /></p>
 <p>属性的闭包的作用有：</p>
@@ -1057,12 +4674,12 @@ $$</p>
 <li>验证函数依赖是否成立（依赖属性是否在被依赖属性的闭包中）</li>
 <li>找函数的闭包（遍历属性的子集，挨个找闭包，闭包中多出来的属性就对原属性构成依赖）</li>
 </ul>
-<h3 id="redundancy">Redundancy</h3>
+<h4 id="redundancy">Redundancy</h4>
 <ul>
 <li>在一个函数依赖集中，如果某一个依赖关系可以由其他依赖推得，那么他就是冗余的。</li>
 <li>在单个依赖关系中，如果去掉一个属性（左右两侧至少要留下一个），仍然可以由其关系集中的其他依赖推得原式，那么就称这一个属性是冗余的。冗余的属性也可以用<strong>extraneous</strong>形容，直译为多余的。</li>
 </ul>
-<h3 id="canonical-cover">Canonical Cover</h3>
+<h4 id="canonical-cover">Canonical Cover</h4>
 <p>正则覆盖，记为<span class="arithmatex">\(F_c\)</span>，指给定一组函数依赖F，去除所有冗余的函数依赖与属性后剩余的部分。将正则覆盖中所有左侧属性相同的依赖合并，剩余的部分称为<strong>最小函数依赖集</strong>，记为<span class="arithmatex">\(F_m\)</span>。</p>
 <p>求最小函数依赖集的步骤：</p>
 <ol>
@@ -1071,10 +4688,10 @@ $$</p>
 <li><strong>消除所有冗余属性：</strong>因为经过第一步分解，依赖右侧只有一个属性，所以冗余属性一定在左侧。只需要逐一假设左侧某个属性是多余的，找左侧剩余属性的闭包，如果闭包内包含被假设多余的属性那么它的确是多余的。</li>
 <li><strong>如果第3步消除了至少一个冗余属性，回到2重新检查冗余依赖，如此循环直到找不出冗余属性。</strong></li>
 </ol>
-<h2 id="how-to-find-candidate-key">How to Find Candidate Key</h2>
-<h3 id="primary-attribute">Primary Attribute</h3>
+<h3 id="how-to-find-candidate-key">How to Find Candidate Key</h3>
+<h4 id="primary-attribute">Primary Attribute</h4>
 <p>出现在至少一个candidate key中的属性称为主属性。反之为非主属性。</p>
-<h4 id="-">第一步-先找主属性</h4>
+<h5 id="-">第一步-先找主属性</h5>
 <p>先找出<span class="arithmatex">\(F_c\)</span>或<span class="arithmatex">\(F_m\)</span>，然后将所有属性分为以下四类：</p>
 <ul>
 <li><strong>L类：</strong>仅存在于依赖左侧，一定是主属性</li>
@@ -1082,14 +4699,14 @@ $$</p>
 <li><strong>N类：</strong>没有在任何函数依赖中出现过，一定是主属性，且存在于任何一个候选码中</li>
 <li><strong>LR类：</strong>同时出现在了依赖两侧，<strong>待定</strong></li>
 </ul>
-<h3 id="-candidate-key">第二步-找Candidate Key</h3>
+<h4 id="-candidate-key">第二步-找Candidate Key</h4>
 <p>这里是根据<span class="arithmatex">\(F_c\ or\ F_m\)</span>分类，可以直接将L类和N类属性合并，检查其是不是candidate key。如果是根据原始关系集F分类，那么还需要逐一对N类属性与L类的所有子集的并集检查是不是candidate key，并不建议这么做。</p>
 <ul>
 <li>如果仅靠L类和N类就可以确定candidate key，则不需要考虑LR类。</li>
 <li>如果L类与N类的并集不是candidate key，那么这个并集与LR类的所有子集逐一取并集检查是不是candidate key。确定一个candidate key后，真包含它的所有集合都不是candidate key，可以减少一些运算量。</li>
 </ul>
-<h2 id="decomposition">Decomposition</h2>
-<h3 id="lossless-decomposition">Lossless Decomposition</h3>
+<h3 id="decomposition">Decomposition</h3>
+<h4 id="lossless-decomposition">Lossless Decomposition</h4>
 <p>假设表R被拆分为若干个表R1、R2……Rn，当且仅当R1 nature join R2…… nature join Rn等于R时，称这个这个拆分操作是无损的。</p>
 <ul>
 <li>当分解为两个表时，证明无损拆分常用的一个充分非必要条件是：两张拆开的表取交集，交集同时是两张表各自的superkey，或者说可以通过F+中的函数依赖推得取交集之前的表。</li>
@@ -1098,21 +4715,21 @@ $$</p>
 <ul>
 <li>当分解为超过两个表时，使用判定表法：https://blog.csdn.net/weixin_42492218/article/details/106218720</li>
 </ul>
-<h3 id="dependancy-presevation">Dependancy Presevation</h3>
+<h4 id="dependancy-presevation">Dependancy Presevation</h4>
 <p>假设表R被拆分为若干个表R1、R2……Rn，函数依赖集F中左右两侧的属性都在R1、R2……中的子集为F1、F2……，称为F在R1、R2……上的投影。当<span class="arithmatex">\(F^+=F_1^+\cup F_2^+\cup...\)</span>时称这个拆分满足依赖保持.</p>
 <p>一般直接用定义证明。</p>
 <p>第三范式是满足依赖保持的最高范式。</p>
-<h2 id="_14">第一范式</h2>
+<h3 id="_14">第一范式</h3>
 <p>要求每一个attribue的domain都是atomic的，不能继续分割，同时每一个relation都应该有primary key。这是所有关系型数据库最基础的范式要求。</p>
-<h2 id="_15">第二范式</h2>
+<h3 id="_15">第二范式</h3>
 <p>在第一范式的基础上，要求非主属性对所有candidate key不能有部分依赖。例如下面这个关系：</p>
 <p><img src="https://pic4.zhimg.com/51e2689ac9416a91800e63101bee9db7_b.jpg" alt="img" style="zoom:49%;" /></p>
 <p>（学号，课名）是一个candidate key，但是姓名、系名都是对学号的函数依赖，即对候选键的部分依赖，所以上面这个数据库不满足第二范式，但是满足第一范式。</p>
-<h2 id="_16">第三范式</h2>
+<h3 id="_16">第三范式</h3>
 <p>在第二范式的基础上，要求非主属性对所有候选键不能有传递依赖。例如下面这个关系：</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220413205821647.png" alt="image-20220413205821647" style="zoom: 20%;" /></p>
 <p>学号-&gt;系名-&gt;系主任是一个传递依赖关系，所以上面这个数据库不满足第三范式但是满足第二范式。</p>
-<h3 id="3nf">分解为3NF</h3>
+<h4 id="3nf">分解为3NF</h4>
 <ol>
 <li>找出<span class="arithmatex">\(F_c\ or\ F_m\)</span></li>
 <li>找出所有candidate key</li>
@@ -1121,7 +4738,7 @@ $$</p>
 </ol>
 <p>上面例子满足第三范式的设计如下：</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220413210604899.png" alt="image-20220413210604899" style="zoom:20%;" /></p>
-<h2 id="bcnf">BCNF</h2>
+<h3 id="bcnf">BCNF</h3>
 <p>在第三范式的基础上，要求主属性对所有候选键不能有部分依赖，或者通俗地说，对F+中的任意一组依赖关系<span class="arithmatex">\(X\rightarrow Y\)</span>，X一定是candidate key之一。对下面这个例子：</p>
 <ul>
 <li>关系模式：仓库（仓库名，管理员，物品名，数量）</li>
@@ -1144,7 +4761,7 @@ $$</p>
 <li>管理（仓库名， 管理员）</li>
 <li>储存（仓库名，物品名，数量）</li>
 </ul>
-<h3 id="bcnf_1">分解为BCNF</h3>
+<h4 id="bcnf_1">分解为BCNF</h4>
 <ol>
 <li>如果一个集合满足BCNF，返回它本身</li>
 <li><strong>对违反范式的依赖关系（注意四个范式是层层递进的，不仅要检查BCNF，还要检查123NF）</strong>，假设为X→Y，计算X+</li>
@@ -1152,9 +4769,9 @@ $$</p>
 <li>求R1和R2的FD集，分别记为S1和S2，递归地检查R1和R2是否满足BCNF</li>
 <li>这些分解得到每一个小集合一张表</li>
 </ol>
-<h1 id="_17">十二章 物理储存介质</h1>
+<h2 id="_17">十二章 物理储存介质</h2>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427111506198.png" alt="image-20220427111506198" style="zoom:45%;" /></p>
-<h2 id="_18">储存的分类</h2>
+<h3 id="_18">储存的分类</h3>
 <p><strong>储存可以根据易失性分为：</strong></p>
 <ul>
 <li>volatile 掉电失去数据，一般容量小速度快</li>
@@ -1174,7 +4791,7 @@ $$</p>
 </ul>
 <p><strong>也可以根据原理分类：</strong></p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427102240054.png" alt="image-20220427102240054" style="zoom:45%;" /></p>
-<h2 id="_19">磁盘性能评价</h2>
+<h3 id="_19">磁盘性能评价</h3>
 <p><strong>磁盘性能从以下维度评价：</strong></p>
 <ul>
 <li>Access time 访问时间<ul>
@@ -1194,11 +4811,11 @@ $$</p>
 <li>File Organization 针对HDD，文件整理，使数据分布尽可能有序</li>
 <li>Wear Leveling 针对NVM和SSD，因为擦写寿命相对有限，需要实现负载均衡</li>
 </ul>
-<h1 id="_20">十三章 数据储存结构</h1>
+<h2 id="_20">十三章 数据储存结构</h2>
 <p>一方面，你如何储存一个数据库，是每一张表对应一个文件，还是一个数据库对应一个大文件，还是其他的实现方式？在特定实现方式上怎么优化增删查改？</p>
 <p>另一方面你的数据结构怎么与储存介质相配合优化，比如最重要的怎么以扇区为单位大小读写？</p>
-<h2 id="_21">单条记录</h2>
-<h3 id="_22">定长数据</h3>
+<h3 id="_21">单条记录</h3>
+<h4 id="_22">定长数据</h4>
 <p>按行存放（<strong>Row-Oriented Storage</strong>）的定长数据的增查改都容易实现，删除一般有两种方式：</p>
 <ul>
 <li>删除后的空位用链表串联供下次插入用（图中所示）</li>
@@ -1212,7 +4829,7 @@ $$</p>
 <li>如果按属性访问多于按tuple访问，这种储存方式会更快</li>
 </ul>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427135738878.png" alt="image-20220427135738878" style="zoom:55%;" /></p>
-<h3 id="_23">不定长数据</h3>
+<h4 id="_23">不定长数据</h4>
 <ul>
 <li>
 <p>用null-bit map解决允许为NULL的数据储存。n个允许为空的属性需要n个bit的空位图，空位图中某一bit为0/1意味着对应的属性不是/是空的。</p>
@@ -1229,7 +4846,7 @@ $$</p>
 <li>不定长数据的本体放后面</li>
 </ul>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427105742228.png" alt="image-20220427105742228" style="zoom:45%;" /></p>
-<h2 id="_24">数据页</h2>
+<h3 id="_24">数据页</h3>
 <p>定长数据非常容易构建数据页。</p>
 <p>不定长数据的数据页一般采用两头夹击的结构便于对齐。最常见的实现方式如图，Header包含本页中records相关信息：</p>
 <ul>
@@ -1238,14 +4855,14 @@ $$</p>
 <li>指向各record的指针（一般是偏移量形式）</li>
 </ul>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427110832599.png" alt="image-20220427110832599" style="zoom:40%;" /></p>
-<h2 id="_25">文件组织</h2>
+<h3 id="_25">文件组织</h3>
 <p>需要设计单条数据和数据页如何分布在文件内部。下图是几种常见的结构：</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427113558547.png" alt="image-20220427113558547" style="zoom:45%;" /></p>
-<h3 id="heap">Heap</h3>
+<h4 id="heap">Heap</h4>
 <p>Heap常用的优化方式是Free-space map，剩余空间图中的元素表示对应的block中还有多少剩余空间。例如下图中first level表示从第0个块开始，块内剩余空间分别为4、2、1、4、7...个单位。</p>
 <p>当文件非常大时，还可以将Free-space map分层形成树形结构，例如下图中将first level每4个一组创建了第二层map。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427114314620.png" alt="image-20220427114314620" style="zoom:60%;" /></p>
-<h3 id="sequential">Sequential</h3>
+<h4 id="sequential">Sequential</h4>
 <p>这里的Sequential不是指储存空间上有序，而是指每一条数据逻辑关系上有序。在数据经常按某种排序先后取用时，可以考虑顺序文件系统。先后逻辑一般用类似指针的结构实现。</p>
 <ul>
 <li>
@@ -1257,27 +4874,27 @@ $$</p>
 </li>
 </ul>
 <p>因为存在上图所示问题，在多次插入和删除之后指针系统会变得很低效，因此顺序文件系统需要适时Reorganize。</p>
-<h3 id="multitable-clustering">Multitable Clustering</h3>
+<h4 id="multitable-clustering">Multitable Clustering</h4>
 <p>例如一个班级，我可以同时维护姓名排序、学号排序、成绩排序三张表供不同的场合使用。Multitable Clustering File Organization就是这么做的。同时维护多个不同结构的文件（一个大文件内部分为不同部分同理），视请求决定应该使用哪一个。</p>
 <p>这可以提高查找的速度，但也意味着成倍的空间和增删改成本。</p>
-<h3 id="table-partitioning">Table Partitioning</h3>
+<h4 id="table-partitioning">Table Partitioning</h4>
 <p>某一些表可以从物理上分为多个文件以配合实际使用情况。例如选课信息表，虽然从逻辑上所有学年的选课信息都在同一张表上，但是因为往年的数据几乎不需要增删查改，数据操作集中于当前学年，所以按照学年物理划分为多个储存文件将有助于提高性能。</p>
-<h3 id="b-tree-file-index">B+ Tree File Index</h3>
+<h4 id="b-tree-file-index">B+ Tree File Index</h4>
 <p>B+树不仅可以作为索引的结构，还可以直接作为文件组织的结构。在下一章中会进行介绍。</p>
-<h2 id="data-dictionary-storage">Data Dictionary Storage</h2>
+<h3 id="data-dictionary-storage">Data Dictionary Storage</h3>
 <p>上面的三类文件组织都是对库中的实例而言的，但是数据库还有一些框架性的全局的信息需要储存，我们称为Metadata。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427135033631.png" alt="image-20220427135033631" style="zoom:35%;" /></p>
 <p>其中一种实现方式是用事先约定的固定的几个表，储存用户定义的信息。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427135142957.png" alt="image-20220427135142957" style="zoom:40%;" /></p>
-<h2 id="buffer-management">Buffer Management</h2>
+<h3 id="buffer-management">Buffer Management</h3>
 <p>最常用的是LUR策略，（<strong>L.east R.ecently U.sed Stratergy</strong>），即根据“最近访问过的内容更有可能再次被访问”的原则管理缓存内容。需要理解下图所示buffer的变化：</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220502162140360.png" alt="image-20220502162140360" style="zoom:50%;" /></p>
 <p>其余缓存策略了解即可：</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220502162913758.png" alt="image-20220502162913758" style="zoom:40%;" /></p>
-<h1 id="_26">十四章 索引</h1>
+<h2 id="_26">十四章 索引</h2>
 <p>索引的基本结构如下，注意这里的指针是对储存文件而言的，和内存指针略有不同。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220502163411215.png" alt="image-20220502163411215" style="zoom:50%;" /></p>
-<h2 id="_27">顺序/无序索引</h2>
+<h3 id="_27">顺序/无序索引</h3>
 <p>指key有一定顺序的索引。与之对应的，典型的非顺序作引例如哈希索引。顺序索引可以根据不同的排序规则进一步分类：</p>
 <ul>
 <li>
@@ -1290,13 +4907,13 @@ $$</p>
 <p>但是当原表发生了变化，所有与之相关的辅助索引指针（以偏移量形式实现）都需要更新，所以Secondary Index的另一种实现方式是存放对应记录主键的值而不是二级指针，建立与主索引的映射关系。</p>
 </li>
 </ul>
-<h2 id="_28">稠密/稀疏索引</h2>
+<h3 id="_28">稠密/稀疏索引</h3>
 <p>Dence Index指每一个tuple都有索引。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220502164917087.png" alt="image-20220502164917087" style="zoom:30%;" /></p>
 <p>与之对应的有Sparse Index稀疏索引。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220502165021449.png" alt="image-20220502165021449" style="zoom:33%;" /></p>
 <p>稀疏索引可以多级嵌套，配合顺序索引就是B+树（还要求节点半满不然应该合并）。</p>
-<h2 id="b">B+树索引</h2>
+<h3 id="b">B+树索引</h3>
 <p>下面是一个B+树索引的例子。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220502165234327.png" alt="image-20220502165234327" style="zoom:33%;" /></p>
 <p>B+树不仅可以作为记录的索引，还可以作为文件的结构，叶节点不是指针而是记录本身即可。</p>
@@ -1306,7 +4923,7 @@ $$
 $$
 原理如图：</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220529134912186.png" alt="image-20220529134912186" style="zoom:70%;" /></p>
-<h2 id="_29">相关优化</h2>
+<h3 id="_29">相关优化</h3>
 <ul>
 <li>
 <p>批量插入：</p>
@@ -1347,7 +4964,7 @@ $$
 </ul>
 </li>
 </ul>
-<h1 id="_30">十五章 查询操作</h1>
+<h2 id="_30">十五章 查询操作</h2>
 <p>对数据库的任何一个查询操作都大致可以分为一下三个步骤：</p>
 <ol>
 <li>解析和翻译：检查所输入语句的语法正确性，并将其翻译成机器能够读懂的形式。</li>
@@ -1355,17 +4972,17 @@ $$
 <li>执行：按照前一步决定的方法执行并返回结果。</li>
 </ol>
 <p>本章的目的是介绍三种最常用的查询语句内部可供选择的实现方法，以及对应的复杂度计算，最后简要介绍语句存在复杂嵌套时的流水线执行方法。</p>
-<h2 id="seek">Seek</h2>
+<h3 id="seek">Seek</h3>
 <p>Seek时间包含磁盘寻道（ts）和数据读取（tr）两部分开销。根据经验，对HDD，一次寻道所需的时间约等于40单位数据读取所需的时间，而对SSD这个数字大约是10。</p>
 <p>本节中seek专注于磁盘开销，不考虑CPU等周边设备。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220507183629832.png" alt="image-20220507183629832" style="zoom:40%;" /></p>
 <p>以下是一图流浓缩版。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/IMG_783C25A55D82-1.jpeg" alt="IMG_783C25A55D82-1" style="zoom: 50%;" /></p>
-<h3 id="_31">详解</h3>
-<h4 id="a1-linear-scan">A1 (Linear Scan)</h4>
+<h4 id="_31">详解</h4>
+<h5 id="a1-linear-scan">A1 (Linear Scan)</h5>
 <p>即线性搜索，每一次seek所需的最坏时间是<span class="arithmatex">\(b_r\times t_r+t_s\)</span>，其中br是总数据量。</p>
 <p>意义是，如果假定所有数据顺序存放，顺序查找只需要一次寻道，但是可能需要完整读取所有数据才能找到所查找的量。</p>
-<h4 id="a2a3-primary-index-scan">A2/A3 (Primary Index Scan)</h4>
+<h5 id="a2a3-primary-index-scan">A2/A3 (Primary Index Scan)</h5>
 <p>本节讨论查询的条件包含主键的情况。</p>
 <ul>
 <li>利用<strong>稠密的</strong>主索引进行搜索，每一次seek所需的最坏时间是<span class="arithmatex">\((h_i+1)\times (t_r+t_s)\)</span>，其中hi是索引的层数。以B+树索引为例：</li>
@@ -1375,7 +4992,7 @@ $$
 <li>利用<strong>稀疏的</strong>主索引进行搜索，与A2的区别是最后一层对应的数据块中可能有多个数据，下面用b表示。</li>
 </ul>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220507185140262.png" alt="image-20220507185140262" style="zoom:45%;" /></p>
-<h4 id="a4-secondary-index-scan">A4 (Secondary Index scan)</h4>
+<h5 id="a4-secondary-index-scan">A4 (Secondary Index scan)</h5>
 <p>利用辅助索引进行搜索。</p>
 <ul>
 <li>
@@ -1386,7 +5003,7 @@ $$
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220507185649613.png" alt="image-20220507185649613" style="zoom:45%;" /></p>
 </li>
 </ul>
-<h4 id="a5a6-scan-with-comparison">A5/A6 (Scan With Comparison)</h4>
+<h5 id="a5a6-scan-with-comparison">A5/A6 (Scan With Comparison)</h5>
 <p>本节讨论的是含单一比较条件的查询。</p>
 <ul>
 <li>
@@ -1398,35 +5015,35 @@ $$
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220507190158968.png" alt="image-20220507190158968" style="zoom:45%;" /></p>
 </li>
 </ul>
-<h4 id="a7a8a9-scan-with-complex-comparisons">A7/A8/A9 (Scan With Complex Comparisons)</h4>
+<h5 id="a7a8a9-scan-with-complex-comparisons">A7/A8/A9 (Scan With Complex Comparisons)</h5>
 <p>本节讨论的是比较条件较为复杂时的做法，了解即可。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220507190336139.png" alt="image-20220507190336139" style="zoom:45%;" /></p>
-<h2 id="sort">Sort</h2>
+<h3 id="sort">Sort</h3>
 <p>归并排序是DBMS中最常用的排序方法，它分组进行、并行性好的特性非常适合数据量很大的场合。本节着重讨论归并排序的开销。</p>
 <p>归并排序的空间复杂度为N+1，过程如图。这里使用的是单个缓冲块的结构，多个缓冲块的复杂度分析请自行完成（可以参考Merge Join一节）。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508115049854.png" alt="image-20220508115049854" style="zoom:40%;" /></p>
 <p>时间复杂度的分析如下，注意块传输量复杂度和seek开销复杂度含义区别。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508120114184.png" alt="image-20220508120114184" style="zoom:50%;" /></p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508120131954.png" alt="image-20220508120131954" style="zoom:50%;" /></p>
-<h2 id="join_2">Join</h2>
-<h3 id="nested-loop-join">Nested-Loop Join</h3>
+<h3 id="join_2">Join</h3>
+<h4 id="nested-loop-join">Nested-Loop Join</h4>
 <p>以tuple为外关系的单位进行Join</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508121447539.png" alt="image-20220508121447539" style="zoom:33%;" /></p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508121513548.png" alt="image-20220508121513548" style="zoom:33%;" /></p>
-<h3 id="block-nested-loop-join">Block Nested-Loop Join</h3>
+<h4 id="block-nested-loop-join">Block Nested-Loop Join</h4>
 <p>仍然是循环结构，但是以block为外关系的单位。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508121640857.png" alt="image-20220508121640857" style="zoom:33%;" /></p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508121715704.png" alt="image-20220508121715704" style="zoom:33%;" /></p>
 <p>如果空间允许多个block。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508121904940.png" alt="image-20220508121904940" style="zoom:33%;" /></p>
-<h3 id="indexed-nested-loop-join">Indexed Nested-Loop Join</h3>
+<h4 id="indexed-nested-loop-join">Indexed Nested-Loop Join</h4>
 <p>join需要匹配的量如果编制了索引，join的做法可以从遍历变为查找。利用索引进行join的复杂度主要取决于nr的大小。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508122039944.png" alt="image-20220508122039944" style="zoom: 50%;" /></p>
 <p>其中c指利用索引seek的开销，视索引的种类而定。</p>
-<h3 id="merge-join">Merge Join</h3>
+<h4 id="merge-join">Merge Join</h4>
 <p>用类似归并排序的方法进行join，注意这里讨论的是两张表中按需要匹配的列顺序存放的情况，如果不是则还要先排序。其中bb是各自使用的缓冲块的数量，实际join双方使用的缓冲块数量可以不相等。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508122509781.png" alt="image-20220508122509781" style="zoom:33%;" /></p>
-<h3 id="hash-join">Hash Join</h3>
+<h4 id="hash-join">Hash Join</h4>
 <p>哈希join是为join中需要匹配的属性编制哈希表，然后逐哈希表分块进行。比较特别的是，哈希分块的大小和block大小不一定匹配，会有空间的浪费，因此计算分块数量时需要补一个修正因子。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508123339871.png" alt="image-20220508123339871" style="zoom:33%;" /></p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508123914766.png" alt="image-20220508123914766" style="zoom:33%;" /></p>
@@ -1435,13 +5052,13 @@ $$
 <p>所以复杂度为。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508125738530.png" alt="image-20220508125738530" style="zoom:33%;" /></p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508125807655.png" alt="image-20220508125807655" style="zoom: 33%;" /></p>
-<h2 id="pipeline">Pipeline</h2>
+<h3 id="pipeline">Pipeline</h3>
 <p>流水线是每一条查询操作内部的抽象实现方式。</p>
 <p>从推动逻辑可以划分为两类。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508131547847.png" alt="image-20220508131547847" style="zoom:33%;" /></p>
 <p>每一个环节又可以划分成三个阶段，下面以demand-driven pipeline为例。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508131646363.png" alt="image-20220508131646363" style="zoom:33%;" /></p>
-<h1 id="_32">十六章 查询优化</h1>
+<h2 id="_32">十六章 查询优化</h2>
 <p>对数据库的任何一个查询操作都大致可以分为一下三个步骤：</p>
 <ol>
 <li>解析和翻译：检查所输入语句的语法正确性，并将其翻译成机器能够读懂的形式。</li>
@@ -1458,7 +5075,7 @@ $$
 <p>快速估算每一种执行方案的复杂度并选其中最优的一种</p>
 </li>
 </ol>
-<h2 id="equivalence-rules">Equivalence Rules</h2>
+<h3 id="equivalence-rules">Equivalence Rules</h3>
 <p>常用的逻辑层面的等价关系有：</p>
 <ul>
 <li>
@@ -1526,10 +5143,10 @@ $$
 <li>连续的join先做结果较少的，减少中间结果需要的空间</li>
 </ul>
 <p>实际使用中往往是引用经验式的规则，想要列出所有可能的实现逻辑一般是不可能的。</p>
-<h2 id="statistical-cost-estimation">Statistical Cost Estimation</h2>
+<h3 id="statistical-cost-estimation">Statistical Cost Estimation</h3>
 <p>以下是常用的用于估算复杂度的表信息，对数据库中的表这些数据往往是现成并且定期更新的，难点在于中间结果的信息估算。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516203128145.png" alt="image-20220516203128145" style="zoom:50%;" /></p>
-<h3 id="selection-size-estimation">Selection Size Estimation</h3>
+<h4 id="selection-size-estimation">Selection Size Estimation</h4>
 <ul>
 <li>单个属性选择认为数据均匀分布：<ul>
 <li>等于条件查询，<span class="arithmatex">\(\frac{返回Size}{整个表Size}=\frac{1}{查询条件总数}\)</span></li>
@@ -1539,7 +5156,7 @@ $$
 <li>多个属性选择时认为属性之间独立分布：</li>
 </ul>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516204056582.png" alt="image-20220516204056582" style="zoom:50%;" /></p>
-<h3 id="join-size-estimation">Join Size Estimation</h3>
+<h4 id="join-size-estimation">Join Size Estimation</h4>
 <ul>
 <li>
 <p>两张表没有用于匹配的列时，返回大小是两者大小之积</p>
@@ -1555,13 +5172,13 @@ $$
 <p>两张表用于匹配的列是其一的Key时，返回值不大于另一张表的大小</p>
 </li>
 </ul>
-<h3 id="other-estimations">Other Estimations</h3>
+<h4 id="other-estimations">Other Estimations</h4>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516205048326.png" alt="image-20220516205048326" style="zoom:50%;" /></p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516205108732.png" alt="image-20220516205108732" style="zoom:50%;" /></p>
-<h3 id="estimation-of-distinct-value">Estimation of Distinct Value</h3>
+<h4 id="estimation-of-distinct-value">Estimation of Distinct Value</h4>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516205443571.png" alt="image-20220516205443571" style="zoom:50%;" /></p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516205453043.png" alt="image-20220516205453043" style="zoom:50%;" /></p>
-<h2 id="cost-base-optimize">Cost Base Optimize</h2>
+<h3 id="cost-base-optimize">Cost Base Optimize</h3>
 <p>主要思想如下：</p>
 <ol>
 <li>局部最优解不一定是整体最优解<ul>
@@ -1572,7 +5189,7 @@ $$
 <li>适当的选择计划途径，可以列出所有选项还是使用启发式搜索</li>
 </ol>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516211342064.png" alt="image-20220516211342064" style="zoom:50%;" /></p>
-<h3 id="join-order-selection">Join-Order Selection</h3>
+<h4 id="join-order-selection">Join-Order Selection</h4>
 <p>连续Join的顺序选择是最经典的一类优化问题。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516212000152.png" alt="image-20220516212000152" style="zoom:50%;" /></p>
 <p>往往采用动态规划方法，<strong>伪代码要会</strong>：</p>
@@ -1581,10 +5198,10 @@ $$
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516213325915.png" alt="image-20220516213325915" style="zoom:50%;" /></p>
 <p>下面是一些已经证明的复杂度结论。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516213946420.png" alt="image-20220516213946420" style="zoom:50%;" /></p>
-<h3 id="heuristic-optimize">Heuristic Optimize</h3>
+<h4 id="heuristic-optimize">Heuristic Optimize</h4>
 <p>使用一般性的经验做启发性的优化，本节了解常见的优化习惯即可。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516214112004.png" alt="image-20220516214112004" style="zoom:50%;" /></p>
-<h3 id="nested-subqueries-optimize">Nested Subqueries Optimize</h3>
+<h4 id="nested-subqueries-optimize">Nested Subqueries Optimize</h4>
 <p>首先了解<strong>相关变量</strong>和<strong>相关执行</strong>两个词的含义：</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516214739959.png" alt="image-20220516214739959" style="zoom:50%;" /></p>
 <p>对嵌套查询语句优化，需要学习<strong>半连接</strong>的用法：</p>
@@ -1595,13 +5212,13 @@ $$
 <p>借半连接即可将嵌套子查询拆成单级的结构，回到一般的优化问题。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516215122427.png" alt="image-20220516215122427" style="zoom:50%;" /></p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516215306548.png" alt="image-20220516215306548" style="zoom:50%;" /></p>
-<h2 id="materialized-view-maintainance">Materialized View Maintainance</h2>
+<h3 id="materialized-view-maintainance">Materialized View Maintainance</h3>
 <p>差分维护：只需要处理更新的tuple与其他表的数据关系即可，不需要全体重新计算。下图中ir、dr指新加入、新删除的tuple，有其他关系代数的view处理逻辑也是相同的，在此仅用最简单的Join做例子。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516221713816.png" alt="image-20220516221713816" style="zoom:50%;" /></p>
 <p>维护含Aggregate Operation的view注意有时需要额外维护过程量，例如view中有平均值时可以额外维护sum和count便于后续有插入和删除时能够差分更新而不需要全表重新统计。</p>
-<h1 id="transaction">十七章 Transaction</h1>
+<h2 id="transaction">十七章 Transaction</h2>
 <p>Transaction直译为事物，是一次数据库操作若干执行操作组成的抽象概念。Transaction的提出是为了维护数据的完整性。</p>
-<h2 id="acid">ACID</h2>
+<h3 id="acid">ACID</h3>
 <p>Transation的实现要求四个特性<strong>ACID</strong>：</p>
 <ul>
 <li><strong>Automicity原子性</strong>：要么Transaction内的所有操作都成功要么都失败回滚，不允许部分成功部分失败。</li>
@@ -1624,7 +5241,7 @@ $$
 </ul>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519143837010.png" alt="image-20220519143837010" style="zoom:33%;" /></p>
 <p><strong>ACID中最难实现的是并发控制</strong>，这也是本章的重点内容。</p>
-<h2 id="_33">并发控制</h2>
+<h3 id="_33">并发控制</h3>
 <p>首先引入<strong>Schedule</strong>的概念：指并发Transaction的各个子操作在DBMS内部的具体执行步骤。</p>
 <p>现在给出两个并发的操作：Let <em>T</em>1 transfer $50 from <em>A</em> to <em>B</em>, and <em>T</em>2 transfer 10% of the balance from <em>A</em> to <em>B</em>，可能的Schedule有：</p>
 <ul>
@@ -1640,11 +5257,11 @@ $$
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519145927738.png" alt="image-20220519145927738" style="zoom:50%;" /></p>
 </li>
 </ul>
-<h2 id="schedule-serialize">Schedule Serialize</h2>
+<h3 id="schedule-serialize">Schedule Serialize</h3>
 <p>本书并不考虑多条指令并发的“真·并行调度”，只关注我们以什么策略来生成单条执行序列。</p>
 <p>每个Transaction可以分为若干次读、运算、写，其中会发生数据不一致（<strong>Conflict</strong>）的只有多个Transaction并发读写同一个数据这一种情况（全部只读不会发生冲突，运算由CPU而不是DBMS负责）。所以下面我们只关注有读有写这一种情况。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519163515566.png" alt="image-20220519163515566" style="zoom:40%;" /></p>
-<h3 id="conflict-serializability">Conflict Serializability</h3>
+<h4 id="conflict-serializability">Conflict Serializability</h4>
 <ul>
 <li>
 <p>如果S可以通过交换相互不冲突的语句转换为S‘，或者说S与S‘所有相互冲突的Instructions以相同的顺序排列，称S和S‘是<strong>冲突等价（conflict equivalent）</strong>的。</p>
@@ -1664,28 +5281,28 @@ $$
 <p>当以一个并发调度序列中，如果一个txn从另外一个调txn的结果中读取数据，那么它应该在另外txn的commit之后commit。满足这一条件的调度称为<strong>Recoverable可恢复的</strong>。</p>
 </li>
 </ul>
-<h2 id="precedence-graph">Precedence Graph</h2>
+<h3 id="precedence-graph">Precedence Graph</h3>
 <p>当且仅当Precidence图中无环（注意这是有向图的环）时，某个schedule是冲突可串的。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519163609017.png" alt="image-20220519163609017" style="zoom:40%;" /></p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519163703055.png" alt="image-20220519163703055" style="zoom:50%;" /></p>
 <p>下面是一个具体的例子：</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220525100614094.png" alt="image-20220525100614094" style="zoom:50%;" /></p>
-<h2 id="trade-off">Trade Off</h2>
+<h3 id="trade-off">Trade Off</h3>
 <p>第一节中就提到了，串行调度数据安全性强而性能弱，并行调度反之。实际使用中这往往不是一个选择题，而是取折中的问题。下面列出了常见的四种并行化的层次。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519164900362.png" alt="image-20220519164900362" style="zoom:50%;" /></p>
-<h1 id="_34">十八章 并发控制</h1>
+<h2 id="_34">十八章 并发控制</h2>
 <p>前一章从调度原理上介绍了并发控制，而本章是讲解其具体的实现步骤。</p>
-<h2 id="lock-based-protocols">Lock-Based Protocols</h2>
+<h3 id="lock-based-protocols">Lock-Based Protocols</h3>
 <p>锁是Transaction对某个数据的权限申请，由并发管理器控制。</p>
 <ul>
 <li><strong>exclusive (X) mode</strong>: Data item can be both read as well as written. X-lock is requested using  <strong>lock-X</strong> instruction.</li>
 <li><strong>shared (S) mode</strong>: Data item can only be read. S-lock is requested using  <strong>lock-S</strong> instruction.</li>
 </ul>
 <p>根据上述逻辑，对某一块数据，没有X锁时可以分享多把S锁给不同Transaction，但是存在一把X锁后就不能再有任何其他锁。这种做法一定程度上避免了混乱的读写。</p>
-<h3 id="_35">内部实现</h3>
+<h4 id="_35">内部实现</h4>
 <p>锁策略一般的是Lock Table实现，用哈希表归类数据，每个数据下辖链表储存当前锁的情况。例如下图中17数据派锁给T23，123数据派锁给T1、T8而T2在等待。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220522100650187.png" alt="image-20220522100650187" style="zoom:40%;" /></p>
-<h3 id="_36">常见问题</h3>
+<h4 id="_36">常见问题</h4>
 <ul>
 <li>
 <p><strong>Dead Lock</strong>：锁协议最大的问题是死锁不能被完全避免。</p>
@@ -1695,7 +5312,7 @@ $$
 <p><strong>Startvation</strong>：另一种常见的情况是，派出了过多的S锁，导致出现一个X锁请求时，必须等待此前S锁全部收回，造成时间浪费。</p>
 </li>
 </ul>
-<h3 id="two-phase-lock-protocols">Two-phase Lock Protocols</h3>
+<h4 id="two-phase-lock-protocols">Two-phase Lock Protocols</h4>
 <p>为了解决各个Transaction在任意时刻随意加锁解锁带来前一节中提到的问题，出现了二阶段的锁策略：</p>
 <ul>
 <li>二阶段锁策略2PL是对单个Transaction而言的</li>
@@ -1723,7 +5340,7 @@ $$
 <p><strong>Rigorous Two-phase Locking</strong>：一个Transaction会保留它的所有锁直到commit/abort之前。 </p>
 </li>
 </ul>
-<h3 id="tree-based-protocol">Tree-Based Protocol</h3>
+<h4 id="tree-based-protocol">Tree-Based Protocol</h4>
 <p>树协议的要求是：</p>
 <ul>
 <li>Transaction只能申请X锁，并且对一个数据只能申锁一次。</li>
@@ -1743,7 +5360,7 @@ $$
 <ul>
 <li>有时会给不需要访问的数据项加锁（要求先给父节点加锁），会增加锁开销</li>
 </ul>
-<h2 id="multiple-granularity">Multiple Granularity</h2>
+<h3 id="multiple-granularity">Multiple Granularity</h3>
 <p>Granularity译为粒度。锁协议相关内容中，我们将加锁的对象泛指为“数据”，但是实际上“数据“指代的内容量可大可小，下图便是一个例子，从整个数据库到每一个tuple，可以用一个树型结构表示。其中的每一个节点都可以视为“数据”。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220529154413915.png" alt="image-20220529154413915" style="zoom:50%;" /></p>
 <p>对“数据”加锁时应该遵循如下原则：</p>
@@ -1760,7 +5377,7 @@ $$
 </ul>
 </li>
 </ul>
-<h2 id="handling-deadlock">Handling Deadlock</h2>
+<h3 id="handling-deadlock">Handling Deadlock</h3>
 <p>死锁是锁协议必须要解决的问题。解决思路一般有：</p>
 <ul>
 <li>一次性申请Transaction需要的所有锁，全部申请完成后再执行<ul>
@@ -1785,11 +5402,11 @@ $$
 </ul>
 </li>
 </ul>
-<h2 id="_37">检测死锁</h2>
+<h3 id="_37">检测死锁</h3>
 <p>用类似前序图的等待图关联各个事务。箭头从Ti指向Tj意味着Ti正在等待Tj解锁某个数据，自己才能加锁以继续执行操作。注意与前序图不同的是，前序图随Schedule的确定而确定，执行过程中不会变化；而等待图在运行过程中时时可能改动。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220529174421930.png" alt="image-20220529174421930" style="zoom:50%;" /></p>
-<h1 id="_38">十九章 错误恢复</h1>
-<h2 id="_39">日志</h2>
+<h2 id="_38">十九章 错误恢复</h2>
+<h3 id="_39">日志</h3>
 <p>对每一个事务的每一个write做记录：</p>
 <ul>
 <li>Transaction开始时，记录（Ti start）</li>
@@ -1809,7 +5426,7 @@ $$
 </li>
 </ul>
 <p>本书中我们只讨论immediate的做法。</p>
-<h2 id="_40">日志恢复</h2>
+<h3 id="_40">日志恢复</h3>
 <ul>
 <li>
 <p><strong>Undo</strong>：指Transaction未Commit时的回滚，需要对每一个写操作利用上面的四元组做回滚，它保证了数据库的原子性。</p>
@@ -1846,7 +5463,7 @@ $$
 </li>
 </ul>
 <p>多个Transaction同时回滚时先将未完成的Undo再将已完成的Redo。</p>
-<h3 id="check-point">Check Point</h3>
+<h4 id="check-point">Check Point</h4>
 <p>上面说到，一种需要Redo的典型场景是Commit后一段时间里新数据可能还在buff里没有写入Disk，这时如果发生断电就需要利用Redo Log来保障数据持久性。但是这也带来一个问题，数据在buff中的时间是有限的，迟早会进入非易失的存储器中，Redo已经进入Disk的事务是浪费。</p>
 <p>所以每隔一段时间，我们停止schedule并强制将buff中的所有内容写入disk，并在Log中留下一条记录。记录的内容是当时还没有Commit的事务编号（已经Commit的事务再此之前都保证被写入disk了）。下图中假设在执行第18行前发生了断电需要回滚：</p>
 <ul>
@@ -1855,7 +5472,7 @@ $$
 <li>所以Undo List中只有T4</li>
 </ul>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220601164936523.png" alt="image-20220601164936523" style="zoom:50%;" /></p>
-<h3 id="fuzzy-check-point">Fuzzy Check Point</h3>
+<h4 id="fuzzy-check-point">Fuzzy Check Point</h4>
 <p>常规Check Point写disk时会停止Schedule造成性能浪费，因此有了Fuzzy Checkpoint这一改进策略：</p>
 <ol>
 <li>停止Schedule</li>
@@ -1869,7 +5486,7 @@ $$
 <li>追踪M中数据的写入情况，实时更新指针</li>
 </ol>
 <p>从指针指向的Check Point作为恢复的起点即可。</p>
-<h3 id="log-buffer">Log Buffer</h3>
+<h4 id="log-buffer">Log Buffer</h4>
 <p>上面提到我们总是希望日志被写到Disk中以保证数据可靠，但是这样会对Disk造成很大的压力，所以Log也需要Buffer。</p>
 <p>一般的策略是：</p>
 <ul>
@@ -1878,22 +5495,22 @@ $$
 <li>数据写回Disk释放延后，只有对应的Log写进Disk才能写数据</li>
 </ul>
 <p>这样仍然保证了Log一定先于Data进入磁盘，所以不影响安全性。</p>
-<h2 id="_41">磁盘恢复</h2>
+<h3 id="_41">磁盘恢复</h3>
 <p>前一节主要解决回滚的实现和易失性存储入Mem的恢复。现在非易失性储存入Disk失效时的恢复：</p>
 <ul>
 <li>定期拷贝磁盘作为备份，称Dump</li>
 <li>类似于Check Point之于内存，恢复时找到最近的Dump和恢复Log，只做Redo</li>
 </ul>
-<h2 id="logical-undo">Logical Undo</h2>
+<h3 id="logical-undo">Logical Undo</h3>
 <p>例如插入索引，新建表等操作，是不能用此前提到的记录数据块新旧值的方法来做Undo的。要Undo这些操作，我们需要为每一个操作定义一个反操作，例如插入索引对删除索引，新建表对Drop表等，Undo某个操作即执行它的反操作。这就是Logical Undo。<strong>因为反操作是一个相对独立的操作，所以有Logical Undo对提前释放锁有帮助。</strong></p>
 <p>Logical Undo一定不是幂等的，所以回滚时如果看到Operation-abort，意味着已经逻辑撤回过，不能再次Undo。</p>
 <p>Logical Undo和Physical Undo又可以相嵌套。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220601194658127.png" alt="image-20220601194658127" style="zoom:50%;" /></p>
-<h2 id="aries">ARIES</h2>
+<h3 id="aries">ARIES</h3>
 <p><strong>Log Sequence Number (LSN)</strong> 可以看作是Log的身份证号。 </p>
-<h3 id="physiological-redo">Physiological Redo</h3>
+<h4 id="physiological-redo">Physiological Redo</h4>
 <p>合并多次Redo。例如两个事务将A从500改到600，又从600改到800，两者都commit后Redo Log可以合一为A从500到800，这对恢复没有影响。这种做法被称为半逻辑Redo，指不像逻辑Undo一样独立，但也不是完全物理的Redo。</p>
-<h3 id="aries-data-structure">ARIES Data Structure</h3>
+<h4 id="aries-data-structure">ARIES Data Structure</h4>
 <ul>
 <li>Buff和Disk中的每一个页都保存其数据对应的最新的LSN。</li>
 <li>Dirty Page Table中PageID是当前所有的脏页，PageLSN是更改PageID数据的最新LSN，<strong>RecLSN是写Disk之后改Buff的最早的一条Log的LSN。</strong></li>
@@ -1901,7 +5518,7 @@ $$
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220601201530562.png" alt="image-20220601201530562" style="zoom:50%;" /></p>
 <p>在Log中添加指针加速遍历。</p>
 <p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220601202354910.png" alt="image-20220601202354910" style="zoom:50%;" /></p>
-<h3 id="aries_1">ARIES具体步骤</h3>
+<h4 id="aries_1">ARIES具体步骤</h4>
 <ol>
 <li>
 <p>一般的Check Point</p>
