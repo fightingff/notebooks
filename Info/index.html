@@ -780,56 +780,90 @@
 <p>~~高级的概率论与数理统计~~</p>
 <h2 id="_2">信息的定义</h2>
 <ul>
-<li><strong>信息是一种用来消除不确定性的东西</strong></li>
-<li>信息来源于物质，但不等于物质</li>
-<li>信息必须有一个载体，信息是载体的内容</li>
+<li>
+<p><strong>信息是一种用来消除不确定性的东西</strong></p>
+<ul>
+<li>
+<p>信息来源于物质，但不等于物质</p>
+</li>
+<li>
+<p>信息必须有一个载体，信息是载体的内容</p>
+</li>
+</ul>
+</li>
 </ul>
 <h2 id="_3">信息的度量</h2>
 <blockquote>
 <p><span class="arithmatex">\(I(A) = -\log_2 P(A)\)</span></p>
 </blockquote>
 <ul>
-<li>信息的度量单位是比特（bit），正对应于当前的计算机系统 (<em>以e为底则称为奈特nat</em>)</li>
+<li>
+<p>信息的度量单位是比特（bit），正对应于当前的计算机系统 (<em>以e为底则称为奈特nat</em>)</p>
+</li>
 <li>
 <p>香农信息量相当于将信息论和概率论联系起来、</p>
-</li>
+<ul>
 <li>
 <p>概率越小，信息量越大</p>
 </li>
-<li>非负数</li>
-<li>可加性</li>
+<li>
+<p>非负数</p>
+</li>
+<li>
+<p>可加性</p>
+</li>
+</ul>
+</li>
 </ul>
 <h3 id="_4">事件的自信息</h3>
 <ul>
 <li>
 <p>事件的自信息的本质</p>
-</li>
+<ul>
 <li>
 <p><strong>事件发生后</strong>所提供的信息量</p>
 </li>
-<li><strong>事件发生前</strong>为确证事件发生的不确定性所需要的信息量</li>
+<li>
+<p><strong>事件发生前</strong>为确证事件发生的不确定性所需要的信息量</p>
+</li>
+</ul>
+</li>
 <li>
 <p>条件自信息的本质</p>
-</li>
+<ul>
 <li>
 <p>事件Y发生后，X再发生需要的“新的信息量”</p>
 </li>
-<li>事件Y发生后，X又发生了，提供给观察者的“新的信息量”</li>
+<li>
+<p>事件Y发生后，X又发生了，提供给观察者的“新的信息量”</p>
+</li>
+</ul>
+</li>
 </ul>
 <h3 id="mutual-infomation">事件的互信息(Mutual Infomation)</h3>
 <ul>
-<li><span class="arithmatex">\(I(x ; y ) = I(x) - I(I | y)= -log P(x) - ( - log P(x | y) ) = log \frac{P(x, y)}{P(x)P(y)}\)</span></li>
-<li>事件Y发生后对事件X的不确定性减少的程度</li>
-</ul>
+<li>
+<p><span class="arithmatex">\(I(x ; y ) = I(x) - I(I | y)= -log P(x) - ( - log P(x | y) ) = log \frac{P(x, y)}{P(x)P(y)}\)</span></p>
+</li>
+<li>
+<p>单一事件Y发生后对事件X的不确定性减少的程度</p>
 <p>也就是</p>
 <p><strong>已知 Y 发生的情况下，X 发生带来的不确定性</strong></p>
 <p><strong>不知道 Y 是否发生的情况下，X 发生带来的不确定性</strong></p>
-<p>之差
-- 对称性：<span class="arithmatex">\(I(x ; y ) = I(y ; x )\)</span>
-- 链式法则：<span class="arithmatex">\(I(x ; y, z ) = I(x ; y ) + I(x ; z | y )\)</span></p>
+<p>之差</p>
+</li>
+<li>
+<p>对称性：<span class="arithmatex">\(I(x ; y ) = I(y ; x )\)</span></p>
+</li>
+<li>
+<p>链式法则：<span class="arithmatex">\(I(x ; y, z ) = I(x ; y ) + I(x ; z | y )\)</span></p>
+</li>
+</ul>
 <h3 id="_5">熵</h3>
 <ul>
-<li><span class="arithmatex">\(H(X) = \sum P(x_i) I(x_i) = - \sum P(x_i) \log_2 P(x_i)\)</span></li>
+<li>
+<p><span class="arithmatex">\(H(X) = \sum P(x_i) I(x_i) = - \sum P(x_i) \log_2 P(x_i)\)</span></p>
+</li>
 <li>
 <p>熵定义为随机变量各个事件的平均自信息，也就是随机变量的不确定性</p>
 </li>
@@ -838,45 +872,135 @@
 </li>
 <li>
 <p>联合熵的链式法则：<span class="arithmatex">\(H(X, Y) = H(X) + H(Y | X)\)</span></p>
-</li>
+<ul>
 <li>
 <p>特殊的，X,Y统计独立时，<span class="arithmatex">\(H(X, Y) = H(X) + H(Y)\)</span></p>
 </li>
-<li>多变量，<span class="arithmatex">\(H(X_1, X_2, \cdots, X_n) = \sum H(X_i | X_1, X_2, \cdots, X_{i-1})\)</span></li>
+<li>
+<p>多变量，<span class="arithmatex">\(H(X_1, X_2, \cdots, X_n) = \sum H(X_i | X_1, X_2, \cdots, X_{i-1})\)</span></p>
+</li>
+</ul>
+</li>
 <li>
 <p>熵的性质</p>
-</li>
+<ul>
 <li>
 <p>本质上是K维概率空间上向量的函数</p>
 </li>
 <li>
 <p>基本简单性质</p>
 <ul>
-<li>非负性：<span class="arithmatex">\(H(X) \ge 0\)</span></li>
-<li>确定性：当且仅当X是确定性的随机变量时，<span class="arithmatex">\(H(X) = 0\)</span></li>
-<li><em>可扩展性</em>：维度扩展</li>
+<li>
+<p>非负性：<span class="arithmatex">\(H(X) \ge 0\)</span></p>
+</li>
+<li>
+<p>确定性：当且仅当X是确定性的随机变量时，<span class="arithmatex">\(H(X) = 0\)</span></p>
+</li>
+<li>
+<p><em>可扩展性</em>：维度扩展</p>
+</li>
+</ul>
+</li>
 <li>
 <p>可加性</p>
-</li>
+<ul>
 <li>
 <p>即上面的联合熵的链式法则推广</p>
 </li>
-<li>证明:</li>
+<li>
+<p>证明:</p>
+</li>
 </ul>
 <p><img alt="Infotree" src="../Infotree.png" /></p>
 <p><span class="arithmatex">\(H(X_1,X_2) = H(X_2) + H(X_1 | X_2) = H(X_2)\)</span>  (<span class="arithmatex">\(X_2\)</span>确定后，<span class="arithmatex">\(X_1\)</span>也确定了，所以<span class="arithmatex">\(H(X_1 | X_2) = 0\)</span>)</p>
 <p><span class="arithmatex">\(H(X_1,X_2) = H(X_1) + H(X_2 | X_1)\)</span></p>
-<p>两式相等，所以 <span class="arithmatex">\(H(X_2) = H(X_1) + H(X_2 | X_1)\)</span>
-  - 极值性</p>
+<p>两式相等，所以 <span class="arithmatex">\(H(X_2) = H(X_1) + H(X_2 | X_1)\)</span></p>
+</li>
+<li>
+<p>极值性</p>
 <ul>
 <li><span class="arithmatex">\(H_K(p_1,p_2, \cdots p_K) \leq H_K(\frac{1}{K},\frac{1}{K}, \cdots \frac{1}{K}) = log K\)</span></li>
+</ul>
+</li>
 <li>
 <p>条件熵 &lt;= 熵</p>
-</li>
+<ul>
 <li>
 <p><span class="arithmatex">\(H(X|Y) \leq H(X)\)</span></p>
 </li>
-<li><span class="arithmatex">\(H(X|y) &lt;&gt; H(x)\)</span></li>
+<li>
+<p><span class="arithmatex">\(H(X|y) &lt;&gt; H(x)\)</span></p>
+</li>
+</ul>
+</li>
+<li>
+<p>凸函数性质</p>
+<ul>
+<li>
+<p>熵是定义在凸集上的上凸函数</p>
+<ul>
+<li>
+<p>凸函数性质：</p>
+<ul>
+<li>
+<p>Hessian矩阵正定/负定</p>
+</li>
+<li>
+<p>Jensen不等式成立</p>
+<p><span class="arithmatex">\(\Sigma \theta_i f(x_i) \leq f(\Sigma \theta_i x_i)\)</span>  </p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><span class="arithmatex">\(H(\theta \alpha + (1-\theta) \beta) \geq \theta H(\alpha) + (1-\theta) H(\beta), \theta \in [0,1]\)</span></p>
+</li>
+</ul>
+</li>
+<li>
+<p>互信息 与 熵</p>
+<ul>
+<li>
+<p><span class="arithmatex">\(I(X;Y) = H(X) - H(X|Y) = H(Y) - H(Y|X) = H(X) + H(Y) - H(X,Y)\)</span></p>
+</li>
+<li>
+<p>互信息等于事件Y（整个随机变量）发生后对事件X的不确定性减少的程度</p>
+<p><img alt="I(x,y)" src="../Ixy.png" /> </p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>相对熵（KL散度）</p>
+<ul>
+<li>
+<p><span class="arithmatex">\(D(p||q) = \sum p(x) \log \frac{p(x)}{q(x)} = E(\log \frac{p(x)}{q(x)})\)</span></p>
+</li>
+<li>
+<p>性质：</p>
+<ul>
+<li>
+<p>非负性</p>
+</li>
+<li>
+<p>不对称性</p>
+</li>
+<li>
+<p>与互信息的关系</p>
+<p><span class="arithmatex">\(I(X;Y) = D(p(x,y)||p(x)p(y))\)</span></p>
+</li>
+<li>
+<p>与熵的关系</p>
+<p><span class="arithmatex">\(H(x) = H(U) - D(X||U)\)</span> </p>
+</li>
+<li>
+<p>“链式”法则（P=P1P2相互独立, Q=Q1Q2相互独立                      ）</p>
+<p><span class="arithmatex">\(D(P||Q) = D(P1||Q1) + D(P2||Q2)\)</span>       </p>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -884,18 +1008,24 @@
 <ul>
 <li>
 <p>信源编码</p>
-</li>
+<ul>
 <li>
 <p>一定损失比率下，通过编码技术减少信息的传输量</p>
 </li>
-<li>因为不同样本出现概率不同，可以通过编码技术（例如哈夫曼编码）来减少信息的传输量</li>
+<li>
+<p>因为不同样本出现概率不同，可以通过编码技术（例如哈夫曼编码）来减少信息的传输量</p>
+</li>
+</ul>
+</li>
 <li>
 <p>信道接收</p>
+<ul>
+<li>抗干扰信号，提高信息传输的可靠性</li>
+</ul>
 </li>
 <li>
-<p>抗干扰信号，提高信息传输的可靠性</p>
+<p>理论极限</p>
 </li>
-<li>理论极限</li>
 </ul>
 
 
