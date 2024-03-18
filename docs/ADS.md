@@ -694,6 +694,152 @@ struct RBTree{
 
 ----
 
+### Leftist Tree
+
+> 一种自平衡二叉堆，常用于两堆的快速合并操作
+
+- 特征：
+
+    - 堆的特性：根节点为子树中的最大 / 最小值
+    
+    - 左偏：**Npl(Ls) >= Npl(Rs)**
+    
+        - 其中Npl(x)为x到最近空节点的距离，**Npl(x) = min{Npl(C)} + 1**
+        
+        - 规定**Npl(NULL) = -1** 
+
+- **维护：**
+
+    - **核心操作 merge**
+    
+        - 选两颗树中根节点小的那棵作为主树
+        
+        - 递归合并其右子树与剩下的那棵树
+        
+        - 递归操作完成后，对左偏性质进行维护，交换不符性质的左右子树并维护 Npl
+    
+    - 插入
+    
+        - 可以视为主树与一个单一节点的树合并
+    
+    - 删除（最值）
+    
+        - 直接删除根节点，并合并其两棵子树 
+
+- **复杂度分析**
+
+    - 可以利用类似红黑树中的数学归纳法，证明
+    
+        > 右路径上有 $r$ 个节点的左偏树至少有 $2^r - 1$个节点
+        >
+        > 即右路径长度为$O(logN)$
+        
+
+    - 而左偏树的合并操作显然复杂度为右路径长度之和，因此复杂度为$O(logN)$  
+
+- Code (passed Luogu P3377)
+
+```cpp title="Leftist Tree" linenums="1"
+struct Node{
+    int Key, pos, Npl;
+    Node *Ls, *Rs;
+    Node(int _Key, int _Npl = 0,  int _pos = 0, Node *_s = NULL):Key(_Key), Npl(_Npl), Ls(_s), Rs(_s), pos(_pos){}
+    bool operator <(const Node &Y)const{return Key == Y.Key ? pos < Y.pos : Key < Y.Key;} // for this specific test problem
+};
+class Leftist{
+    private:
+        Node *Rot;
+        static Node *NIL;
+        Node *Merge(Node *L, Node *R){
+            if(L == NIL) return R;
+            if(R == NIL) return L;
+            if(*R < *L) swap(L, R); // choose the root
+            L->Rs = Merge(L->Rs, R);
+            if(L->Ls->Npl < L->Rs->Npl) swap(L->Ls, L->Rs); // maintain the property
+            L->Npl = L->Rs->Npl + 1;        // update Npl
+            return L;
+        }
+    public:
+        Leftist():Rot(NIL){}
+        void Clear(){Rot = NIL;}
+        void Push(int Key, int pos = 0){Rot = Merge(Rot, new Node(Key, 0, pos, NIL));}
+        bool Empty(){return Rot != NIL;}
+        int Top(){return Rot->Key;}
+        int Top_pos(){return Rot->pos;} // for this specific problem
+        int Pop(){
+            int Key = Rot->Key;
+            Rot = Merge(Rot->Ls, Rot->Rs);
+            return Key;
+        }
+        void Merge(Leftist T){Rot = Merge(Rot, T.Rot);}
+};
+Node *Leftist::NIL = new Node(-1, -1);  // NULL Node
+```
+
+----
+
+### Skew Heap
+
+> 也是一种自平衡二叉堆，常用于两堆的快速合并操作
+
+- 特征：
+
+    - 堆的特性：根节点为子树中的最大 / 最小值
+    
+    - Skew：**不再维护Npl，而是通过每次强制交换左右子树的方式来维护平衡**
+    
+        可以理解为 为了平衡，每次左边塞一个，右边塞一个
+    
+    - *还有“中庸”版，randomize heap, 同样不用维护Npl, 不过为每次随机交换左右子树，期望平衡，其余写法一模一样*
+
+- **维护：**
+
+    - **核心操作 merge**
+    
+        - 选两棵树中根节点小的作为主树，交换其左右节点
+        
+        - 递归合并其左节点与剩下的一棵树
+        
+        - 当某棵树已经为空时可以直接接上，停止递归（会导致这棵剩下的子树内部没有充分旋转，影响见下方复杂度分析）    
+    
+    - 其余操作同左偏树都类似 
+
+- **复杂度分析：** 
+
+*采用天才的势能分析法*
+
+> 定义势能函数 $\Phi(i) = N_{heavy\ nodes}$
+>
+> 其中 heavy node 重节点 定义为右子树比左子树大的节点
+
+**注意到每次合并都发生在左边，而左边都是右边换过去的，因此实际上是在右路径上操作，左边的那些结构不变，只要关注操作前整棵树的右路径**
+
+将右路径单独剥离出来，设 $H_i = l_i + h_i$ ($H_i$ 为右路径节点数，$l_i$ 为其中light node, $h_i$ 为其中heavy node)
+
+则对于一次merge, $$ c_i \leq H_1 + H_2 = l_1 + h_1 + l_2 + h_2 $$
+
+**而每次 merge 之后， 右路径上所有的重节点将会变成轻节点， 轻节点有可能会变成重节点**
+
+则 $$ \Delta \Phi(i) \leq (l_1 + l_2) - (h_1 + h_2) $$ (右路径外的重节点不变，会被抵消)
+
+综上，得到 $$ \hat{c_i} \leq c_i + \Delta \Phi(i) = 2(l_1 + l_2) $$
+
+根据轻节点定义，左子树一定大于右子树，而且在右路径上，从而 $l_1 + l_2 = O(logN)$
+
+即证明了每次 merge 的摊还代价为 $O(logN)$
+
+下面说明一下为什么提前终止不会影响摊还代价：
+
+首先，提前终止确实会导致剩下的那棵子树中的重节点未被转化为轻节点
+
+但是观察上方 $\Delta \Phi(i)$ 的式子会发现，这部分 $\Delta h$ 在前后的势能函数中保持不变，会被直接抵消，因此原式仍然成立
+
+----
+
+### Binomial Heap
+
+----
+
 ## Algorithm
 
 ----
