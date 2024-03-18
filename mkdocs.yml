@@ -1,5 +1,10 @@
 site_name: FF's Notebooks
 site_url: https://fightingff.github.io/notebooks
+
+# Repository
+repo_name: 'fightingff/notebooks'
+repo_url: 'https://github.com/fightingff/notebooks'
+
 nav:
   - Home: index.md
   - Courses:
