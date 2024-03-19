@@ -834,6 +834,41 @@ Node *Leftist::NIL = new Node(-1, -1);  // NULL Node
 
 但是观察上方 $\Delta \Phi(i)$ 的式子会发现，这部分 $\Delta h$ 在前后的势能函数中保持不变，会被直接抵消，因此原式仍然成立
 
+- Code（passed Luogu P3377）
+
+```cpp title="SkewHeap" linenums="1"
+struct Node{
+    int Key, pos;
+    Node *Ls, *Rs;
+    Node(int _Key, int _pos):Key(_Key), pos(_pos), Ls(NULL), Rs(NULL){}
+    bool operator <(const Node &Y)const{return Key == Y.Key ? pos < Y.pos : Key < Y.Key;} // for this specific test problem
+};
+class SkewHeap{
+    private:
+        Node *Rot;
+        Node *Merge(Node *L, Node *R){
+            if(L == NULL) return R;         
+            if(R == NULL) return L;
+            if(*R < *L) swap(L, R); // choose the smaller one as the root
+            swap(L->Ls, L->Rs);
+            L->Ls = Merge(L->Ls, R);
+            return L;
+        }
+    public:
+        void Clear(){Rot = NULL;}
+        void Push(int Key, int pos = 0){Rot = Merge(Rot, new Node(Key, pos));}
+        bool Empty(){return Rot != NULL;}
+        int Top(){return Rot->Key;}
+        int Top_pos(){return Rot->pos;}
+        int Pop(){
+            int Key = Rot->Key;
+            Rot = Merge(Rot->Ls, Rot->Rs);
+            return Key;
+        }
+        void Merge(SkewHeap T){Rot = Merge(Rot, T.Rot);}
+};
+```
+
 ----
 
 ### Binomial Heap
