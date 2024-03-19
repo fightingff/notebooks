@@ -40,7 +40,7 @@
 
 ### 事件的互信息(Mutual Infomation)
 
-- $I(x ; y ) = I(x) - I(I | y)= -log P(x) - ( - log P(x | y) ) = log \frac{P(x, y)}{P(x)P(y)}$
+- $I(x ; y ) = I(x) - I(x | y)= -log P(x) - ( - log P(x | y) ) = log \frac{P(x, y)}{P(x)P(y)}$
 
 - 单一事件Y发生后对事件X的不确定性减少的程度
 
