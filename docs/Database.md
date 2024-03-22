@@ -312,33 +312,14 @@ Join语句的基本功能是将两张表中的tuple按一定规则进行匹配�
 
 - Join Conditions控制哪一些列或条件用于匹配两张表中的tuple
     - natural：tuple所有同名列的值相等（默认）
+        - natural 会合并同名列，且using也是相当于默认为natural
     - using (A1, A2...)：tuple同名列中指定的部分列的值相等
     - on \<predicate>：按照特定的规则匹配，不限于同名列
 - Join Types控制如何处理没有匹配对象的tuple
     - Inner Join：没有匹配对象则不返回（默认）
-    - Left Outer Join：左侧表的tuple没有匹配对象，则为扩展的列填入NULL，一起返回
-    - Right Outer Join：右侧表的tuple没有匹配对象，则为扩展的列填入NULL，一起返回
+    - Left Outer Join：左侧表的tuple没有匹配对象，则为扩展的列填入NULL，一起返回（左边元素一定存在）
+    - Right Outer Join：右侧表的tuple没有匹配对象，则为扩展的列填入NULL，一起返回（右边元素一定存在）
     - Full Outer Join：上面二者的并集
-
-例如对于下面两张表：
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220316150257410.png" alt="image-20220316150257410" style="zoom:40%;" />
-
-Join（natural inner join）得：
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/%E5%9B%BE%E7%89%87%201.jpg" alt="图片 1" style="zoom:28%;" />
-
-*course* natural right outer join *prereq* 得：
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220316150428706.png" alt="image-20220316150428706" style="zoom:33%;" />
-
-natural full outer join（full outer join using (course_id)与之等价，因为只有这一个同名列）得：
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220316150505000.png" alt="image-20220316150505000" style="zoom:33%;" />
-
-*course* left outer join *prereq* on course.course_id = prereq.course_id 得：
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220316151014204.png" alt="image-20220316151014204" style="zoom:33%;" />
 
 ### View
 
@@ -349,9 +330,11 @@ create view view_name(attribute_name1, attibute_name2...) as alias select...
 view一般用于查找以及接口，语法和with相同，作用也基本相同。唯一的区别是view一经定义则一直可用，而with的作用域仅有单条语句。这为view带来了几点特性：
 
 - view并不是实际存在的表，每次调用view时只是重复调用了筛选的条件。因此update table后，与之关联的view也会改变。
-- 我们一般不对view进行update。大部分SQL系统对update view有严格的限制。<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220323102508730.png" alt="image-20220323102508730" style="zoom:40%;" />
+- 我们一般不对view进行update。大部分SQL系统对update view有严格的限制。
 
 - 部分SQL也支持materialize view，view此时是一张真实存在的表，这一般是为了用空间换时间。物化视图相关的表发生变化时，它自己也必须同时更新，以维持一般view的特性。
+
+- view dependecy: 可以嵌套定义，甚至自我递归定义？ 
 
 ### Index
 
@@ -360,7 +343,7 @@ CREATE INDEX index_name ON table_name ( column1, column2.....);//创建
 ALTER TABLE table_name DROP INDEX index_name;//删除
 ```
 
-索引的原理类似于书的目录，要查找某个词不需要从头开始阅读书籍，可以从目录查到页码直接跳转，于是加快了查找的速度。其具体实现方式不需要深究。一个表可以创建多个索引，一个索引可以包含多个列。
+索引的原理类似于书的目录，要查找某个词不需要从头开始阅读书籍，可以从目录查到页码直接跳转，于是加快了查找的速度。其具体实现方式不需要深究。一个表可以创建多个索引，一个索引可以包含多个列（复合索引）。
 
 但索引并不是尽善尽美，例如update之后，索引需要同步维护；同时索引是一种物理结构，有额外的空间与IO开销。不适当的索引设置反而会降低效率。
 
@@ -371,9 +354,18 @@ ALTER TABLE table_name DROP INDEX index_name;//删除
 - not NULL：非空。
 - Primary Key：构成主键的tuple不能重复。
 - Check(Predicate)：自定义检查的条件，例如 `CHECK (semester in ("spring", "autumn") )`。
-- Foreign Key (attribute_name1, attribute_name2 ...) references table_name：自定的若干个attribute组成的tuple一定是table_name的主键之一。
+- Foreign Key (attribute_name1, attribute_name2 ...) references table_name（（attribute））：（原则上，可以不是）自定的若干个attribute组成的tuple一定是table_name的主键之一。
 
 对数据类型的约束既可以在定义表时规定，也可以后期通过domain关键字增删改。具体语法在此不表。
+
+- cascade: 级联，更新与删除等操作违反完整性约束，便会将子数据一并处理掉（一般没有 insert cascade）
+
+    - *还可以set null, set default等*
+
+- assertion: 断言，always satisfy
+
+- trigger：Events & Actions
+    - 有效但少用
 
 ### 特殊数据类型
 
@@ -381,13 +373,19 @@ ALTER TABLE table_name DROP INDEX index_name;//删除
 
 SQL自带时间相关的特殊数据类型。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220323114743247.png" alt="image-20220323114743247" style="zoom:45%;" />
-
 #### large number
 
 对于尤其空间尤其巨大的值，传指针比直接传数据本身高效得多。在此理解即可。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220323115826665.png" alt="image-20220323115826665" style="zoom:45%;" />
+#### large-object types
+
+- blob: binary 
+
+- clob: character
+
+#### user-defined
+
+#### domain
 
 ### 权限
 
@@ -405,6 +403,9 @@ on <relation name or view name> to <user list>;//收回
 - 权限可以来自多个上级用户，相互可以重叠，例如有两者都为第三方授予了读取权限，此时即使有一方撤回了权限，第三方仍然可以正常读取。
 - 权限可以级联下放，例如A为B授予了某些权限，B可以继续向其他人授予不高于他自己的权限。当A撤回对B的权限时，B下放给他人的权限也会同时被收回。
 - 权限的基本单位是relation，需要授予某个数据库内所有relation的权限时可以使用DB_name.\*。
+- 多次授权，一次只能收一个
+- public收回，所有非特殊指明的人的权限都被收回
+- 视图上的权限没啥用？
 
 有多个同类用户需要做统一的权限调整时，列出\<user list>的使用方式显然不便，此时就需要role。role是权限组成的集合，你可以像赋予单个权限一样将role赋予用户。修改某个role对应的权限集合时，所有被赋予这个role身份的用户权限都会同时被修改。
 
@@ -443,7 +444,6 @@ call dept_count_proc('physics', d_count)
 
 trigger是在满足某些条件后自动执行的sql，可以视为对数据库操作的监视或者说副作用。但是现代sql数据库流行的风格是不写trigger，下面列出了trigger的弊端和一些替代品。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220402221052922.png" alt="image-20220402221052922" style="zoom:45%;" />
 
 ## 第六章 数据库设计范式一
 
