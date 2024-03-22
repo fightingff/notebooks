@@ -24,6 +24,10 @@
 
 - Generic: 泛型
 
+- Field: 字段
+
+- Parameter: 函数参数
+
 ## STL
 
 > **Standard Template Library**
@@ -92,3 +96,68 @@
 
 - 通常用 size 来表示其中 object 的数量 
 
+## Class
+
+> 类，一种用户自定义的数据类型，用于封装数据和方法
+
+- 构造
+
+    - 全局变量构造在main函数之外，main函数之前构造，main函数之后析构，按书写顺序构造，反序析构
+    
+    - *但是全局变量处在多文件时，构造顺序是不确定的*                                            
+
+    - *进入函数时，所有本地变量所占据空间已经分配完毕*  
+
+- 析构
+  
+    - 编译器控制，当变量结束生命周期时自动调用
+    
+    - 同等条件下，析构函数的调用顺序与构造函数的调用顺序相反（栈一样，避免依赖关系影响） 
+
+- 权限
+
+    - private
+
+        - 仅在**类**内部可见
+        
+        - **边界是类, 不是对象，并且由编译器控制（可以绕过）**  
+
+    - public
+
+        - 都可以访问，与 structure 类似 
+
+    - protected
+ 
+    - default
+
+        - class 默认是 private 的，struct 默认是 public 的 
+
+    - friend
+    
+        - 权限授权，可以访问该类的私有成员
+
+- static
+
+    - deprecated：（过时）
+
+        > 限制外部访问
+    
+        - static free function
+        
+        - static global variables
+        
+    - static local variables
+    
+        - 持久存储，多次调用保存上次的值    
+        
+        - 本质上是 **访问受限的全局变量**，在函数被第一次调用时构造，在程序结束时析构 
+    
+    - static member variables
+    
+        - 所有对象共享，不属于对象，属于类
+        
+        - 不能在类内初始化，需要在类外初始化
+        
+        - 可以通过类名访问，也可以通过对象访问
+        
+        - static member function 只能访问 static member variables  

@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.14">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.10ba22f1.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
       
       
 
@@ -246,8 +246,10 @@
     
     
     
+    
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
+        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
@@ -434,6 +436,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Class
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -502,8 +513,10 @@
     
     
     
+    
     <li class="md-nav__item md-nav__item--nested">
       
+        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
@@ -586,8 +599,10 @@
     
     
     
+    
     <li class="md-nav__item md-nav__item--nested">
       
+        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
@@ -713,6 +728,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Class
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -766,6 +790,12 @@
 </li>
 <li>
 <p>Generic: 泛型</p>
+</li>
+<li>
+<p>Field: 字段</p>
+</li>
+<li>
+<p>Parameter: 函数参数</p>
 </li>
 </ul>
 <h2 id="stl">STL</h2>
@@ -880,6 +910,121 @@
 <ul>
 <li>通常用 size 来表示其中 object 的数量 </li>
 </ul>
+<h2 id="class">Class</h2>
+<blockquote>
+<p>类，一种用户自定义的数据类型，用于封装数据和方法</p>
+</blockquote>
+<ul>
+<li>
+<p>构造</p>
+<ul>
+<li>
+<p>全局变量构造在main函数之外，main函数之前构造，main函数之后析构，按书写顺序构造，反序析构</p>
+</li>
+<li>
+<p><em>但是全局变量处在多文件时，构造顺序是不确定的</em>                                            </p>
+</li>
+<li>
+<p><em>进入函数时，所有本地变量所占据空间已经分配完毕</em>  </p>
+</li>
+</ul>
+</li>
+<li>
+<p>析构</p>
+<ul>
+<li>
+<p>编译器控制，当变量结束生命周期时自动调用</p>
+</li>
+<li>
+<p>同等条件下，析构函数的调用顺序与构造函数的调用顺序相反（栈一样，避免依赖关系影响） </p>
+</li>
+</ul>
+</li>
+<li>
+<p>权限</p>
+<ul>
+<li>
+<p>private</p>
+<ul>
+<li>
+<p>仅在<strong>类</strong>内部可见</p>
+</li>
+<li>
+<p><strong>边界是类, 不是对象，并且由编译器控制（可以绕过）</strong>  </p>
+</li>
+</ul>
+</li>
+<li>
+<p>public</p>
+<ul>
+<li>都可以访问，与 structure 类似 </li>
+</ul>
+</li>
+<li>
+<p>protected</p>
+</li>
+<li>
+<p>default</p>
+<ul>
+<li>class 默认是 private 的，struct 默认是 public 的 </li>
+</ul>
+</li>
+<li>
+<p>friend</p>
+<ul>
+<li>权限授权，可以访问该类的私有成员</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>static</p>
+<ul>
+<li>
+<p>deprecated：（过时）</p>
+<blockquote>
+<p>限制外部访问</p>
+</blockquote>
+<ul>
+<li>
+<p>static free function</p>
+</li>
+<li>
+<p>static global variables</p>
+</li>
+</ul>
+</li>
+<li>
+<p>static local variables</p>
+<ul>
+<li>
+<p>持久存储，多次调用保存上次的值    </p>
+</li>
+<li>
+<p>本质上是 <strong>访问受限的全局变量</strong>，在函数被第一次调用时构造，在程序结束时析构 </p>
+</li>
+</ul>
+</li>
+<li>
+<p>static member variables</p>
+<ul>
+<li>
+<p>所有对象共享，不属于对象，属于类</p>
+</li>
+<li>
+<p>不能在类内初始化，需要在类外初始化</p>
+</li>
+<li>
+<p>可以通过类名访问，也可以通过对象访问</p>
+</li>
+<li>
+<p>static member function 只能访问 static member variables  </p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
 
 
@@ -926,10 +1071,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.bd41221c.min.js"></script>
+      <script src="../assets/javascripts/bundle.7389ff0e.min.js"></script>
       
         <script src="../javascripts/mathjax.js"></script>
       
