@@ -871,8 +871,158 @@ class SkewHeap{
 
 ----
 
-### Binomial Heap
+### Binomial Queue
+                
+- **特征**
 
+    - 由一系列二项树组成，每个二项树都是一颗节点数为$2^K$的树，满足第$R$层的节点数为$C_{K}^{R}$
+    
+    - 本质上每棵树就代表二进制位的一个“1”， 因此一切操作都可以看成在二进制上的运算
+
+- **维护**
+
+    - 插入
+
+        - 相当于二进制+1, 新节点直接为一颗子树，然后向上进位合并
+  
+    - 删除
+
+        - 找最小值显然需要遍历所有树根
+
+        - 删除根节点相当于二进制-1, 删除某颗树根节点后，将其子树分解为一个新的二项队列，然后两二进制数相加合并
+        
+    - 合并
+
+        - 两个二项队列合并，相当于二进制相加，然后将进位的部分合并
+        
+        - 两棵二项树合并，为了应用常用的“Left-Child-Next-Sibling”存储法，一般将子树按大小倒排，然后新来一颗同等大小的子树时，直接将根大的插到根小的左儿子上即可
+
+            *（但是这种方式实际有点智障，不如加上最左最右儿子指针，详见下方代码部分）* 
+    
+- 复杂度分析：
+    
+    - **插入**
+    
+        - 考虑单次进位，最坏复杂度为$O(logN)$
+        
+        - 但是考虑每一位所能贡献的进位次数
+        
+            $$ T(N) = \frac{N}{2} + \frac{N}{2^2} + \frac{N}{2^3} + \cdots = O(N) $$
+
+            因此，插入操作的均摊复杂度为$O(1)$    
+
+    - **合并** 
+
+        - 由上可知，两棵二项树的合并是$O(1)$的
+  
+        - 二项队列的合并操作实际上就是二进制的加法，因此复杂度为$O(logN) * O(1) = O(logN)$
+        
+    - 删除
+        
+        - 查询最小值显然为$O(logN)$
+        
+        - 删除本质上就是二项队列的合并，因此复杂为$O(logN)$  
+
+- **Code** (Passed Luogu P3378)
+
+纯属自己NT，想要实现全链表版的，然后就被各种NULL指针和坏指针折磨（包括但不限于**空指针判断、结构体重载小于号后忘记加“*”导致指针内存地址比大小等**）
+
+而且我越写越觉得课件中为了满足left-child-next-sibling的存储方式而倒排儿子实在是太智障了，因为二进制加法应该是从低位开始运算，这样会导致删除操作过于尴尬，甚至需要额外开销反转链表等
+
+因此经历各种错误后，我选择正排儿子，保证merge的统一性，并且分别使用左右指针来记录最左边的儿子和最右边的儿子，保证了二项树合并仍然为O(1)，~~用较小的空间大大降低了编码复杂度~~
+
+此外，由于用链表实现，两棵二项树包括进位的二项树的大小关系并不能保证，因此又要加入各种繁琐的判断，确实是有点麻烦的，还是数组实现比较好！！！
+
+
+```cpp title="Binomial Queue" linenums="1"
+class BinomialQueue{
+private:
+    struct Node{
+        int data, size;
+        Node *Ls, *nxt, *Rs;    // left-child-next-sibling + right-child to simplify the coding
+        Node(int _data): data(_data), size(1), Ls(NULL), nxt(NULL), Rs(NULL){}
+        bool operator < (const Node &rhs) const{return data < rhs.data;}
+    };
+    Node *Rots;
+    Node *Merge(Node *i, Node *j){// Merge two binomial trees in O(1)
+        if(i == NULL) return j;
+        if(j == NULL) return i;
+        if(*j < *i) swap(i, j);
+        if(i->Ls == NULL) i->Ls = i->Rs = j; else i->Rs->nxt = j, i->Rs = j;
+        i->size += j->size, i->nxt = j->nxt = NULL;
+        return i;
+    }
+    void Merge(BinomialQueue *BQ){
+        if(BQ == NULL) return;
+        Node *i = Rots, *j = BQ->Rots, *k = NULL, *t = NULL, *tp = NULL; 
+        // i is the current node of this, j is the current node of BQ, k is the carry node
+        // t is the new line of the result, tp is the current node of the new line
+        Rots = NULL;
+        while(i != NULL || j != NULL || k != NULL){
+            if(i == NULL || (j != NULL && j->size < i->size)) swap(i, j);
+            Node *nxti = NULL, *nxtj = NULL;
+            if(i != NULL) nxti = i->nxt;
+            if(j != NULL) nxtj = j->nxt; // store the next node of i and j, otherwise it will be changed
+            if(i != NULL && j != NULL){ // easy task 
+                if(k != NULL && k->size < i->size) tp = k, k= NULL;          // easy
+                else if(i->size == j->size) tp = k, k = Merge(i, j), i = nxti, j = nxtj; // 1 + 1 + ?
+                else if(k != NULL) tp = NULL, k = Merge(i, k), i = nxti;    // 1 + 1 + 0
+                else tp = i, i = nxti;                                      // 1
+            }else{
+                int cnt = (i != NULL) + (j != NULL) + (k != NULL);
+                if(cnt == 1){   // 1 node in the line  1 + 0 + 0
+                    if(i != NULL) tp = i, i = nxti;
+                    else if(j != NULL) tp = j, j = nxtj;
+                    else tp = k, k = NULL;
+                }
+                else if(k->size == i->size) tp = NULL, k = Merge(i, k), i = nxti;  // 1 + 0 + 1
+                else tp = k, k = NULL;   // 0 + 0 + 1 
+            }
+            if(tp != NULL)
+                if(Rots == NULL) Rots = t = tp;else t->nxt = tp, t = t->nxt;
+        }
+    }
+
+public:
+    BinomialQueue(): Rots(NULL){}
+    BinomialQueue(Node *x): Rots(x){}
+    bool Empty(){return Rots == NULL;}
+    int Top(){  // return the minimum element
+        if(Empty()) return -1;
+        Node *i = Rots;
+        int res = i->data;
+        while(i != NULL) res = min(res, i->data), i = i->nxt;
+        return res;
+    }
+
+    void Insert(int x){Merge(new BinomialQueue(new Node(x)));}
+
+    int Pop(){ // pop the min
+        if(Empty()) return -1;
+        Node *i = Rots, *Pre = NULL, *Pos = i, *Pos_Pre = NULL;
+        while(i != NULL){
+            if(*i < *Pos) Pos = i, Pos_Pre = Pre;
+            Pre = i, i = i->nxt;
+        }
+        if(Pos_Pre == NULL) Rots = Pos->nxt;else Pos_Pre->nxt = Pos->nxt;
+
+        int res = Pos->data;
+        Merge(new BinomialQueue(Pos->Ls));
+        return res;
+    }
+
+    void Print(){  // for debug
+        queue<Node *>Q;
+        Q.push(Rots);
+        while(!Q.empty()){
+            Node *j = Q.front(); Q.pop();
+            if(j == NULL) continue;
+            for(; j != NULL; j = j->nxt) Q.push(j->Ls), printf("%d ", j->data);
+            puts("");
+        }
+        puts("");
+    }
+};
 ----
 
 ## Algorithm
