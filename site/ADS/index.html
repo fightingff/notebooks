@@ -476,15 +476,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      };
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#algorithm" class="md-nav__link">
     <span class="md-ellipsis">
       Algorithm
@@ -869,15 +860,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      };
-    </span>
-  </a>
   
 </li>
       
@@ -2504,95 +2486,184 @@
 <p>纯属自己NT，想要实现全链表版的，然后就被各种NULL指针和坏指针折磨（包括但不限于<strong>空指针判断、结构体重载小于号后忘记加“*”导致指针内存地址比大小等</strong>）</p>
 <p>而且我越写越觉得课件中为了满足left-child-next-sibling的存储方式而倒排儿子实在是太智障了，因为二进制加法应该是从低位开始运算，这样会导致删除操作过于尴尬，甚至需要额外开销反转链表等</p>
 <p>因此经历各种错误后，我选择正排儿子，保证merge的统一性，并且分别使用左右指针来记录最左边的儿子和最右边的儿子，保证了二项树合并仍然为O(1)，~~用较小的空间大大降低了编码复杂度~~</p>
-<p>此外，由于用链表实现，两棵二项树包括进位的二项树的大小关系并不能保证，因此又要加入各种繁琐的判断，确实是有点麻烦的，还是数组实现比较好！！！</p>
-<p>```cpp title="Binomial Queue" linenums="1"
-class BinomialQueue{
-private:
-    struct Node{
-        int data, size;
-        Node <em>Ls, </em>nxt, <em>Rs;    // left-child-next-sibling + right-child to simplify the coding
-        Node(int _data): data(_data), size(1), Ls(NULL), nxt(NULL), Rs(NULL){}
-        bool operator &lt; (const Node &amp;rhs) const{return data &lt; rhs.data;}
-    };
-    Node </em>Rots;
-    Node <em>Merge(Node </em>i, Node <em>j){// Merge two binomial trees in O(1)
-        if(i == NULL) return j;
-        if(j == NULL) return i;
-        if(</em>j &lt; <em>i) swap(i, j);
-        if(i-&gt;Ls == NULL) i-&gt;Ls = i-&gt;Rs = j; else i-&gt;Rs-&gt;nxt = j, i-&gt;Rs = j;
-        i-&gt;size += j-&gt;size, i-&gt;nxt = j-&gt;nxt = NULL;
-        return i;
-    }
-    void Merge(BinomialQueue </em>BQ){
-        if(BQ == NULL) return;
-        Node <em>i = Rots, </em>j = BQ-&gt;Rots, <em>k = NULL, </em>t = NULL, <em>tp = NULL; 
-        // i is the current node of this, j is the current node of BQ, k is the carry node
-        // t is the new line of the result, tp is the current node of the new line
-        Rots = NULL;
-        while(i != NULL || j != NULL || k != NULL){
-            if(i == NULL || (j != NULL &amp;&amp; j-&gt;size &lt; i-&gt;size)) swap(i, j);
-            Node </em>nxti = NULL, *nxtj = NULL;
-            if(i != NULL) nxti = i-&gt;nxt;
-            if(j != NULL) nxtj = j-&gt;nxt; // store the next node of i and j, otherwise it will be changed
-            if(i != NULL &amp;&amp; j != NULL){ // easy task 
-                if(k != NULL &amp;&amp; k-&gt;size &lt; i-&gt;size) tp = k, k= NULL;          // easy
-                else if(i-&gt;size == j-&gt;size) tp = k, k = Merge(i, j), i = nxti, j = nxtj; // 1 + 1 + ?
-                else if(k != NULL) tp = NULL, k = Merge(i, k), i = nxti;    // 1 + 1 + 0
-                else tp = i, i = nxti;                                      // 1
-            }else{
-                int cnt = (i != NULL) + (j != NULL) + (k != NULL);
-                if(cnt == 1){   // 1 node in the line  1 + 0 + 0
-                    if(i != NULL) tp = i, i = nxti;
-                    else if(j != NULL) tp = j, j = nxtj;
-                    else tp = k, k = NULL;
-                }
-                else if(k-&gt;size == i-&gt;size) tp = NULL, k = Merge(i, k), i = nxti;  // 1 + 0 + 1
-                else tp = k, k = NULL;   // 0 + 0 + 1 
-            }
-            if(tp != NULL)
-                if(Rots == NULL) Rots = t = tp;else t-&gt;nxt = tp, t = t-&gt;nxt;
-        }
-    }</p>
-<p>public:
-    BinomialQueue(): Rots(NULL){}
-    BinomialQueue(Node <em>x): Rots(x){}
-    bool Empty(){return Rots == NULL;}
-    int Top(){  // return the minimum element
-        if(Empty()) return -1;
-        Node </em>i = Rots;
-        int res = i-&gt;data;
-        while(i != NULL) res = min(res, i-&gt;data), i = i-&gt;nxt;
-        return res;
-    }</p>
-<div class="highlight"><pre><span></span><code>void Insert(int x){Merge(new BinomialQueue(new Node(x)));}
-
-int Pop(){ // pop the min
-    if(Empty()) return -1;
-    Node *i = Rots, *Pre = NULL, *Pos = i, *Pos_Pre = NULL;
-    while(i != NULL){
-        if(*i &lt; *Pos) Pos = i, Pos_Pre = Pre;
-        Pre = i, i = i-&gt;nxt;
-    }
-    if(Pos_Pre == NULL) Rots = Pos-&gt;nxt;else Pos_Pre-&gt;nxt = Pos-&gt;nxt;
-
-    int res = Pos-&gt;data;
-    Merge(new BinomialQueue(Pos-&gt;Ls));
-    return res;
-}
-
-void Print(){  // for debug
-    queue&lt;Node *&gt;Q;
-    Q.push(Rots);
-    while(!Q.empty()){
-        Node *j = Q.front(); Q.pop();
-        if(j == NULL) continue;
-        for(; j != NULL; j = j-&gt;nxt) Q.push(j-&gt;Ls), printf(&quot;%d &quot;, j-&gt;data);
-        puts(&quot;&quot;);
-    }
-    puts(&quot;&quot;);
-}
-</code></pre></div>
-<h2 id="_1">};</h2>
+<p>此外，由于用链表实现，两棵二项树包括进位的二项树的大小关系并不能保证，因此在双指针的基础上又要加入各种繁琐的判断，确实是有点麻烦的，还是数组实现比较好！！！</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Binomial Queue</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-6-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-6-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-6-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-6-10">10</a></span>
+<span class="normal"><a href="#__codelineno-6-11">11</a></span>
+<span class="normal"><a href="#__codelineno-6-12">12</a></span>
+<span class="normal"><a href="#__codelineno-6-13">13</a></span>
+<span class="normal"><a href="#__codelineno-6-14">14</a></span>
+<span class="normal"><a href="#__codelineno-6-15">15</a></span>
+<span class="normal"><a href="#__codelineno-6-16">16</a></span>
+<span class="normal"><a href="#__codelineno-6-17">17</a></span>
+<span class="normal"><a href="#__codelineno-6-18">18</a></span>
+<span class="normal"><a href="#__codelineno-6-19">19</a></span>
+<span class="normal"><a href="#__codelineno-6-20">20</a></span>
+<span class="normal"><a href="#__codelineno-6-21">21</a></span>
+<span class="normal"><a href="#__codelineno-6-22">22</a></span>
+<span class="normal"><a href="#__codelineno-6-23">23</a></span>
+<span class="normal"><a href="#__codelineno-6-24">24</a></span>
+<span class="normal"><a href="#__codelineno-6-25">25</a></span>
+<span class="normal"><a href="#__codelineno-6-26">26</a></span>
+<span class="normal"><a href="#__codelineno-6-27">27</a></span>
+<span class="normal"><a href="#__codelineno-6-28">28</a></span>
+<span class="normal"><a href="#__codelineno-6-29">29</a></span>
+<span class="normal"><a href="#__codelineno-6-30">30</a></span>
+<span class="normal"><a href="#__codelineno-6-31">31</a></span>
+<span class="normal"><a href="#__codelineno-6-32">32</a></span>
+<span class="normal"><a href="#__codelineno-6-33">33</a></span>
+<span class="normal"><a href="#__codelineno-6-34">34</a></span>
+<span class="normal"><a href="#__codelineno-6-35">35</a></span>
+<span class="normal"><a href="#__codelineno-6-36">36</a></span>
+<span class="normal"><a href="#__codelineno-6-37">37</a></span>
+<span class="normal"><a href="#__codelineno-6-38">38</a></span>
+<span class="normal"><a href="#__codelineno-6-39">39</a></span>
+<span class="normal"><a href="#__codelineno-6-40">40</a></span>
+<span class="normal"><a href="#__codelineno-6-41">41</a></span>
+<span class="normal"><a href="#__codelineno-6-42">42</a></span>
+<span class="normal"><a href="#__codelineno-6-43">43</a></span>
+<span class="normal"><a href="#__codelineno-6-44">44</a></span>
+<span class="normal"><a href="#__codelineno-6-45">45</a></span>
+<span class="normal"><a href="#__codelineno-6-46">46</a></span>
+<span class="normal"><a href="#__codelineno-6-47">47</a></span>
+<span class="normal"><a href="#__codelineno-6-48">48</a></span>
+<span class="normal"><a href="#__codelineno-6-49">49</a></span>
+<span class="normal"><a href="#__codelineno-6-50">50</a></span>
+<span class="normal"><a href="#__codelineno-6-51">51</a></span>
+<span class="normal"><a href="#__codelineno-6-52">52</a></span>
+<span class="normal"><a href="#__codelineno-6-53">53</a></span>
+<span class="normal"><a href="#__codelineno-6-54">54</a></span>
+<span class="normal"><a href="#__codelineno-6-55">55</a></span>
+<span class="normal"><a href="#__codelineno-6-56">56</a></span>
+<span class="normal"><a href="#__codelineno-6-57">57</a></span>
+<span class="normal"><a href="#__codelineno-6-58">58</a></span>
+<span class="normal"><a href="#__codelineno-6-59">59</a></span>
+<span class="normal"><a href="#__codelineno-6-60">60</a></span>
+<span class="normal"><a href="#__codelineno-6-61">61</a></span>
+<span class="normal"><a href="#__codelineno-6-62">62</a></span>
+<span class="normal"><a href="#__codelineno-6-63">63</a></span>
+<span class="normal"><a href="#__codelineno-6-64">64</a></span>
+<span class="normal"><a href="#__codelineno-6-65">65</a></span>
+<span class="normal"><a href="#__codelineno-6-66">66</a></span>
+<span class="normal"><a href="#__codelineno-6-67">67</a></span>
+<span class="normal"><a href="#__codelineno-6-68">68</a></span>
+<span class="normal"><a href="#__codelineno-6-69">69</a></span>
+<span class="normal"><a href="#__codelineno-6-70">70</a></span>
+<span class="normal"><a href="#__codelineno-6-71">71</a></span>
+<span class="normal"><a href="#__codelineno-6-72">72</a></span>
+<span class="normal"><a href="#__codelineno-6-73">73</a></span>
+<span class="normal"><a href="#__codelineno-6-74">74</a></span>
+<span class="normal"><a href="#__codelineno-6-75">75</a></span>
+<span class="normal"><a href="#__codelineno-6-76">76</a></span>
+<span class="normal"><a href="#__codelineno-6-77">77</a></span>
+<span class="normal"><a href="#__codelineno-6-78">78</a></span>
+<span class="normal"><a href="#__codelineno-6-79">79</a></span>
+<span class="normal"><a href="#__codelineno-6-80">80</a></span>
+<span class="normal"><a href="#__codelineno-6-81">81</a></span>
+<span class="normal"><a href="#__codelineno-6-82">82</a></span>
+<span class="normal"><a href="#__codelineno-6-83">83</a></span>
+<span class="normal"><a href="#__codelineno-6-84">84</a></span>
+<span class="normal"><a href="#__codelineno-6-85">85</a></span>
+<span class="normal"><a href="#__codelineno-6-86">86</a></span>
+<span class="normal"><a href="#__codelineno-6-87">87</a></span>
+<span class="normal"><a href="#__codelineno-6-88">88</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">BinomialQueue</span><span class="p">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="k">private</span><span class="o">:</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">Node</span><span class="p">{</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="w">        </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">Ls</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">nxt</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">Rs</span><span class="p">;</span><span class="w">    </span><span class="c1">// left-child-next-sibling + right-child to simplify the coding</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="w">        </span><span class="n">Node</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">_data</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">data</span><span class="p">(</span><span class="n">_data</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">Ls</span><span class="p">(</span><span class="nb">NULL</span><span class="p">),</span><span class="w"> </span><span class="n">nxt</span><span class="p">(</span><span class="nb">NULL</span><span class="p">),</span><span class="w"> </span><span class="n">Rs</span><span class="p">(</span><span class="nb">NULL</span><span class="p">){}</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="k">operator</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Node</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rhs</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">rhs</span><span class="p">.</span><span class="n">data</span><span class="p">;}</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="w">    </span><span class="p">};</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="w">    </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">Rots</span><span class="p">;</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="w">    </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="nf">Merge</span><span class="p">(</span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">j</span><span class="p">){</span><span class="c1">// Merge two binomial trees in O(1)</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="o">*</span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">*</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="n">swap</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">);</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">Ls</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">Ls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">Rs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="p">;</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">Rs</span><span class="o">-&gt;</span><span class="n">nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">Rs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15"></a><span class="w">        </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">j</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="o">-&gt;</span><span class="n">nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Merge</span><span class="p">(</span><span class="n">BinomialQueue</span><span class="w"> </span><span class="o">*</span><span class="n">BQ</span><span class="p">){</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">BQ</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20"></a><span class="w">        </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Rots</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BQ</span><span class="o">-&gt;</span><span class="n">Rots</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">tp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"> </span>
+<a id="__codelineno-6-21" name="__codelineno-6-21"></a><span class="w">        </span><span class="c1">// i is the current node of this, j is the current node of BQ, k is the carry node</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22"></a><span class="w">        </span><span class="c1">// t is the new line of the result, tp is the current node of the new line</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23"></a><span class="w">        </span><span class="n">Rots</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<a id="__codelineno-6-24" name="__codelineno-6-24"></a><span class="w">        </span><span class="k">while</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">){</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25"></a><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">j</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">))</span><span class="w"> </span><span class="n">swap</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">);</span>
+<a id="__codelineno-6-26" name="__codelineno-6-26"></a><span class="w">            </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">nxti</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">nxtj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<a id="__codelineno-6-27" name="__codelineno-6-27"></a><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="n">nxti</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">nxt</span><span class="p">;</span>
+<a id="__codelineno-6-28" name="__codelineno-6-28"></a><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="n">nxtj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="o">-&gt;</span><span class="n">nxt</span><span class="p">;</span><span class="w"> </span><span class="c1">// store the next node of i and j, otherwise it will be changed</span>
+<a id="__codelineno-6-29" name="__codelineno-6-29"></a><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">){</span><span class="w"> </span><span class="c1">// easy task </span>
+<a id="__codelineno-6-30" name="__codelineno-6-30"></a><span class="w">                </span><span class="k">if</span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">k</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="n">tp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w">          </span><span class="c1">// easy</span>
+<a id="__codelineno-6-31" name="__codelineno-6-31"></a><span class="w">                </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">j</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="n">tp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Merge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">),</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nxti</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nxtj</span><span class="p">;</span><span class="w"> </span><span class="c1">// 1 + 1 + ?</span>
+<a id="__codelineno-6-32" name="__codelineno-6-32"></a><span class="w">                </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="n">tp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Merge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">),</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nxti</span><span class="p">;</span><span class="w">    </span><span class="c1">// 1 + 1 + 0</span>
+<a id="__codelineno-6-33" name="__codelineno-6-33"></a><span class="w">                </span><span class="k">else</span><span class="w"> </span><span class="n">tp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nxti</span><span class="p">;</span><span class="w">                                      </span><span class="c1">// 1</span>
+<a id="__codelineno-6-34" name="__codelineno-6-34"></a><span class="w">            </span><span class="p">}</span><span class="k">else</span><span class="p">{</span>
+<a id="__codelineno-6-35" name="__codelineno-6-35"></a><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<a id="__codelineno-6-36" name="__codelineno-6-36"></a><span class="w">                </span><span class="k">if</span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">){</span><span class="w">   </span><span class="c1">// 1 node in the line  1 + 0 + 0</span>
+<a id="__codelineno-6-37" name="__codelineno-6-37"></a><span class="w">                    </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="n">tp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nxti</span><span class="p">;</span>
+<a id="__codelineno-6-38" name="__codelineno-6-38"></a><span class="w">                    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="n">tp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nxtj</span><span class="p">;</span>
+<a id="__codelineno-6-39" name="__codelineno-6-39"></a><span class="w">                    </span><span class="k">else</span><span class="w"> </span><span class="n">tp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<a id="__codelineno-6-40" name="__codelineno-6-40"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-6-41" name="__codelineno-6-41"></a><span class="w">                </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">k</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="n">tp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Merge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">),</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nxti</span><span class="p">;</span><span class="w">  </span><span class="c1">// 1 + 0 + 1</span>
+<a id="__codelineno-6-42" name="__codelineno-6-42"></a><span class="w">                </span><span class="k">else</span><span class="w"> </span><span class="n">tp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w">   </span><span class="c1">// 0 + 0 + 1 </span>
+<a id="__codelineno-6-43" name="__codelineno-6-43"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-6-44" name="__codelineno-6-44"></a><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">tp</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+<a id="__codelineno-6-45" name="__codelineno-6-45"></a><span class="w">                </span><span class="k">if</span><span class="p">(</span><span class="n">Rots</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="n">Rots</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tp</span><span class="p">;</span><span class="k">else</span><span class="w"> </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tp</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">nxt</span><span class="p">;</span>
+<a id="__codelineno-6-46" name="__codelineno-6-46"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-6-47" name="__codelineno-6-47"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-6-48" name="__codelineno-6-48"></a>
+<a id="__codelineno-6-49" name="__codelineno-6-49"></a><span class="k">public</span><span class="o">:</span>
+<a id="__codelineno-6-50" name="__codelineno-6-50"></a><span class="w">    </span><span class="n">BinomialQueue</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="n">Rots</span><span class="p">(</span><span class="nb">NULL</span><span class="p">){}</span>
+<a id="__codelineno-6-51" name="__codelineno-6-51"></a><span class="w">    </span><span class="n">BinomialQueue</span><span class="p">(</span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">Rots</span><span class="p">(</span><span class="n">x</span><span class="p">){}</span>
+<a id="__codelineno-6-52" name="__codelineno-6-52"></a><span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">Empty</span><span class="p">(){</span><span class="k">return</span><span class="w"> </span><span class="n">Rots</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;}</span>
+<a id="__codelineno-6-53" name="__codelineno-6-53"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">Top</span><span class="p">(){</span><span class="w">  </span><span class="c1">// return the minimum element</span>
+<a id="__codelineno-6-54" name="__codelineno-6-54"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">Empty</span><span class="p">())</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<a id="__codelineno-6-55" name="__codelineno-6-55"></a><span class="w">        </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Rots</span><span class="p">;</span>
+<a id="__codelineno-6-56" name="__codelineno-6-56"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+<a id="__codelineno-6-57" name="__codelineno-6-57"></a><span class="w">        </span><span class="k">while</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">res</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">),</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">nxt</span><span class="p">;</span>
+<a id="__codelineno-6-58" name="__codelineno-6-58"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">res</span><span class="p">;</span>
+<a id="__codelineno-6-59" name="__codelineno-6-59"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-6-60" name="__codelineno-6-60"></a>
+<a id="__codelineno-6-61" name="__codelineno-6-61"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">Insert</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">){</span><span class="n">Merge</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">BinomialQueue</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Node</span><span class="p">(</span><span class="n">x</span><span class="p">)));}</span>
+<a id="__codelineno-6-62" name="__codelineno-6-62"></a>
+<a id="__codelineno-6-63" name="__codelineno-6-63"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">Pop</span><span class="p">(){</span><span class="w"> </span><span class="c1">// pop the min</span>
+<a id="__codelineno-6-64" name="__codelineno-6-64"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">Empty</span><span class="p">())</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<a id="__codelineno-6-65" name="__codelineno-6-65"></a><span class="w">        </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Rots</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">Pre</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">Pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">Pos_Pre</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<a id="__codelineno-6-66" name="__codelineno-6-66"></a><span class="w">        </span><span class="k">while</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">){</span>
+<a id="__codelineno-6-67" name="__codelineno-6-67"></a><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="o">*</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">*</span><span class="n">Pos</span><span class="p">)</span><span class="w"> </span><span class="n">Pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">Pos_Pre</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Pre</span><span class="p">;</span>
+<a id="__codelineno-6-68" name="__codelineno-6-68"></a><span class="w">            </span><span class="n">Pre</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">nxt</span><span class="p">;</span>
+<a id="__codelineno-6-69" name="__codelineno-6-69"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-6-70" name="__codelineno-6-70"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">Pos_Pre</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="n">Rots</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Pos</span><span class="o">-&gt;</span><span class="n">nxt</span><span class="p">;</span><span class="k">else</span><span class="w"> </span><span class="n">Pos_Pre</span><span class="o">-&gt;</span><span class="n">nxt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Pos</span><span class="o">-&gt;</span><span class="n">nxt</span><span class="p">;</span>
+<a id="__codelineno-6-71" name="__codelineno-6-71"></a>
+<a id="__codelineno-6-72" name="__codelineno-6-72"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Pos</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+<a id="__codelineno-6-73" name="__codelineno-6-73"></a><span class="w">        </span><span class="n">Merge</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">BinomialQueue</span><span class="p">(</span><span class="n">Pos</span><span class="o">-&gt;</span><span class="n">Ls</span><span class="p">));</span>
+<a id="__codelineno-6-74" name="__codelineno-6-74"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">res</span><span class="p">;</span>
+<a id="__codelineno-6-75" name="__codelineno-6-75"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-6-76" name="__codelineno-6-76"></a>
+<a id="__codelineno-6-77" name="__codelineno-6-77"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">Print</span><span class="p">(){</span><span class="w">  </span><span class="c1">// for debug</span>
+<a id="__codelineno-6-78" name="__codelineno-6-78"></a><span class="w">        </span><span class="n">queue</span><span class="o">&lt;</span><span class="n">Node</span><span class="w"> </span><span class="o">*&gt;</span><span class="n">Q</span><span class="p">;</span>
+<a id="__codelineno-6-79" name="__codelineno-6-79"></a><span class="w">        </span><span class="n">Q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">Rots</span><span class="p">);</span>
+<a id="__codelineno-6-80" name="__codelineno-6-80"></a><span class="w">        </span><span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">Q</span><span class="p">.</span><span class="n">empty</span><span class="p">()){</span>
+<a id="__codelineno-6-81" name="__codelineno-6-81"></a><span class="w">            </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="p">();</span><span class="w"> </span><span class="n">Q</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+<a id="__codelineno-6-82" name="__codelineno-6-82"></a><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span>
+<a id="__codelineno-6-83" name="__codelineno-6-83"></a><span class="w">            </span><span class="k">for</span><span class="p">(;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="o">-&gt;</span><span class="n">nxt</span><span class="p">)</span><span class="w"> </span><span class="n">Q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">j</span><span class="o">-&gt;</span><span class="n">Ls</span><span class="p">),</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">);</span>
+<a id="__codelineno-6-84" name="__codelineno-6-84"></a><span class="w">            </span><span class="n">puts</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<a id="__codelineno-6-85" name="__codelineno-6-85"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-6-86" name="__codelineno-6-86"></a><span class="w">        </span><span class="n">puts</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<a id="__codelineno-6-87" name="__codelineno-6-87"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-6-88" name="__codelineno-6-88"></a><span class="p">};</span>
+</code></pre></div></td></tr></table></div>
+<hr />
 <h2 id="algorithm">Algorithm</h2>
 <hr />
 <h3 id="amortized-analysis">Amortized Analysis (摊还分析)</h3>
