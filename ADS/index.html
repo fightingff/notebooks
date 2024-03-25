@@ -2481,12 +2481,12 @@
 </li>
 <li>
 <p><strong>Code</strong> (Passed Luogu P3378)</p>
-</li>
-</ul>
 <p>纯属自己NT，想要实现全链表版的，然后就被各种NULL指针和坏指针折磨（包括但不限于<strong>空指针判断、结构体重载小于号后忘记加“*”导致指针内存地址比大小等</strong>）</p>
 <p>而且我越写越觉得课件中为了满足left-child-next-sibling的存储方式而倒排儿子实在是太智障了，因为二进制加法应该是从低位开始运算，这样会导致删除操作过于尴尬，甚至需要额外开销反转链表等</p>
 <p>因此经历各种错误后，我选择正排儿子，保证merge的统一性，并且分别使用左右指针来记录最左边的儿子和最右边的儿子，保证了二项树合并仍然为O(1)，~~用较小的空间大大降低了编码复杂度~~</p>
 <p>此外，由于用链表实现，两棵二项树包括进位的二项树的大小关系并不能保证，因此在双指针的基础上又要加入各种繁琐的判断，确实是有点麻烦的，还是数组实现比较好！！！</p>
+</li>
+</ul>
 <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Binomial Queue</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
