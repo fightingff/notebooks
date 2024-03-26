@@ -980,6 +980,7 @@ private:
             }
             if(tp != NULL)
                 if(Rots == NULL) Rots = t = tp;else t->nxt = tp, t = t->nxt;
+            if(j == NULL && k == NULL){t->nxt = i;break;} // break the loop to minimize the time complexity
         }
     }
 
