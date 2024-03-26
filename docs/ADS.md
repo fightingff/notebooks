@@ -32,7 +32,7 @@
 
         - 单链倾斜，将中间节点拎起来（将中间节点向上旋转）就好
         
-        - ![LL / RR Rotation](LL.png)
+        - ![LL / RR Rotation](./images/LL.png)
 
     - LR / RL Rotation
 
@@ -40,7 +40,7 @@
         
         - 还有一种理解，将这种情况理解为最下端儿子向上rotation两次 
         
-        - ![LR / RL Rotation](LR.png)
+        - ![LR / RL Rotation](./images/LR.png)
     
 - Code
 
@@ -129,7 +129,7 @@ struct AVL{
         
         - 已经是根节点的儿子，直接向上旋转一次即可
         
-        - ![Zig](Zig.png) 
+        - ![Zig](./images/Zig.png) 
     
     - ZigZig
     
@@ -139,7 +139,7 @@ struct AVL{
 
         - 也可以看成直接将当前节点往最上面一提，剩下的儿子们“纷纷”往下掉
 
-        - ![ZigZig](ZigZig.png)
+        - ![ZigZig](./images/ZigZig.png)
     
     - ZigZag 
     
@@ -147,7 +147,7 @@ struct AVL{
         
         - 也可以看成直接将当前节点往最上面一提，两个儿子被父节点和祖先节点均分，从而趋向平衡
         
-        - ![ZigZag](ZigZag.png) 
+        - ![ZigZag](./images/ZigZag.png) 
 
 - Code (Not checked yet)
 
@@ -482,7 +482,7 @@ struct BpTree{
             
                 - 叔节点为红色，则祖父节点必为黑色，那么实行一次“黑下放”操作，将祖父节点的黑色向下传递到其子节点，自己变为红色即可
 
-                  ![Insert1](insert1.png)
+                  ![Insert1](./images/insert1.png)
  
             - Case 2 & Case 3
                 
@@ -492,7 +492,7 @@ struct BpTree{
                 
                 - *从结果来看，实际上是非常好理解的，本质上就是下图中 A < B < C, 从而应将B旋转到最中央，使平衡树尽可能平衡* 
                 
-                  ![Insert2&3](insert2_3.png)    
+                  ![Insert2&3](./images/insert2_3.png)    
     
     - 删除 
 
@@ -512,25 +512,25 @@ struct BpTree{
                 
                 - 兄弟节点为红色，则进行一次上述的不变旋转，将兄弟节点变为黑色，父节点变为红色（红节点上方下方，原来必黑），转化为下面要讨论的情形
 
-                ![Delete1](delete1.png)
+                ![Delete1](./images/delete1.png)
 
             - Case 2
             
                 - 兄弟节点为黑色，且兄弟节点的两个儿子都为黑色, 则干脆将兄弟节点变为红色，这样当前节点和兄弟节点的子树相当于“扯平”了都差1，从而可以向上递归调整，即当前待调整节点变为父节点
                 
-                ![Delete2](delete2.png)
+                ![Delete2](./images/delete2.png)
 
             - Case 3
             
                 - 兄弟节点为黑色，且兄弟节点的异侧子节点为黑色，同侧子节点为红色，此时可以通过一次不变旋转，将该红色节点变为黑色兄弟，并获得异侧子节点，转化为Case 4
                 
-                ![Delete3](delete3.png) 
+                ![Delete3](./images/delete3.png) 
                 
             - Case 4
             
                 - 兄弟节点为黑色，且兄弟节点的异侧子节点为红色，此时将父节点旋转下来强制染黑来补偿子树黑高，兄弟节点旋转到上方并继承父节点的颜色，**并将剩下的一个儿子也染黑**，维护其余子树的黑高不变，直接Over（可以检查每颗子树所经过的路径，恰好完美符合，**过于巧妙！**）
 
-                ![Delete4](delete4.png)   
+                ![Delete4](./images/delete4.png)   
 
     - *上面提到的都是自底向上调整的方法，还有一种自顶向下的办法，即在用循环插入/寻找关键字的同时对树的形态进行维护和调整，使得插入/删除后树的形态直接满足要求，这种方法会跑得更快一点*
 
@@ -1074,6 +1074,6 @@ public:
         
         - 对三种旋转操作进行分别分析，可以证明，每次旋转的摊还代价为 $O(logN)$
         
-        - ![Proof](splay.png)
+        - ![Proof](./images/splay.png)
 
 ----

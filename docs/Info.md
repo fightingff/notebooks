@@ -88,7 +88,7 @@
         
         - 证明:
 
-        ![Infotree](Infotree.png)
+        ![Infotree](./images/Infotree.png)
 
         $H(X_1,X_2) = H(X_2) + H(X_1 | X_2) = H(X_2)$  ($X_2$确定后，$X_1$也确定了，所以$H(X_1 | X_2) = 0$)
 
@@ -126,7 +126,7 @@
         
         - 互信息等于事件Y（整个随机变量）发生后对事件X的不确定性减少的程度
 
-            ![I(x,y)](Ixy.png) 
+            ![I(x,y)](./images/Ixy.png) 
 
         - 数学上说，I(X;Y) 是输入的分布矢量 和 转移概率矩阵 的信息函数   
 

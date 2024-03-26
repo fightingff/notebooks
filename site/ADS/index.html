@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.14">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.10ba22f1.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
       
       
 
@@ -246,8 +246,10 @@
     
     
     
+    
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
+        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
@@ -569,6 +571,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RiscV/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Computer Organization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -586,8 +609,10 @@
     
     
     
+    
     <li class="md-nav__item md-nav__item--nested">
       
+        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
@@ -670,8 +695,10 @@
     
     
     
+    
     <li class="md-nav__item md-nav__item--nested">
       
+        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
@@ -946,7 +973,7 @@
 <p>单链倾斜，将中间节点拎起来（将中间节点向上旋转）就好</p>
 </li>
 <li>
-<p><img alt="LL / RR Rotation" src="../LL.png" /></p>
+<p><img alt="LL / RR Rotation" src="../images/LL.png" /></p>
 </li>
 </ul>
 </li>
@@ -960,7 +987,7 @@
 <p>还有一种理解，将这种情况理解为最下端儿子向上rotation两次 </p>
 </li>
 <li>
-<p><img alt="LR / RL Rotation" src="../LR.png" /></p>
+<p><img alt="LR / RL Rotation" src="../images/LR.png" /></p>
 </li>
 </ul>
 </li>
@@ -1119,7 +1146,7 @@
 <p>已经是根节点的儿子，直接向上旋转一次即可</p>
 </li>
 <li>
-<p><img alt="Zig" src="../Zig.png" /> </p>
+<p><img alt="Zig" src="../images/Zig.png" /> </p>
 </li>
 </ul>
 </li>
@@ -1136,7 +1163,7 @@
 <p>也可以看成直接将当前节点往最上面一提，剩下的儿子们“纷纷”往下掉</p>
 </li>
 <li>
-<p><img alt="ZigZig" src="../ZigZig.png" /></p>
+<p><img alt="ZigZig" src="../images/ZigZig.png" /></p>
 </li>
 </ul>
 </li>
@@ -1150,7 +1177,7 @@
 <p>也可以看成直接将当前节点往最上面一提，两个儿子被父节点和祖先节点均分，从而趋向平衡</p>
 </li>
 <li>
-<p><img alt="ZigZag" src="../ZigZag.png" /> </p>
+<p><img alt="ZigZag" src="../images/ZigZag.png" /> </p>
 </li>
 </ul>
 </li>
@@ -1748,7 +1775,7 @@
 <ul>
 <li>叔节点为红色，则祖父节点必为黑色，那么实行一次“黑下放”操作，将祖父节点的黑色向下传递到其子节点，自己变为红色即可</li>
 </ul>
-<p><img alt="Insert1" src="../insert1.png" /></p>
+<p><img alt="Insert1" src="../images/insert1.png" /></p>
 </li>
 <li>
 <p>Case 2 &amp; Case 3</p>
@@ -1763,7 +1790,7 @@
 <p><em>从结果来看，实际上是非常好理解的，本质上就是下图中 A &lt; B &lt; C, 从而应将B旋转到最中央，使平衡树尽可能平衡</em> </p>
 </li>
 </ul>
-<p><img alt="Insert2&amp;3" src="../insert2_3.png" />    </p>
+<p><img alt="Insert2&amp;3" src="../images/insert2_3.png" />    </p>
 </li>
 </ul>
 </li>
@@ -1791,28 +1818,28 @@
 <ul>
 <li>兄弟节点为红色，则进行一次上述的不变旋转，将兄弟节点变为黑色，父节点变为红色（红节点上方下方，原来必黑），转化为下面要讨论的情形</li>
 </ul>
-<p><img alt="Delete1" src="../delete1.png" /></p>
+<p><img alt="Delete1" src="../images/delete1.png" /></p>
 </li>
 <li>
 <p>Case 2</p>
 <ul>
 <li>兄弟节点为黑色，且兄弟节点的两个儿子都为黑色, 则干脆将兄弟节点变为红色，这样当前节点和兄弟节点的子树相当于“扯平”了都差1，从而可以向上递归调整，即当前待调整节点变为父节点</li>
 </ul>
-<p><img alt="Delete2" src="../delete2.png" /></p>
+<p><img alt="Delete2" src="../images/delete2.png" /></p>
 </li>
 <li>
 <p>Case 3</p>
 <ul>
 <li>兄弟节点为黑色，且兄弟节点的异侧子节点为黑色，同侧子节点为红色，此时可以通过一次不变旋转，将该红色节点变为黑色兄弟，并获得异侧子节点，转化为Case 4</li>
 </ul>
-<p><img alt="Delete3" src="../delete3.png" /> </p>
+<p><img alt="Delete3" src="../images/delete3.png" /> </p>
 </li>
 <li>
 <p>Case 4</p>
 <ul>
 <li>兄弟节点为黑色，且兄弟节点的异侧子节点为红色，此时将父节点旋转下来强制染黑来补偿子树黑高，兄弟节点旋转到上方并继承父节点的颜色，<strong>并将剩下的一个儿子也染黑</strong>，维护其余子树的黑高不变，直接Over（可以检查每颗子树所经过的路径，恰好完美符合，<strong>过于巧妙！</strong>）</li>
 </ul>
-<p><img alt="Delete4" src="../delete4.png" />   </p>
+<p><img alt="Delete4" src="../images/delete4.png" />   </p>
 </li>
 </ul>
 </li>
@@ -2733,7 +2760,7 @@
 <p>对三种旋转操作进行分别分析，可以证明，每次旋转的摊还代价为 <span class="arithmatex">\(O(logN)\)</span></p>
 </li>
 <li>
-<p><img alt="Proof" src="../splay.png" /></p>
+<p><img alt="Proof" src="../images/splay.png" /></p>
 </li>
 </ul>
 </li>
@@ -2787,10 +2814,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.bd41221c.min.js"></script>
+      <script src="../assets/javascripts/bundle.7389ff0e.min.js"></script>
       
         <script src="../javascripts/mathjax.js"></script>
       

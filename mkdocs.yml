@@ -15,6 +15,7 @@ nav:
       - OOP: OOP.md
       - Information Theory: Info.md
       - Database: Database.md
+      - Computer Organization: RiscV.md
   - Tools:
       - Git: Git.md
       - Makefile & CMake: Make.md
