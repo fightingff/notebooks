@@ -939,7 +939,7 @@
 <p>Carry Ripple Adder (数逻讲过，略)</p>
 </li>
 <li>
-<p>Carry Lookahead Adder</p>
+<p>Carry Lookahead Adder (CLA)</p>
 <ul>
 <li>
 <p>Generate: Gi = Ai &amp; Bi</p>
@@ -951,6 +951,21 @@
 <p>Carry: Ci = Gi | (Pi &amp; Ci-1) </p>
 <p>将递推式不断展开，可以得到每一个Ci的表达式，这样就可以并行进行每一位的计算，大大提高了速度</p>
 <p>不过随着位数的不断增加，硬件复杂度也会不断增加，因此实际上将会每4位或者8位作为一个单元，然后再进行并行计算</p>
+<p><img alt="CLA" src="../images/CLA.png" /></p>
+<p>如上图，根据输入，通过每个小单元里的CLA 可以算出每个小 pi, gi</p>
+<p>然后进一步，可以得出每个大的 Pi, Gi, 然后通过大的 CLA 可以得出每个大的 Ci</p>
+<p>这个Ci再传入每个小的 CLA， 就可以算出最终的结果了</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Carry Select Adder (CSA)</p>
+<ul>
+<li>
+<p>利用 预测 &amp; 冗余的方法</p>
+</li>
+<li>
+<p>相当于对上述CLA的一个改进，预先将 Cin = 0 / 1 的可能值都算出来，然后根据输入的 Cin 选择其中一个  </p>
 </li>
 </ul>
 </li>
@@ -967,10 +982,13 @@
 </li>
 </ul>
 <p>佬的笔记很详细了</p>
+<p>核心就是充分利用结果寄存器，将 乘数 / 被除数 放到寄存器的右半冗余部分进行运算，并且变乘除法为加减法</p>
+<p><em>Booth 算法，减少“1” 的个数，提高效率，每一串”1“只需要运算两次</em></p>
 <ul>
 <li><strong>Float</strong></li>
 </ul>
 <p>各种课讲过很多次了，略</p>
+<p>特殊标记：</p>
 <p><img alt="Float" src="../images/float.png" /></p>
 
 
