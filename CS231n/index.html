@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.14">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.10ba22f1.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
       
       
 
@@ -246,8 +246,10 @@
     
     
     
+    
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
+        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
@@ -722,6 +724,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RiscV/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Computer Organization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -739,8 +762,10 @@
     
     
     
+    
     <li class="md-nav__item md-nav__item--nested">
       
+        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
@@ -823,8 +848,10 @@
     
     
     
+    
     <li class="md-nav__item md-nav__item--nested">
       
+        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
@@ -1228,7 +1255,7 @@
 <li>We can view the Weight Matrix as a set of templates, and the scores as the similarity between the input and the templates</li>
 <li>So when printing the weights, we can somehow visualize the templates we learned</li>
 <li>Picture below is what we learned from the CIFAR-10 dataset using SVM
-  <img alt="template" src="../template.png" /></li>
+  <img alt="template" src="../images/template.png" /></li>
 </ul>
 <h3 id="svm-support-vector-machine">SVM (Support Vector Machine)</h3>
 <ul>
@@ -1302,7 +1329,7 @@
 <ul>
 <li>Combination of the lessons above. Not so hard to complete.</li>
 <li><em>Softmax gradient, however, seems hard to do right? But the final implement of training 2-layer network runs well and achieves the accuray of about 50%</em></li>
-<li><img alt="The visualized template" src="../network.png" /></li>
+<li><img alt="The visualized template" src="../images/network.png" /></li>
 </ul>
 <h4 id="feature-extraction">Feature Extraction</h4>
 <ul>
@@ -1394,8 +1421,8 @@
 </li>
 <li>
 <p><em>Problem: The result of my code seems somewhat strange, like normalization works worse than without normalization. I think the problem may be the learning rate or the batch size, but I have no energy to debug it.</em>
-  <img alt="batch" src="../normalization1.png" />
-  <img alt="layer" src="../normalization2.png" /></p>
+  <img alt="batch" src="../images/normalization1.png" />
+  <img alt="layer" src="../images/normalization2.png" /></p>
 </li>
 </ul>
 <h4 id="dropout"><strong>Dropout</strong></h4>
@@ -1418,7 +1445,7 @@
 <li><em>Too large filter may lead to a linear model, and costs more memory.</em></li>
 <li>Examples of features</li>
 </ul>
-<p><img alt="cnn_feature" src="../cnn_feature.png" /></p>
+<p><img alt="cnn_feature" src="../images/cnn_feature.png" /></p>
 </li>
 <li>
 <p>Padding</p>
@@ -1591,11 +1618,11 @@
 <ul>
 <li>Basic structure in paper:</li>
 </ul>
-<p><img alt="transformer" src="../transformer.png" /></p>
+<p><img alt="transformer" src="../images/transformer.png" /></p>
 <ul>
 <li>Abstract structure:</li>
 </ul>
-<p><img alt="Abstract" src="../Abstract.png" /></p>
+<p><img alt="Abstract" src="../images/Abstract.png" /></p>
 </li>
 <li>
 <p><strong>Attention Mechanism</strong></p>
@@ -1609,7 +1636,7 @@
 <p><span class="arithmatex">\(Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V\)</span></p>
 <p>Q is the query to match others, K is the key to be matched, V is the value to be extracted </p>
 </blockquote>
-<p><img alt="self-attention" src="../self-attention.png" /></p>
+<p><img alt="self-attention" src="../images/self-attention.png" /></p>
 <ul>
 <li>
 <p>Use Dot-Product to compute the relationship between the query and the key, and use the softmax to normalize the result.</p>
@@ -1632,7 +1659,7 @@
 <p>Compute the attention score with multiple parallel attention mechanisms, and concatenate the result.</p>
 </li>
 </ul>
-<p><img alt="multi-attention" src="../multi-attention.png" /></p>
+<p><img alt="multi-attention" src="../images/multi-attention.png" /></p>
 <ul>
 <li>Thus the model should be more expressive and the performance should be better, for multiple smller attention mechanisms can capture different features and run more efficiently.</li>
 </ul>
@@ -1710,7 +1737,7 @@
 <ul>
 <li>Compute the attention score with multi-head attention, where both the query, the key and the value are derived from the input features</li>
 </ul>
-<p><img alt="input" src="../input.png" /></p>
+<p><img alt="input" src="../images/input.png" /></p>
 <ul>
 <li>It looks like the input query with itself, or say, the input features are used to compute the attention score (relationships) with itself, so it's called self-attention. </li>
 </ul>
@@ -1848,7 +1875,7 @@
 <p>Finally the generator should be able to fit the real data distribution well while the discriminator should just be fooled as a random guesser (with 50% possibility).</p>
 </li>
 <li>
-<p><img alt="Train" src="../GAN_train.png" /></p>
+<p><img alt="Train" src="../images/GAN_train.png" /></p>
 <p><em>Black points denote real data</em></p>
 <p><em>Green ones denote generator distribution</em></p>
 <p><em>Blue ones denote output of the discriminator (possibility to be real)</em></p>
@@ -1935,7 +1962,7 @@
 <p>Results on MNIST</p>
 </li>
 </ul>
-<p><img alt="Results" src="../GAN_output.png" /></p>
+<p><img alt="Results" src="../images/GAN_output.png" /></p>
 </li>
 </ul>
 <h4 id="self-supervised-learning">Self-Supervised Learning</h4>
@@ -1979,7 +2006,7 @@
 <p><span class="arithmatex">\(g()\)</span> to project the features, or say, a typical classifier</p>
 </li>
 <li>
-<p><img alt="SimCLR" src="../SimCLR.png" />     </p>
+<p><img alt="SimCLR" src="../images/SimCLR.png" />     </p>
 </li>
 </ul>
 </li>
@@ -1988,7 +2015,7 @@
 <ul>
 <li>
 <p>Generate positive pairs (seemed quite important in training) </p>
-<p><img alt="Gen" src="../SimCLR_Gen.png" /></p>
+<p><img alt="Gen" src="../images/SimCLR_Gen.png" /></p>
 </li>
 <li>
 <p>Feed in the batched 2*N datas, where larger N preferred</p>
@@ -2010,7 +2037,7 @@
 <p>Improved the performance of a pre-trained model a lot.</p>
 </li>
 <li>
-<p><img alt="SimCLR_Output" src="../SimCLR_output.png" /> </p>
+<p><img alt="SimCLR_Output" src="../images/SimCLR_output.png" /> </p>
 </li>
 </ul>
 </li>
@@ -2066,10 +2093,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.bd41221c.min.js"></script>
+      <script src="../assets/javascripts/bundle.7389ff0e.min.js"></script>
       
         <script src="../javascripts/mathjax.js"></script>
       
