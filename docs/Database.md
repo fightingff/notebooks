@@ -1,6 +1,69 @@
 # DataBase
- 
+
 [Fork Yile Liu](https://github.com/yile-liu/ZJU_database_system)
+
+----
+
+## 第一章 引入
+
+### 数据库重要问题
+
+- data persistence: 数据持久化
+
+- convenience in accessing data: 方便的数据访问
+
+- data integrity: 数据完整性
+
+- concurrency control for multiple user: 多用户并发控制
+
+- failure recovery: 失败恢复
+
+- security control: 安全控制
+
+### 系统结构
+
+- Physical Level: 数据在磁盘上的存储方式
+
+- Logical Level: 数据在用户看来的存储方式
+
+- View Level: 用户看到的数据
+
+### 数据库语言
+
+- **DDL** (Data Definition Language)
+
+    - 数据定义语言，定义数据库的结构
+
+        ```sql
+            create table student(
+                name varchar(20),
+                ...
+                primary key(name),
+                foreign key(name) 
+            );
+        ```
+
+    - DDL interpreter: 用于解释DDL语句，将其转化为内部数据结构
+
+- **DML** (Data Manipulation Language)
+
+    - 数据操作语言，对数据库中的数据进行操作
+
+    - Procedural DML: 通过过程化语言进行操作
+
+    - Declarative DML(nonprocedural): 通过声明式语言进行操作(例如SQL，更加常见)
+
+    - DML compiler: 用于解释DML语句
+
+- **Query Processor**
+
+    - query -> parse and translate -> relational-algebra -> optimizer -> query plan -> execute plan
+
+- **transaction management**
+
+    - 事务管理，保证数据库的一致性
+
+    - 事务：一系列操作，要么全部执行，要么全部不执行
 
 ----
 
@@ -20,71 +83,82 @@
 
 Relation又可以分为两个部分：
 
-##### Relation Schema
+- **Relation Schema**
 
-Relation Schema指一张表的逻辑设计，包括Table的名字，其中有哪些Attribute，每个Attribute各自的Domain等。Relation Schema不关心表中具体的数据，只关心整体设计。约定用大$R$表示。
+    Relation Schema指一张表的逻辑设计，包括Table的名字，其中有哪些Attribute，每个Attribute各自的Domain等。Relation Schema不关心表中具体的数据，只关心整体设计。
 
-例如：Student(Student_ID, Name, Phone_Number), in which Student_ID supposed to be ......这是一个Relation Schema。
+    R = (A_1, A_2, A_3, ... A_n)
 
-##### Relation Instance
+    例如：Student(Student_ID, Name, Phone_Number), in which Student_ID supposed to be ......这是一个Relation Schema。
 
-Relation Instance是一张表中具体某几个事物（某几行）的集合。出于集合的定义，Relation Instance是可拆分的，一个Instance从中的某几行组成集合是另一个新的Instance。约定用小$r$表示。
+- **Relation Instance**
 
-例如：{(3200102708, Liu Siri, 13588089548), (3200102706, Su Houxian, null)}这是一个Relation Instance。
+    Relation Instance是一张表中具体某几个事物（某几行）的集合。出于集合的定义，Relation Instance是可拆分的，一个Instance从中的某几行组成集合是另一个新的Instance。
 
-#### Tuple
+    r(R) = {(t_1), (t_2), ... (t_n)}
 
-直译为元组，指某个表中的一个事物，或者说一行。
+    例如：{(3200102708, Liu Siri, 13588089548), (3200102706, Su Houxian, null)}这是一个Relation Instance。
 
-#### Attribute
+    **关于元组**：
 
-直译为属性，指某个表中的某一类数据，或者说一列。
+    - Tuple
 
-##### Domain
+        直译为元组，指某个表中的一个事物，或者说一行。
 
-某个Attribute的取值范围。
+    - Attribute
 
-#### Atomic
+        直译为属性，指某个表中的某一类数据，或者说一列。
 
-我们要求数据库中任意关系r，其Attribute的Domain必须是Atomic的。某个Domain是Atomic的指其中存储的数据已经是最小单元，不能进一步拆分。
+    - Domain
 
-例如：对于Attribue(Phone_Number)，如果允许多个电话号的集合同时存储在该列某行中，那么这个Attribute就不满足Atomic，于是这张表也不满足数据库的设计规范，因为一般认为这个集合可以进一步拆分成一个个电话号。
+        某个Attribute的取值范围。
 
-但是注意，你既可以认为单个电话号为不能继续拆分的最小单位，这时它Atomic；也可以认为电话号又包括了国家编码、区号、分机号等等，不满足Atomic。因此Atomic是一个相对的概念，“能不能继续拆分”取决于设计数据库的具体要求与你看待数据的方式。
+    - *Unordered Set*
 
-#### NULL
+        表中的行是无序的，即表中的行的顺序不影响表的定义。
 
-注意区别编程语言中NULL与数据库中的NULL的区别。C语言中可以认为NULL与0是等价的，但是对数据库而言NULL代表未知，而0是一个已知的具体的值，两者并不等价。例如成绩（NULL）和成绩（0）。
+- **Atomic**
 
-- and 有0为假
+    我们要求数据库中任意关系r，其Attribute的Domain必须是Atomic的。某个Domain是Atomic的指其中存储的数据已经是最小单元，不能进一步拆分。
 
-- or    有1为真
+    例如：对于Attribue(Phone_Number)，如果允许多个电话号的集合同时存储在该列某行中，那么这个Attribute就不满足Atomic，于是这张表也不满足数据库的设计规范，因为一般认为这个集合可以进一步拆分成一个个电话号。
 
-- where 中认为 unknown 为 false
+    但是注意，你既可以认为单个电话号为不能继续拆分的最小单位，这时它Atomic；也可以认为电话号又包括了国家编码、区号、分机号等等，不满足Atomic。
+
+    **因此Atomic是一个相对的概念**，“能不能继续拆分”取决于设计数据库的具体要求与你看待数据的方式。
+
 
 #### Key
 
 Key是某一个relation中某几个attribute的集合。它的每一个子集也都是不同的Key。
 
-##### Superkey
+- Superkey
 
-如果在某relation instance中根据一个key能够单独确定一个tuple，它是Superkey。
+    如果在某relation instance中根据一个key能够单独确定一个tuple，它是Superkey
 
-例如：对relation：Student(Student_ID, Name, Phone_Number)，(Student_ID, Name, Phone_Number) / (Student_ID, Phone_Number) / (Student_ID)都是Superkey；因为可以重名所以(Name)不是Superkey。
+    因此，superkey 可以很大，如 *整个元组的所有属性就是一个superkey*
 
-##### Candidate Key
+- Candidate Key
 
-如果一个Superkey，去掉任意一个attribute后不再是Superkey，他就是Candidate Key。上述例子中(Student_ID) / (Phone_Number)都是Primary Key，而(Student_ID, Phone_Number)不是。
+    如果一个Superkey，去掉任意一个attribute后不再是Superkey，他就是Candidate Key
 
-##### Primary Key
+    就相当于是**“最小”的Superkey**    
 
-使用任意Candidate Key都可以方便的查找relation中的某个tuple，但是为了同一操作、规范接口，设计者应该为每个relation在Candidates中选出一个作为Primary Key (a.k.a. Primary Key Constraint)。
+- Primary Key（默认not null）
 
-Primary Key是relation的固有属性而不仅是attribute的集合，地位发生了变化。
+    使用任意Candidate Key都可以方便的查找relation中的某个tuple，但是为了同一操作、规范接口，设计者应该为每个relation在Candidates中选出一个作为Primary Key (a.k.a. Primary Key Constraint)。
 
-##### Foreign Key Constraint
+    Primary Key是relation的固有属性而不仅是attribute的集合，地位发生了变化。
 
-A是关系$r_{1}$的一个key，B是关系$r_{2}$的Primary Key，如果A中每个tuple都在B中都存在，就称A is a **foreign key** from $r_{1}$ referencing $r_{2}$，$r_{1}$ is the **referencing relation** of this foreign-key constraint and $r_{2}$ Is the **referenced relation**.
+- Foreign Key Constraint
+
+    A是关系$r_{1}$的一个key，（B是关系$r_{2}$的Primary Key，）如果A中每个tuple都在B中都存在，就称
+    
+    A is a **foreign key** from $r_{1}$ referencing $r_{2}$
+    
+    $r_{1}$ is the **referencing relation** of this foreign-key constraint and $r_{2}$ Is the **referenced relation**
+
+    `foreign key A referencing r2(B1)`
 
 #### Schema Diagram
 
@@ -94,81 +168,75 @@ A是关系$r_{1}$的一个key，B是关系$r_{2}$的Primary Key，如果A中每�
 
 #### 基础操作
 
-##### And Or Not
+- And Or Not(∧ ∨ ¬)
 
-$\and:and,\ \or:or,\ \neg:not$
+- Select
 
-##### Select
+    $\sigma_{selection\  predicate}(relation)$：从relation中选出满足selection predicate的tuple组成一个新的relation。即选行。
 
-$\sigma_{selection\  predicate}(relation)$：从relation中选出满足selection predicate的tuple组成一个新的relation。即选行。
+- Project
 
-##### Project
+    $\Pi_{A1,A2...}(relation)$：从relation中选出名称为A1、A2……的attribute组成一个新的relation,即选列。
 
-$\Pi_{A1,A2...}(relation)$：从relation中选出名称为A1、A2……的attribute组成一个新的relation。即选列。注意去掉某几列之后新表中可能存在重复的tuple，**需要去重**。
+    **注意这是集合操作，因此会自动去重**
 
-##### Union（集合的加法）
+- Union（$\cup$）
 
-$r \cup s=\{t\ |\ t\in r\ or\ t\in s\}$
+    - 待合并的两张表应该应该相同的属性元组（即属性完全相同）
 
-注意：
+- Intersection（$\cap$）
 
-- 合并后需要去重
-- 待合并的两张表应该应该相同的列数，并且对应列的数据类型及取值范围不冲突。
+    - 待合并的两张表应该应该相同的属性元组（即属性完全相同）
 
-##### Set Difference（集合的减法）
+- Set Difference（-）
 
-$r-s=\{t\ |\ t\in r\ and\ t\notin s\}$
+    - 待合并的两张表应该应该相同的属性元组（即属性完全相同）
 
-同样要求待合并的两张表应该应该相同的列数，并且对应列的数据类型及取值范围不冲突。
+- Cartesian-Product（$\times$）
 
-##### Cartesian-Product（集合的乘法）
+    - 开销很大，可以想办法先用选择条件降低表大小再做积（不过应该不用强求）
 
-$r\times s=\{tq\ |\ t\in r\ and\ q\in s\}$
+    - 两个表做笛卡尔积，会获得 N * M 行
 
-使用笛卡尔积时注意两个表如果有相同名称的列，需要改名。
+- **Join** （后面章节重点）
 
-##### Rename
+    - $r\bowtie_{predicate}s=\sigma_{predicate}(r\times s)$
 
-$\rho_{x(A_{1},A_{2}...)}(E)$：将名为E的表重命名为x，并将其每一列重命名为A1、A2……
+    - Inner Join: $r \bowtie s$
+    
+    - Outer Join
+        
+        - Left Outer Join: $r\ ⟕\ s$
+        
+        - Right Outer Join: $r\ ⟖\ s$
+        
+        - Full Outer Join: $r\ ⟗\ s$
 
-注意：
 
-- 下标$(A_{1},A_{2}...)$不是必须的，不写这一部分表示只改表名不改列名。
-- 这个函数的返回值是原来那张表，这意味着它可以与此前的操作配合使用。
+- *Rename*
 
-#### 复合操作
+    - $\rho_{x(A_{1},A_{2}...)}(E)$
+        
+        将名为E的表重命名为x，并将其每一列重命名为A1、A2……
 
-##### Join
+    - 下标$(A_{1},A_{2}...)$不是必须的，不写这一部分表示只改表名不改列名。
 
-Join可以直接包含条件语句，语法如下：$r\bowtie_{predicate}s=\sigma_{predicate}(r\times s)$
 
-除直接写出筛选条件的用法之外还有四种默认用法，在这里只需要熟悉符号，具体含义将会在第四章讲解：
+- *Assignment*
 
-- Inner Join: $r \bowtie s$
-- Outer Join
-    - Left Outer Join: $r\ ⟕\ s$
-    - Right Outer Join: $r\ ⟖\ s$
-    - Full Outer Join: $r\ ⟗\ s$
+    - $d\leftarrow expression$
+    
+        将表达式的结果存放在临时“变量”d中，以便后续复用。这个操作一般用于简化公式和增强可读性。
 
-##### Set-Insertion
+    - 注意数据库所有的返回值都是**表**，包括代数操作或者单指操作等。
 
-$r\cap s=\{t\ |\ t\in r\ and\ t\in s\}=r-(r-s)$
+- *Division*
 
-注意区别交集和集合的减法。
+    - let $r(ID,course.ID)$ and $s(course.ID)$,  then $r\div s$ gives us ID who have taken all courses in the relation $s$.
 
-##### Assignment
+- 代数操作
 
-$d\leftarrow expression$：将表达式的结果或者说返回值存放在临时的区域d中，以便后续复用。这个操作一般用于简化公式和增强可读性。
-
-注意数据库所有的返回值都是**表**，包括代数操作。例如$Temp \leftarrow g_{min(score)}(student)$，Temp是一行一列的表而不是一个值；因此后续使用时应该形如$\Pi_{name}(\sigma_{age=minage}(student\bowtie(\rho _{T(minage)}(Temp))))$区分表和列（值），而不能写成$\Pi_{name}(\sigma_{age=Temp}(student))$。
-
-##### Division
-
-let $r(ID,course.ID)$ and $s(course.ID)$,  then $r\div s$ gives us ID who have taken all courses in the relation $s$.
-
-#### 代数操作
-
-常见的代数操作有avg, min, max, sum, count等，基本语法$_{G_1,G-2...}\mathcal{G}_{F_1(...),F_2(...)...}(E)$。前半部分为分组依据，后半部分为所需函数，语义见图：![image-20220302211044444](%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220302211044444.png)
+    - 常见的代数操作有avg, min, max, sum, count等
 
 ----
 
@@ -176,62 +244,131 @@ let $r(ID,course.ID)$ and $s(course.ID)$,  then $r\div s$ gives us ID who have t
 
 ### SQL数据类型
 
-- char(n): 定长为n的字符串
-- varchar(n): variable-lenth char 最大长度为n的可变长字符串
-- int/smallint: 整数型，允许的数据范围由库和计算机架构决定。smallint占据的空间与可表示的范围都小于int。
-- numeric(p, d): 十进制表示，总共有p位，其中小数点后有d位。例如对numeric(3, 1)，10.5、01.0是合法的，1.05、105、1都是不合法的。
-- real/double precision: 单精度和双精度浮点，大致对应C语言的float/double。允许的数据范围由库和计算机架构决定。
-- float(n): 至少有n个数字的浮点数。注意区别SQL的float与常见编程语言的float。
+**char(n)**: 定长为n的字符串
+
+**varchar(n)**: variable-lenth char 最大长度为n的可变长字符串
+
+**int/smallint**: 整数型，允许的数据范围由库和计算机架构决定。smallint占据的空间与可表示的范围都小于int。
+
+**numeric(p, d)**: 十进制表示，总共有p位，其中小数点后有d位。例如对numeric(3, 1)，10.5、01.0是合法的，1.05、105、1都是不合法的。
+
+**real/double precision**: 单精度和双精度浮点，大致对应C语言的float/double。允许的数据范围由库和计算机架构决定。
+
+**float(n)**: 至少有n个数字的浮点数。注意区别SQL的float与常见编程语言的float。
+
+**NULL**
+
+- 代表未知，和 0 不相同
+
+- **特殊运算规则**
+
+    - and 有0为假
+
+    - or    有1为真
+
+    - 比较 / 算术等结果为unknown
+
+    - not unknown = unknown
+
+    - where 中认为 unknown 为 false
+
+    - 筛选distinct时，null = null
+
+    - NULL值不参与对列的代数函数，全NULL的tuple不会被count( )计数。没有非NULL元素时代数操作返回NULL，count( )返回0。
 
 **注意：以上是教科书中的内容，其中char/varchar/int基本全世界通用，但是其他的数据类型在不同DBMS中语法及用法可能各有不同。**
 
+----
+
 ### SQL语句
 
-#### 前言
+所有SQL语句以及**表名、列名**等标识符都是大小写不敏感的
 
-所有SQL语句以及表名、列名等标识符都是大小写不敏感的。但是表的内容，例如字符串等，大小写敏感。
+但是表的**内容**，例如字符串等，大小写敏感。
 
 以下只记录易错点，不涵盖所有语法。
 
+#### Updates to tables
+
+- `drop table r;`
+
+- `alter table r add column_name data_type;`
+
+- `alter table r drop column_name;`
+
 #### select
 
-select可以细分为select all与select distinct，区别是是否为结果去重，select不使用后缀时默认为select all。select distinct与关系代数的$\Pi$等价，而select all不等价。
+select可以细分为select all与select distinct，区别是是否为结果去重，select不使用后缀时默认为select all
 
-select选择的内容可以是表达式，例如select salary/1000 from teacher; 返回的是salary/1000的结果。也因此select可以没有from子句，一般用于展示数据或者赋值并展示结果，例如select 12345/5; 单纯打印这个表达式的结果数字。
+select选择的内容可以是表达式，例如select salary/1000 from teacher; 返回的是salary/1000的结果。
 
-select结果可以使用order by ATTRIBUTE_NAME (desc/asc)子句排序，desc/asc表示按照降/升序，不写默认为asc。order by后面可以跟多个attribute，以逗号分隔，靠前的优先。
+from子句可以包含多个表，用逗号分隔，例如from r1, r2, r3...，这样select的结果就是这些表的笛卡尔积。
 
-- *select 'k' from --->N行 一列'k', 属性‘k'*
+后面一般有where子句，用于筛选表中的内容。
 
-- *集合操作默认 去重*
+*因此select可以没有from子句，一般用于展示数据或者赋值并展示结果，例如select 12345/5; 单纯打印这个表达式的结果数字*
+
+select结果可以使用order by ATTRIBUTE_NAME (desc/asc)子句排序，desc/asc表示按照降/升序，不写默认为asc。
+
+order by后面可以跟多个attribute，以逗号分隔，靠前的优先。
+
+*select 'k' from --->N行 一列'k', 属性'k'*
 
 #### as
 
-as可以为同一个对象赋两个别名以实现自我对比，但是别名的作用域仅限于单条语句，实际名称并不会被更改，下图中的select语句完成后表名仍然叫instructor。as有时可以省略不写。
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/IMG_D6F8CEB5100B-1.jpeg" alt="IMG_D6F8CEB5100B-1" style="zoom:43%;" />
+as可以为同一个对象赋两个别名以实现自我对比，但是别名的作用域仅限于单条语句，实际名称并不会被更改.
 
 #### string
 
-like是模糊搜索的关键字。SQL字符串查找最常用的两个记号为$\%$和$\_$，用法如图。
+SQL 用一对单引号表示字符串，若要在字符串中使用单引号，可以用两个单引号表示一个单引号。
 
-需要字符串查找内容本身包含$\%$或$\_$时使用逃逸字符\%、\\_。
+like是模糊搜索的关键字，可以用 % 表示任意多个字符，用 _ 表示任意一个字符
+
+需要字符串查找内容本身包含特殊字符的，可以用逃逸符号+转义字符，如获得'%' ` '\%' escape '\'`
 
 字符串内容匹配默认区分大小写。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/IMG_D7BF72733339-1.jpeg" alt="IMG_D7BF72733339-1" style="zoom:43%;" />
+#### set
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/IMG_C7A3E21317B3-1.jpeg" alt="IMG_C7A3E21317B3-1" style="zoom:43%;" />
+- set operations
 
-#### union/intersect/except
+    - `union / intersect / except` 又有all和distinct两个版本，区别是结果是否去重
 
-他们三者各自都又有all和distinct两个版本，区别是结果是否去重，**但是他们默认是去重的**，这与select不同。
+    - **但是他们默认作为集合操作是去重的**，这与select不同。
 
-$union/interset/except\ distinct$分别等价于交集、并集、集合的减法。
+- set membership
+
+    - `(not) in`
+
+- set comparison
+
+    - `some / all`
+
+    - ( = some) == (in) 
+
+    - ( != some) != (not in)
+
+    - (!= all) == (not in)
+
+    - ( = all) != (in)
+
+- set empty test
+
+    - `(not) exists`
+
+- set unique test
+
+    - `unique` to check if duplicates exist
+
+#### aggregate functions
+
+`avg, count, min, max, sum`
+
+聚集函数，顾名思义，能把同一列不同值聚集到一起处理为一个值
 
 #### group by
 
-配合各类代数操作，功能等价于第二章中$\mathcal{G}$前部的下标。
+配合各类代数操作
 
 group by先于select进行，创建一个仅包含代数操作列与group by列的临时表，select操作在这个临时表中进行。这带来两个特性：
 
@@ -245,6 +382,8 @@ group by先于select进行，创建一个仅包含代数操作列与group by列�
 
 - 同时select代数操作和其他的列时，其他列必须同时放在group by里面，因为不能选择临时表中没有的列。下面是两个错误的例子，ID不能被选择：
 
+    **即group by之后，每个group只能输出一行数据**
+
     ```mysql
     select dept_name, ID, avg (salary)
     from instructor
@@ -253,86 +392,94 @@ group by先于select进行，创建一个仅包含代数操作列与group by列�
     select ID, max(salary) from instructor;
     ```
 
-    正确的写法应该是：
+#### where / having
 
-    ```mysql
-    select dept_name, ID, avg (salary)
-    from instructor
-    group by dept_name, ID;
-    
-    select ID, max(salary) from instructor group by ID;
-    ```
+**where在group by之前进行，不满足条件的tuble不会参与group by进入临时表**
 
-#### where/having
+**having在group by之后进行，在临时表中筛选（因此同样只有group by之后的数据栏），只返回满足的tuble**
 
-- where在group by之前进行，不满足条件的tuble不会参与group by进入临时表。
-- having在group by之后进行，产生临时表中筛选，只返回满足的tuble。
-
-因此引申出exists只能跟where；代数操作做条件只能跟having；同样的语句在where和having之后效果不一定相同。下面是一个正面例子：
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220316134950029.png" alt="image-20220316134950029" style="zoom:40%;" />
-
-#### NULL
-
-NULL值不参与对列的代数函数，全NULL的tuple不会被count( )计数。
-
-没有非NULL元素时代数操作返回NULL，count( )返回0。
-
-#### some/all
-
-some/all跟在$<,\le,>,\ge,=,\ne$之后，当其后的表中存在/全部元素满足关系则返回true。
-
-```mysql
-5  < some{[0], [5], [6]} = true
-5  < some{[0], [5]}      = false
-5  = some{[0], [5]}      = true
-5 != some{[0], [5], [6]} = true
-//(=some) == in but (!=some) != not in
-
-5  < all{[0], [5], [6]} = false
-5  = all{[0], [5], [6]} = false
-5  > all{[0], [4]} 		= true
-5 != all{[0], [4]} 		= true
-//(!=all) == not in but (=all) != in 
-```
+因此引申出exists只能跟where；代数操作做条件只能跟having；同样的语句在where和having之后效果不一定相同。
 
 #### with
 
 ```mysql
-with temp_table_name(attribute_name1, attibute_name2...) as alias select...
+with 
+temp_table_name1(attribute_name1, attibute_name2...) as (),
+temp_table_name2(attribute_name1, attibute_name2...) as (),
+...
 ```
 
-建立一个作用域为一条语句的临时的表用于简化逻辑表达式增加可读性。相当于关系代数中的Assignment。select可以不出现。
+建立一个作用域为一条语句的临时的表用于简化逻辑表达式增加可读性。
+相当于关系代数中的Assignment。select可以不出现。
+
+#### delete
+
+`delete from table_name where ()`
+
+#### insert
+
+`insert into table_name values(...)`
+
+`insert into table_name(attributes...) values(...)`
+
+*values 也可替换成嵌套子查询*
+
+#### update
+
+- ``update table_name set attribute = () where ()``
+
+- 有时操作会影响后续的判断，导致非常麻烦的拓扑序处理，因此复杂时可以使用case条件判断
+
+    ```sql
+    set () = case
+        when condition1 then value1
+        when condition2 then value2
+        ...
+        else value2
+    end
+    ```
 
 ## 第四章 SQL进阶
 
-### Join详解
+### Join
 
-Join语句的基本功能是将两张表中的tuple按一定规则进行匹配，将他们相同的列保留其一，不同的列全部保留，合成一个大tuple。它的控制符可以分为两类：
+Join语句的基本功能是将两张表中的tuple按一定规则进行匹配，将他们相同的列拼起来，不同的列全部保留，合成一个大tuple。
 
-- Join Conditions控制哪一些列或条件用于匹配两张表中的tuple
-    - natural：tuple所有同名列的值相等（默认）
+它的控制符可以分为两类：
+
+- Join Conditions（控制哪一些列或条件用于匹配两张表中的tuple）
+
+    - **natural**：tuple所有同名列的值相等（默认），但是有**表结构未知错误合并**的风险
+
         - natural 会合并同名列，且using也是相当于默认为natural
-    - using (A1, A2...)：tuple同名列中指定的部分列的值相等
-    - on \<predicate>：按照特定的规则匹配，不限于同名列
-- Join Types控制如何处理没有匹配对象的tuple
+
+    - **using (A1, A2...)**：tuple同名列中指定的部分列的值相等
+
+    - **on \<predicate>**：按照特定的规则匹配，不限于同名列
+
+- Join Types（控制如何处理没有匹配对象的tuple）
+
     - Inner Join：没有匹配对象则不返回（默认）
+
     - Left Outer Join：左侧表的tuple没有匹配对象，则为扩展的列填入NULL，一起返回（左边元素一定存在）
+
     - Right Outer Join：右侧表的tuple没有匹配对象，则为扩展的列填入NULL，一起返回（右边元素一定存在）
+
     - Full Outer Join：上面二者的并集
 
 ### View
 
 ```mysql
-create view view_name(attribute_name1, attibute_name2...) as alias select...
+create view view_name(attributes...) as () 
 ```
 
-view一般用于查找以及接口，语法和with相同，作用也基本相同。唯一的区别是view一经定义则一直可用，而with的作用域仅有单条语句。这为view带来了几点特性：
+view一般由于权限问题，遮掩部分数据用于查找以及接口，语法和with相同，作用也基本相同。唯一的区别是view一经定义则一直可用，而with的作用域仅有单条语句。
 
-- view并不是实际存在的表，每次调用view时只是重复调用了筛选的条件。因此update table后，与之关联的view也会改变。
-- 我们一般不对view进行update。大部分SQL系统对update view有严格的限制。
+- view并不是实际存在的表，每次调用view时只是重复调用了筛选的条件。因此update table后，与之关联的view也会改变
 
-- 部分SQL也支持materialize view，view此时是一张真实存在的表，这一般是为了用空间换时间。物化视图相关的表发生变化时，它自己也必须同时更新，以维持一般view的特性。
+- 我们一般不对view进行update，大部分SQL系统对update view有严格的限制。
+
+- 部分SQL也支持materialize view，view此时是一张真实存在的表，这一般是为了用空间换时间，物化视图相关的表发生变化时，它自己也必须同时更新，以维持一般view的特性。
 
 - view dependecy: 可以嵌套定义，甚至自我递归定义？ 
 
@@ -345,20 +492,29 @@ ALTER TABLE table_name DROP INDEX index_name;//删除
 
 索引的原理类似于书的目录，要查找某个词不需要从头开始阅读书籍，可以从目录查到页码直接跳转，于是加快了查找的速度。其具体实现方式不需要深究。一个表可以创建多个索引，一个索引可以包含多个列（复合索引）。
 
-但索引并不是尽善尽美，例如update之后，索引需要同步维护；同时索引是一种物理结构，有额外的空间与IO开销。不适当的索引设置反而会降低效率。
+但索引并不是尽善尽美，例如update之后，索引需要同步维护；同时索引是一种物理数据结构，有额外的空间与IO开销。不适当的索引设置反而会降低效率。
 
 ### Integrity Constraint
 
-完整性约束即对attribute内容的约束，不满足约束条件的tuple不能被插入。一般有4类约束方法：
+完整性约束即对attribute内容的约束，不满足约束条件的tuple不能被插入。
 
-- not NULL：非空。
-- Primary Key：构成主键的tuple不能重复。
-- Check(Predicate)：自定义检查的条件，例如 `CHECK (semester in ("spring", "autumn") )`。
-- Foreign Key (attribute_name1, attribute_name2 ...) references table_name（（attribute））：（原则上，可以不是）自定的若干个attribute组成的tuple一定是table_name的主键之一。
+*对数据类型的约束既可以在定义表时规定，也可以后期通过domain关键字增删改*
 
-对数据类型的约束既可以在定义表时规定，也可以后期通过domain关键字增删改。具体语法在此不表。
+一般有4类约束方法：
 
-- cascade: 级联，更新与删除等操作违反完整性约束，便会将子数据一并处理掉（一般没有 insert cascade）
+- **not NULL**：非空。
+
+- **Primary Key**：构成主键的tuple不能重复。
+
+- **Check(Predicate)**：自定义检查的条件，在数据表有改变时便会自动检查，例如 `CHECK (semester in ("spring", "autumn") )`。
+
+- **Foreign Key** : 外键约束，（*原则上，可以不是*）自定的若干个attribute组成的tuple一定是table_name的主键之一
+
+    `foreign key (attribute_name1, attribute_name2 ...) references table_name(attribute)`
+
+约束被破坏时的处理方法：
+
+- cascade: 级联，更新与删除等操作违反完整性约束，便会将影响的子数据一并处理掉（一般没有 insert cascade）
 
     - *还可以set null, set default等*
 
@@ -369,45 +525,71 @@ ALTER TABLE table_name DROP INDEX index_name;//删除
 
 ### 特殊数据类型
 
-#### time
+- 时间相关
 
-SQL自带时间相关的特殊数据类型。
+    - date：日期
 
-#### large number
+    - time：SQL自带时间相关的特殊数据类型
 
-对于尤其空间尤其巨大的值，传指针比直接传数据本身高效得多。在此理解即可。
+    - timestamp：date + time
 
-#### large-object types
+    - interval：时间间隔
 
-- blob: binary 
+- 大对象
 
-- clob: character
+    - large number：对于尤其空间尤其巨大的值，传指针比直接传数据本身高效得多。在此理解即可。
 
-#### user-defined
+    - large-object types
 
-#### domain
+        - blob: binary 
+
+        - clob: character
+
+- user-defined
+
+    - e.g. `create type dollar as numeric(10, 2);`
+
+- domain
+
+    - 和 type类似，不过可以加上约束条件
 
 ### 权限
 
-授予/收回权限的基本语法是：
+- 授予/收回权限的基本语法：
 
-```mysql
-grant <priviledge list or role name> 
-on <relation name or view name> to <user list>;//授予
-revoke <priviledge list or role name> 
-on <relation name or view name> to <user list>;//收回
-```
+    权限：`select, insert, update, delete, references, all privileges`
 
-需要注意：
+    ```mysql
+    grant <priviledge list or role name> 
+    on <relation name or view name> to <user list>;//授予
+
+    revoke <priviledge list or role name> 
+    on <relation name or view name> to <user list>;//收回
+    ```
 
 - 权限可以来自多个上级用户，相互可以重叠，例如有两者都为第三方授予了读取权限，此时即使有一方撤回了权限，第三方仍然可以正常读取。
-- 权限可以级联下放，例如A为B授予了某些权限，B可以继续向其他人授予不高于他自己的权限。当A撤回对B的权限时，B下放给他人的权限也会同时被收回。
-- 权限的基本单位是relation，需要授予某个数据库内所有relation的权限时可以使用DB_name.\*。
-- 多次授权，一次只能收一个
-- public收回，所有非特殊指明的人的权限都被收回
-- 视图上的权限效果类似
 
-有多个同类用户需要做统一的权限调整时，列出\<user list>的使用方式显然不便，此时就需要role。role是权限组成的集合，你可以像赋予单个权限一样将role赋予用户。修改某个role对应的权限集合时，所有被赋予这个role身份的用户权限都会同时被修改。
+- 权限可以级联下放，例如A为B授予了某些权限，B可以继续向其他人授予不高于他自己的权限。当A撤回对B的权限时，B下放给他人的权限也会同时被收回。
+
+- 权限的基本单位是relation，需要授予某个数据库内所有relation的权限时可以使用 DB_name.*
+
+- 多次授权，一次只能收一个
+
+- public收回，所有非特殊指明的人的权限都被收回
+
+- *视图上的权限效果类似*，但是视图的权限不能获得对基表的权限
+
+- **role**
+
+    - 有多个同类用户需要做统一的权限调整时，列出\<user list>的使用方式显然不便，此时就需要role。
+    
+    - role是权限组成的集合，可以像面向一个用户一样赋予role各种权限，然后像赋予单个权限一样将role赋予用户。修改某个role对应的权限集合时，所有被赋予这个role身份的用户权限都会同时被修改。
+
+        ```mysql
+        create role role_name;
+        grant <priviledge list> on <relation name> to role_name;
+        grant role_name to <user list>;
+        ```
 
 ## 第五章 高级SQL
 
