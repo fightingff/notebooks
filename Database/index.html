@@ -4139,24 +4139,37 @@
 <p><strong>real/double precision</strong>: 单精度和双精度浮点，大致对应C语言的float/double。允许的数据范围由库和计算机架构决定。</p>
 <p><strong>float(n)</strong>: 至少有n个数字的浮点数。注意区别SQL的float与常见编程语言的float。</p>
 <p><strong>NULL</strong></p>
-<div class="highlight"><pre><span></span><code>- 代表未知，和 0 不相同
-
-- **特殊运算规则**
-
-    - and 有0为假
-
-    - or    有1为真
-
-    - 比较 / 算术等结果为unknown
-
-    - not unknown = unknown
-
-    - where 中认为 unknown 为 false
-
-    - 筛选distinct时，null = null
-
-    - NULL值不参与对列的代数函数，全NULL的tuple不会被count( )计数。没有非NULL元素时代数操作返回NULL，count( )返回0。
-</code></pre></div>
+<ul>
+<li>
+<p>代表未知，和 0 不相同</p>
+</li>
+<li>
+<p><strong>特殊运算规则</strong></p>
+<ul>
+<li>
+<p>and 有0为假</p>
+</li>
+<li>
+<p>or    有1为真</p>
+</li>
+<li>
+<p>比较 / 算术等结果为unknown</p>
+</li>
+<li>
+<p>not unknown = unknown</p>
+</li>
+<li>
+<p>where 中认为 unknown 为 false</p>
+</li>
+<li>
+<p>筛选distinct时，null = null</p>
+</li>
+<li>
+<p>NULL值不参与对列的代数函数，全NULL的tuple不会被count( )计数。没有非NULL元素时代数操作返回NULL，count( )返回0。</p>
+</li>
+</ul>
+</li>
+</ul>
 <p><strong>注意：以上是教科书中的内容，其中char/varchar/int基本全世界通用，但是其他的数据类型在不同DBMS中语法及用法可能各有不同。</strong></p>
 <hr />
 <h3 id="sql_2">SQL语句</h3>
@@ -4455,22 +4468,51 @@
 </li>
 </ul>
 <h3 id="_10">权限</h3>
-<p>授予/收回权限的基本语法是：</p>
+<ul>
+<li>
+<p>授予/收回权限的基本语法：</p>
+<p>权限：<code>select, insert, update, delete, references, all privileges</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">grant</span><span class="w"> </span><span class="o">&lt;</span><span class="n">priviledge</span><span class="w"> </span><span class="k">list</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">role</span><span class="w"> </span><span class="k">name</span><span class="o">&gt;</span><span class="w"> </span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">on</span><span class="w"> </span><span class="o">&lt;</span><span class="n">relation</span><span class="w"> </span><span class="k">name</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">view</span><span class="w"> </span><span class="k">name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="o">&lt;</span><span class="k">user</span><span class="w"> </span><span class="k">list</span><span class="o">&gt;</span><span class="p">;</span><span class="o">//</span><span class="n">授予</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">revoke</span><span class="w"> </span><span class="o">&lt;</span><span class="n">priviledge</span><span class="w"> </span><span class="k">list</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">role</span><span class="w"> </span><span class="k">name</span><span class="o">&gt;</span><span class="w"> </span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">on</span><span class="w"> </span><span class="o">&lt;</span><span class="n">relation</span><span class="w"> </span><span class="k">name</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">view</span><span class="w"> </span><span class="k">name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="o">&lt;</span><span class="k">user</span><span class="w"> </span><span class="k">list</span><span class="o">&gt;</span><span class="p">;</span><span class="o">//</span><span class="n">收回</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">revoke</span><span class="w"> </span><span class="o">&lt;</span><span class="n">priviledge</span><span class="w"> </span><span class="k">list</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">role</span><span class="w"> </span><span class="k">name</span><span class="o">&gt;</span><span class="w"> </span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="k">on</span><span class="w"> </span><span class="o">&lt;</span><span class="n">relation</span><span class="w"> </span><span class="k">name</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">view</span><span class="w"> </span><span class="k">name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="o">&lt;</span><span class="k">user</span><span class="w"> </span><span class="k">list</span><span class="o">&gt;</span><span class="p">;</span><span class="o">//</span><span class="n">收回</span>
 </code></pre></div>
-<p>需要注意：</p>
+</li>
+<li>
+<p>权限可以来自多个上级用户，相互可以重叠，例如有两者都为第三方授予了读取权限，此时即使有一方撤回了权限，第三方仍然可以正常读取。</p>
+</li>
+<li>
+<p>权限可以级联下放，例如A为B授予了某些权限，B可以继续向其他人授予不高于他自己的权限。当A撤回对B的权限时，B下放给他人的权限也会同时被收回。</p>
+</li>
+<li>
+<p>权限的基本单位是relation，需要授予某个数据库内所有relation的权限时可以使用 DB_name.*</p>
+</li>
+<li>
+<p>多次授权，一次只能收一个</p>
+</li>
+<li>
+<p>public收回，所有非特殊指明的人的权限都被收回</p>
+</li>
+<li>
+<p><em>视图上的权限效果类似</em>，但是视图的权限不能获得对基表的权限</p>
+</li>
+<li>
+<p><strong>role</strong></p>
 <ul>
-<li>权限可以来自多个上级用户，相互可以重叠，例如有两者都为第三方授予了读取权限，此时即使有一方撤回了权限，第三方仍然可以正常读取。</li>
-<li>权限可以级联下放，例如A为B授予了某些权限，B可以继续向其他人授予不高于他自己的权限。当A撤回对B的权限时，B下放给他人的权限也会同时被收回。</li>
-<li>权限的基本单位是relation，需要授予某个数据库内所有relation的权限时可以使用DB_name.*。</li>
-<li>多次授权，一次只能收一个</li>
-<li>public收回，所有非特殊指明的人的权限都被收回</li>
-<li>视图上的权限效果类似</li>
+<li>
+<p>有多个同类用户需要做统一的权限调整时，列出\<user list>的使用方式显然不便，此时就需要role。</p>
+</li>
+<li>
+<p>role是权限组成的集合，可以像面向一个用户一样赋予role各种权限，然后像赋予单个权限一样将role赋予用户。修改某个role对应的权限集合时，所有被赋予这个role身份的用户权限都会同时被修改。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">create</span><span class="w"> </span><span class="k">role</span><span class="w"> </span><span class="n">role_name</span><span class="p">;</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">grant</span><span class="w"> </span><span class="o">&lt;</span><span class="n">priviledge</span><span class="w"> </span><span class="k">list</span><span class="o">&gt;</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="o">&lt;</span><span class="n">relation</span><span class="w"> </span><span class="k">name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">role_name</span><span class="p">;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">grant</span><span class="w"> </span><span class="n">role_name</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="o">&lt;</span><span class="k">user</span><span class="w"> </span><span class="k">list</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+</li>
 </ul>
-<p>有多个同类用户需要做统一的权限调整时，列出\<user list>的使用方式显然不便，此时就需要role。role是权限组成的集合，你可以像赋予单个权限一样将role赋予用户。修改某个role对应的权限集合时，所有被赋予这个role身份的用户权限都会同时被修改。</p>
+</li>
+</ul>
 <h2 id="sql_4">第五章 高级SQL</h2>
 <h3 id="sql-injection">SQL Injection</h3>
 <p>SQL用户端常常需要将用户的输入拼接为完整的sql语句。借助用户端输入框直接输入未预期的sql指令，又由于字符串拼接的缘故这条语句能够被后台执行，这称为sql注入。</p>
@@ -4480,16 +4522,16 @@
 <p>因为它们是内建的，且大多采用类似C语言的编译执行方式，性能往往远高于在用户端拼接字符串构建并执行sql语句。</p>
 <p>Stored Procedure与function中还可以创建cursor，以完成一些复杂的数据库操作。</p>
 <p>例如：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">create</span><span class="w"> </span><span class="k">procedure</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">dept_count_proc</span><span class="w"> </span><span class="p">(</span><span class="k">in</span><span class="w"> </span><span class="n">dept_name</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">d_count</span><span class="w"> </span><span class="kt">integer</span><span class="p">)</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">begin</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="k">select</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">d_count</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">from</span><span class="w"> </span><span class="n">instructor</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="k">where</span><span class="w"> </span><span class="n">instructor</span><span class="p">.</span><span class="n">dept_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dept_count_proc</span><span class="p">.</span><span class="n">dept_name</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="k">end</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="k">declare</span><span class="w"> </span><span class="n">d_count</span><span class="w"> </span><span class="kt">integer</span><span class="p">;</span>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="k">call</span><span class="w"> </span><span class="n">dept_count_proc</span><span class="p">(</span><span class="s1">&#39;physics&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">d_count</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">create</span><span class="w"> </span><span class="k">procedure</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">dept_count_proc</span><span class="w"> </span><span class="p">(</span><span class="k">in</span><span class="w"> </span><span class="n">dept_name</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">d_count</span><span class="w"> </span><span class="kt">integer</span><span class="p">)</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">begin</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="k">select</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">d_count</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="k">from</span><span class="w"> </span><span class="n">instructor</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="k">where</span><span class="w"> </span><span class="n">instructor</span><span class="p">.</span><span class="n">dept_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dept_count_proc</span><span class="p">.</span><span class="n">dept_name</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="k">end</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="k">declare</span><span class="w"> </span><span class="n">d_count</span><span class="w"> </span><span class="kt">integer</span><span class="p">;</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="k">call</span><span class="w"> </span><span class="n">dept_count_proc</span><span class="p">(</span><span class="s1">&#39;physics&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">d_count</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="trigger">Trigger</h3>
 <p>trigger是在满足某些条件后自动执行的sql，可以视为对数据库操作的监视或者说副作用。但是现代sql数据库流行的风格是不写trigger，下面列出了trigger的弊端和一些替代品。</p>
