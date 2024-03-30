@@ -1028,6 +1028,242 @@ public:
 
 ----
 
+### Fibonacci Heap
+
+- **特征**
+
+    - 有点类似与二项队列，由一堆子树串接而成，但是每个节点可以有任意多的儿子，而且不再是二项树
+    
+    - 兄弟间通过循环双向链表串接，父子间同样使用类似“Left-Child-Next-Sibling”存储方式 
+    
+    - 具有最小堆的性质，即根节点为最小值 
+
+- **维护**
+
+    - 插入
+
+        - 直接在root list中插入一个新的节点，然后更新最小值
+
+    - 删除
+
+        - 删除最小值，将其子树全部插入到root list中
+        
+        - **神奇合并**
+        
+            - 将root list中所有度相同（这里度 指节点的直连儿子数目）的子树按小根堆的方式合并
+            
+            - 重复处理，直至root list中没有度相同的子树   
+
+    - 合并
+
+        - 两个堆合并，相当于两个root list做循环双向链表的合并，然后更新最小值即可
+
+    - **减小关键字**
+
+        - 将节点的关键字减小，然后与父节点比较，如果小于父节点，则不满足小根堆的性质，将这棵子树摘下放到root list中，然后向上级联处理
+        
+        - **若某个非根节点已经失去了两个儿子，则将其摘下放到root list中，递归向上级联处理** 
+
+    - 删除节点
+
+        - 将节点的关键字减小到负无穷，然后删除最小值即可
+
+- **复杂度分析**
+
+    > 采用势能分析法，定义势能函数 $\Phi(H) = t(H) + 2m(H)$，其中 $t(H)$ 为root list中的节点数，$m(H)$ 为已经标记过的节点数（即已经失去一个儿子的非根节点）
+    >
+    > 先要证明一点：N 个节点的斐波那契堆的子树的最大度数 $D_n = O(logN)$
+    >
+    > 为此，设节点 x 所在子树的节点数为 $S_x$，则 $S_x \geq F_{k+2}$, 其中 $F_k$ 为第 k 个斐波那契数
+    >
+    > 证明：
+    >
+    > 首先，对于 x 的所有按添加顺序排列的子树$y_i$，有$y_i \geq (i-1) -1 =i-2$（因为只有度数相同才能合并，并且每个节点最多失去一个儿子）
+    >
+    > 设度数为 k 的节点所在子树的最小大小为$S_k$，则有 $S_k \geq 2 + \Sigma_2^k size(y_i) \geq 2 + \Sigma_{2}^{k}S_{i-2} \geq F_{k+2}$
+
+    - 插入
+
+        - 直接插入到root list，显然复杂度为$O(1)$
+    
+    - **删除**
+
+        - 查询最小值可以直接用一个指针记录，因此为$O(1)$
+        
+        - 删除时，首先需要将所有子树插入到root list中，需要$O(D_N) = O(logN)$
+      
+        - **神奇合并**的均摊分析
+            
+            - 合并需要处理的总结点数最大为 $D_N + t(H) - 1$，由于每次合并都会减少一个节点，因此实际开销的复杂度为$O(D_N + t(H) - 1)$
+            
+            - 处理过后，显然$t(H) \leq D_N + 1$ 
+            
+            - 因此总均摊复杂度 
+                $$\hat c_i = O(D_N + t(H)) + \Delta \Phi $$
+
+                $$= O(D_N + t(H)) + ((D_N + 1 + 2m(H)) - (t(H) + 2m(H))) $$
+                
+                $$= O(D_N) = O(logN)$$
+    
+    - 合并
+    
+        - 两个链表合并，显然复杂度为$O(1)$
+    
+    - **减小关键字**
+    
+        - 主要在于递归向上级联断开的处理，下面证明其均摊复杂度为$O(1)$
+        
+            > 假设调用了 k 次递归向上的操作，即拔掉了 k - 1 个节点，复杂度为 $O(k)$
+            >
+            > $\Delta \Phi \leq (t(H) + (k - 1) + 1 + 2(m(H) - (k - 1) + 1)) - (t(H) + 2m(H)) = 4 - c$ 
+            >
+            > 其中前面根节点的 +1 表示减小关键字的这棵子树，后面的 +1 表示最后停止时可能的新增标记
+            >
+            > 因此，最终的均摊复杂度 
+            >
+            > $$\hat c_i = O(k) + \Delta \Phi = O(1)$$
+    
+- Code (Passed Luogu P3371 & P4779)
+
+    斐波那契的优越性主要体现在插入和减小关键字的操作上，因为它可以在$O(1)$的时间内完成
+
+    因此，在删除较少的情况下，斐波那契堆的效率是非常高的，但是在删除较多的情况下，由于总体常数较大，可能会比一般的堆更慢
+
+    **经典：斐波那契堆优化DIJ 复杂度 $O(N + MlogM) --> O(NlogN + M)$，在稠密图的优化效果还是非常明显的**
+
+    ```cpp title="Fibonacci Heap" linenums="1"
+    class FiboHeap{
+    private:
+        struct Node{
+            int pos, data;// pos denotes the node, data denotes the distance
+            int degree;     // degree records the direct children of this node
+            Node *Ls, *Rs, *Fa, *Son;//Ls & Rs for cycle list with siblings, Fa for parent, Son for  a single child (randomly chosen)
+            bool mark;      // spcecial signal for FiboHeap, set to 1 if a child of this node has been removed
+            Node(int _pos, int _data){    // new Node at node _pos with value _data
+                pos = _pos, data = _data;
+                degree = 0;
+                Ls = Rs = this, Fa = Son = NULL;
+                mark = 0;
+            }
+            void Remove(){  // remove this Node from the cycle-list
+                this->Ls->Rs = this->Rs;
+                this->Rs->Ls = this->Ls;
+                this->Ls = this->Rs = this, this->Fa = NULL;
+            }
+            void Link(Node *L, Node *R){ // link this node between L and R
+                L->Rs = this, this->Ls = L;
+                R->Ls = this, this->Rs = R;
+            }
+        };
+        int Size;
+        Node *Min;
+        Node *Dis[MaxN];
+        void Consolidate(){ // Consolidating the nodes (subtrees) in root list
+            static Node *A[MaxS];// A[i] denotes the subtree with degree i
+            Node *p = Min, *q;
+            int Mx = 0, cnt = 0;
+            while(p != NULL){
+                q = p, p = p->Rs;
+                if(q == p) p = NULL;
+                q->Remove();
+                while(A[q->degree] != NULL){    // merge the subtree with the same degree, ensure the degree of the root list is unique
+                    Node *t = A[q->degree];
+                    if(q->data > t->data) swap(q, t); // minimum heap
+
+                    t->Fa = q, A[q->degree++] = NULL, cnt--;
+                    if(q->Son == NULL) q->Son = t;else t->Link(q->Son->Ls, q->Son);
+                }
+                A[q->degree] = q, cnt++;
+                if(q->degree > Mx) Mx = q->degree;
+            }
+            Min = NULL;
+            for(int i = Mx; i >= 0 && cnt; i--)if(A[i] != NULL){    // rebuild the root list
+                if(Min == NULL) Min = A[i], Min->Ls = Min->Rs = Min;
+                else{
+                    A[i]->Link(Min->Ls, Min);
+                    if(A[i]->data < Min->data) Min = A[i];
+                }
+                A[i] = NULL, cnt--;
+            }
+        }
+        void Cut(Node *p, Node *q){ // cut p from its parent q
+            if(q->Son == p)
+                if(p == p->Rs) q->Son = NULL;else q->Son = p->Rs;
+            p->Remove(), q->degree--;
+
+            p->mark = 0, p->Link(Min->Ls, Min);
+        }
+        void CascadingCut(Node *p){ // cascading cut p recursively
+            Node *q = p->Fa;
+            if(q != NULL){
+                if(p->mark == 0) p->mark = 1;
+                else Cut(p, q), CascadingCut(q);
+            }
+        }
+    public:
+        FiboHeap(): Min(NULL), Size(0){}
+        void Clear(){Min = NULL, Size = 0;}
+        bool Empty(){return !Size;} // check if the heap is empty
+        void Insert(int i, int x){
+            Size++;
+            Node *p = new Node(i, x);  // build a new Node & insert it into root list
+            if(Min == NULL){
+                Min = p;
+                Min->Ls = Min->Rs = Min;
+            }else{
+                p->Link(Min->Ls, Min);
+                if(p->data < Min->data) Min = p;
+            }
+            Dis[i] = p;
+        }
+        int Top(){return Min->data;} // get the minimum value
+        bool Find(int i){return Dis[i] != NULL;}    // check if the i-th node is in the heap
+        int GetData(int i){return Dis[i]->data;} // get the value of i-th node
+        void Merge(FiboHeap *H){    // merge two heaps(not used in this problem)
+            if(H->Min == NULL) return;
+            if(Min == NULL) return (void)(Min = H->Min, Size = H->Size);
+            Node *L = Min->Ls, *R = H->Min->Ls;
+            Min->Ls = R, R->Rs = Min;
+            L->Rs = H->Min, H->Min->Ls = L;
+            Size += H->Size;
+            if(H->Min->data < Min->data) Min = H->Min;
+        }
+        int Pop(){  // pop the minimum value
+            Node *p = Min->Son, *q;
+            while(p != NULL){   // split the subtree of the minimum node, and insert them into the root list
+                q = p, p = p->Rs;
+                if(p == q) p = NULL;
+                q->Remove(), q->Link(Min->Ls, Min);
+            }
+            p = Min;
+
+            if(p == p->Rs) Min = NULL;
+            else{
+                Min = p->Rs, p->Remove();
+                Consolidate();
+            }
+            Size--;
+            return p->pos; 
+        }       
+        void Decrease(int i, int x){    // decrease the value of i-th Node to x
+            Node *p = Dis[i];
+            p->data = x;
+            
+            if(p->Fa != NULL){      // if the node is not in the root list
+                Node *q = p->Fa;
+                if(p->data < q->data){  // if the value of the node is smaller than its parent, cut it & cascading cut its parent
+                    Cut(p, q);
+                    CascadingCut(q);
+                }
+            }
+
+            if(x < Min->data) Min = p;  // update the minimum value
+        }
+    };
+    ```
+
+----
+
 ## Algorithm
 
 ----
