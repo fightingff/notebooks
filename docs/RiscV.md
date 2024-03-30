@@ -126,8 +126,26 @@
 
 - **Float**
 
-各种课讲过很多次了，略
+    各种课讲过很多次了，略
 
-特殊标记：
+    特殊标记：
 
-![Float](./images/float.png)
+    ![Float](./images/float.png)
+
+    - **Accurate Arithmetic**
+
+        - guard bit
+            
+            - 精确位数右边的一位
+
+        - round bit
+        
+            - 精确位数右边的第二位 
+        
+        - sticky bit 
+        
+            - 精确位数右边的第三位及以后的位数，只要有一个为1，就置为1
+            
+        - method
+
+            ![method](./images/method_float.png)   
