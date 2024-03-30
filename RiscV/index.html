@@ -1004,11 +1004,42 @@
 <p>核心就是充分利用结果寄存器，将 乘数 / 被除数 放到寄存器的右半冗余部分进行运算，并且变乘除法为加减法</p>
 <p><em>Booth 算法，减少“1” 的个数，提高效率，每一串”1“只需要运算两次</em></p>
 <ul>
-<li><strong>Float</strong></li>
-</ul>
+<li>
+<p><strong>Float</strong></p>
 <p>各种课讲过很多次了，略</p>
 <p>特殊标记：</p>
 <p><img alt="Float" src="../images/float.png" /></p>
+<ul>
+<li>
+<p><strong>Accurate Arithmetic</strong></p>
+<ul>
+<li>
+<p>guard bit</p>
+<ul>
+<li>精确位数右边的一位</li>
+</ul>
+</li>
+<li>
+<p>round bit</p>
+<ul>
+<li>精确位数右边的第二位 </li>
+</ul>
+</li>
+<li>
+<p>sticky bit </p>
+<ul>
+<li>精确位数右边的第三位及以后的位数，只要有一个为1，就置为1</li>
+</ul>
+</li>
+<li>
+<p>method</p>
+<p><img alt="method" src="../images/method_float.png" />   </p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
 
 
