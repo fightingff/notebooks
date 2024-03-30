@@ -624,7 +624,7 @@ call dept_count_proc('physics', d_count)
 
 ### Trigger
 
-trigger是在满足某些条件后自动执行的sql，可以视为对数据库操作的监视或者说副作用。但是现代sql数据库流行的风格是不写trigger，下面列出了trigger的弊端和一些替代品。
+trigger是在满足某些条件后自动执行的sql，可以视为对数据库操作的监视或者说副作用。但是现代sql数据库流行的风格是不写trigger。
 
 
 ## 第六章 数据库设计范式一
@@ -632,84 +632,107 @@ trigger是在满足某些条件后自动执行的sql，可以视为对数据库�
 本章主要介绍**Entity-Relationship Model**设计方式。不同于直接建表的做法，实际开发中我们更喜欢先用entity和relationship两类概念构建逻辑关系，再建表。
 
 - Entity的每一行应该是一个实体，例如学生信息表，教师信息表。
+
 - Relation的每一行是多个实体间的某种关联，例如导师-学生关系表。
 
-先根据需求画出E-R关系图，再开始建表会比直接写表连外键逻辑更清晰。下面是一个E-R图的例子：
+### Design phases
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411092249561.png" alt="image-20220411092249561" style="zoom:50%;" />
+- Initial phase: 
+
+    - 了解用户需求，确定数据库的目标
+
+- Second phase: 
+
+    - 选择一个数据模型，设计数据库的概念结构
+
+- Final phase: 
+
+    - 将概念结构转化为物理数据库模式，即建表
+
+### Design Alternatives
+
+- Redundancy
+
+    - 数据冗余，即同一数据在多个地方重复出现。冗余数据的存在还会导致数据不一致，增加了数据的修改难度。
+
+- Incompleteness
+
+    - 系统不完整，导致某些功能无法实现。
 
 ### 补充定义
 
-#### Attribute Type
+- Attribute Type
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411082934800.png" alt="image-20220411082934800" style="zoom:40%;" />
+    本节中Attribute的定义有所扩展。可以分为：
 
-本节中Attribute的定义有所扩展。可以分为：
+    - 直接的和复合的
 
-- 直接的和复合的
-- 单值的和多值的
-- 派生的
+    - 单值的和多值的
 
-#### Degree of Relationship
+    - 派生的
 
-某个关系与多少个Entity有关，就称它的Degree是多少。
+- Degree of Relationship
 
-Degree大于2的relationship是很少见的。
+    某个关系与多少个Entity有关，就称它的Degree是多少。
 
-#### Binary Relationship Type
+    Degree大于2的relationship是很少见的。
 
-- One to One
-- One to Many
-- Many to One
-- Many to Many
+- Binary Relationship Type (Mapping Cardinalities)
 
-根据两Entity之间的联系对二元关系进行分类。不同的二元关系会对随后建表的方式有影响。
+    - One to One
+
+    - One to Many
+
+    - Many to One
+
+    - Many to Many
+
+    根据两Entity之间的联系对二元关系进行分类。不同的二元关系会对随后建表的方式有影响。
 
 ### E-R Diagram
 
-#### Attribute
+- Attribute
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411084206205.png" alt="image-20220411084206205" style="zoom:33%;" />
+    - 复合的属性用缩进表达层级关系
 
-- 复合的属性用缩进表达层级关系
-- 多值的属性用大括号表示
-- 派生的属性在后方加上括号抽象为函数
+    - 多值的属性（同一个属性可能有多个取值）用大括号表示
 
-#### Entity-Relation
+    - 派生的属性（可由其他属性推导出来）在后方加上括号抽象为函数
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411084618951.png" alt="image-20220411084618951" style="zoom:40%;" />
+- Entity-Relation
 
-- Entity的画法与原来建表相同
-- Relationship用菱形表示，其中的文字是Relationship的名字。
-- Relationship需要额外的属性时，用方框+**虚线**表示
+    - Entity的画法与原来建表相同
 
-#### 连线
+    - Relationship用菱形表示，其中的文字是Relationship的名字。
 
-- 单向箭头：多对一
-- 双向箭头：一对一
-- 单直线：多对多
-- 双直线：其连接的Entity完全参与
+    - Relationship需要额外的属性时，用方框+**虚线**表示
+
+- 连线
+
+    - 单向箭头：多对一
+
+    - 双向箭头：一对一
+
+    - 单直线：多对多
+
+    - 双直线：其连接的Entity完全参与
+
+    - **箭头表示“一”，直线表示“多”**
 
 例如下图：
 
 - student可以没有instructor（如果每一个学生都一定有instructor就是完全参与，那么右侧应该用双直线），如果有则只能有一个（左侧是单向箭头）。
 - 一个instructor可以有多个student（如果只能有一个那就是一对一关系，应该用双向箭头），也可以没有（如果必须有那就是完全参与，应该用双直线）。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411084919250.png" alt="image-20220411084919250" style="zoom:33%;" />
+- Role
 
-#### Role
+    Role是连线或者箭头的标签。关系对应的Entities应该是唯一的，当关系与某个实体有多重逻辑联系时就需要为表达逻辑联系的线或箭头加上标签作为区分。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411085102057.png" alt="image-20220411085102057" style="zoom:40%;" />
+- Total Participation
 
-Role是连线或者箭头的标签。关系对应的Entities应该是唯一的，当关系与某个实体有多重逻辑联系时就需要为表达逻辑联系的线或箭头加上标签作为区分。
+    如果相关实体中的每一个元素都参与了某个关系至少一次，就称这个关系是Total Parcitipation，否则称为Partial Participation。**完全参与的关系用双线标记菱形**。例如下图表示每个学期都有课，且每门课程都在某些学期中，这是一个完全参与的关系。
 
-#### Total Participation
-
-如果相关实体中的每一个元素都参与了某个关系至少一次，就称这个关系是Total Parcitipation，否则称为Partial Participation。**完全参与的关系用双线标记菱形**。例如下图表示每个学期都有课，且每门课程都在某些学期中，这是一个完全参与的关系。
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411085741235.png" alt="image-20220411085741235" style="zoom:40%;" />
-
-与之对比，本节之前出现的三E-R图张中的关系都是部分参与的。课程可以没有预修要求，导师可以不带任何学生。
+    与之对比，本节之前出现的三E-R图张中的关系都是部分参与的。课程可以没有预修要求，导师可以不带任何学生。
 
 #### Weak Entity Set
 
@@ -721,7 +744,6 @@ Role是连线或者箭头的标签。关系对应的Entities应该是唯一的�
 
 画E-R图时，因为这是完全参与关系，用双线菱形标记关系，同时弱实体集一侧必须完全参与，所以用双线连接，Discriminator用虚下划线。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411085741235.png" alt="image-20220411085741235" style="zoom:40%;" />
 
 #### 特殊的E-R图
 

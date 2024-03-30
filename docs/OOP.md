@@ -1,5 +1,24 @@
 # OOP
 
+## 整理
+
+### 声明 & 定义
+
+声明不分配内存，定义分配内存
+
+如 extern, struct, class 内都是声明
+
+### varibles scope & lifetime
+
+||scope|lifetime|storage|
+|---|---|---|---|
+|local|{}|{}|stack|
+|global|global|program|global|
+|static local|{}|program (init when called)|global|
+|member(private)|class|object|object|
+|static member|class|program|global|
+|malloc|passed in-out|malloc-free|heap|
+
 ## Buzzwords
 
 - Encapsulation: 封装
@@ -136,7 +155,7 @@
     
         - 权限授权，可以访问该类的私有成员
 
-- static
+## static
 
     - deprecated：（过时）
 
@@ -158,6 +177,44 @@
         
         - 不能在类内初始化，需要在类外初始化
         
+            **static variable 需要全局定义申请内存空间（包括private / public）** 
+        
         - 可以通过类名访问，也可以通过对象访问
         
         - static member function 只能访问 static member variables  
+
+## Reference
+
+`Tp &x = v`
+
+**本质上相当于给变量起了一个别名，方便变量的引用，不会分配内存空间（否则对于一个对象的拷贝可能开销过大）**
+
+**实质上就是使用指针实现的**
+
+- 在定义时初始化为一个左值，且不能改变指向 (左值引用`&`)
+
+- 在定义时初始化为一个右值，且可以改变指向，相当于记下了一个临时变量 (右值引用`&&`)
+  
+> No pointers to references `&*p`
+>
+> References to pointers OK `*&p`
+
+- *Left value & Right value*
+
+    - Left value: `.` `[]` `->` `*`
+    
+    - Right value: others  
+
+## Const
+
+- const & pointer
+
+    观察`*`位置
+    
+    - const 在 `*` 前，说明指向的内容不可修改
+    
+    - const 在 `*` 后，说明该指针不可修改 
+
+- 声明 const function
+
+    - `const` 修饰函数，表示该函数不会修改成员变量 
