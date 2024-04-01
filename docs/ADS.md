@@ -1161,7 +1161,7 @@ public:
         void Consolidate(){ // Consolidating the nodes (subtrees) in root list
             static Node *A[MaxS];// A[i] denotes the subtree with degree i
             Node *p = Min, *q;
-            int Mx = 0, cnt = 0;
+            LL S = 0; // State of the degree of the root list, more precisely locate the nodes not null
             while(p != NULL){
                 q = p, p = p->Rs;
                 if(q == p) p = NULL;
@@ -1170,20 +1170,21 @@ public:
                     Node *t = A[q->degree];
                     if(q->data > t->data) swap(q, t); // minimum heap
 
-                    t->Fa = q, A[q->degree++] = NULL, cnt--;
+                    t->Fa = q, S ^= 1ll << (q->degree), A[q->degree++] = NULL;
                     if(q->Son == NULL) q->Son = t;else t->Link(q->Son->Ls, q->Son);
                 }
-                A[q->degree] = q, cnt++;
-                if(q->degree > Mx) Mx = q->degree;
+                S |= 1ll << (q->degree), A[q->degree] = q;
             }
             Min = NULL;
-            for(int i = Mx; i >= 0 && cnt; i--)if(A[i] != NULL){    // rebuild the root list
+            while(S){
+                int i = __builtin_ctzll(S);// find the first bit 1
+                S ^= 1ll << i;
                 if(Min == NULL) Min = A[i], Min->Ls = Min->Rs = Min;
                 else{
                     A[i]->Link(Min->Ls, Min);
                     if(A[i]->data < Min->data) Min = A[i];
                 }
-                A[i] = NULL, cnt--;
+                A[i] = NULL;
             }
         }
         void Cut(Node *p, Node *q){ // cut p from its parent q

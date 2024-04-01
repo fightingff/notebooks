@@ -218,6 +218,52 @@
 
         此时高斯分布的熵功率恰为$\sigma^2$
 
+## 平稳离散信源
+
+- **平稳随机过程**
+
+> 连续T时间段内的概率分布是相同的
+>
+> $E(X_t) = E(X_{t+k}) = E(X_0) = Const.$
+
+- 离散信源
+
+    - 平稳信源
+
+        $$ P(x_1, x_2, \cdots, x_n) = P(x_{1+k}, x_{2+k}, \cdots, x_{n+k}) $$
+
+    - 简单无记忆信源
+
+        $$ P(x_1, x_2, \cdots, x_n) = P(x_1)P(x_2) \cdots P(x_n) $$
+
+    - m阶马尔可夫信源
+
+        $$ P(x_1, x_2, \cdots, x_n) = P(x_1)P(x_2|x_1) \cdots P(x_n|x_{n-1}, \cdots, x_{n-m}) $$
+
+- 平稳信源的熵
+
+    - $H = - \sum P(\vec{X}) \log P(\vec{X})$ (会趋近于无穷大)
+
+    - 平均每符号熵 $H_n(X) = \frac{H(X)}{n}$
+    
+    - 熵速率$H = \lim_{n \to \infty} H_n$
+
+    - 性质
+
+        - $H(X_N | X_{N-1}, \cdots, X_1) $单调不增
+
+        - $H_N(X)$单调不增
+
+        - $H_N(X) \geq H(X_N | X_{N-1}, \cdots, X_1) \to \lim_{n \to \infty} H(X_N|X_{N-1}X_{N-2}\cdots X_1)$
+
+- 熵的相对率
+
+    - $\eta = \frac{H}{\log n}$
+
+- 信源的冗余度
+
+    - $R = 1 - \eta$
+
 ## 信息论 & 通信
 
 - 信源编码
