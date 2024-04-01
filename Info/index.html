@@ -502,6 +502,15 @@
         <li class="md-nav__item">
   <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
+      平稳离散信源
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
       信息论 &amp; 通信
     </span>
   </a>
@@ -835,6 +844,15 @@
       
         <li class="md-nav__item">
   <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      平稳离散信源
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       信息论 &amp; 通信
     </span>
@@ -1182,7 +1200,74 @@
 </ul>
 </li>
 </ul>
-<h2 id="_8">信息论 &amp; 通信</h2>
+<h2 id="_8">平稳离散信源</h2>
+<ul>
+<li><strong>平稳随机过程</strong></li>
+</ul>
+<blockquote>
+<p>连续T时间段内的概率分布是相同的</p>
+<p><span class="arithmatex">\(E(X_t) = E(X_{t+k}) = E(X_0) = Const.\)</span></p>
+</blockquote>
+<ul>
+<li>
+<p>离散信源</p>
+<ul>
+<li>
+<p>平稳信源</p>
+<div class="arithmatex">\[ P(x_1, x_2, \cdots, x_n) = P(x_{1+k}, x_{2+k}, \cdots, x_{n+k}) \]</div>
+</li>
+<li>
+<p>简单无记忆信源</p>
+<div class="arithmatex">\[ P(x_1, x_2, \cdots, x_n) = P(x_1)P(x_2) \cdots P(x_n) \]</div>
+</li>
+<li>
+<p>m阶马尔可夫信源</p>
+<div class="arithmatex">\[ P(x_1, x_2, \cdots, x_n) = P(x_1)P(x_2|x_1) \cdots P(x_n|x_{n-1}, \cdots, x_{n-m}) \]</div>
+</li>
+</ul>
+</li>
+<li>
+<p>平稳信源的熵</p>
+<ul>
+<li>
+<p><span class="arithmatex">\(H = - \sum P(\vec{X}) \log P(\vec{X})\)</span> (会趋近于无穷大)</p>
+</li>
+<li>
+<p>平均每符号熵 <span class="arithmatex">\(H_n(X) = \frac{H(X)}{n}\)</span></p>
+</li>
+<li>
+<p>熵速率<span class="arithmatex">\(H = \lim_{n \to \infty} H_n\)</span></p>
+</li>
+<li>
+<p>性质</p>
+<ul>
+<li>
+<p>$H(X_N | X_{N-1}, \cdots, X_1) $单调不增</p>
+</li>
+<li>
+<p><span class="arithmatex">\(H_N(X)\)</span>单调不增</p>
+</li>
+<li>
+<p><span class="arithmatex">\(H_N(X) \geq H(X_N | X_{N-1}, \cdots, X_1) \to \lim_{n \to \infty} H(X_N|X_{N-1}X_{N-2}\cdots X_1)\)</span></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>熵的相对率</p>
+<ul>
+<li><span class="arithmatex">\(\eta = \frac{H}{\log n}\)</span></li>
+</ul>
+</li>
+<li>
+<p>信源的冗余度</p>
+<ul>
+<li><span class="arithmatex">\(R = 1 - \eta\)</span></li>
+</ul>
+</li>
+</ul>
+<h2 id="_9">信息论 &amp; 通信</h2>
 <ul>
 <li>
 <p>信源编码</p>
