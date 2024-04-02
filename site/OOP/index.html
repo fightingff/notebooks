@@ -476,6 +476,48 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Class">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      构造
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      析构
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      权限
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overload" class="md-nav__link">
+    <span class="md-ellipsis">
+      overload 重载
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -502,6 +544,39 @@
       Const
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#new-delete" class="md-nav__link">
+    <span class="md-ellipsis">
+      new &amp; delete
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-argument" class="md-nav__link">
+    <span class="md-ellipsis">
+      default argument（默认参数）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="default argument（默认参数）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inline" class="md-nav__link">
+    <span class="md-ellipsis">
+      inline（内联）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -849,6 +924,48 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Class">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      构造
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      析构
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      权限
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overload" class="md-nav__link">
+    <span class="md-ellipsis">
+      overload 重载
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -875,6 +992,39 @@
       Const
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#new-delete" class="md-nav__link">
+    <span class="md-ellipsis">
+      new &amp; delete
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-argument" class="md-nav__link">
+    <span class="md-ellipsis">
+      default argument（默认参数）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="default argument（默认参数）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inline" class="md-nav__link">
+    <span class="md-ellipsis">
+      inline（内联）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1108,9 +1258,7 @@
 <blockquote>
 <p>类，一种用户自定义的数据类型，用于封装数据和方法</p>
 </blockquote>
-<ul>
-<li>
-<p>构造</p>
+<h3 id="_3">构造</h3>
 <ul>
 <li>
 <p>全局变量构造在main函数之外，main函数之前构造，main函数之后析构，按书写顺序构造，反序析构</p>
@@ -1121,10 +1269,19 @@
 <li>
 <p><em>进入函数时，所有本地变量所占据空间已经分配完毕</em>  </p>
 </li>
-</ul>
+<li>
+<p><strong>Delegating Constructor</strong></p>
+<ul>
+<li>
+<p>一个构造函数可以调用另一个构造函数，减少代码重复</p>
 </li>
 <li>
-<p>析构</p>
+<p><code>A(int x, int y): A(x) {}</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="_4">析构</h3>
 <ul>
 <li>
 <p>编译器控制，当变量结束生命周期时自动调用</p>
@@ -1133,9 +1290,7 @@
 <p>同等条件下，析构函数的调用顺序与构造函数的调用顺序相反（栈一样，避免依赖关系影响） </p>
 </li>
 </ul>
-</li>
-<li>
-<p>权限</p>
+<h3 id="_5">权限</h3>
 <ul>
 <li>
 <p>private</p>
@@ -1170,6 +1325,13 @@
 </ul>
 </li>
 </ul>
+<h3 id="overload">overload 重载</h3>
+<ul>
+<li>
+<p>函数名相同，参数不同</p>
+</li>
+<li>
+<p>不能使用 auto-cast, 会造成二义性</p>
 </li>
 </ul>
 <h2 id="static">static</h2>
@@ -1229,6 +1391,9 @@
 </li>
 </ul>
 <h2 id="const">Const</h2>
+<blockquote>
+<p><strong>不可赋值（可以在创建时初始化一次）</strong></p>
+</blockquote>
 <ul>
 <li>
 <p>const &amp; pointer</p>
@@ -1245,8 +1410,112 @@
 <li>
 <p>声明 const function</p>
 <ul>
-<li><code>const</code> 修饰函数，表示该函数不会修改成员变量 </li>
+<li>
+<p><code>const</code> 修饰函数，表示该函数不会修改成员变量  (const *this)</p>
+</li>
+<li>
+<p>因此，const object 只能调用 const function, 使编译器能够检查错误</p>
+</li>
+<li>
+<p><em>建议能加 const 的函数都加上</em></p>
+</li>
 </ul>
+</li>
+<li>
+<p>关于定义数组 [const size]：</p>
+<ul>
+<li>
+<p>本地变量可以直接使用，因为在函数内可以自由分配栈空间</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">n</span><span class="p">];</span><span class="c1">//OK</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>对象成员的数组定义不能用size，哪怕已经直接初始化，因为编译器不能确定</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">A</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w">  </span><span class="c1">//Error</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">};</span>
+</code></pre></div>
+</li>
+<li>
+<p>enum &amp; static 可以用来定义数组大小</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">A</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">};</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">n</span><span class="p">];</span><span class="w">  </span><span class="c1">//OK</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">[</span><span class="n">m</span><span class="p">];</span><span class="w">  </span><span class="c1">//OK</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="p">};</span>
+</code></pre></div>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="new-delete">new &amp; delete</h2>
+<blockquote>
+<p>new 动态申请空间，返回指针</p>
+<p>delete ([]) p 释放空间，[] 取决于单一对象还是数组</p>
+</blockquote>
+<ul>
+<li>
+<p>new的实质 </p>
+<ul>
+<li>
+<p>申请的空间没有默认初始值（直接给内存中的垃圾值），可以用 <code>{}</code> 初始化</p>
+</li>
+<li>
+<p>对于对象，需要有默认构造函数才能满足默认构造 </p>
+</li>
+<li>
+<p>前面有一个标记头，记录了口令和大小，用于 delete 时检查; 之后是实际申请的空间</p>
+</li>
+</ul>
+</li>
+<li>
+<p>delete的实质</p>
+<ul>
+<li>
+<p>检查对象的析构函数，<strong>并调用析构（在释放内存前）</strong></p>
+</li>
+<li>
+<p>往前走一个单位，检查口令和空间大小，不对会抛出异常</p>
+</li>
+<li>
+<p>不加 [] 只会释放第一个对象的空间，数组会释放记录的空间大小</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="default-argument">default argument（默认参数）</h2>
+<ul>
+<li>
+<p>默认参数“从右往左连续写”</p>
+</li>
+<li>
+<p>默认参数值是静态的（编译器处理），<strong>在声明中写默认值，不能在定义中写</strong> </p>
+<ul>
+<li><em>头文件内定义的默认值可能会被篡改</em></li>
+</ul>
+</li>
+</ul>
+<h3 id="inline">inline（内联）</h3>
+<blockquote>
+<p>相当于将函数代码拷贝到当前代码块中，避免函数调用的开销</p>
+<p><strong>inline 函数（包括body）相当于声明，不是定义，因此要整个放在头文件中</strong></p>
+</blockquote>
+<ul>
+<li>
+<p>会增长代码，本质上是用“空间换时间”</p>
+</li>
+<li>
+<p>inline 函数复杂时可能会被编译器放弃 inline</p>
+<p>一般是比较短小且频繁调用的函数</p>
+<p>~~递归不适合~~</p>
+</li>
+<li>
+<p>class 成员函数加上 body 直接默认 inline，无需特殊标记</p>
+<p><em>当长度过长时，可以在头文件内用 inline 声明， 然后直接将定义写在下方（都在头文件内）</em></p>
 </li>
 </ul>
 
