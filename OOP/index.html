@@ -1321,7 +1321,15 @@
 <li>
 <p>friend</p>
 <ul>
-<li>权限授权，可以访问该类的私有成员</li>
+<li>
+<p>权限授权，可以访问该类的私有成员 和 保护成员</p>
+</li>
+<li>
+<p>友元不是成员函数</p>
+</li>
+<li>
+<p>友元的友元不一定是友元，即友元关系不可继承</p>
+</li>
 </ul>
 </li>
 </ul>
@@ -1335,32 +1343,51 @@
 </li>
 </ul>
 <h2 id="static">static</h2>
-<div class="highlight"><pre><span></span><code>- deprecated：（过时）
-
-    &gt; 限制外部访问
-
-    - static free function
-
-    - static global variables
-
-- static local variables
-
-    - 持久存储，多次调用保存上次的值
-
-    - 本质上是 **访问受限的全局变量**，在函数被第一次调用时构造，在程序结束时析构(如果被构造了)
-
-- static member variables
-
-    - 所有对象共享，不属于对象，属于类
-
-    - 不能在类内初始化，需要在类外初始化
-
-        **static variable 需要全局定义申请内存空间（包括private / public）**
-
-    - 可以通过类名访问，也可以通过对象访问
-
-    - static member function 只能访问 static member variables
-</code></pre></div>
+<ul>
+<li>
+<p>deprecated：（过时）</p>
+<blockquote>
+<p>限制外部访问</p>
+</blockquote>
+<ul>
+<li>
+<p>static free function</p>
+</li>
+<li>
+<p>static global variables</p>
+</li>
+</ul>
+</li>
+<li>
+<p>static local variables</p>
+<ul>
+<li>
+<p>持久存储，多次调用保存上次的值    </p>
+</li>
+<li>
+<p>本质上是 <strong>访问受限的全局变量</strong>，在函数被第一次调用时构造，在程序结束时析构(如果被构造了) </p>
+</li>
+</ul>
+</li>
+<li>
+<p>static member variables</p>
+<ul>
+<li>
+<p>所有对象共享，不属于对象，属于类</p>
+</li>
+<li>
+<p>不能在类内初始化，需要在类外初始化</p>
+<p><strong>static variable 需要全局定义申请内存空间（包括private / public）</strong> </p>
+</li>
+<li>
+<p>可以通过类名访问，也可以通过对象访问</p>
+</li>
+<li>
+<p>static member function 只能访问 static member variables  </p>
+</li>
+</ul>
+</li>
+</ul>
 <h2 id="reference">Reference</h2>
 <p><code>Tp &amp;x = v</code></p>
 <p><strong>本质上相当于给变量起了一个别名，方便变量的引用，不会分配内存空间（否则对于一个对象的拷贝可能开销过大）</strong></p>
