@@ -159,7 +159,11 @@
 
 - friend
 
-    - 权限授权，可以访问该类的私有成员
+    - 权限授权，可以访问该类的私有成员 和 保护成员
+    
+    - 友元不是成员函数
+    
+    - 友元的友元不一定是友元，即友元关系不可继承
 
 ### overload 重载
 
@@ -169,31 +173,31 @@
 
 ## static
 
-    - deprecated：（过时）
+- deprecated：（过时）
 
-        > 限制外部访问
+    > 限制外部访问
+
+    - static free function
     
-        - static free function
-        
-        - static global variables
-        
-    - static local variables
+    - static global variables
     
-        - 持久存储，多次调用保存上次的值    
-        
-        - 本质上是 **访问受限的全局变量**，在函数被第一次调用时构造，在程序结束时析构(如果被构造了) 
+- static local variables
+
+    - 持久存储，多次调用保存上次的值    
     
-    - static member variables
+    - 本质上是 **访问受限的全局变量**，在函数被第一次调用时构造，在程序结束时析构(如果被构造了) 
+
+- static member variables
+
+    - 所有对象共享，不属于对象，属于类
     
-        - 所有对象共享，不属于对象，属于类
-        
-        - 不能在类内初始化，需要在类外初始化
-        
-            **static variable 需要全局定义申请内存空间（包括private / public）** 
-        
-        - 可以通过类名访问，也可以通过对象访问
-        
-        - static member function 只能访问 static member variables  
+    - 不能在类内初始化，需要在类外初始化
+    
+        **static variable 需要全局定义申请内存空间（包括private / public）** 
+    
+    - 可以通过类名访问，也可以通过对象访问
+    
+    - static member function 只能访问 static member variables  
 
 ## Reference
 
