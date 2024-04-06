@@ -1373,12 +1373,24 @@ H(X | S) = \sum_{s_i \in K^m} P(s_i) H(X | S = s_i) \]</div>
 </ul>
 </li>
 <li>
-<p>香农编码定理(渐进无损压缩)</p>
-</li>
-</ul>
+<p>香农编码定理(渐进无损压缩的极限)</p>
 <blockquote>
 <p><span class="arithmatex">\(N = \frac{LH(U)}{log D}\)</span></p>
 </blockquote>
+<ul>
+<li>
+<p>利用典型列（大数定律型）进行直观证明(不严格)</p>
+<p><img alt="proof" src="../images/coding1.png" /></p>
+</li>
+<li>
+<p>由切比雪夫不等式，可严格证明</p>
+<ul>
+<li><span class="arithmatex">\(2^{-n(H-\epsilon)} \leq P(\vec{X}) \leq 2^{-n(H+\epsilon)}\)</span></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h3 id="_11">信道接收</h3>
 <p>抗干扰信号，提高信息传输的可靠性</p>
 <h3 id="_12">理论极限</h3>

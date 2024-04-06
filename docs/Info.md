@@ -304,9 +304,17 @@
 
     - 比较好理解，对于所有可能输入的$K^L$字段都分配一个等长的编码，因此有 $D^N \geq K^L$，即 $N\geq \frac{L log K}{log D}$
 
-- 香农编码定理(渐进无损压缩)
+- 香农编码定理(渐进无损压缩的极限)
 
-> $N = \frac{LH(U)}{log D}$
+    > $N = \frac{LH(U)}{log D}$
+
+    - 利用典型列（大数定律型）进行直观证明(不严格)
+
+        ![proof](./images/coding1.png)
+
+    - 由切比雪夫不等式，可严格证明
+
+        - $2^{-n(H-\epsilon)} \leq P(\vec{X}) \leq 2^{-n(H+\epsilon)}$
 
 ### 信道接收
 
