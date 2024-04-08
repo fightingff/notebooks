@@ -503,6 +503,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#divide-and-conquer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Divide and Conquer（分治）
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -916,6 +925,15 @@
   <a href="#amortized-analysis" class="md-nav__link">
     <span class="md-ellipsis">
       Amortized Analysis (摊还分析)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#divide-and-conquer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Divide and Conquer（分治）
     </span>
   </a>
   
@@ -3189,6 +3207,82 @@
 </li>
 </ul>
 <hr />
+<h3 id="divide-and-conquer">Divide and Conquer（分治）</h3>
+<blockquote>
+<p>分治是非常重要的程序设计方法，但在课中更注重相关<strong>分治时间复杂度递推式</strong>的计算</p>
+<p><span class="arithmatex">\(T(N) = a T(N/b) + f(N)\)</span></p>
+</blockquote>
+<ul>
+<li>
+<p><strong>带入法</strong></p>
+<ul>
+<li>
+<p>得到一个好的猜测（可以用后面介绍的递归树辅助）</p>
+</li>
+<li>
+<p>使用数学归纳法完成证明</p>
+<p><strong>注意这里运算要求相关常数 c 保持严格一致性，即显式地证明 <span class="arithmatex">\(T(N) \leq cF(N)\)</span> 否则界是不对的</strong></p>
+<p>例如对于最经典的 <span class="arithmatex">\(T(N) = 2 T(N/2) + N\)</span></p>
+<div class="arithmatex">\[ T(N) \leq 2 c (N/2) log(N/2) + N = cNlog(N) +(1-c)N \leq cNlogN = O(N)\]</div>
+<div class="arithmatex">\[ T(N) \leq 2c (N/2) + N = (c+1)N \neq O(N)\]</div>
+</li>
+<li>
+<p><em>算法导论中提到，有时归纳假设不够强时，可以尝试减去一个低阶项来弥补</em></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>递归树</strong> </p>
+</li>
+</ul>
+<blockquote>
+<p>如上面提到的，是一个非常好的 <strong>获得猜测</strong> 甚至 <strong>直接计算答案</strong> 的方法</p>
+</blockquote>
+<ul>
+<li>
+<p>一般的，对于上面提到的“工整”的式子，他的递归树是一棵完全 a 叉树，总共有 <span class="arithmatex">\(\log_b^N\)</span> 层，第 i 层有 <span class="arithmatex">\(a^i\)</span> 个节点，每个节点的代价为 <span class="arithmatex">\(f(N/b^i)\)</span>，因此第 i 层总代价为 <span class="arithmatex">\(a^i f(N/b^i)\)</span></p>
+<p><em>最后一层严格时视为 <span class="arithmatex">\(\Theta(a^{log_b^N}) = \Theta(N^{log_b^a})\)</span> ，实际直接当T(1)=O(1)直接计算也可</em></p>
+<p>示例如下：</p>
+<div class="arithmatex">\[ T(N) = 3 T(N/4) + cN^2 \]</div>
+<p><img alt="RecursionT1" src="../images/RecursionT1.png" /></p>
+</li>
+<li>
+<p>对于歪斜的式子，例如下面的式子，有时精确的代价会很难计算，~~感性理解猜测~~</p>
+<div class="arithmatex">\[ T(N) = T(N/3) + T(2N/3) + cN \]</div>
+<p>整棵树应该是右斜的，前面几层的代价巧恰好为 <span class="arithmatex">\(cN\)</span>，而后面几层显然会铺不满，因此可以得到一个上界 <span class="arithmatex">\(O(N\log_{\frac{3}{2}}^N)\)</span> （如果恰好铺满），进而猜测 <span class="arithmatex">\(T(N) = O(N \log{N})\)</span> ，可以用代入法验证  </p>
+<p><img alt="RecursionT2" src="../images/RecursionT2.png" /></p>
+</li>
+<li>
+<p><strong>主方法</strong></p>
+</li>
+</ul>
+<blockquote>
+<p><span class="arithmatex">\(f(N) = O(N^{\log_b^a - \epsilon}), T(N) = \Theta(N^{\log_b^a})\)</span></p>
+<p><span class="arithmatex">\(f(N) = \Theta(N^{\log_b^a}), T(N) = \Theta(N^{\log_b^a} \log N)\)</span></p>
+<p><span class="arithmatex">\(f(N) = \Omega(N^{\log_b^a + \epsilon}), T(N) = \Theta(f(N)) (\exists c &lt; 1, af(n/b) \leq cf(n))\)</span></p>
+</blockquote>
+<ul>
+<li>
+<p><strong>简单记忆，就是看递归式的前一项大还是后一项大，或者说，递归树上的叶子节点代价大还是根节点代价大，若相等则都统计乘上logN</strong></p>
+<p>其中这里指的大小是多项式意义上的大小，相差为 <span class="arithmatex">\(N^{\epsilon}\)</span> 倍，比如 <span class="arithmatex">\(N\)</span> 与 <span class="arithmatex">\(N \log N\)</span> 就不能在这个意义下比大小，也就无法使用一般的主方法</p>
+<p>关于case 3的正则化条件，本质上就是保证根节点最大</p>
+</li>
+<li>
+<p><strong>证明（结合递归树）</strong></p>
+<p><img alt="Recursion" src="../images/RecursionT.png" /></p>
+<ul>
+<li>根据三种情况的条件，对几何级数进行求和，比较容易得到结论 </li>
+</ul>
+</li>
+<li>
+<p><em>前面提到的一种特殊情况，实际上下两种符合原本主定理的条件，只要考虑中间那种幂指数一样(<span class="arithmatex">\(N^{\log_b^a} = N^k\)</span>)但后面挂了个log尾巴的情况</em></p>
+<p>用递归树求和后会发现</p>
+<div class="arithmatex">\[ T(N) = N^{\log_b^a} \Sigma_{i=0}^{\log_b^a} \lg^p \frac{N}{b^i} = N^{\log_b^a} \Sigma_{i=0}^{\log_b^a} (\lg{N} - \lg{b^i})^p \]</div>
+<div class="arithmatex">\[\approx N^{\log_b^a} \Sigma_{i=0}^{\log_b^a} \lg^p{N}=N^{\log_b^a} \log_b^a \lg^p{N} \]</div>
+<div class="arithmatex">\[= \Theta(N^{\log_b^a} \lg^{p+1}{N})\]</div>
+<p><img alt="log" src="../images/Master_log.png" /></p>
+</li>
+</ul>
 
 
 

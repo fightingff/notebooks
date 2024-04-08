@@ -515,6 +515,39 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="信息论 & 通信">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      信源编码
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      信道接收
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      理论极限
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -858,6 +891,39 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="信息论 & 通信">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      信源编码
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      信道接收
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      理论极限
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -948,29 +1014,43 @@
 <p><span class="arithmatex">\(I(x ; y ) = I(x) - I(x | y)= -log P(x) - ( - log P(x | y) ) = log \frac{P(x, y)}{P(x)P(y)}\)</span></p>
 </li>
 <li>
-<p>单一事件Y发生后对事件X的不确定性减少的程度</p>
+<p>单一事件y发生后对事件x的不确定性减少的程度(有点像衡量两事件的相关性，可能为正、负、0)</p>
 <p>也就是</p>
-<p><strong>已知 Y 发生的情况下，X 发生带来的不确定性</strong></p>
-<p><strong>不知道 Y 是否发生的情况下，X 发生带来的不确定性</strong></p>
+<p><strong>已知 y 发生的情况下，x 发生带来的不确定性</strong></p>
+<p><strong>不知道 y 是否发生的情况下，x 发生带来的不确定性</strong></p>
 <p>之差</p>
 </li>
 <li>
 <p>对称性：<span class="arithmatex">\(I(x ; y ) = I(y ; x )\)</span></p>
 </li>
 <li>
-<p>链式法则：<span class="arithmatex">\(I(x ; y, z ) = I(x ; y ) + I(x ; z | y )\)</span></p>
+<p>链式法则：<span class="arithmatex">\(I(x ; (y, z) ) = I(x) - I(x | (y,z) ) = I(x ; y ) + I((x ; z) | y )\)</span></p>
+<p>(事件y , z 给 事件 x 带来的信息量 = 事件 y 给事件 x 带来的信息量 + y已知的条件下事件 z 给事件 x 额外带来的信息量)</p>
 </li>
 </ul>
 <h3 id="_5">熵</h3>
 <ul>
 <li>
-<p><span class="arithmatex">\(H(X) = \sum P(x_i) I(x_i) = - \sum P(x_i) \log_2 P(x_i)\)</span></p>
+<p><span class="arithmatex">\(H(X) = \sum P(x_i) I(x_i) = - \sum P(x_i) \log P(x_i)\)</span></p>
 </li>
 <li>
 <p>熵定义为随机变量各个事件的平均自信息，也就是随机变量的不确定性</p>
 </li>
 <li>
 <p>熵针对随机变量，自信息针对的是具体事件（随机变量取值）</p>
+</li>
+<li>
+<p><strong>条件熵</strong></p>
+<ul>
+<li>
+<p>单一事件的条件熵 即 简单地替换对应的p(x)为p(x|y)</p>
+<div class="arithmatex">\[ H(X|y) = - \sum_{x_i} P(x_i|y) \log P(x_i|y) \]</div>
+</li>
+<li>
+<p>随机变量的条件熵，定义为<strong>对条件随机变量的熵的期望</strong>，本质是<strong>随机变量Y确定后随机变量X还剩下的不确定度</strong>，理解上可以参考条件数学期望的定义</p>
+<div class="arithmatex">\[ H(X|Y) = \sum_{y_i} P(y_i) H(X|y_i) = - \sum_{x_i} \sum_{yj} P(x_i,y_j) \log P(x_i|y_j) \]</div>
+</li>
+</ul>
 </li>
 <li>
 <p>联合熵的链式法则：<span class="arithmatex">\(H(X, Y) = H(X) + H(Y | X)\)</span></p>
@@ -1064,10 +1144,13 @@
 <p>互信息 与 熵</p>
 <ul>
 <li>
-<p><span class="arithmatex">\(I(X;Y) = H(X) - H(X|Y) = H(Y) - H(Y|X) = H(X) + H(Y) - H(X,Y)\)</span></p>
+<p><span class="arithmatex">\(I(x, y) = I(x) - I(x | y) = -log \frac{p(x)p(y)}{p(x,y)}\)</span></p>
 </li>
 <li>
-<p>互信息等于事件Y（整个随机变量）发生后对事件X的不确定性减少的程度</p>
+<p><span class="arithmatex">\(I(X;Y) = E(I(x,y)) = H(X) - H(X|Y) = H(Y) - H(Y|X) = H(X) + H(Y) - H(X,Y)\)</span></p>
+</li>
+<li>
+<p>互信息等于事件Y（整个随机变量，有多种结果）发生后对事件X的不确定性减少的程度</p>
 <p><img alt="I(x,y)" src="../images/Ixy.png" /> </p>
 </li>
 <li>
@@ -1101,11 +1184,11 @@
 </li>
 <li>
 <p>与熵的关系</p>
-<p><span class="arithmatex">\(H(x) = H(U) - D(X||U)\)</span> </p>
+<p><span class="arithmatex">\(H(x) = H(U) - D(X||U)\)</span> （U为均匀分布）</p>
 </li>
 <li>
 <p>“链式”法则（P=P1P2相互独立, Q=Q1Q2相互独立）</p>
-<p><span class="arithmatex">\(D(P||Q) = D(P1||Q1) + D(P2||Q2)\)</span>       </p>
+<p><span class="arithmatex">\(D(P||Q) = D(P1||Q1) + D(P2||Q2)\)</span></p>
 </li>
 </ul>
 </li>
@@ -1124,6 +1207,7 @@
 <li>
 <p>Fano 不等式</p>
 <div class="arithmatex">\[ H(P_E) + P_E \log(n-1) \geq H(X| \hat X) \]</div>
+<p><img alt="proof" src="../images/fano.png" /></p>
 </li>
 </ul>
 </li>
@@ -1144,6 +1228,11 @@
 <div class="arithmatex">\[ X -&gt; Y -&gt; Z \]</div>
 <div class="arithmatex">\[ I(X;Y) \geq I(X;Z) \]</div>
 <div class="arithmatex">\[ I(X;Y) \geq I(X;Y|Z) \]</div>
+</li>
+<li>
+<p>互信息的凸性</p>
+<p><img alt="convex" src="../images/Markov1.png" /></p>
+<p><img alt="convex" src="../images/Markov2.png" /></p>
 </li>
 </ul>
 </li>
@@ -1266,30 +1355,51 @@
 <li><span class="arithmatex">\(R = 1 - \eta\)</span></li>
 </ul>
 </li>
+<li>
+<p><strong>马尔可夫源的熵率</strong></p>
+<ul>
+<li>
+<div class="arithmatex">\[ H_{\infty} = \lim_{n \to \infty} H_n = 
+H(X | S) = \sum_{s_i \in K^m} P(s_i) H(X | S = s_i) \]</div>
+</li>
+</ul>
+</li>
 </ul>
 <h2 id="_9">信息论 &amp; 通信</h2>
+<p><img alt="transfer" src="../images/trans.png" /></p>
+<h3 id="_10">信源编码</h3>
+<blockquote>
+<p>在代价最小(最小的比特数)的意义上来最有效地表示一个信源</p>
+</blockquote>
 <ul>
 <li>
-<p>信源编码</p>
+<p>等长编码</p>
 <ul>
-<li>
-<p>一定损失比率下，通过编码技术减少信息的传输量</p>
-</li>
-<li>
-<p>因为不同样本出现概率不同，可以通过编码技术（例如哈夫曼编码）来减少信息的传输量</p>
-</li>
+<li>比较好理解，对于所有可能输入的<span class="arithmatex">\(K^L\)</span>字段都分配一个等长的编码，因此有 <span class="arithmatex">\(D^N \geq K^L\)</span>，即 <span class="arithmatex">\(N\geq \frac{L log K}{log D}\)</span></li>
 </ul>
 </li>
 <li>
-<p>信道接收</p>
+<p>香农编码定理(渐进无损压缩的极限)</p>
+<blockquote>
+<p><span class="arithmatex">\(N = \frac{LH(U)}{log D}\)</span></p>
+</blockquote>
 <ul>
-<li>抗干扰信号，提高信息传输的可靠性</li>
-</ul>
+<li>
+<p>利用典型列（大数定律型）进行直观证明(不严格)</p>
+<p><img alt="proof" src="../images/coding1.png" /></p>
 </li>
 <li>
-<p>理论极限</p>
+<p>由切比雪夫不等式，可严格证明</p>
+<ul>
+<li><span class="arithmatex">\(2^{-n(H-\epsilon)} \leq P(\vec{X}) \leq 2^{-n(H+\epsilon)}\)</span></li>
+</ul>
 </li>
 </ul>
+</li>
+</ul>
+<h3 id="_11">信道接收</h3>
+<p>抗干扰信号，提高信息传输的可靠性</p>
+<h3 id="_12">理论极限</h3>
 
 
 
