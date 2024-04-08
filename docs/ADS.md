@@ -1314,3 +1314,80 @@ public:
         - ![Proof](./images/splay.png)
 
 ----
+
+### Divide and Conquer（分治）
+
+> 分治是非常重要的程序设计方法，但在课中更注重相关**分治时间复杂度递推式**的计算
+>
+> $T(N) = a T(N/b) + f(N)$
+
+- **带入法**
+
+    - 得到一个好的猜测（可以用后面介绍的递归树辅助）
+
+    - 使用数学归纳法完成证明
+  
+        **注意这里运算要求相关常数 c 保持严格一致性，即显式地证明 $T(N) \leq cF(N)$ 否则界是不对的**
+
+        例如对于最经典的 $T(N) = 2 T(N/2) + N$
+
+        $$ T(N) \leq 2 c (N/2) log(N/2) + N = cNlog(N) +(1-c)N \leq cNlogN = O(N)$$
+
+        $$ T(N) \leq 2c (N/2) + N = (c+1)N \neq O(N)$$
+
+    - *算法导论中提到，有时归纳假设不够强时，可以尝试减去一个低阶项来弥补*
+
+- **递归树** 
+
+> 如上面提到的，是一个非常好的 **获得猜测** 甚至 **直接计算答案** 的方法
+
+  - 一般的，对于上面提到的“工整”的式子，他的递归树是一棵完全 a 叉树，总共有 $\log_b^N$ 层，第 i 层有 $a^i$ 个节点，每个节点的代价为 $f(N/b^i)$，因此第 i 层总代价为 $a^i f(N/b^i)$
+
+    *最后一层严格时视为 $\Theta(a^{log_b^N}) = \Theta(N^{log_b^a})$ ，实际直接当T(1)=O(1)直接计算也可*
+
+    示例如下：
+    
+    $$ T(N) = 3 T(N/4) + cN^2 $$
+
+    ![RecursionT1](./images/RecursionT1.png)
+    
+  - 对于歪斜的式子，例如下面的式子，有时精确的代价会很难计算，~~感性理解猜测~~
+
+    $$ T(N) = T(N/3) + T(2N/3) + cN $$
+
+    整棵树应该是右斜的，前面几层的代价巧恰好为 $cN$，而后面几层显然会铺不满，因此可以得到一个上界 $O(N\log_{\frac{3}{2}}^N)$ （如果恰好铺满），进而猜测 $T(N) = O(N \log{N})$ ，可以用代入法验证  
+
+    ![RecursionT2](./images/RecursionT2.png)
+
+- **主方法**
+
+> $f(N) = O(N^{\log_b^a - \epsilon}), T(N) = \Theta(N^{\log_b^a})$
+>
+> $f(N) = \Theta(N^{\log_b^a}), T(N) = \Theta(N^{\log_b^a} \log N)$
+>
+> $f(N) = \Omega(N^{\log_b^a + \epsilon}), T(N) = \Theta(f(N)) (\exists c < 1, af(n/b) \leq cf(n))$
+
+  - **简单记忆，就是看递归式的前一项大还是后一项大，或者说，递归树上的叶子节点代价大还是根节点代价大，若相等则都统计乘上logN**
+
+    其中这里指的大小是多项式意义上的大小，相差为 $N^{\epsilon}$ 倍，比如 $N$ 与 $N \log N$ 就不能在这个意义下比大小，也就无法使用一般的主方法
+
+    关于case 3的正则化条件，本质上就是保证根节点最大
+
+  - **证明（结合递归树）**
+
+    ![Recursion](./images/RecursionT.png)
+    
+    - 根据三种情况的条件，对几何级数进行求和，比较容易得到结论 
+
+  - *前面提到的一种特殊情况，实际上下两种符合原本主定理的条件，只要考虑中间那种幂指数一样($N^{\log_b^a} = N^k$)但后面挂了个log尾巴的情况*
+  
+    用递归树求和后会发现
+    
+    $$ T(N) = N^{\log_b^a} \Sigma_{i=0}^{\log_b^a} \lg^p \frac{N}{b^i} = N^{\log_b^a} \Sigma_{i=0}^{\log_b^a} (\lg{N} - \lg{b^i})^p $$
+    
+    $$\approx N^{\log_b^a} \Sigma_{i=0}^{\log_b^a} \lg^p{N}=N^{\log_b^a} \log_b^a \lg^p{N} $$
+    
+    $$= \Theta(N^{\log_b^a} \lg^{p+1}{N})$$
+  
+    ![log](./images/Master_log.png)
+    
