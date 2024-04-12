@@ -301,7 +301,7 @@
 
     - *头文件内定义的默认值可能会被篡改*
 
-### inline（内联）
+## inline（内联）
 
 > 相当于将函数代码拷贝到当前代码块中，避免函数调用的开销
 >
@@ -319,3 +319,22 @@
 
     *当长度过长时，可以在头文件内用 inline 声明， 然后直接将定义写在下方（都在头文件内）*
 
+## Composition
+
+### Embedded Objects
+
+> A class **has** other classes
+
+- Storage：按照书写顺序在内存中存储 
+
+- Constructor & Deconstructor：同样是顺序构造，逆序析构
+  
+- Fully v/s **By Reference**
+
+    - logical relationship
+    
+    - size of is not known
+    
+    - resource is to be allocated / connected at run-time
+    
+    - *Only C++ can use fully*   

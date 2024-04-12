@@ -61,6 +61,14 @@
 
     - The pioneering work of DQN, which introduces the **experience replay** mechanism and the **target network** mechanism.
 
+- [**A3C**](https://arxiv.org/abs/1602.01783)
+
+    - The pioneering work of A3C, which introduces the **actor-critic** mechanism and the **asynchronous training** mechanism.
+
+- [**Converge**](https://arxiv.org/pdf/2111.11004) 
+
+    - Prove the convergence and stability of the algorithm.
+
 - [**DDPG**](https://arxiv.org/abs/1509.02971)
 
 ----
