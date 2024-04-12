@@ -55,6 +55,16 @@
 
 ----
 
+## RL
+
+- [**DQN**](https://arxiv.org/abs/1312.5602)
+
+    - The pioneering work of DQN, which introduces the **experience replay** mechanism and the **target network** mechanism.
+
+- [**DDPG**](https://arxiv.org/abs/1509.02971)
+
+----
+
 ## Tips
 
 ----

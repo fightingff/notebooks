@@ -707,6 +707,11 @@ trigger是在满足某些条件后自动执行的sql，可以视为对数据库�
 
     - Relationship需要额外的属性时，用方框+**虚线**表示
 
+
+    - 重复属性可以通过relation消除冗余
+
+        ![1712801814521](image/Database/1712801814521.png)
+
 - 连线
 
     - 单向箭头：多对一
@@ -738,24 +743,37 @@ trigger是在满足某些条件后自动执行的sql，可以视为对数据库�
 
 没有主键的Entity Set称为Weak，它一般是为了增加复用性。但Weak Entity Set的存在需要外界帮助：
 
-- 存在至少一个非Weak的**Identifying Entity Set**，通过一个**完全参与的、一对多的**关系，指认Weak Entity Set中的元素。这个关系称为**Identifying Relationship**。
-- 弱实体集的属性中与Identifying Relationship相关的属性称为**Discriminator**。
-- Identifyi Entity Set的主键与Weak Entity Set的Discriminator合在一起作为弱实体集的主键。例如下图中section的主键为 (course_id, sec_id, semester, year) 。
+存在至少一个非Weak的**Identifying Entity Set**，通过一个**完全参与的、一对多的**关系，指认Weak Entity Set中的元素。这个关系称为**Identifying Relationship**。
+
+弱实体集的属性中与Identifying Relationship相关的属性称为**Discriminator (partial key, 需要找一个强实体集的键一同构成主键)**。
+
+Identifyi Entity Set的主键与Weak Entity Set的Discriminator合在一起作为弱实体集的主键。例如下图中section的主键为 (course_id, sec_id, semester, year) 。
+
+![1712801478105](image/Database/1712801478105.png)
 
 画E-R图时，因为这是完全参与关系，用双线菱形标记关系，同时弱实体集一侧必须完全参与，所以用双线连接，Discriminator用虚下划线。
 
-
 #### 特殊的E-R图
 
-- 可以继承
+- 可以继承（Top-Down 特化 / Bottom-Up概化）
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411124717390.png" alt="image-20220411124717390" style="zoom:33%;" />
+    ![1712803636247](image/Database/1712803636247.png)
 
-- 可以聚合
+    - Overlapping: 可重叠，即一个实体可以同时属于多个类别
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220411124741633.png" alt="image-20220411124741633" style="zoom:33%;" />
+        （既是student，也是employee）
 
-两者一般都是为了减少冗余，但这都只是特殊逻辑关系的简化表达，并不常见，完全可以用常规的图代替。
+    - Disjoint：不相交，即一个实体只能属于一个类别
+
+        （只能是instructor或者secretary一种身份）
+
+    **减少了冗余信息，但是增加了查询的复杂度（需要多表的笛卡尔积）**
+
+- 可以聚合（Aggregation）
+
+    - 将一个部分组合成一个整体，减少关系
+
+*两者一般都是为了减少冗余，但这都只是特殊逻辑关系的简化表达，并不常见，完全可以用常规的图代替*
 
 ### Reduction to Relational Schemas
 
@@ -763,16 +781,21 @@ trigger是在满足某些条件后自动执行的sql，可以视为对数据库�
 
 #### Entity
 
-- 每个实体至少一张表
-- 复合属性扁平化
-- 多值属性单独建表，外键连回去
+每个实体至少一张表
+
+复合属性扁平化(选择级别最底层的)
+
+多值属性单独建表，外键连回去
 
 #### Relationship
 
-- 带额外属性的Relationship单独建表
-- Many to Many必须单独建表
-- One to Many在Many侧加上One的主键，外键连回去
-- One to One任选一侧作Many，同上
+带额外属性的Relationship单独建表
+
+Many to Many必须单独建表
+
+One to Many在Many侧加上One的主键，外键连回去
+
+One to One任选一侧作Many，同上
 
 ## 第七章 数据库设计范式二
 
@@ -784,9 +807,9 @@ trigger是在满足某些条件后自动执行的sql，可以视为对数据库�
 
 前面说到派生属性可以理解为函数，重点在于一对一的映射关系。相同的A一定有相同的B，记为$A\rightarrow B$，B可以视为A的派生属性，或者说B是A的函数依赖。
 
-- **完全函数依赖：**A的任何一个真子集，或者说去掉任何一个列之后，对B不构成函数依赖，则称其为完全函数依赖，**反之为部分函数依赖**。
+- **完全函数依赖：** A的任何一个真子集，或者说去掉任何一个列之后，对B不构成函数依赖，则称其为完全函数依赖，**反之为部分函数依赖**。
 
-- **传递函数依赖：**显然函数依赖具有传递性。通过传递间接得到的依赖称为传递依赖，例如closure中$A\rightarrow B$。
+- **传递函数依赖：** 显然函数依赖具有传递性。通过传递间接得到的依赖称为传递依赖，例如closure中$A\rightarrow B$。
 
 - **Trival平凡函数依赖：**
     $$
@@ -806,7 +829,7 @@ trigger是在满足某些条件后自动执行的sql，可以视为对数据库�
 给定一个由函数依赖组成的集合$F$，它与它的所有推论组成的集合称为Closure of F，记为$F^+$，例如：
 $$
 F(A\rightarrow B,\ B\rightarrow C)\\
-F^+(A\rightarrow B,\ B\rightarrow C,\ A\rightarrow C)
+F^+(A\rightarrow B,\ B\rightarrow C,\ A\rightarrow C, AB \rightarrow C ...)
 $$
 
 找函数闭包一般是**Armstrong's Axioms**三条轮着套：
@@ -837,9 +860,9 @@ $$
 
 求最小函数依赖集的步骤：
 
-1. **分解：**将右侧有多个属性的依赖每个属性拆开
-2. **消除所有冗余的函数依赖：**逐一假设某个依赖是冗余的，利用剩余依赖关系找其左侧属性的闭包，如果闭包内包含右侧属性即说明它可以由其他函数依赖推得，的确是冗余的。
-3. **消除所有冗余属性：**因为经过第一步分解，依赖右侧只有一个属性，所以冗余属性一定在左侧。只需要逐一假设左侧某个属性是多余的，找左侧剩余属性的闭包，如果闭包内包含被假设多余的属性那么它的确是多余的。
+1. **分解：** 将右侧有多个属性的依赖每个属性拆开
+2. **消除所有冗余的函数依赖：** 逐一假设某个依赖是冗余的，利用剩余依赖关系找其左侧属性的闭包，如果闭包内包含右侧属性即说明它可以由其他函数依赖推得，的确是冗余的。
+3. **消除所有冗余属性：** 因为经过第一步分解，依赖右侧只有一个属性，所以冗余属性一定在左侧。只需要逐一假设左侧某个属性是多余的，找左侧剩余属性的闭包，如果闭包内包含被假设多余的属性那么它的确是多余的。
 4. **如果第3步消除了至少一个冗余属性，回到2重新检查冗余依赖，如此循环直到找不出冗余属性。**
 
 ### How to Find Candidate Key
@@ -870,9 +893,11 @@ $$
 
 假设表R被拆分为若干个表R1、R2……Rn，当且仅当R1 nature join R2…… nature join Rn等于R时，称这个这个拆分操作是无损的。
 
-- 当分解为两个表时，证明无损拆分常用的一个充分非必要条件是：两张拆开的表取交集，交集同时是两张表各自的superkey，或者说可以通过F+中的函数依赖推得取交集之前的表。
+- 当分解为两个表时，证明无损拆分常用的一个**充分非必要条件**是：
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220418172027159.png" alt="image-20220418172027159" style="zoom:40%;" />
+    **两张拆开的表取交集，交集是至少一张表的superkey，或者说可以通过F+中的函数依赖推得取交集之前的表**
+
+    $$R1\cap R2 \rightarrow R1\ or\ R2$$
 
 - 当分解为超过两个表时，使用判定表法：https://blog.csdn.net/weixin_42492218/article/details/106218720
 
