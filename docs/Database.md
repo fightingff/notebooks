@@ -626,6 +626,7 @@ call dept_count_proc('physics', d_count)
 
 trigger是在满足某些条件后自动执行的sql，可以视为对数据库操作的监视或者说副作用。但是现代sql数据库流行的风格是不写trigger。
 
+----
 
 ## 第六章 数据库设计范式一
 
@@ -659,99 +660,99 @@ trigger是在满足某些条件后自动执行的sql，可以视为对数据库�
 
     - 系统不完整，导致某些功能无法实现。
 
-### 补充定义
-
-- Attribute Type
-
-    本节中Attribute的定义有所扩展。可以分为：
-
-    - 直接的和复合的
-
-    - 单值的和多值的
-
-    - 派生的
-
-- Degree of Relationship
-
-    某个关系与多少个Entity有关，就称它的Degree是多少。
-
-    Degree大于2的relationship是很少见的。
-
-- Binary Relationship Type (Mapping Cardinalities)
-
-    - One to One
-
-    - One to Many
-
-    - Many to One
-
-    - Many to Many
-
-    根据两Entity之间的联系对二元关系进行分类。不同的二元关系会对随后建表的方式有影响。
-
 ### E-R Diagram
+
+- Entity
+
+    - 由多个属性 Attribute 构成，属性的取值范围是 Domain
+
+    - *用实体集的外延 extension 表示实际的实体集合*
 
 - Attribute
 
-    - 复合的属性用缩进表达层级关系
+    - **复合**：用缩进表达层级关系
 
-    - 多值的属性（同一个属性可能有多个取值）用大括号表示
+    - **多值**：（**同一个属性可能有多个取值**）用大括号表示
 
-    - 派生的属性（可由其他属性推导出来）在后方加上括号抽象为函数
+    - **派生**：（**可由其他属性推导出来**）在后方加上括号抽象为函数
 
-- Entity-Relation
+- **Entity-Relation**
 
-    - Entity的画法与原来建表相同
+    > 菱形表示，其中的文字是Relationship的名字，实体间的这种关联称为 **参与联系集R（participation）**
 
-    - Relationship用菱形表示，其中的文字是Relationship的名字。
+    - **度 （Degree）**
 
-    - Relationship需要额外的属性时，用方框+**虚线**表示
+        > 参与联系集的实体集的个数
 
+        一般二元关系（binary）为主，有时有三元关系，再多元不常见
 
-    - 重复属性可以通过relation消除冗余
+    - **额外属性(Discriptive Attribute)**
+
+        用**方框 + 虚线**表示
+
+        ![1712973598719](image/Database/1712973598719.png)
+
+    - **Role**
+
+        > Role是连线或者箭头的标签。
+
+        关系对应的Entities应该是唯一的，当关系与某个实体有多重逻辑联系 (Recursive) 时就需要为表达逻辑联系的线或箭头加上标签作为区分。
+
+        ![1712973929199](image/Database/1712973929199.png)
+
+    - **Mapping Cardinality Constraints（映射基数约束）**
+
+        > **箭头表示“一”，直线表示“多”**
+        >
+        > *多关系时只允许至多一个箭头避免歧义*
+
+        - One-to-One：双向单直线箭头
+
+        - One-to-Many：单向单直线箭头
+
+        - Many-to-One：单向单直线箭头
+
+        - Many-to-Many：单直线
+
+        - **Participation Constraints**
+
+            - total participation
+
+                > 每个实体至少参与一个关系
+
+                用**双直线+双直线框菱形**表示
+
+            - partial participation
+
+                单直线
+
+            - **More accurate notation**
+
+                在单直线上使用数字标注 min...max
+
+                ![1712975619974](image/Database/1712975619974.png)
+
+    - **Primary Key**
+
+        ![1712976256980](image/Database/1712976256980.png)
+
+    - **Weak Entity Set**
+
+        > 没有独立主键的Entity Set称为Weak，它一般是为了增加复用性
+
+        - 要求存在至少一个非Weak的**Identifying Entity Set**，通过一个**完全参与的、一对多的**关系，指认Weak Entity Set中的元素，这个关系就称为**Identifying Relationship**。
+
+        - 弱实体集的属性中与Identifying Relationship相关的属性称为**Discriminator (partial key, 需要找一个强实体集的键一同构成主键)**
+
+            例如下图中section的主键为 (course_id, sec_id, semester, year) 。
+
+        ![1712801478105](image/Database/1712801478105.png)
+
+        （*画E-R图时，虚实体用双线矩形，Discriminator用虚下划线，因为这是完全参与关系，用双线菱形标记关系，同时弱实体集一侧必须完全参与，所以用双线连接）*
+
+    - *重复属性可以通过relation消除冗余*
 
         ![1712801814521](image/Database/1712801814521.png)
-
-- 连线
-
-    - 单向箭头：多对一
-
-    - 双向箭头：一对一
-
-    - 单直线：多对多
-
-    - 双直线：其连接的Entity完全参与
-
-    - **箭头表示“一”，直线表示“多”**
-
-例如下图：
-
-- student可以没有instructor（如果每一个学生都一定有instructor就是完全参与，那么右侧应该用双直线），如果有则只能有一个（左侧是单向箭头）。
-- 一个instructor可以有多个student（如果只能有一个那就是一对一关系，应该用双向箭头），也可以没有（如果必须有那就是完全参与，应该用双直线）。
-
-- Role
-
-    Role是连线或者箭头的标签。关系对应的Entities应该是唯一的，当关系与某个实体有多重逻辑联系时就需要为表达逻辑联系的线或箭头加上标签作为区分。
-
-- Total Participation
-
-    如果相关实体中的每一个元素都参与了某个关系至少一次，就称这个关系是Total Parcitipation，否则称为Partial Participation。**完全参与的关系用双线标记菱形**。例如下图表示每个学期都有课，且每门课程都在某些学期中，这是一个完全参与的关系。
-
-    与之对比，本节之前出现的三E-R图张中的关系都是部分参与的。课程可以没有预修要求，导师可以不带任何学生。
-
-#### Weak Entity Set
-
-没有主键的Entity Set称为Weak，它一般是为了增加复用性。但Weak Entity Set的存在需要外界帮助：
-
-存在至少一个非Weak的**Identifying Entity Set**，通过一个**完全参与的、一对多的**关系，指认Weak Entity Set中的元素。这个关系称为**Identifying Relationship**。
-
-弱实体集的属性中与Identifying Relationship相关的属性称为**Discriminator (partial key, 需要找一个强实体集的键一同构成主键)**。
-
-Identifyi Entity Set的主键与Weak Entity Set的Discriminator合在一起作为弱实体集的主键。例如下图中section的主键为 (course_id, sec_id, semester, year) 。
-
-![1712801478105](image/Database/1712801478105.png)
-
-画E-R图时，因为这是完全参与关系，用双线菱形标记关系，同时弱实体集一侧必须完全参与，所以用双线连接，Discriminator用虚下划线。
 
 #### 特殊的E-R图
 
@@ -777,25 +778,27 @@ Identifyi Entity Set的主键与Weak Entity Set的Discriminator合在一起作�
 
 ### Reduction to Relational Schemas
 
-本节中我们探讨如何根据E-R图建立数据库表结构。下面为推荐的实现方式，但是途径并不唯一。
+> 根据E-R图建立数据库表结构，下面为推荐的实现方式，但是途径并不唯一。
 
-#### Entity
+- Entity
 
-每个实体至少一张表
+    - 每个实体至少一张表
 
-复合属性扁平化(选择级别最底层的)
+    - 复合属性扁平化(选择级别最底层的)
 
-多值属性单独建表，外键连回去
+    - 多值属性单独建表，外键连回去
 
-#### Relationship
+- Relationship
 
-带额外属性的Relationship单独建表
+    - 带额外属性的Relationship单独建表
 
-Many to Many必须单独建表
+    - Many to Many必须单独建表
 
-One to Many在Many侧加上One的主键，外键连回去
+    - One to Many在Many侧加上One的主键，外键连回去
 
-One to One任选一侧作Many，同上
+    - One to One任选一侧作为上面情况中的Many，同上
+
+----
 
 ## 第七章 数据库设计范式二
 
