@@ -56,6 +56,82 @@
 
 - MIPS (Million Instructions Per Second) = Frequency / CPI / $10^6$
 
+----
+
+## Chapter 2
+
+### Risc-V 的指令集架构
+
+- 以字节（1 byte = 8 bit）为最小寻址单位
+
+- Little-Endian 小端存储
+
+- words align 对齐不需要（虽然会影响效率）
+
+- 指令（程序）被当作数据存储在内存中
+
+- 寻址方式
+
+    ![address](image/RiscV/1713246130567.png)
+
+### 指令汇总
+
+- 指令格式
+
+    ![format](image/RiscV/1713243997537.png)
+
+- 指令集
+
+    ![instructions](image/RiscV/1713243897591.png)
+
+- 寄存器使用
+
+    > Fast locations for Data
+
+    ![regs](image/RiscV/1713244157416.png)
+
+### 一些应用
+
+- **RISC-V 的跳转指令**
+
+    - offset 是基于当前指令的地址的偏移，这不同于其他一些汇编是基于下一条指令的偏移的。**即如果是跳转语句 PC 就不 +4 了，而是直接 +offset**
+    
+    - **branch/jal指令的跳转为自动加上 imm * 2，因此手写参数时可以视为以4为基数** 
+
+- **switch case**
+
+    - 通过记录一个跳转表实现多个分支的跳转
+
+- **basic block**
+  
+    - 没有分支结构的代码块，可以通过一些优化手段提高性能
+
+- **procedure call**
+
+    - caller: jal ra, procedure (PC + 4 -> ra, PC -> procedure)
+    
+    - callee: jalr x0, 0(ra) (ra -> PC)
+    
+    - 使用 sp 栈指针开辟栈空间，将参数保存在栈中并在调用结束后释放栈空间，恢复相应的寄存器。
+    
+        - ra 保存返回地址
+
+        - 通过 sp + offset / fp（进入程序时的栈顶） + offset 的方式访问栈中的数据
+        
+        - a0 - a7 用于传递参数，返回值通过 a0 传递
+        
+        - t0 - t6 为临时变量，可以不用管
+        
+        - s0 - s11 必须保存
+    
+    - *leaf procedure(没有递归调用): exhaustively use temporary registers then must-saved registers*
+
+### 程序编译
+
+![1713251860377](image/RiscV/1713251860377.png)
+
+----
+
 ## Chapter 3
 
 ### 数的表示
