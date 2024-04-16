@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.14">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.10ba22f1.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
       
       
 
@@ -246,8 +246,10 @@
     
     
     
+    
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
+        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
@@ -504,6 +506,57 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#chapter-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#risc-v" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risc-V 的指令集架构
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      指令汇总
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      一些应用
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      程序编译
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#chapter-3" class="md-nav__link">
     <span class="md-ellipsis">
       Chapter 3
@@ -514,7 +567,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       数的表示
     </span>
@@ -523,7 +576,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       运算
     </span>
@@ -562,8 +615,10 @@
     
     
     
+    
     <li class="md-nav__item md-nav__item--nested">
       
+        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
@@ -646,8 +701,10 @@
     
     
     
+    
     <li class="md-nav__item md-nav__item--nested">
       
+        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
@@ -780,6 +837,57 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#chapter-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#risc-v" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risc-V 的指令集架构
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      指令汇总
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      一些应用
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      程序编译
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#chapter-3" class="md-nav__link">
     <span class="md-ellipsis">
       Chapter 3
@@ -790,7 +898,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       数的表示
     </span>
@@ -799,7 +907,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       运算
     </span>
@@ -907,12 +1015,114 @@
 <p>MIPS (Million Instructions Per Second) = Frequency / CPI / <span class="arithmatex">\(10^6\)</span></p>
 </li>
 </ul>
+<hr />
+<h2 id="chapter-2">Chapter 2</h2>
+<h3 id="risc-v">Risc-V 的指令集架构</h3>
+<ul>
+<li>
+<p>以字节（1 byte = 8 bit）为最小寻址单位</p>
+</li>
+<li>
+<p>Little-Endian 小端存储</p>
+</li>
+<li>
+<p>words align 对齐不需要（虽然会影响效率）</p>
+</li>
+<li>
+<p>指令（程序）被当作数据存储在内存中</p>
+</li>
+<li>
+<p>寻址方式</p>
+<p><img alt="address" src="../image/RiscV/1713246130567.png" /></p>
+</li>
+</ul>
+<h3 id="_2">指令汇总</h3>
+<ul>
+<li>
+<p>指令格式</p>
+<p><img alt="format" src="../image/RiscV/1713243997537.png" /></p>
+</li>
+<li>
+<p>指令集</p>
+<p><img alt="instructions" src="../image/RiscV/1713243897591.png" /></p>
+</li>
+<li>
+<p>寄存器使用</p>
+<blockquote>
+<p>Fast locations for Data</p>
+</blockquote>
+<p><img alt="regs" src="../image/RiscV/1713244157416.png" /></p>
+</li>
+</ul>
+<h3 id="_3">一些应用</h3>
+<ul>
+<li>
+<p><strong>RISC-V 的跳转指令</strong></p>
+<ul>
+<li>
+<p>offset 是基于当前指令的地址的偏移，这不同于其他一些汇编是基于下一条指令的偏移的。<strong>即如果是跳转语句 PC 就不 +4 了，而是直接 +offset</strong></p>
+</li>
+<li>
+<p><strong>branch/jal指令的跳转为自动加上 imm * 2，因此手写参数时可以视为以4为基数</strong> </p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>switch case</strong></p>
+<ul>
+<li>通过记录一个跳转表实现多个分支的跳转</li>
+</ul>
+</li>
+<li>
+<p><strong>basic block</strong></p>
+<ul>
+<li>没有分支结构的代码块，可以通过一些优化手段提高性能</li>
+</ul>
+</li>
+<li>
+<p><strong>procedure call</strong></p>
+<ul>
+<li>
+<p>caller: jal ra, procedure (PC + 4 -&gt; ra, PC -&gt; procedure)</p>
+</li>
+<li>
+<p>callee: jalr x0, 0(ra) (ra -&gt; PC)</p>
+</li>
+<li>
+<p>使用 sp 栈指针开辟栈空间，将参数保存在栈中并在调用结束后释放栈空间，恢复相应的寄存器。</p>
+<ul>
+<li>
+<p>ra 保存返回地址</p>
+</li>
+<li>
+<p>通过 sp + offset / fp（进入程序时的栈顶） + offset 的方式访问栈中的数据</p>
+</li>
+<li>
+<p>a0 - a7 用于传递参数，返回值通过 a0 传递</p>
+</li>
+<li>
+<p>t0 - t6 为临时变量，可以不用管</p>
+</li>
+<li>
+<p>s0 - s11 必须保存</p>
+</li>
+</ul>
+</li>
+<li>
+<p><em>leaf procedure(没有递归调用): exhaustively use temporary registers then must-saved registers</em></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="_4">程序编译</h3>
+<p><img alt="1713251860377" src="../image/RiscV/1713251860377.png" /></p>
+<hr />
 <h2 id="chapter-3">Chapter 3</h2>
-<h3 id="_2">数的表示</h3>
+<h3 id="_5">数的表示</h3>
 <ul>
 <li>在各种课程内已经出现过好多次了，没什么特别好说的</li>
 </ul>
-<h3 id="_3">运算</h3>
+<h3 id="_6">运算</h3>
 <ul>
 <li>
 <p>关于 overflow （同号相加出异号）的处理 （最后一位 Cin xor Cout = 1）</p>
@@ -1080,10 +1290,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.bd41221c.min.js"></script>
+      <script src="../assets/javascripts/bundle.7389ff0e.min.js"></script>
       
         <script src="../javascripts/mathjax.js"></script>
       
