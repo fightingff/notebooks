@@ -969,10 +969,11 @@
 <h2 id="data-structrure">Data Structrure</h2>
 <hr />
 <h3 id="avl">AVL</h3>
-<ul>
-<li>
+<blockquote>
 <p>定义：任意节点左右子树<strong>高度差</strong>不大于1</p>
-</li>
+<p><strong>Balance factor = <span class="arithmatex">\(h_L - h_R \in \set{-1, 0, 1}\)</span></strong></p>
+</blockquote>
+<ul>
 <li>
 <p>复杂度分析：</p>
 <ul>
@@ -1213,10 +1214,16 @@
 <p>也可以看成直接将当前节点往最上面一提，两个儿子被父节点和祖先节点均分，从而趋向平衡</p>
 </li>
 <li>
-<p><img alt="ZigZag" src="../images/ZigZag.png" /> </p>
+<p><img alt="ZigZag" src="../images/ZigZag.png" /></p>
 </li>
 </ul>
 </li>
+</ul>
+</li>
+<li>
+<p>NOTES:</p>
+<ul>
+<li>Splaying roughly halves the depth of most nodes on the access path. </li>
 </ul>
 </li>
 <li>
@@ -3203,6 +3210,12 @@
 </li>
 </ul>
 </li>
+</ul>
+</li>
+<li>
+<p>NOTES:</p>
+<ul>
+<li>Amortized bounds are weaker than the corresponding worst-case bounds, because there is no guarantee for any single operation. </li>
 </ul>
 </li>
 </ul>
