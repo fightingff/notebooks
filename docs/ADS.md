@@ -8,7 +8,9 @@
 
 ### AVL
 
-- 定义：任意节点左右子树**高度差**不大于1
+> 定义：任意节点左右子树**高度差**不大于1
+>
+> **Balance factor = $h_L - h_R \in \set{-1, 0, 1}$**
 
 - 复杂度分析：
 
@@ -147,7 +149,11 @@ struct AVL{
         
         - 也可以看成直接将当前节点往最上面一提，两个儿子被父节点和祖先节点均分，从而趋向平衡
         
-        - ![ZigZag](./images/ZigZag.png) 
+        - ![ZigZag](./images/ZigZag.png)
+    
+- NOTES:
+    
+    - Splaying roughly halves the depth of most nodes on the access path. 
 
 - Code (Not checked yet)
 
@@ -1312,6 +1318,10 @@ public:
         - 对三种旋转操作进行分别分析，可以证明，每次旋转的摊还代价为 $O(logN)$
         
         - ![Proof](./images/splay.png)
+
+- NOTES:
+  
+    - Amortized bounds are weaker than the corresponding worst-case bounds, because there is no guarantee for any single operation. 
 
 ----
 
