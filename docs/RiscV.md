@@ -125,11 +125,58 @@
         - s0 - s11 必须保存
     
     - *leaf procedure(没有递归调用): exhaustively use temporary registers then must-saved registers*
+    
+    - *atomic operation*
+    
+        - 锁存指令对，如
 
+            ```riscv 
+            lr.d rd1, (rs) (load reserve)
+            
+            sc.d rd2, (rs1), rs2 (store conditional)
+            ```
+
+            在读取数据的同时，将数据锁定
+            
+            在写入数据的时候，检查数据是否被修改(rd1 = 0)，如果没有则写入
+            
+            最终结果为（rd2 = 0）则写入成功(rd1 = rs, rs1 = rs2)，否则写入失败
+
+            ```riscv title="atomic swap"
+            again:
+                lr.d x10, (x20)     // load-reserve Mem[x20] to x10(x10 = 0 now)
+                sc.d x11, (x20), x23// store-conditional x23 to Mem[x20]
+                bne x11, x0, again  // if x11 != 0, failed
+                add x23, x0, x10    // swap x23 and Mem[x20]
+            ```
 ### 程序编译
 
 ![1713251860377](image/RiscV/1713251860377.png)
 
+- Compiler -> Assembly Language
+
+- Assembler -> Object Module
+
+    ![1713266526675](image/RiscV/1713266526675.png)
+    
+    ![1713266594284](image/RiscV/1713266594284.png)
+
+- Linker -> Executable Program
+
+    - Static Linking
+
+        - 将所有的库文件都链接到一个可执行文件中
+    
+    - Dynamic Linking
+
+        - 在运行时再链接使用到的库文件函数
+ 
+    ![1713266681693](image/RiscV/1713266681693.png)
+
+- Loader
+
+    ![1713266808165](image/RiscV/1713266808165.png)
+    
 ----
 
 ## Chapter 3
