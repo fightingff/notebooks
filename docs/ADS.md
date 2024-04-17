@@ -1351,6 +1351,16 @@ $\alpha - \beta$ pruning
 
         ![1713338362260](image/ADS/1713338362260.png) 
 
+- Notes:
+
+    Evaluating the time complexity in backtracking algorithms involves considering various factors. Some important elements that affect time complexity in backtracking include:
+
+    - The number of decisions or choices to be made at each step.
+
+    - The size of the problem space or the search space.
+
+    - Constraints and pruning techniques applied to reduce the search space.
+
 ----
 
 ### Divide and Conquer（分治）
