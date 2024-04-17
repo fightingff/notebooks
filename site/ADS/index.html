@@ -504,6 +504,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#backtracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      BackTracking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#divide-and-conquer" class="md-nav__link">
     <span class="md-ellipsis">
       Divide and Conquer（分治）
@@ -925,6 +934,15 @@
   <a href="#amortized-analysis" class="md-nav__link">
     <span class="md-ellipsis">
       Amortized Analysis (摊还分析)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backtracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      BackTracking
     </span>
   </a>
   
@@ -1742,6 +1760,9 @@
 <li>
 <p>常见操作均为<span class="arithmatex">\(O(logN)\)</span></p>
 </li>
+<li>
+<p>维护的旋转次数为常数时间，所以非常快 </p>
+</li>
 </ul>
 <blockquote>
 <p>首先定义黑高 bh(x) 为从节点 x 到其每个叶节点的简单路径上黑色节点数目（不包括自己）</p>
@@ -2186,6 +2207,10 @@
 <hr />
 <h3 id="reverse-index">Reverse Index</h3>
 <p>就是一个邻接矩阵一样的感觉，附加了一些简单的优化，没啥好说的</p>
+<p>一些专有名词：</p>
+<p><img alt="1713322642286" src="../image/ADS/1713322642286.png" /></p>
+<p><img alt="1713321824724" src="../image/ADS/1713321824724.png" /></p>
+<p><img alt="1713323080899" src="../image/ADS/1713323080899.png" /></p>
 <hr />
 <h3 id="leftist-tree">Leftist Tree</h3>
 <blockquote>
@@ -3216,6 +3241,29 @@
 <p>NOTES:</p>
 <ul>
 <li>Amortized bounds are weaker than the corresponding worst-case bounds, because there is no guarantee for any single operation. </li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="backtracking">BackTracking</h3>
+<p><span class="arithmatex">\(\alpha - \beta\)</span> pruning</p>
+<ul>
+<li>
+<p><span class="arithmatex">\(\alpha\)</span></p>
+<ul>
+<li>
+<p>求最大值，当前节点求最小值且当前值已经偏小</p>
+<p><img alt="1713338332411" src="../image/ADS/1713338332411.png" /></p>
+</li>
+</ul>
+</li>
+<li>
+<p><span class="arithmatex">\(\beta\)</span></p>
+<ul>
+<li>
+<p>求最小值，当前节点求最大值且当前值已经偏大</p>
+<p><img alt="1713338362260" src="../image/ADS/1713338362260.png" /> </p>
+</li>
 </ul>
 </li>
 </ul>

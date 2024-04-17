@@ -442,6 +442,8 @@ struct BpTree{
 
 - 常见操作均为$O(logN)$
 
+- 维护的旋转次数为常数时间，所以非常快 
+
 > 首先定义黑高 bh(x) 为从节点 x 到其每个叶节点的简单路径上黑色节点数目（不包括自己）
 
 - 证明：
@@ -697,6 +699,14 @@ struct RBTree{
 ### Reverse Index
 
 就是一个邻接矩阵一样的感觉，附加了一些简单的优化，没啥好说的
+
+一些专有名词：
+
+![1713322642286](image/ADS/1713322642286.png)
+
+![1713321824724](image/ADS/1713321824724.png)
+
+![1713323080899](image/ADS/1713323080899.png)
 
 ----
 
@@ -1322,6 +1332,24 @@ public:
 - NOTES:
   
     - Amortized bounds are weaker than the corresponding worst-case bounds, because there is no guarantee for any single operation. 
+
+----
+
+### BackTracking
+
+$\alpha - \beta$ pruning
+
+- $\alpha$
+
+    - 求最大值，当前节点求最小值且当前值已经偏小
+ 
+        ![1713338332411](image/ADS/1713338332411.png)
+
+- $\beta$
+
+    - 求最小值，当前节点求最大值且当前值已经偏大
+
+        ![1713338362260](image/ADS/1713338362260.png) 
 
 ----
 
