@@ -593,6 +593,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#inheritance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inheritance
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1059,6 +1068,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#inheritance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inheritance
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1347,6 +1365,9 @@
 </li>
 <li>
 <p>protected</p>
+<ul>
+<li>与private的区别是子类可见（<em>留给子类的遗产</em>） </li>
+</ul>
 </li>
 <li>
 <p>default</p>
@@ -1606,8 +1627,65 @@
 <p>resource is to be allocated / connected at run-time</p>
 </li>
 <li>
-<p><em>Only C++ can use fully</em>   </p>
+<p><em>Only C++ can use fully</em> </p>
 </li>
+</ul>
+</li>
+</ul>
+<h3 id="inheritance">Inheritance</h3>
+<blockquote>
+<p>继承性，面向对象的重要思想</p>
+</blockquote>
+<ul>
+<li>
+<p>Advantage</p>
+<ul>
+<li>
+<p>Avoid code duplication</p>
+</li>
+<li>
+<p>Code reuse</p>
+</li>
+<li>
+<p>Easier maintenance: 修改模块对其他模块影响小</p>
+</li>
+<li>
+<p>Extendibility： 易于添加新功能</p>
+</li>
+</ul>
+</li>
+<li>
+<p>可继承的成员</p>
+<blockquote>
+<p>本质上内存里父类对象会放在子类对象的前面（<em>可以将子类指针赋给父类指针</em>）</p>
+</blockquote>
+<ul>
+<li>
+<p><strong>public / protected</strong> member data</p>
+</li>
+<li>
+<p><strong>public / protected</strong> member functions</p>
+</li>
+<li>
+<p><em>static</em> 仍然为class-wide，依赖它的属性 </p>
+</li>
+</ul>
+</li>
+<li>
+<p>Constructor &amp; Deconstructor</p>
+<ul>
+<li>
+<p>构造先父类后子类</p>
+</li>
+<li>
+<p>析构同样反向 </p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Name Hiding</strong></p>
+<ul>
+<li>一旦出现overload，则所有同名的函数都得覆写，否则父类的会被隐藏</li>
 </ul>
 </li>
 </ul>
