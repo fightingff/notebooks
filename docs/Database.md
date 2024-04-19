@@ -835,21 +835,24 @@ F(A\rightarrow B,\ B\rightarrow C)\\
 F^+(A\rightarrow B,\ B\rightarrow C,\ A\rightarrow C, AB \rightarrow C ...)
 $$
 
-找函数闭包一般是**Armstrong's Axioms**三条轮着套：
+找函数闭包一般是**Armstrong's Axioms**三条轮着套：(Sound(有效) & Complete(完备))
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220413230359330.png" alt="image-20220413230359330" style="zoom: 33%;" />
+![1713407471264](image/Database/1713407471264.png)
+
+![1713410629655](image/Database/1713410629655.png)
 
 #### Closure of Attribute
 
 给定一个由属性组成的集合$A$，它由函数集$F$中的依赖关系能够关联的属性组成的集合称为Closure of A under F，记为$A^+$，例如：
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220413231124852.png" alt="image-20220413231124852" style="zoom:30%;" />
-
 属性的闭包的作用有：
 
 - 验证一组属性是否是superkey（它的闭包是否包含所有属性）
+
 - 验证一组属性是否是candidate key（它的真子集的闭包是否包含所有属性）
+
 - 验证函数依赖是否成立（依赖属性是否在被依赖属性的闭包中）
+
 - 找函数的闭包（遍历属性的子集，挨个找闭包，闭包中多出来的属性就对原属性构成依赖）
 
 #### Redundancy
@@ -906,17 +909,25 @@ $$
 
 #### Dependancy Presevation
 
+在数据库更新时，我们希望依赖关系不会被破坏，即依赖保持(BC范式不能保证依赖保持)。
+
 假设表R被拆分为若干个表R1、R2……Rn，函数依赖集F中左右两侧的属性都在R1、R2……中的子集为F1、F2……，称为F在R1、R2……上的投影。当$F^+=F_1^+\cup F_2^+\cup...$时称这个拆分满足依赖保持.
 
 一般直接用定义证明。
 
 第三范式是满足依赖保持的最高范式。
 
-### 第一范式
+### BCNF(Boyce-Codd Normal Form)
+
+![1713407681831](image/Database/1713407681831.png)
+
+### 三大范式
+
+#### 第一范式
 
 要求每一个attribue的domain都是atomic的，不能继续分割，同时每一个relation都应该有primary key。这是所有关系型数据库最基础的范式要求。
 
-### 第二范式
+#### 第二范式
 
 在第一范式的基础上，要求非主属性对所有candidate key不能有部分依赖。例如下面这个关系：
 
@@ -924,11 +935,11 @@ $$
 
 （学号，课名）是一个candidate key，但是姓名、系名都是对学号的函数依赖，即对候选键的部分依赖，所以上面这个数据库不满足第二范式，但是满足第一范式。
 
-### 第三范式
+#### 第三范式
 
 在第二范式的基础上，要求非主属性对所有候选键不能有传递依赖。例如下面这个关系：
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220413205821647.png" alt="image-20220413205821647" style="zoom: 20%;" />
+![1713407061546](image/Database/1713407061546.png)
 
 学号->系名->系主任是一个传递依赖关系，所以上面这个数据库不满足第三范式但是满足第二范式。
 

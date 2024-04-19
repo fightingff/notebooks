@@ -153,6 +153,8 @@
 
 - protected
 
+    - 与private的区别是子类可见（*留给子类的遗产*） 
+
 - default
 
     - class 默认是 private 的，struct 默认是 public 的 
@@ -337,4 +339,38 @@
     
     - resource is to be allocated / connected at run-time
     
-    - *Only C++ can use fully*   
+    - *Only C++ can use fully* 
+
+### Inheritance
+
+> 继承性，面向对象的重要思想
+
+- Advantage
+
+    - Avoid code duplication
+    
+    - Code reuse
+    
+    - Easier maintenance: 修改模块对其他模块影响小
+    
+    - Extendibility： 易于添加新功能
+
+- 可继承的成员
+
+    > 本质上内存里父类对象会放在子类对象的前面（*可以将子类指针赋给父类指针*）
+
+    - **public / protected** member data
+    
+    - **public / protected** member functions
+    
+    - *static* 仍然为class-wide，依赖它的属性 
+
+- Constructor & Deconstructor
+  
+    - 构造先父类后子类
+    
+    - 析构同样反向 
+
+- **Name Hiding**
+
+    - 一旦出现overload，则所有同名的函数都得覆写，否则父类的会被隐藏
