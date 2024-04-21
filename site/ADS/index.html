@@ -1776,7 +1776,31 @@
 </li>
 <li>
 <p><strong>复杂度分析</strong></p>
-</li>
+<table>
+<thead>
+<tr>
+<th>operation</th>
+<th>complexity</th>
+<th>rotation</th>
+<th>recoloring</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insert</td>
+<td>O(logN)</td>
+<td>O(1)</td>
+<td>O(logN)</td>
+</tr>
+<tr>
+<td>Delete</td>
+<td>O(logN)</td>
+<td>O(1)</td>
+<td>O(logN)</td>
+</tr>
+</tbody>
+</table>
+<ul>
 <li>
 <p>常见操作均为<span class="arithmatex">\(O(logN)\)</span></p>
 </li>
@@ -1807,6 +1831,8 @@
 </li>
 <li>
 <p>综上，得证     </p>
+</li>
+</ul>
 </li>
 </ul>
 </li>
@@ -2231,6 +2257,20 @@
 <p><img alt="1713322642286" src="../image/ADS/1713322642286.png" /></p>
 <p><img alt="1713321824724" src="../image/ADS/1713321824724.png" /></p>
 <p><img alt="1713323080899" src="../image/ADS/1713323080899.png" /></p>
+<p><img alt="1713676274087" src="../image/ADS/1713676274087.png" /></p>
+<ul>
+<li>
+<p>Notes</p>
+<ul>
+<li>
+<p>word stemming 会提高召回率，但是会影响精度</p>
+</li>
+<li>
+<p>Thresholding 注意是document还是query,两者操作方式不一样</p>
+</li>
+</ul>
+</li>
+</ul>
 <hr />
 <h3 id="leftist-tree">Leftist Tree</h3>
 <blockquote>
