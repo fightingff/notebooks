@@ -7,6 +7,7 @@ repo_url: 'https://github.com/fightingff/notebooks'
 
 nav:
   - Home: index.md
+  - ZJU CS Masters' Notes: https://isshikihugh.github.io/zju-cs-asio/
   - Courses:
       - x86 Asm: ASM.md
       - Digit Logic Design: DigitLogic.md
