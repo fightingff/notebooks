@@ -51,7 +51,7 @@
 
 > **Standard Template Library**
 
-- *工程中慎用<bits/stdc++.h>头文件，降低编译压力*
+- *工程中慎用\<bits/stdc++.h\>头文件，降低编译压力*
 
 - Containers
 
@@ -65,7 +65,7 @@
             
             - 删除元素时，会将后面的元素向前移动，时间复杂度为 O(n) 
       
-        - vector<int>p(capacity,(k)) (capacity 个 k) 
+        - vector\<int\>p(capacity,(k)) (capacity 个 k) 
         
         - vector [] “可以”越界访问，（因为实际上的容量可能大于它显示的capacity），.at() 会抛出异常
 
@@ -118,6 +118,8 @@
 ## Class
 
 > 类，一种用户自定义的数据类型，用于封装数据和方法
+>
+> *关于内部数据存储，具有地址对齐性，即一个短变量只会在一行内读出，不会跨行读取*
 
 ### 构造
 
@@ -126,6 +128,8 @@
 - *但是全局变量处在多文件时，构造顺序是不确定的*                                            
 
 - *进入函数时，所有本地变量所占据空间已经分配完毕*  
+
+- 构造列表只能初始化 non-static 的成员，包括可以初始化const常量 
 
 - **Delegating Constructor**
 
@@ -145,7 +149,7 @@
 
     - 仅在**类**内部可见
     
-    - **边界是类, 不是对象，并且由编译器控制（可以绕过）**  
+    - **边界是类, 不是对象（类内可以访问其他同类对象的私有成员），并且由编译器控制（可以绕过，如利用指针为所欲为）**  
 
 - public
 
@@ -196,7 +200,9 @@
     - 不能在类内初始化，需要在类外初始化
     
         **static variable 需要全局定义申请内存空间（包括private / public）** 
-    
+
+        ` Tp ClassName::StaticVariable = x;`
+
     - 可以通过类名访问，也可以通过对象访问
     
     - static member function 只能访问 static member variables  
@@ -213,9 +219,9 @@
 
 - 在定义时初始化为一个右值，且可以改变指向，相当于记下了一个临时变量 (右值引用`&&`)
   
-> No pointers to references `&*p`
+> No pointers to references `(Tp&) *p`
 >
-> References to pointers OK `*&p`
+> References to pointers OK `(Tp*) &p`
 
 - *Left value & Right value*
 
@@ -253,12 +259,14 @@
         }
         ```
 
-    - 对象成员的数组定义不能用size，哪怕已经直接初始化，因为编译器不能确定
+    - 对象成员的数组定义不能用size，哪怕已经直接初始化，因为编译器不能确定（const 常量可能在初始化列表中被重新初始化）
     
         ```cpp
         class A {
             const int n = 10;
             int a[10];  //Error
+            A():n(6){}  // Legal and powerful
+            // Thus "change" the n to 6 when the object is constructed
         };
         ```
     
@@ -301,13 +309,15 @@
     
 - 默认参数值是静态的（编译器处理），**在声明中写默认值，不能在定义中写** 
 
+    - 因此本质上是定义了一个带参函数，小心重载时的重复错误
+
     - *头文件内定义的默认值可能会被篡改*
 
 ## inline（内联）
 
-> 相当于将函数代码拷贝到当前代码块中，避免函数调用的开销
+> 本质上相当于将函数代码直接拷贝到当前代码块中（**直接添加到当前文件的.obj中，而不是后续通过link连接**），避免函数调用的开销
 >
-> **inline 函数（包括body）相当于声明，不是定义，因此要整个放在头文件中**
+> **inline 函数（包括body）相当于声明，不是定义，因此要整个放在头文件中，让编译器处理。编译器不会分配函数空间，而是直接将对应指令“抄下来”，在需要的地方直接填上去。**
 
 - 会增长代码，本质上是用“空间换时间”
 
@@ -319,7 +329,31 @@
 
 - class 成员函数加上 body 直接默认 inline，无需特殊标记
 
-    *当长度过长时，可以在头文件内用 inline 声明， 然后直接将定义写在下方（都在头文件内）*
+    *当长度过长时，可以在头文件内用 inline 声明， 然后直接将定义写在下方（都在头文件内，都加inline）*
+
+## namespace
+
+> Expresses a logical grouping of classes, functions, variables, etc.
+>
+> *{}末尾没有 分号 作为结束*
+
+- using 简化
+
+    - `using namespace Name;`
+    
+        `using Name::Func;`
+    
+        `using Name::Class;`
+
+    - using 可能会导致同名成员冲突，但是只有调用冲突成员时才会报错，using并不会马上报错。为了解决冲突问题，可以通过显式指明命名空间。
+
+- alias 重命名
+
+    - `namespace NewName = OldName;`
+
+- openness
+
+    - 同一个命名空间可以分布在多个文件中
 
 ## Composition
 
