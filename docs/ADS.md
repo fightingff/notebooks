@@ -720,6 +720,8 @@ struct RBTree{
     - word stemming 会提高召回率，但是会影响精度
     
     - Thresholding 注意是document还是query,两者操作方式不一样
+    
+    - In data retrieval, the response time is more important than the relevance of the answer set. 
  
 ----
 
@@ -1299,6 +1301,8 @@ public:
 ----
 
 ### Amortized Analysis (摊还分析)
+
+> worst-case bound >= amortized bound >= average-case bound(强弱关系)
 
 - **Aggregated Analysis (聚类分析)**
 
