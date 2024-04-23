@@ -541,6 +541,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#fft-fntt" class="md-nav__link">
+    <span class="md-ellipsis">
+      FFT &amp; FNTT
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -972,6 +981,15 @@
   <a href="#divide-and-conquer" class="md-nav__link">
     <span class="md-ellipsis">
       Divide and Conquer（分治）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fft-fntt" class="md-nav__link">
+    <span class="md-ellipsis">
+      FFT &amp; FNTT
     </span>
   </a>
   
@@ -3423,6 +3441,431 @@
 <div class="arithmatex">\[\approx N^{\log_b^a} \Sigma_{i=0}^{\log_b^a} \lg^p{N}=N^{\log_b^a} \log_b^a \lg^p{N} \]</div>
 <div class="arithmatex">\[= \Theta(N^{\log_b^a} \lg^{p+1}{N})\]</div>
 <p><img alt="log" src="../images/Master_log.png" /></p>
+</li>
+</ul>
+<hr />
+<h3 id="fft-fntt">FFT &amp; FNTT</h3>
+<blockquote>
+<p><strong>Fast Fourier Transform &amp; Fast Number Theoretic Transform</strong></p>
+<p>Here we only discuss the application of FFT in polynomial multiplication</p>
+</blockquote>
+<p>For coefficient representated polynomials <span class="arithmatex">\(A(x) = \sum_{i=0}^{n-1} a_i x^i, B(x) = \sum_{i=1}^{n-1} b_i x^i\)</span>, the polynomial multication can seen as the convolutions which needs <span class="arithmatex">\(O(n^2)\)</span> </p>
+<p>We can also represent a n-degree polynomial as a vector of n points <span class="arithmatex">\(\{(x_1, A(x_1)), (x_2, A(x_2)), ... (x_{n-1},A(x_{n-1}))\}\)</span></p>
+<blockquote>
+<p>proof: <strong>Lagrange Interpolation using Vandermonde Matrix</strong></p>
+<div class="arithmatex">\[ \begin{bmatrix} 1 &amp; x_1 &amp; x_1^2 &amp; \cdots &amp; x_1^{n-1} \\ 
+1 &amp; x_2 &amp; x_2^2 &amp; \cdots &amp; x_2^{n-1} \\ 
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ 
+1 &amp; x_{n-1} &amp; x_{n-1}^2 &amp; \cdots &amp; x_{n-1}^{n-1} \end{bmatrix} 
+\begin{bmatrix} a_0 \\ a_1 \\ \vdots \\ a_{n-1} \end{bmatrix} = 
+\begin{bmatrix} A(x_1) \\ A(x_2) \\ \vdots \\ A(x_{n-1}) \end{bmatrix} \]</div>
+<p>If all <span class="arithmatex">\(x_i\)</span> are unique, then the determinant of the vandermonde matrix is <span class="arithmatex">\(\prod_{1 \leq i &lt; j \leq n} (x_j - x_i) \neq 0\)</span>, which means there exists a unique solution for the coefficient vector, or say, the polynomial can be uniquely represented by the n points</p>
+</blockquote>
+<p>Then the polynomial multiplication can be seen as the vector dot product, which can be done in <span class="arithmatex">\(O(n)\)</span></p>
+<p>If we use point-value representaion <span class="arithmatex">\(\{(x_i,A(x_i))\}, \{x_i, B(x_i)\}\)</span>, then the polynomial multiplication can be seen as a vector dot product, which can be done in <span class="arithmatex">\(O(n)\)</span></p>
+<p>So the key point is the fast transformation between the coefficient representation and point-value representation, Which can be done in <span class="arithmatex">\(O(nlogn)\)</span> using FFT</p>
+<p><img alt="1713882091475" src="../image/ADS/1713882091475.png" /></p>
+<ul>
+<li>
+<p><strong>coeffcient to point-value</strong></p>
+<ul>
+<li>
+<p>If we randomly choose n points, then the transformation should be done in <span class="arithmatex">\(O(n) * O(n) = O(n^2)\)</span>,  which is not so good</p>
+</li>
+<li>
+<p>Here we choose a novel method, selecting the n powers of n-th root of unity <span class="arithmatex">\(w_n = e^{2\pi i / n}\)</span>, that is, <span class="arithmatex">\(w_n^0, w_n, w_n^2, ... w_n^{n-1}\)</span></p>
+<ul>
+<li>
+<p>Special property:</p>
+<ul>
+<li>
+<p>Definition: <span class="arithmatex">\(w_n^n = 1\)</span></p>
+</li>
+<li>
+<p>Halving Lemma: <span class="arithmatex">\(w_{2n}^{2k} = w_n^k\)</span> </p>
+<p><em>Proved easily by Euler's Formula, <span class="arithmatex">\(w_{2n}^{2k} = e^{2\pi i \frac{2k}{2n}} = e^{2\pi i \frac{k}{n}} = w_n^k\)</span></em> </p>
+</li>
+<li>
+<p>Inverse Lemma: <span class="arithmatex">\(w_n^{k + \frac{n}{2}} = -w_n^{k}\)</span></p>
+<p><em>Proved easily by Euler's Formula, <span class="arithmatex">\(w_n^{k + \frac{n}{2}} = e^{2\pi i \frac{k + \frac{n}{2}}{n}} = e^{2\pi i \frac{k}{n} + \pi i} = -e^{2\pi i \frac{k}{n}} = -w_n^k\)</span></em></p>
+</li>
+<li>
+<p>Summation Lemma: <span class="arithmatex">\(\sum_{i=0}^{n-1} w_n^{ik} = \begin{cases} n &amp; \text{if } n | k \\ 0 &amp; \text{otherwise} \end{cases}\)</span></p>
+<p><em>Proved easily by the geometric progression, <span class="arithmatex">\(S = 1 + w_n^k + w_n^{2k} + ... + w_n^{(n-1)k} = \frac{1 - w_n^{nk}}{1 - w_n^k} = 0\)</span></em></p>
+</li>
+<li>
+<p><em>Halving &amp; Inverse Lemmas are quite useful in the FFT algorithm, which can be seen as a divide-and-conquer algorithm</em></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Considre a polynomial <span class="arithmatex">\(A(x) = a_0 + a_1 x + a_2 x^2 + ... + a_{n-1} x^{n-1}\)</span>,where <span class="arithmatex">\(n = 2^k\)</span> (Easier to cope with, so we can append 0s as coefficients to make it a power of 2)</p>
+<p>Then we divide the polynomial into two parts:</p>
+<div class="arithmatex">\[ A_1(x) = a_0 + a_2 x + a_4 x^2 + ... + a_{n-2} x^{n/2 - 1} \]</div>
+<div class="arithmatex">\[ A_2(x) = a_1 + a_3 x + a_5 x^2 + ... + a_{n-1} x^{n/2 - 1} \]</div>
+<p>Then we can see that </p>
+<div class="arithmatex">\[A(x) = A_1(x^2) + xA_2(x^2)\]</div>
+<p>Substitute <span class="arithmatex">\(w_n^k\)</span> and using Halving Lemma</p>
+<div class="arithmatex">\[A(w_n^k) = A_1(w_{n}^{2k}) + w_n^k A_2(w_{n}^{2k}) = A_1(w_{\frac{n}{2}}^k) + w_n^k A_2(w_{\frac{n}{2}}^k)\]</div>
+<p>Substituting the rest <span class="arithmatex">\(w_{n}^{k+\frac{n}{2}}\)</span> and using Inverse Lemma</p>
+<div class="arithmatex">\[A(w_n^{k+\frac{n}{2}}) = A_1(w_{\frac{n}{2}}^k) - w_n^k A_2(w_{\frac{n}{2}}^k)\]</div>
+<p>Now to get <span class="arithmatex">\(A(w_n^{k})\)</span> for <span class="arithmatex">\(k=0,1,...n-1\)</span>，we only need to calculate <span class="arithmatex">\(A_1(w_{\frac{n}{2}}^k)\)</span> and <span class="arithmatex">\(A_2(w_{\frac{n}{2}}^k)\)</span> for <span class="arithmatex">\(k=0,1,...\frac{n}{2}-1\)</span>, which is just half of the original problem!</p>
+<div class="highlight"><span class="filename">FFT</span><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="w">    </span><span class="n">FFT</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,...</span><span class="n">n</span><span class="mi">-1</span><span class="p">]){</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">A</span><span class="p">;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">        </span><span class="n">A1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FFT</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,...</span><span class="n">n</span><span class="mi">-2</span><span class="p">])</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">        </span><span class="n">A2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FFT</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,...</span><span class="n">n</span><span class="mi">-1</span><span class="p">])</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">        </span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pi</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">n</span><span class="p">)</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">){</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">            </span><span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A1</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">w</span><span class="o">^</span><span class="n">k</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">A2</span><span class="p">[</span><span class="n">k</span><span class="p">];</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">            </span><span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A1</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">w</span><span class="o">^</span><span class="n">k</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">A2</span><span class="p">[</span><span class="n">k</span><span class="p">];</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">A</span><span class="p">;</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>More efficient way</p>
+<blockquote>
+<p>Use <strong>Butterfly Operation</strong> instead of Recursion</p>
+</blockquote>
+<p><em>Maybe because of this photo so-called butterfly?</em></p>
+<p><img alt="1713884617148" src="../image/ADS/1713884617148.png" /></p>
+<p>Check the clearer picture below, we can find the final position is just the inverse of its original position's binary represention!</p>
+<p>So based on this discovery, we can easily transform the recursive version into an iterative version, which is more efficient.</p>
+<p><img alt="1713884430459" src="../image/ADS/1713884430459.png" /> </p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>point-value to coefficient</strong></p>
+<blockquote>
+<p>Use the Lagrange Interpolation as mentioned above</p>
+</blockquote>
+<ul>
+<li>
+<p>The Vandermond Matrix <span class="arithmatex">\(V_n A = Y\)</span></p>
+<div class="arithmatex">\[ \begin{bmatrix} 1 &amp; 1^1 &amp; 1^2 &amp; \cdots &amp; 1^{n-1} \\ 
+1 &amp; w_n^1 &amp; w_n^2 &amp; \cdots &amp; w_n^{n-1} \\ 
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ 
+1 &amp; w_n^{n-1} &amp; w_n^{2(n-1)} &amp; \cdots &amp; w_n^{(n-1)(n-1)} \end{bmatrix} 
+\begin{bmatrix} a_0 \\ a_1 \\ \vdots \\ a_{n-1} \end{bmatrix} = 
+\begin{bmatrix} y_0 \\ y_1 \\ \vdots \\ y_{n-1} \end{bmatrix} \]</div>
+<p>Recall the knowledge in Linear Algebra, the next step is to calculate the <span class="arithmatex">\(V_n^{-1}\)</span>, then <span class="arithmatex">\(A = V_n^{-1}Y\)</span></p>
+<p>Consider the definition of inverse matrix</p>
+<div class="arithmatex">\[V_n^{-1} V_n = I_n\]</div>
+<div class="arithmatex">\[I_{ij} = \sum_{k=0}^{n-1} V_{ik} V_{kj} = \]</div>
+<p>Then we can easily get the <span class="arithmatex">\(V_n^{-1}\)</span></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>In conclusion, the FFT algorithm is a very efficient algorithm for polynomial multiplication, which can be done in <span class="arithmatex">\(O(n \log n)\)</span></p>
+<p>However, since the use of double type in the complex number calculation, the precision of the result may be affected. We can then put the problem into the modulo field, which is the Fast Number Theoretic Transform (FNTT).</p>
+<p>Wonderfully, the FNTT is almost the same as the FFT, except that we change the complex n-th root of unity to the primitive root of the modulo field, which has the same properties as the n-th root of unity as mentioned above.</p>
+<ul>
+<li>
+<p>Example: </p>
+<blockquote>
+<p>RB-Tree count: Count the number of different RB-Trees with N nodes.</p>
+</blockquote>
+<p>Using <strong>Generating Function</strong> <span class="arithmatex">\(T_h(x)\)</span> for the RB-Trees with black height h </p>
+<p><span class="arithmatex">\(<span class="arithmatex">\(T_h(x) = \sum_{i=0}^{n} a_i x^i\)</span>\)</span> 
+where <span class="arithmatex">\(a_i\)</span> denotes the number of RB-Trees with black height h and i nodes</p>
+<p>Consider the  subtree of a RB-Tree</p>
+<div class="arithmatex">\[\begin{cases} T_{h-1}(x)\  (black \ subtree) \\
+xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\ 
+\end{cases}\]</div>
+<p>Since a black root have two subtrees, we can easily get the recursive formula</p>
+<div class="arithmatex">\[T_h(x) = x(T_{h-1}(x) + xT_{h-1}^2(x))^2\]</div>
+<p>The answer is the sum of all <span class="arithmatex">\(a_n\)</span></p>
+<p><em>If the module prime is not good like 998244353 with primitive root, we need complicated MTT, which I haven't learned yet</em></p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">RB-Tree Count</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">  1</a></span>
+<span class="normal"><a href="#__codelineno-9-2">  2</a></span>
+<span class="normal"><a href="#__codelineno-9-3">  3</a></span>
+<span class="normal"><a href="#__codelineno-9-4">  4</a></span>
+<span class="normal"><a href="#__codelineno-9-5">  5</a></span>
+<span class="normal"><a href="#__codelineno-9-6">  6</a></span>
+<span class="normal"><a href="#__codelineno-9-7">  7</a></span>
+<span class="normal"><a href="#__codelineno-9-8">  8</a></span>
+<span class="normal"><a href="#__codelineno-9-9">  9</a></span>
+<span class="normal"><a href="#__codelineno-9-10"> 10</a></span>
+<span class="normal"><a href="#__codelineno-9-11"> 11</a></span>
+<span class="normal"><a href="#__codelineno-9-12"> 12</a></span>
+<span class="normal"><a href="#__codelineno-9-13"> 13</a></span>
+<span class="normal"><a href="#__codelineno-9-14"> 14</a></span>
+<span class="normal"><a href="#__codelineno-9-15"> 15</a></span>
+<span class="normal"><a href="#__codelineno-9-16"> 16</a></span>
+<span class="normal"><a href="#__codelineno-9-17"> 17</a></span>
+<span class="normal"><a href="#__codelineno-9-18"> 18</a></span>
+<span class="normal"><a href="#__codelineno-9-19"> 19</a></span>
+<span class="normal"><a href="#__codelineno-9-20"> 20</a></span>
+<span class="normal"><a href="#__codelineno-9-21"> 21</a></span>
+<span class="normal"><a href="#__codelineno-9-22"> 22</a></span>
+<span class="normal"><a href="#__codelineno-9-23"> 23</a></span>
+<span class="normal"><a href="#__codelineno-9-24"> 24</a></span>
+<span class="normal"><a href="#__codelineno-9-25"> 25</a></span>
+<span class="normal"><a href="#__codelineno-9-26"> 26</a></span>
+<span class="normal"><a href="#__codelineno-9-27"> 27</a></span>
+<span class="normal"><a href="#__codelineno-9-28"> 28</a></span>
+<span class="normal"><a href="#__codelineno-9-29"> 29</a></span>
+<span class="normal"><a href="#__codelineno-9-30"> 30</a></span>
+<span class="normal"><a href="#__codelineno-9-31"> 31</a></span>
+<span class="normal"><a href="#__codelineno-9-32"> 32</a></span>
+<span class="normal"><a href="#__codelineno-9-33"> 33</a></span>
+<span class="normal"><a href="#__codelineno-9-34"> 34</a></span>
+<span class="normal"><a href="#__codelineno-9-35"> 35</a></span>
+<span class="normal"><a href="#__codelineno-9-36"> 36</a></span>
+<span class="normal"><a href="#__codelineno-9-37"> 37</a></span>
+<span class="normal"><a href="#__codelineno-9-38"> 38</a></span>
+<span class="normal"><a href="#__codelineno-9-39"> 39</a></span>
+<span class="normal"><a href="#__codelineno-9-40"> 40</a></span>
+<span class="normal"><a href="#__codelineno-9-41"> 41</a></span>
+<span class="normal"><a href="#__codelineno-9-42"> 42</a></span>
+<span class="normal"><a href="#__codelineno-9-43"> 43</a></span>
+<span class="normal"><a href="#__codelineno-9-44"> 44</a></span>
+<span class="normal"><a href="#__codelineno-9-45"> 45</a></span>
+<span class="normal"><a href="#__codelineno-9-46"> 46</a></span>
+<span class="normal"><a href="#__codelineno-9-47"> 47</a></span>
+<span class="normal"><a href="#__codelineno-9-48"> 48</a></span>
+<span class="normal"><a href="#__codelineno-9-49"> 49</a></span>
+<span class="normal"><a href="#__codelineno-9-50"> 50</a></span>
+<span class="normal"><a href="#__codelineno-9-51"> 51</a></span>
+<span class="normal"><a href="#__codelineno-9-52"> 52</a></span>
+<span class="normal"><a href="#__codelineno-9-53"> 53</a></span>
+<span class="normal"><a href="#__codelineno-9-54"> 54</a></span>
+<span class="normal"><a href="#__codelineno-9-55"> 55</a></span>
+<span class="normal"><a href="#__codelineno-9-56"> 56</a></span>
+<span class="normal"><a href="#__codelineno-9-57"> 57</a></span>
+<span class="normal"><a href="#__codelineno-9-58"> 58</a></span>
+<span class="normal"><a href="#__codelineno-9-59"> 59</a></span>
+<span class="normal"><a href="#__codelineno-9-60"> 60</a></span>
+<span class="normal"><a href="#__codelineno-9-61"> 61</a></span>
+<span class="normal"><a href="#__codelineno-9-62"> 62</a></span>
+<span class="normal"><a href="#__codelineno-9-63"> 63</a></span>
+<span class="normal"><a href="#__codelineno-9-64"> 64</a></span>
+<span class="normal"><a href="#__codelineno-9-65"> 65</a></span>
+<span class="normal"><a href="#__codelineno-9-66"> 66</a></span>
+<span class="normal"><a href="#__codelineno-9-67"> 67</a></span>
+<span class="normal"><a href="#__codelineno-9-68"> 68</a></span>
+<span class="normal"><a href="#__codelineno-9-69"> 69</a></span>
+<span class="normal"><a href="#__codelineno-9-70"> 70</a></span>
+<span class="normal"><a href="#__codelineno-9-71"> 71</a></span>
+<span class="normal"><a href="#__codelineno-9-72"> 72</a></span>
+<span class="normal"><a href="#__codelineno-9-73"> 73</a></span>
+<span class="normal"><a href="#__codelineno-9-74"> 74</a></span>
+<span class="normal"><a href="#__codelineno-9-75"> 75</a></span>
+<span class="normal"><a href="#__codelineno-9-76"> 76</a></span>
+<span class="normal"><a href="#__codelineno-9-77"> 77</a></span>
+<span class="normal"><a href="#__codelineno-9-78"> 78</a></span>
+<span class="normal"><a href="#__codelineno-9-79"> 79</a></span>
+<span class="normal"><a href="#__codelineno-9-80"> 80</a></span>
+<span class="normal"><a href="#__codelineno-9-81"> 81</a></span>
+<span class="normal"><a href="#__codelineno-9-82"> 82</a></span>
+<span class="normal"><a href="#__codelineno-9-83"> 83</a></span>
+<span class="normal"><a href="#__codelineno-9-84"> 84</a></span>
+<span class="normal"><a href="#__codelineno-9-85"> 85</a></span>
+<span class="normal"><a href="#__codelineno-9-86"> 86</a></span>
+<span class="normal"><a href="#__codelineno-9-87"> 87</a></span>
+<span class="normal"><a href="#__codelineno-9-88"> 88</a></span>
+<span class="normal"><a href="#__codelineno-9-89"> 89</a></span>
+<span class="normal"><a href="#__codelineno-9-90"> 90</a></span>
+<span class="normal"><a href="#__codelineno-9-91"> 91</a></span>
+<span class="normal"><a href="#__codelineno-9-92"> 92</a></span>
+<span class="normal"><a href="#__codelineno-9-93"> 93</a></span>
+<span class="normal"><a href="#__codelineno-9-94"> 94</a></span>
+<span class="normal"><a href="#__codelineno-9-95"> 95</a></span>
+<span class="normal"><a href="#__codelineno-9-96"> 96</a></span>
+<span class="normal"><a href="#__codelineno-9-97"> 97</a></span>
+<span class="normal"><a href="#__codelineno-9-98"> 98</a></span>
+<span class="normal"><a href="#__codelineno-9-99"> 99</a></span>
+<span class="normal"><a href="#__codelineno-9-100">100</a></span>
+<span class="normal"><a href="#__codelineno-9-101">101</a></span>
+<span class="normal"><a href="#__codelineno-9-102">102</a></span>
+<span class="normal"><a href="#__codelineno-9-103">103</a></span>
+<span class="normal"><a href="#__codelineno-9-104">104</a></span>
+<span class="normal"><a href="#__codelineno-9-105">105</a></span>
+<span class="normal"><a href="#__codelineno-9-106">106</a></span>
+<span class="normal"><a href="#__codelineno-9-107">107</a></span>
+<span class="normal"><a href="#__codelineno-9-108">108</a></span>
+<span class="normal"><a href="#__codelineno-9-109">109</a></span>
+<span class="normal"><a href="#__codelineno-9-110">110</a></span>
+<span class="normal"><a href="#__codelineno-9-111">111</a></span>
+<span class="normal"><a href="#__codelineno-9-112">112</a></span>
+<span class="normal"><a href="#__codelineno-9-113">113</a></span>
+<span class="normal"><a href="#__codelineno-9-114">114</a></span>
+<span class="normal"><a href="#__codelineno-9-115">115</a></span>
+<span class="normal"><a href="#__codelineno-9-116">116</a></span>
+<span class="normal"><a href="#__codelineno-9-117">117</a></span>
+<span class="normal"><a href="#__codelineno-9-118">118</a></span>
+<span class="normal"><a href="#__codelineno-9-119">119</a></span>
+<span class="normal"><a href="#__codelineno-9-120">120</a></span>
+<span class="normal"><a href="#__codelineno-9-121">121</a></span>
+<span class="normal"><a href="#__codelineno-9-122">122</a></span>
+<span class="normal"><a href="#__codelineno-9-123">123</a></span>
+<span class="normal"><a href="#__codelineno-9-124">124</a></span>
+<span class="normal"><a href="#__codelineno-9-125">125</a></span>
+<span class="normal"><a href="#__codelineno-9-126">126</a></span>
+<span class="normal"><a href="#__codelineno-9-127">127</a></span>
+<span class="normal"><a href="#__codelineno-9-128">128</a></span>
+<span class="normal"><a href="#__codelineno-9-129">129</a></span>
+<span class="normal"><a href="#__codelineno-9-130">130</a></span>
+<span class="normal"><a href="#__codelineno-9-131">131</a></span>
+<span class="normal"><a href="#__codelineno-9-132">132</a></span>
+<span class="normal"><a href="#__codelineno-9-133">133</a></span>
+<span class="normal"><a href="#__codelineno-9-134">134</a></span>
+<span class="normal"><a href="#__codelineno-9-135">135</a></span>
+<span class="normal"><a href="#__codelineno-9-136">136</a></span>
+<span class="normal"><a href="#__codelineno-9-137">137</a></span>
+<span class="normal"><a href="#__codelineno-9-138">138</a></span>
+<span class="normal"><a href="#__codelineno-9-139">139</a></span>
+<span class="normal"><a href="#__codelineno-9-140">140</a></span>
+<span class="normal"><a href="#__codelineno-9-141">141</a></span>
+<span class="normal"><a href="#__codelineno-9-142">142</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="cp">#include</span><span class="cpf">&lt;bits/stdc++.h&gt;</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="cp">#define LL long long</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="p">;</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="c1">// Coefficient representation of polynomial</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="k">class</span><span class="w"> </span><span class="nc">Poly</span><span class="p">{</span><span class="w"> </span>
+<a id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="k">private</span><span class="o">:</span><span class="w"> </span>
+<a id="__codelineno-9-8" name="__codelineno-9-8"></a><span class="w">    </span><span class="c1">// Primitive root of P 998244353(7 * 17 * 2^23 + 1) is 3</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9"></a><span class="w">    </span><span class="c1">// _G = 3 ^ (-1) (Mod P)</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10"></a><span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">_G</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">332748118</span><span class="p">;</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11"></a>
+<a id="__codelineno-9-12" name="__codelineno-9-12"></a><span class="w">    </span><span class="c1">// Coefficients a[i] * x^i</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13"></a><span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="n">a</span><span class="p">;</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14"></a>
+<a id="__codelineno-9-15" name="__codelineno-9-15"></a><span class="w">    </span><span class="c1">// quick pow x^y in O(log(y))</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16"></a><span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">Pow</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">){</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18"></a><span class="w">        </span><span class="k">while</span><span class="p">(</span><span class="n">y</span><span class="p">){</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19"></a><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">LL</span><span class="p">)</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">P</span><span class="p">;</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20"></a><span class="w">            </span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">LL</span><span class="p">)</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">P</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&gt;&gt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">s</span><span class="p">;</span>
+<a id="__codelineno-9-23" name="__codelineno-9-23"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-9-24" name="__codelineno-9-24"></a><span class="k">public</span><span class="o">:</span>
+<a id="__codelineno-9-25" name="__codelineno-9-25"></a><span class="w">    </span><span class="c1">// Module </span>
+<a id="__codelineno-9-26" name="__codelineno-9-26"></a><span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">P</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">998244353</span><span class="p">;</span>
+<a id="__codelineno-9-27" name="__codelineno-9-27"></a><span class="w">    </span><span class="n">Poly</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">L</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="p">{}</span>
+<a id="__codelineno-9-28" name="__codelineno-9-28"></a><span class="w">    </span><span class="n">Poly</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_a</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="n">_a</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<a id="__codelineno-9-29" name="__codelineno-9-29"></a>
+<a id="__codelineno-9-30" name="__codelineno-9-30"></a><span class="w">    </span><span class="c1">// the length of the polynomial</span>
+<a id="__codelineno-9-31" name="__codelineno-9-31"></a><span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Length</span><span class="p">()</span><span class="k">const</span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">size</span><span class="p">();}</span>
+<a id="__codelineno-9-32" name="__codelineno-9-32"></a>
+<a id="__codelineno-9-33" name="__codelineno-9-33"></a><span class="w">    </span><span class="c1">// robust access to the coeffcient a[i]</span>
+<a id="__codelineno-9-34" name="__codelineno-9-34"></a><span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Para</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="k">const</span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">Length</span><span class="p">()</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;}</span>
+<a id="__codelineno-9-35" name="__codelineno-9-35"></a>
+<a id="__codelineno-9-36" name="__codelineno-9-36"></a><span class="w">    </span><span class="c1">// add a constant (in this problem is just for +1)</span>
+<a id="__codelineno-9-37" name="__codelineno-9-37"></a><span class="w">    </span><span class="n">Poly</span><span class="w"> </span><span class="k">operator</span><span class="w"> </span><span class="o">+</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">B</span><span class="p">){</span>
+<a id="__codelineno-9-38" name="__codelineno-9-38"></a><span class="w">        </span><span class="n">Poly</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<a id="__codelineno-9-39" name="__codelineno-9-39"></a><span class="w">        </span><span class="n">C</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">B</span><span class="p">;</span>
+<a id="__codelineno-9-40" name="__codelineno-9-40"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">C</span><span class="p">;</span>
+<a id="__codelineno-9-41" name="__codelineno-9-41"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-9-42" name="__codelineno-9-42"></a>
+<a id="__codelineno-9-43" name="__codelineno-9-43"></a><span class="w">    </span><span class="c1">// addition of two polynomial: just add the corresponding coefficient, O(length)</span>
+<a id="__codelineno-9-44" name="__codelineno-9-44"></a><span class="w">    </span><span class="n">Poly</span><span class="w"> </span><span class="k">operator</span><span class="w"> </span><span class="o">+</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Poly</span><span class="w"> </span><span class="o">&amp;</span><span class="n">B</span><span class="p">){</span>
+<a id="__codelineno-9-45" name="__codelineno-9-45"></a><span class="w">        </span><span class="n">Poly</span><span class="w"> </span><span class="nf">C</span><span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">Length</span><span class="p">(),</span><span class="w"> </span><span class="n">B</span><span class="p">.</span><span class="n">Length</span><span class="p">()));</span>
+<a id="__codelineno-9-46" name="__codelineno-9-46"></a><span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">C</span><span class="p">.</span><span class="n">Length</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">C</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">Para</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">.</span><span class="n">Para</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">P</span><span class="p">;</span>
+<a id="__codelineno-9-47" name="__codelineno-9-47"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">C</span><span class="p">;</span>
+<a id="__codelineno-9-48" name="__codelineno-9-48"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-9-49" name="__codelineno-9-49"></a>
+<a id="__codelineno-9-50" name="__codelineno-9-50"></a><span class="w">    </span><span class="c1">// plus x^i, just like shift</span>
+<a id="__codelineno-9-51" name="__codelineno-9-51"></a><span class="w">    </span><span class="n">Poly</span><span class="w"> </span><span class="k">operator</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">){</span>
+<a id="__codelineno-9-52" name="__codelineno-9-52"></a><span class="w">        </span><span class="n">Poly</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<a id="__codelineno-9-53" name="__codelineno-9-53"></a><span class="w">        </span><span class="n">C</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">Length</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w">   </span><span class="c1">// make more capacity</span>
+<a id="__codelineno-9-54" name="__codelineno-9-54"></a><span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">C</span><span class="p">.</span><span class="n">Length</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="n">C</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">C</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="p">];</span><span class="w">   </span><span class="c1">//move the data</span>
+<a id="__codelineno-9-55" name="__codelineno-9-55"></a><span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="n">C</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// set the first ones to 0</span>
+<a id="__codelineno-9-56" name="__codelineno-9-56"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">C</span><span class="p">;</span>
+<a id="__codelineno-9-57" name="__codelineno-9-57"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-9-58" name="__codelineno-9-58"></a>
+<a id="__codelineno-9-59" name="__codelineno-9-59"></a><span class="w">    </span><span class="c1">// FNTT: fast number-theoretic transform</span>
+<a id="__codelineno-9-60" name="__codelineno-9-60"></a><span class="w">    </span><span class="c1">// f = 1: transform the coefficient representation to point-value representaion </span>
+<a id="__codelineno-9-61" name="__codelineno-9-61"></a><span class="w">    </span><span class="c1">// f = -1: inv-transform as f = 1, to transform back to coefficient representation using interpolating polynomial</span>
+<a id="__codelineno-9-62" name="__codelineno-9-62"></a><span class="w">    </span><span class="c1">// both done in O(nlogn)</span>
+<a id="__codelineno-9-63" name="__codelineno-9-63"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">NTT</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pos</span><span class="p">){</span>
+<a id="__codelineno-9-64" name="__codelineno-9-64"></a><span class="w">        </span><span class="c1">// butterfly operation, transform the recursive into loops</span>
+<a id="__codelineno-9-65" name="__codelineno-9-65"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<a id="__codelineno-9-66" name="__codelineno-9-66"></a><span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="n">swap</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]]);</span>
+<a id="__codelineno-9-67" name="__codelineno-9-67"></a>
+<a id="__codelineno-9-68" name="__codelineno-9-68"></a><span class="w">        </span><span class="c1">// bottom-up calculation </span>
+<a id="__codelineno-9-69" name="__codelineno-9-69"></a><span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">L</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">L</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">L</span><span class="w"> </span><span class="o">&lt;&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">){</span>
+<a id="__codelineno-9-70" name="__codelineno-9-70"></a><span class="w">            </span><span class="c1">// the primitive root chosen W_n / (W_n ^ -1)</span>
+<a id="__codelineno-9-71" name="__codelineno-9-71"></a><span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="n">Wl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Pow</span><span class="p">((</span><span class="o">~</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">_G</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">P</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">L</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span>
+<a id="__codelineno-9-72" name="__codelineno-9-72"></a><span class="w">            </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="n">L</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)){</span>
+<a id="__codelineno-9-73" name="__codelineno-9-73"></a><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">Wk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="c1">// twiddle factor</span>
+<a id="__codelineno-9-74" name="__codelineno-9-74"></a><span class="w">                </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">L</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">Wk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">LL</span><span class="p">)</span><span class="w"> </span><span class="n">Wk</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Wl</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">P</span><span class="p">){</span>
+<a id="__codelineno-9-75" name="__codelineno-9-75"></a><span class="w">                    </span><span class="c1">// recursively done, A[j+k] &amp; A[j+k+L] are calculated at the same time</span>
+<a id="__codelineno-9-76" name="__codelineno-9-76"></a><span class="w">                    </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">],</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">LL</span><span class="p">)</span><span class="w"> </span><span class="n">Wk</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">L</span><span class="p">]</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">P</span><span class="p">;</span>
+<a id="__codelineno-9-77" name="__codelineno-9-77"></a><span class="w">                    </span><span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">P</span><span class="p">,</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">L</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">P</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">P</span><span class="p">;</span>
+<a id="__codelineno-9-78" name="__codelineno-9-78"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-9-79" name="__codelineno-9-79"></a><span class="w">            </span><span class="p">}</span><span class="w"> </span>
+<a id="__codelineno-9-80" name="__codelineno-9-80"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-9-81" name="__codelineno-9-81"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-9-82" name="__codelineno-9-82"></a>
+<a id="__codelineno-9-83" name="__codelineno-9-83"></a><span class="w">    </span><span class="c1">// NTT</span>
+<a id="__codelineno-9-84" name="__codelineno-9-84"></a><span class="w">    </span><span class="n">Poly</span><span class="w"> </span><span class="k">operator</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Poly</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_B</span><span class="p">){</span>
+<a id="__codelineno-9-85" name="__codelineno-9-85"></a><span class="w">        </span><span class="c1">// append 0s to ensure the length to be the power of 2</span>
+<a id="__codelineno-9-86" name="__codelineno-9-86"></a><span class="w">        </span><span class="c1">// it makes recursion more easily without influence the answer</span>
+<a id="__codelineno-9-87" name="__codelineno-9-87"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">L</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-9-88" name="__codelineno-9-88"></a><span class="w">        </span><span class="k">while</span><span class="p">((</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">L</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">Length</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">_B</span><span class="p">.</span><span class="n">Length</span><span class="p">())</span><span class="w"> </span><span class="n">L</span><span class="o">++</span><span class="p">;</span><span class="w">  </span>
+<a id="__codelineno-9-89" name="__codelineno-9-89"></a><span class="w">        </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_B</span><span class="p">.</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">L</span><span class="p">),</span><span class="w"> </span><span class="n">pos</span><span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">L</span><span class="p">);</span>
+<a id="__codelineno-9-90" name="__codelineno-9-90"></a><span class="w">        </span><span class="c1">// make transformation for the butterfly operation</span>
+<a id="__codelineno-9-91" name="__codelineno-9-91"></a><span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">L</span><span class="p">);</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">((</span><span class="n">i</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="n">L</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span>
+<a id="__codelineno-9-92" name="__codelineno-9-92"></a><span class="w">        </span><span class="n">L</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">L</span><span class="p">;</span>
+<a id="__codelineno-9-93" name="__codelineno-9-93"></a><span class="w">        </span><span class="n">A</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">L</span><span class="p">),</span><span class="w"> </span><span class="n">B</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">L</span><span class="p">);</span>
+<a id="__codelineno-9-94" name="__codelineno-9-94"></a>
+<a id="__codelineno-9-95" name="__codelineno-9-95"></a><span class="w">        </span><span class="n">NTT</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">pos</span><span class="p">),</span><span class="w"> </span><span class="n">NTT</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">pos</span><span class="p">);</span><span class="w">   </span><span class="c1">// change to point-value representation</span>
+<a id="__codelineno-9-96" name="__codelineno-9-96"></a><span class="w">        </span><span class="c1">// multiplication can be done in O(n) now in point-value representation</span>
+<a id="__codelineno-9-97" name="__codelineno-9-97"></a><span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">L</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">LL</span><span class="p">)</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">P</span><span class="p">;</span><span class="w">  </span>
+<a id="__codelineno-9-98" name="__codelineno-9-98"></a><span class="w">        </span><span class="n">NTT</span><span class="p">(</span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="n">pos</span><span class="p">);</span><span class="w">    </span><span class="c1">// to transform back</span>
+<a id="__codelineno-9-99" name="__codelineno-9-99"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">Inv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Pow</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="n">P</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w">   </span><span class="c1">// 1/n in module space</span>
+<a id="__codelineno-9-100" name="__codelineno-9-100"></a><span class="w">        </span><span class="c1">// trick: remove the coefficient that over n, which can&#39;t contribute to the answer</span>
+<a id="__codelineno-9-101" name="__codelineno-9-101"></a><span class="w">        </span><span class="n">C</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">min</span><span class="p">(</span><span class="n">N</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">Length</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">_B</span><span class="p">.</span><span class="n">Length</span><span class="p">()));</span><span class="w"> </span>
+<a id="__codelineno-9-102" name="__codelineno-9-102"></a><span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">C</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">LL</span><span class="p">)</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Inv</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">P</span><span class="p">;</span>
+<a id="__codelineno-9-103" name="__codelineno-9-103"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Poly</span><span class="p">(</span><span class="n">C</span><span class="p">);</span><span class="w"> </span>
+<a id="__codelineno-9-104" name="__codelineno-9-104"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-9-105" name="__codelineno-9-105"></a>
+<a id="__codelineno-9-106" name="__codelineno-9-106"></a><span class="w">    </span><span class="c1">// for debug</span>
+<a id="__codelineno-9-107" name="__codelineno-9-107"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">Print</span><span class="p">(){</span>
+<a id="__codelineno-9-108" name="__codelineno-9-108"></a><span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="o">:</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span>
+<a id="__codelineno-9-109" name="__codelineno-9-109"></a><span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<a id="__codelineno-9-110" name="__codelineno-9-110"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-9-111" name="__codelineno-9-111"></a><span class="p">};</span>
+<a id="__codelineno-9-112" name="__codelineno-9-112"></a>
+<a id="__codelineno-9-113" name="__codelineno-9-113"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+<a id="__codelineno-9-114" name="__codelineno-9-114"></a><span class="w">    </span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span>
+<a id="__codelineno-9-115" name="__codelineno-9-115"></a><span class="w">    </span><span class="c1">// T[i] denotes the generating function of RB-Tree that with bh(root) = i+1</span>
+<a id="__codelineno-9-116" name="__codelineno-9-116"></a><span class="w">    </span><span class="c1">// ai is the number of RB-trees with i nodes</span>
+<a id="__codelineno-9-117" name="__codelineno-9-117"></a><span class="w">    </span><span class="c1">// T[i] = Sum(ai * x^i)</span>
+<a id="__codelineno-9-118" name="__codelineno-9-118"></a><span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Poly</span><span class="o">&gt;</span><span class="w"> </span><span class="n">T</span><span class="p">;</span>
+<a id="__codelineno-9-119" name="__codelineno-9-119"></a><span class="w">    </span><span class="c1">// T[0] --&gt; bh(root) = 1</span>
+<a id="__codelineno-9-120" name="__codelineno-9-120"></a><span class="w">    </span><span class="c1">// a0 = 0 (impossible)</span>
+<a id="__codelineno-9-121" name="__codelineno-9-121"></a><span class="w">    </span><span class="c1">// a1 = 1 (only root)</span>
+<a id="__codelineno-9-122" name="__codelineno-9-122"></a><span class="w">    </span><span class="c1">// a2 = 2 (root with single red child)</span>
+<a id="__codelineno-9-123" name="__codelineno-9-123"></a><span class="w">    </span><span class="c1">// a3 = 1 (root with two red children)</span>
+<a id="__codelineno-9-124" name="__codelineno-9-124"></a><span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">T0</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">};</span>
+<a id="__codelineno-9-125" name="__codelineno-9-125"></a><span class="w">    </span><span class="n">T</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Poly</span><span class="p">(</span><span class="n">T0</span><span class="p">));</span>
+<a id="__codelineno-9-126" name="__codelineno-9-126"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">Ans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">Para</span><span class="p">(</span><span class="n">N</span><span class="p">);</span>
+<a id="__codelineno-9-127" name="__codelineno-9-127"></a>
+<a id="__codelineno-9-128" name="__codelineno-9-128"></a><span class="w">    </span><span class="c1">// by the amortized analysis proof in class, we know N &gt;= 2^bh(root) - 1</span>
+<a id="__codelineno-9-129" name="__codelineno-9-129"></a><span class="w">    </span><span class="c1">// thus bh(root) &lt;= log(N+1)</span>
+<a id="__codelineno-9-130" name="__codelineno-9-130"></a><span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">log2</span><span class="p">(</span><span class="n">N</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">h</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+<a id="__codelineno-9-131" name="__codelineno-9-131"></a><span class="w">        </span><span class="c1">// T[i] = x * T[i-1]^2 * (1 + x * T[i-1])^2</span>
+<a id="__codelineno-9-132" name="__codelineno-9-132"></a><span class="w">        </span><span class="c1">// Poly Ti = (T[i-1] &lt;&lt; 1) + 1;</span>
+<a id="__codelineno-9-133" name="__codelineno-9-133"></a><span class="w">        </span><span class="c1">// Ti = (Ti * Ti * T[i-1] * T[i-1]) &lt;&lt; 1;</span>
+<a id="__codelineno-9-134" name="__codelineno-9-134"></a><span class="w">        </span><span class="n">Poly</span><span class="w"> </span><span class="n">Ti</span><span class="w"> </span><span class="o">=</span><span class="p">((</span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="mi">-1</span><span class="p">]);</span>
+<a id="__codelineno-9-135" name="__codelineno-9-135"></a><span class="w">        </span><span class="n">Ti</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Ti</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Ti</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-9-136" name="__codelineno-9-136"></a><span class="w">        </span><span class="c1">// add answer for N nodes</span>
+<a id="__codelineno-9-137" name="__codelineno-9-137"></a><span class="w">        </span><span class="n">Ans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Ans</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Ti</span><span class="p">.</span><span class="n">Para</span><span class="p">(</span><span class="n">N</span><span class="p">))</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">Poly</span><span class="o">::</span><span class="n">P</span><span class="p">;</span>
+<a id="__codelineno-9-138" name="__codelineno-9-138"></a><span class="w">        </span><span class="n">T</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Ti</span><span class="p">);</span>
+<a id="__codelineno-9-139" name="__codelineno-9-139"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-9-140" name="__codelineno-9-140"></a><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Ans</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<a id="__codelineno-9-141" name="__codelineno-9-141"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-9-142" name="__codelineno-9-142"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
 </li>
 </ul>
 

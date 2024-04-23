@@ -1455,4 +1455,307 @@ $\alpha - \beta$ pruning
     $$= \Theta(N^{\log_b^a} \lg^{p+1}{N})$$
   
     ![log](./images/Master_log.png)
+
+----
+
+### FFT & FNTT
+
+> **Fast Fourier Transform & Fast Number Theoretic Transform**
+>
+> Here we only discuss the application of FFT in polynomial multiplication
+
+For coefficient representated polynomials $A(x) = \sum_{i=0}^{n-1} a_i x^i, B(x) = \sum_{i=1}^{n-1} b_i x^i$, the polynomial multication can seen as the convolutions which needs $O(n^2)$ 
+
+We can also represent a n-degree polynomial as a vector of n points $\{(x_1, A(x_1)), (x_2, A(x_2)), ... (x_{n-1},A(x_{n-1}))\}$
+
+> proof: **Lagrange Interpolation using Vandermonde Matrix**
+>
+> $$ \begin{bmatrix} 1 & x_1 & x_1^2 & \cdots & x_1^{n-1} \\ 
+1 & x_2 & x_2^2 & \cdots & x_2^{n-1} \\ 
+\vdots & \vdots & \vdots & \ddots & \vdots \\ 
+1 & x_{n-1} & x_{n-1}^2 & \cdots & x_{n-1}^{n-1} \end{bmatrix} 
+\begin{bmatrix} a_0 \\ a_1 \\ \vdots \\ a_{n-1} \end{bmatrix} = 
+\begin{bmatrix} A(x_1) \\ A(x_2) \\ \vdots \\ A(x_{n-1}) \end{bmatrix} $$
+>
+> If all $x_i$ are unique, then the determinant of the vandermonde matrix is $\prod_{1 \leq i < j \leq n} (x_j - x_i) \neq 0$, which means there exists a unique solution for the coefficient vector, or say, the polynomial can be uniquely represented by the n points
+
+Then the polynomial multiplication can be seen as the vector dot product, which can be done in $O(n)$
+
+If we use point-value representaion $\{(x_i,A(x_i))\}, \{x_i, B(x_i)\}$, then the polynomial multiplication can be seen as a vector dot product, which can be done in $O(n)$
+
+So the key point is the fast transformation between the coefficient representation and point-value representation, Which can be done in $O(nlogn)$ using FFT
+
+![1713882091475](image/ADS/1713882091475.png)
+
+- **coeffcient to point-value**
+
+    - If we randomly choose n points, then the transformation should be done in $O(n) * O(n) = O(n^2)$,  which is not so good
     
+    - Here we choose a novel method, selecting the n powers of n-th root of unity $w_n = e^{2\pi i / n}$, that is, $w_n^0, w_n, w_n^2, ... w_n^{n-1}$
+    
+        - Special property:
+        
+            - Definition: $w_n^n = 1$
+            
+            - Halving Lemma: $w_{2n}^{2k} = w_n^k$ 
+
+                *Proved easily by Euler's Formula, $w_{2n}^{2k} = e^{2\pi i \frac{2k}{2n}} = e^{2\pi i \frac{k}{n}} = w_n^k$* 
+
+            - Inverse Lemma: $w_n^{k + \frac{n}{2}} = -w_n^{k}$
+
+                *Proved easily by Euler's Formula, $w_n^{k + \frac{n}{2}} = e^{2\pi i \frac{k + \frac{n}{2}}{n}} = e^{2\pi i \frac{k}{n} + \pi i} = -e^{2\pi i \frac{k}{n}} = -w_n^k$*
+
+            - Summation Lemma: $\sum_{i=0}^{n-1} w_n^{ik} = \begin{cases} n & \text{if } n | k \\ 0 & \text{otherwise} \end{cases}$
+
+                *Proved easily by the geometric progression, $S = 1 + w_n^k + w_n^{2k} + ... + w_n^{(n-1)k} = \frac{1 - w_n^{nk}}{1 - w_n^k} = 0$*
+            
+            - *Halving & Inverse Lemmas are quite useful in the FFT algorithm, which can be seen as a divide-and-conquer algorithm*
+    
+    - Considre a polynomial $A(x) = a_0 + a_1 x + a_2 x^2 + ... + a_{n-1} x^{n-1}$,where $n = 2^k$ (Easier to cope with, so we can append 0s as coefficients to make it a power of 2)
+
+        Then we divide the polynomial into two parts:
+    
+        $$ A_1(x) = a_0 + a_2 x + a_4 x^2 + ... + a_{n-2} x^{n/2 - 1} $$
+
+        $$ A_2(x) = a_1 + a_3 x + a_5 x^2 + ... + a_{n-1} x^{n/2 - 1} $$
+
+        Then we can see that 
+        
+        $$A(x) = A_1(x^2) + xA_2(x^2)$$
+
+        Substitute $w_n^k$ and using Halving Lemma
+
+        $$A(w_n^k) = A_1(w_{n}^{2k}) + w_n^k A_2(w_{n}^{2k}) = A_1(w_{\frac{n}{2}}^k) + w_n^k A_2(w_{\frac{n}{2}}^k)$$
+
+        Substituting the rest $w_{n}^{k+\frac{n}{2}}$ and using Inverse Lemma
+
+        $$A(w_n^{k+\frac{n}{2}}) = A_1(w_{\frac{n}{2}}^k) - w_n^k A_2(w_{\frac{n}{2}}^k)$$
+
+        Now to get $A(w_n^{k})$ for $k=0,1,...n-1$，we only need to calculate $A_1(w_{\frac{n}{2}}^k)$ and $A_2(w_{\frac{n}{2}}^k)$ for $k=0,1,...\frac{n}{2}-1$, which is just half of the original problem!
+
+        ```c++ title="FFT"
+            FFT(A[0,1,...n-1]){
+                if(n == 1) return A;
+                A1 = FFT(A[0,2,...n-2])
+                A2 = FFT(A[1,3,...n-1])
+
+                w = exp(2 * pi * i / n)
+                for(int k = 0; k < n/2; k++){
+                    A[k] = A1[k] + w^k * A2[k];
+                    A[k + n/2] = A1[k] - w^k * A2[k];
+                }
+                return A;
+            }
+        ```
+
+    - More efficient way
+
+        > Use **Butterfly Operation** instead of Recursion
+        
+        *Maybe because of this photo so-called butterfly?*
+
+        ![1713884617148](image/ADS/1713884617148.png)
+
+        Check the clearer picture below, we can find the final position is just the inverse of its original position's binary represention!
+
+        So based on this discovery, we can easily transform the recursive version into an iterative version, which is more efficient.
+
+        ![1713884430459](image/ADS/1713884430459.png) 
+
+- **point-value to coefficient**
+
+    > Use the Lagrange Interpolation as mentioned above
+
+    - The Vandermond Matrix $V_n A = Y$
+    
+        $$ \begin{bmatrix} 1 & 1^1 & 1^2 & \cdots & 1^{n-1} \\ 
+        1 & w_n^1 & w_n^2 & \cdots & w_n^{n-1} \\ 
+        \vdots & \vdots & \vdots & \ddots & \vdots \\ 
+        1 & w_n^{n-1} & w_n^{2(n-1)} & \cdots & w_n^{(n-1)(n-1)} \end{bmatrix} 
+        \begin{bmatrix} a_0 \\ a_1 \\ \vdots \\ a_{n-1} \end{bmatrix} = 
+        \begin{bmatrix} y_0 \\ y_1 \\ \vdots \\ y_{n-1} \end{bmatrix} $$
+
+        Recall the knowledge in Linear Algebra, the next step is to calculate the $V_n^{-1}$, then $A = V_n^{-1}Y$
+
+        Consider the definition of inverse matrix
+
+        $$V_n^{-1} V_n = I_n$$
+
+        $$I_{ij} = \sum_{k=0}^{n-1} V_{ik} V_{kj} = $$
+
+        Then we can easily get the $V_n^{-1}$
+    
+In conclusion, the FFT algorithm is a very efficient algorithm for polynomial multiplication, which can be done in $O(n \log n)$
+
+However, since the use of double type in the complex number calculation, the precision of the result may be affected. We can then put the problem into the modulo field, which is the Fast Number Theoretic Transform (FNTT).
+
+Wonderfully, the FNTT is almost the same as the FFT, except that we change the complex n-th root of unity to the primitive root of the modulo field, which has the same properties as the n-th root of unity as mentioned above.
+
+- Example: 
+ 
+    > RB-Tree count: Count the number of different RB-Trees with N nodes.
+
+    Using **Generating Function** $T_h(x)$ for the RB-Trees with black height h 
+
+    $$T_h(x) = \sum_{i=0}^{n} a_i x^i$$ 
+    where $a_i$ denotes the number of RB-Trees with black height h and i nodes
+
+    Consider the  subtree of a RB-Tree
+
+    $$\begin{cases} T_{h-1}(x)\  (black \ subtree) \\
+    xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\ 
+    \end{cases}$$
+
+    Since a black root have two subtrees, we can easily get the recursive formula
+
+    $$T_h(x) = x(T_{h-1}(x) + xT_{h-1}^2(x))^2$$
+
+    The answer is the sum of all $a_n$
+
+    *If the module prime is not good like 998244353 with primitive root, we need complicated MTT, which I haven't learned yet*
+
+    ```c++ title="RB-Tree Count" linenums="1"
+    #include<bits/stdc++.h>
+    using namespace std;
+    #define LL long long
+    int N;
+    // Coefficient representation of polynomial
+    class Poly{ 
+    private: 
+        // Primitive root of P 998244353(7 * 17 * 2^23 + 1) is 3
+        // _G = 3 ^ (-1) (Mod P)
+        static const int G = 3, _G = 332748118;
+
+        // Coefficients a[i] * x^i
+        vector<int>a;
+
+        // quick pow x^y in O(log(y))
+        static int Pow(int x, int y){
+            int s = 1, w = x;
+            while(y){
+                if(y & 1) s = (LL) s * w % P;
+                w = (LL) w * w % P, y >>= 1;
+            }
+            return s;
+        }
+    public:
+        // Module 
+        static const int P = 998244353;
+        Poly(int L) : a(vector<int>(L, 0)) {}
+        Poly(vector<int> &_a) : a(_a) {}
+        
+        // the length of the polynomial
+        inline int Length()const{return a.size();}
+
+        // robust access to the coeffcient a[i]
+        inline int Para(int i)const{return i < Length() ? a[i] : 0;}
+
+        // add a constant (in this problem is just for +1)
+        Poly operator +(const int B){
+            Poly C = *this;
+            C.a[0] += B;
+            return C;
+        }
+
+        // addition of two polynomial: just add the corresponding coefficient, O(length)
+        Poly operator +(const Poly &B){
+            Poly C(max(this->Length(), B.Length()));
+            for(int i = 0; i < C.Length(); i++) C.a[i] = (this->Para(i) + B.Para(i)) % P;
+            return C;
+        }
+
+        // plus x^i, just like shift
+        Poly operator << (int i){
+            Poly C = *this;
+            C.a.resize(Length() + i);   // make more capacity
+            for(int k = C.Length() - 1; k >= i; k--) C.a[k] = C.a[k - i];   //move the data
+            for(int k = i - 1; k >= 0; k--) C.a[k] = 0; // set the first ones to 0
+            return C;
+        }
+
+        // FNTT: fast number-theoretic transform
+        // f = 1: transform the coefficient representation to point-value representaion 
+        // f = -1: inv-transform as f = 1, to transform back to coefficient representation using interpolating polynomial
+        // both done in O(nlogn)
+        void NTT(vector<int> &A, int f, vector<int> &pos){
+            // butterfly operation, transform the recursive into loops
+            int n = A.size();
+            for(int i = 0; i < n; i++) if(i < pos[i]) swap(A[i], A[pos[i]]);
+
+            // bottom-up calculation 
+            for(int L = 1; L < n; L <<= 1){
+                // the primitive root chosen W_n / (W_n ^ -1)
+                int Wl = Pow((~f) ? G : _G, (P - 1) / (L << 1));
+                for(int j = 0; j < n; j += (L << 1)){
+                    int Wk = 1;// twiddle factor
+                    for(int k = 0; k < L; k++, Wk = (LL) Wk * Wl % P){
+                        // recursively done, A[j+k] & A[j+k+L] are calculated at the same time
+                        int x = A[j + k], y = (LL) Wk * A[j + k + L] % P;
+                        A[j + k] = (x + y) % P, A[j + k + L] = (x - y + P) % P;
+                    }
+                } 
+            }
+        }
+
+        // NTT
+        Poly operator *(const Poly &_B){
+            // append 0s to ensure the length to be the power of 2
+            // it makes recursion more easily without influence the answer
+            int L = 1;
+            while((1<<L) < this->Length() + _B.Length()) L++;  
+            vector<int> A = a, B = _B.a, C(1<<L), pos(1<<L);
+            // make transformation for the butterfly operation
+            for(int i = 0;i < (1<<L); i++) pos[i] = (pos[i>>1] >> 1) | ((i & 1) << (L - 1));
+            L = 1 << L;
+            A.resize(L), B.resize(L);
+
+            NTT(A, 1, pos), NTT(B, 1, pos);   // change to point-value representation
+            // multiplication can be done in O(n) now in point-value representation
+            for(int i = 0; i < L; i++) C[i] = (LL)A[i] * B[i] % P;  
+            NTT(C, -1, pos);    // to transform back
+            int Inv = Pow(L, P - 2);   // 1/n in module space
+            // trick: remove the coefficient that over n, which can't contribute to the answer
+            C.resize(min(N + 1, this->Length() + _B.Length())); 
+            for(int i = 0; i < C.size();i++) C[i] = (LL) C[i] * Inv % P;
+            return Poly(C); 
+        }
+
+        // for debug
+        void Print(){
+            for(auto i:a) cout << i << " ";
+            cout << endl;
+        }
+    };
+
+    int main(){
+        cin >> N;
+        // T[i] denotes the generating function of RB-Tree that with bh(root) = i+1
+        // ai is the number of RB-trees with i nodes
+        // T[i] = Sum(ai * x^i)
+        vector<Poly> T;
+        // T[0] --> bh(root) = 1
+        // a0 = 0 (impossible)
+        // a1 = 1 (only root)
+        // a2 = 2 (root with single red child)
+        // a3 = 1 (root with two red children)
+        vector<int> T0{0, 1, 2, 1};
+        T.push_back(Poly(T0));
+        int Ans = T[0].Para(N);
+
+        // by the amortized analysis proof in class, we know N >= 2^bh(root) - 1
+        // thus bh(root) <= log(N+1)
+        for(int i=1, h = log2(N + 1);i < h;i++){
+            // T[i] = x * T[i-1]^2 * (1 + x * T[i-1])^2
+            // Poly Ti = (T[i-1] << 1) + 1;
+            // Ti = (Ti * Ti * T[i-1] * T[i-1]) << 1;
+            Poly Ti =((T[i-1] * T[i-1] << 1) + T[i-1]);
+            Ti = Ti * Ti << 1;
+            // add answer for N nodes
+            Ans = (Ans + Ti.Para(N)) % Poly::P;
+            T.push_back(Ti);
+        }
+        cout << Ans << endl;
+        return 0;
+    }
+    ```
+     
