@@ -1767,4 +1767,3 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
         return 0;
     }
     ```
-     

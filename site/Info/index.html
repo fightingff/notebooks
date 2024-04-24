@@ -1379,8 +1379,7 @@
 <p><strong>马尔可夫源的熵率</strong></p>
 <ul>
 <li>
-<div class="arithmatex">\[ H_{\infty} = \lim_{n \to \infty} H_n = 
-H(X | S) = \sum_{s_i \in K^m} P(s_i) H(X | S = s_i) \]</div>
+<div class="arithmatex">\[ H_{\infty} = \lim_{n \to \infty} H_n = H(X | S) = \sum_{s_i \in K^m} P(s_i) H(X | S = s_i) \]</div>
 </li>
 </ul>
 </li>
@@ -1405,6 +1404,9 @@ H(X | S) = \sum_{s_i \in K^m} P(s_i) H(X | S = s_i) \]</div>
 </blockquote>
 <ul>
 <li>
+<p><span class="arithmatex">\(L \to \infty,\frac{I(u^L)}{L} \to H(U)\)</span></p>
+</li>
+<li>
 <p>利用典型列（大数定律型）进行直观证明(不严格)</p>
 <p><img alt="proof" src="../images/coding1.png" /></p>
 </li>
@@ -1420,6 +1422,13 @@ H(X | S) = \sum_{s_i \in K^m} P(s_i) H(X | S = s_i) \]</div>
 <p>不等长编码</p>
 <blockquote>
 <p><span class="arithmatex">\(\bar L = \sum n_k p_k\)</span></p>
+<p><strong>不等长编码定理：</strong></p>
+<div class="arithmatex">\[\exists\bar{L}_{best}, \ \frac{H(U)}{logD} \leq \bar{L} \leq \frac{H(U)}{logD} + 1\]</div>
+<p><strong>证明：</strong></p>
+<p><img alt="1713956064568" src="../image/Info/1713956064568.png" /></p>
+<p><img alt="1713956256959" src="../image/Info/1713956256959.png" /></p>
+<p><strong>定理扩展：</strong></p>
+<p><img alt="1713956375264" src="../image/Info/1713956375264.png" /></p>
 </blockquote>
 <ul>
 <li>
@@ -1449,6 +1458,13 @@ H(X | S) = \sum_{s_i \in K^m} P(s_i) H(X | S = s_i) \]</div>
 <li>
 <p>相当于所有码字都放在一棵D叉树的叶子上，树的深度为码字的最长长度，每一层只能选择一个分支</p>
 </li>
+<li>
+<p><em>唯一可译码不一定是异字头码，但唯一可译码必定满足Kraft不等式</em></p>
+<p><img alt="1713954841540" src="../image/Info/1713954841540.png" /></p>
+</li>
+<li>
+<p><strong>重要关系：唯一可译码 --&gt; Kraft 不等式成立 --&gt; 存在同样长度分布的异字头码</strong></p>
+</li>
 </ul>
 </li>
 </ul>
@@ -1467,7 +1483,22 @@ H(X | S) = \sum_{s_i \in K^m} P(s_i) H(X | S = s_i) \]</div>
 <p>前缀码</p>
 <p><img alt="1713669267441" src="../image/Info/1713669267441.png" />   </p>
 </li>
+<li>
+<p>与 Huffman编码 相比，Shannon 编码逼近香农极限，但是收敛性能不如 Huffman 编码</p>
+</li>
 </ul>
+</li>
+<li>
+<p><em>Fano 编码</em></p>
+<p><img alt="1713957993243" src="../image/Info/1713957993243.png" /></p>
+</li>
+<li>
+<p><em>离散有记忆信源</em></p>
+<p><img alt="1713958398971" src="../image/Info/1713958398971.png" /></p>
+</li>
+<li>
+<p><em>马尔可夫信源的编码</em></p>
+<p><img alt="1713958477131" src="../image/Info/1713958477131.png" /></p>
 </li>
 </ul>
 </li>
