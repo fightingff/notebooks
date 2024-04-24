@@ -1491,7 +1491,7 @@ So the key point is the fast transformation between the coefficient representati
 
     - If we randomly choose n points, then the transformation should be done in $O(n) * O(n) = O(n^2)$,  which is not so good
     
-    - Here we choose a novel method, selecting the n powers of n-th root of unity $w_n = e^{2\pi i / n}$, that is, $w_n^0, w_n, w_n^2, ... w_n^{n-1}$
+    - Here we choose a novel method, selecting the complex n powers of n-th root of unity $w_n = e^{2\pi i / n}$, that is, $w_n^0, w_n, w_n^2, ... w_n^{n-1}$
     
         - Special property:
         
@@ -1581,15 +1581,25 @@ So the key point is the fast transformation between the coefficient representati
 
         $$V_n^{-1} V_n = I_n$$
 
-        $$I_{ij} = \sum_{k=0}^{n-1} V_{ik} V_{kj} = $$
+        $$I_{ij} = \sum_{k=0}^{n-1} V^{-1}_{ik} V_{kj} = \sum_{k=0}^{n-1} V^{-1}_{ik} w_n^{kj}$$
 
-        Then we can easily get the $V_n^{-1}$
+        Thinking of the Summation Lemma, we can *easily find* the $V_{ij}^{-1} = w_n^{-ij}$, which is the similar form of the $V_n$, like a vector-direction inverse on the complex plane
+
+        So given the point-value representation, we can solve the corresponding coefficient representation by just changing the $w_n^k$ to $w_n^{-k}$ 
     
 In conclusion, the FFT algorithm is a very efficient algorithm for polynomial multiplication, which can be done in $O(n \log n)$
 
 However, since the use of double type in the complex number calculation, the precision of the result may be affected. We can then put the problem into the modulo field, which is the Fast Number Theoretic Transform (FNTT).
 
 Wonderfully, the FNTT is almost the same as the FFT, except that we change the complex n-th root of unity to the primitive root of the modulo field, which has the same properties as the n-th root of unity as mentioned above.
+
+- *primitive root g*:
+
+    $$g_n^n \equiv 1 \pmod{P}$$
+
+    $$g_n^{\frac{n}{2}} \equiv -1 \pmod{P}$$
+
+    $$g_l = g^{\frac{P-1}{l}} \pmod{P}$$
 
 - Example: 
  
@@ -1598,6 +1608,7 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
     Using **Generating Function** $T_h(x)$ for the RB-Trees with black height h 
 
     $$T_h(x) = \sum_{i=0}^{n} a_i x^i$$ 
+    
     where $a_i$ denotes the number of RB-Trees with black height h and i nodes
 
     Consider the  subtree of a RB-Tree
@@ -1606,9 +1617,9 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
     xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\ 
     \end{cases}$$
 
-    Since a black root have two subtrees, we can easily get the recursive formula
+    Since a black root have two subtrees where order matters, we can easily get the recursive formula
 
-    $$T_h(x) = x(T_{h-1}(x) + xT_{h-1}^2(x))^2$$
+    $$T_h(x) = x N_{h-1}^2= x(T_{h-1}(x) + xT_{h-1}^2(x))^2$$
 
     The answer is the sum of all $a_n$
 
@@ -1746,8 +1757,6 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
         // thus bh(root) <= log(N+1)
         for(int i=1, h = log2(N + 1);i < h;i++){
             // T[i] = x * T[i-1]^2 * (1 + x * T[i-1])^2
-            // Poly Ti = (T[i-1] << 1) + 1;
-            // Ti = (Ti * Ti * T[i-1] * T[i-1]) << 1;
             Poly Ti =((T[i-1] * T[i-1] << 1) + T[i-1]);
             Ti = Ti * Ti << 1;
             // add answer for N nodes
