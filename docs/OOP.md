@@ -1,4 +1,4 @@
-# OOP
+    # OOP
 
 ## 整理
 
@@ -18,6 +18,12 @@
 |member(private)|class|object|object|
 |static member|class|program|global|
 |malloc|passed in-out|malloc-free|heap|
+
+### Tricks
+
+- 编程复杂度 与 现实要求 冲突时，一般选择服从现实要求比较“顺”
+
+- 没有成员变量的类 的 size 为1，用来区分，但是在其子类中不会有这个区分，即为0
 
 ## Buzzwords
 
@@ -418,3 +424,45 @@
 - **Name Hiding**
 
     - 一旦出现overload，则所有同名的函数都得覆写，否则父类的会被隐藏
+
+- **Inheritance Access Protection**
+
+    - public / protected / private: 定义继承的父类成员的访问权限
+
+    - private: default(并不是OOP语意)
+
+### Polymorphism
+
+> 多态性，静态声明 & 动态类型
+
+- Subtyping
+  
+    子类对象可以赋给父类对象, 所有父类具有的派生类都有
+
+    ![1714098664603](image/OOP/1714098664603.png) 
+    
+- Up-casting
+
+    向上造型，子类对象赋给父类对象（指针 / 引用），不会丢失子类的信息
+
+    但是只能调用父类的成员，不能调用子类的成员
+
+    **virtual**
+
+    - 定义一个接口，让编译器知道该函数将会被子类覆写，从而可以在Up-casting时用父类指针/引用调用子类函数
+  
+    - 本质上是动态变量的绑定（dynamic binding），即在运行时根据dynamic type才确定调用的函数，而非编译时的静态绑定。因此速度会相对慢一点，除非编译器发现是静态绑定，会自动转为静态绑定。
+  
+    - 编译器执行静态检查，因此父类内的接口不可省略
+  
+    - 内存存储：
+
+        **头部**有一个vptr指针，且为构造时存入
+
+        - **vptr**：虚函数表指针，指向虚函数表，存储虚函数的地址
+        
+        - **vtable**：虚函数表，存储虚函数的地址
+        
+        - **vfunc**：虚函数，存储函数的地址  
+
+       

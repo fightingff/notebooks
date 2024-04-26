@@ -862,6 +862,8 @@ $$
 
 #### Canonical Cover
 
+![1714010926789](image/Database/1714010926789.png)
+
 正则覆盖，记为$F_c$，指给定一组函数依赖F，去除所有冗余的函数依赖与属性后剩余的部分。将正则覆盖中所有左侧属性相同的依赖合并，剩余的部分称为**最小函数依赖集**，记为$F_m$。
 
 求最小函数依赖集的步骤：
@@ -871,27 +873,29 @@ $$
 3. **消除所有冗余属性：** 因为经过第一步分解，依赖右侧只有一个属性，所以冗余属性一定在左侧。只需要逐一假设左侧某个属性是多余的，找左侧剩余属性的闭包，如果闭包内包含被假设多余的属性那么它的确是多余的。
 4. **如果第3步消除了至少一个冗余属性，回到2重新检查冗余依赖，如此循环直到找不出冗余属性。**
 
+![1714011493811](image/Database/1714011493811.png)
+
 ### How to Find Candidate Key
 
 #### Primary Attribute
 
 出现在至少一个candidate key中的属性称为主属性。反之为非主属性。
 
-##### 第一步-先找主属性
+- 第一步-先找主属性
 
-先找出$F_c$或$F_m$，然后将所有属性分为以下四类：
+    先找出$F_c$或$F_m$，然后将所有属性分为以下四类：
 
-- **L类：**仅存在于依赖左侧，一定是主属性
-- **R类：**仅存在于依赖右侧，一定不是主属性
-- **N类：**没有在任何函数依赖中出现过，一定是主属性，且存在于任何一个候选码中
-- **LR类：**同时出现在了依赖两侧，**待定**
+    - **L类：**仅存在于依赖左侧，一定是主属性
+    - **R类：**仅存在于依赖右侧，一定不是主属性
+    - **N类：**没有在任何函数依赖中出现过，一定是主属性，且存在于任何一个候选码中
+    - **LR类：**同时出现在了依赖两侧，**待定**
 
-#### 第二步-找Candidate Key
+- 第二步-找Candidate Key
 
-这里是根据$F_c\ or\ F_m$分类，可以直接将L类和N类属性合并，检查其是不是candidate key。如果是根据原始关系集F分类，那么还需要逐一对N类属性与L类的所有子集的并集检查是不是candidate key，并不建议这么做。
+    这里是根据$F_c\ or\ F_m$分类，可以直接将L类和N类属性合并，检查其是不是candidate key。如果是根据原始关系集F分类，那么还需要逐一对N类属性与L类的所有子集的并集检查是不是candidate key，并不建议这么做。
 
-- 如果仅靠L类和N类就可以确定candidate key，则不需要考虑LR类。
-- 如果L类与N类的并集不是candidate key，那么这个并集与LR类的所有子集逐一取并集检查是不是candidate key。确定一个candidate key后，真包含它的所有集合都不是candidate key，可以减少一些运算量。
+    - 如果仅靠L类和N类就可以确定candidate key，则不需要考虑LR类。
+    - 如果L类与N类的并集不是candidate key，那么这个并集与LR类的所有子集逐一取并集检查是不是candidate key。确定一个candidate key后，真包含它的所有集合都不是candidate key，可以减少一些运算量。
 
 ### Decomposition
 
@@ -916,10 +920,6 @@ $$
 一般直接用定义证明。
 
 第三范式是满足依赖保持的最高范式。
-
-### BCNF(Boyce-Codd Normal Form)
-
-![1713407681831](image/Database/1713407681831.png)
 
 ### 三大范式
 
@@ -950,11 +950,9 @@ $$
 3. $F_c\ or\ F_m$中每个依赖关系一张表
 4. 如果所有candidate key都没有被任何一张表完整包含，任选一个candidate key新建一张表多的不用管
 
-上面例子满足第三范式的设计如下：
+### BCNF(Boyce-Codd Normal Form)
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220413210604899.png" alt="image-20220413210604899" style="zoom:20%;" />
-
-### BCNF
+![1713407681831](image/Database/1713407681831.png)
 
 在第三范式的基础上，要求主属性对所有候选键不能有部分依赖，或者通俗地说，对F+中的任意一组依赖关系$X\rightarrow Y$，X一定是candidate key之一。对下面这个例子：
 
@@ -984,46 +982,80 @@ $$
 
 ## 十二章 物理储存介质
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427111506198.png" alt="image-20220427111506198" style="zoom:45%;" />
+![1714016769851](image/Database/1714016769851.png)
+### 储存的评价
+
+![1714017092504](image/Database/1714017092504.png)
 
 ### 储存的分类
 
-**储存可以根据易失性分为：**
+- **储存可以根据易失性分为：**
 
-- volatile 掉电失去数据，一般容量小速度快
-- non-volatile 掉电不会失去数据，相对容量大速度慢
+    - volatile 掉电失去数据，一般容量小速度快
 
-**也可以根据层级分类：**
+    - non-volatile 掉电不会失去数据，相对容量大速度慢
 
-- primary storage 最快、一般用volatile介质实现
-- secondary storage 较快、非易失
-    - 也叫on-line storage，常见的flash memory、magnetic disks都属于此类
-- teriay storage 慢、非易失
-    - 也叫off-line storage，magnetic tape、optical storage属于此类
+- **也可以根据层级分类：**
 
-**也可以根据原理分类：**
+    - primary storage 最快、一般用volatile介质实现
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427102240054.png" alt="image-20220427102240054" style="zoom:45%;" />
+    - secondary storage 较快、非易失
+
+        - 也叫on-line storage，常见的flash memory、magnetic disks都属于此类
+
+    - teriay storage 慢、非易失
+        
+        - 也叫off-line storage，magnetic tape、optical storage属于此类
+
+- **也可以根据原理分类：**
+
+    ![1714016897776](image/Database/1714016897776.png)
+
+- **Measures**
+
+    - Disk block: logical unit for storage allocation and retrieval
+    
+        - Too small : **more transfer**
+        
+        - Too large : **space wasted**   
+    
+    - Sequential access pattern: seek required only for first block
+    
+    - Random access pattern: each access require a seek
+    
+    - I/O opeartions per second(IOPS)    
 
 ### 磁盘性能评价
 
 **磁盘性能从以下维度评价：**
 
 - Access time 访问时间
-    - 对HDD又可以细分为Seek time寻道时间和Rotation latency旋转延迟
-- Data-transfer rate 数据传输速率
+
+    - 对HDD又可以细分为Seek time寻道时间(4 ~ 10 milliseconds)和Rotation latency旋转延迟(5 ~ 20 milliseconds)
+
+- Data-transfer rate 数据传输速率(25 ~ 200 MBps)
+
 - IOPS 每秒I/O操作数
-- Mean time of failure 平均故障时间
+
+- Mean time of failure 平均故障时间(MTTF, 3 ~ 5 years)
 
 根据所访问数据的储存位置，可以将访问分为随机访问和顺序访问。顺序访问的上限主要由传输速率决定；随机访问的上限主要由IOPS决定，IOPS又主要由访问时间决定。
 
 **优化磁盘性能的常见方式：**
 
 - Buffering 缓冲区，避免重复读写相同数据
+
 - Read-ahead 预读取
-- Disk-arm-scheduling 针对HDD，相比让磁头来回横跳，适当重排IO请求使磁头有序移动能减少平均寻道时间
+
+- Disk-arm-scheduling 针对HDD，相比让磁头来回横跳，适当重排IO请求,像电梯一样，使磁头有序移动能减少平均寻道时间
+
 - File Organization 针对HDD，文件整理，使数据分布尽可能有序
+
 - Wear Leveling 针对NVM和SSD，因为擦写寿命相对有限，需要实现负载均衡
+
+- Non-volatile write buffers 延迟后大批量一同写入
+
+- Effective query processing algorithm (high-level optimization)
 
 ## 十三章 数据储存结构
 

@@ -120,3 +120,23 @@ git push --delete origin <branch\> # 删除远程分支
     git merge
     git add
     ```  
+
+- 远程仓库管理
+
+    - 删除分支
+
+        ```bash linenums="1"
+        git push --delete origin <branch\>
+        ```
+    
+    - 查看远程仓库
+
+        ```bash linenums="1"
+        git remote -v
+        ```
+    
+    - 修改远程仓库地址
+
+        ```bash linenums="1"
+        git remote set-url origin <url>
+        ```

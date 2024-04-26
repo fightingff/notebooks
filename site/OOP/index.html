@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#oop" class="md-skip">
+        <a href="#_1" class="md-skip">
           Skip to content
         </a>
       
@@ -390,8 +390,6 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
-      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
@@ -419,8 +417,6 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
-  
-    
   
   
     <label class="md-nav__title" for="__toc">
@@ -452,6 +448,15 @@
   <a href="#varibles-scope-lifetime" class="md-nav__link">
     <span class="md-ellipsis">
       varibles scope &amp; lifetime
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tricks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tricks
     </span>
   </a>
   
@@ -626,6 +631,15 @@
   <a href="#inheritance" class="md-nav__link">
     <span class="md-ellipsis">
       Inheritance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#polymorphism" class="md-nav__link">
+    <span class="md-ellipsis">
+      Polymorphism
     </span>
   </a>
   
@@ -904,8 +918,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -936,6 +948,15 @@
   <a href="#varibles-scope-lifetime" class="md-nav__link">
     <span class="md-ellipsis">
       varibles scope &amp; lifetime
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tricks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tricks
     </span>
   </a>
   
@@ -1115,6 +1136,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#polymorphism" class="md-nav__link">
+    <span class="md-ellipsis">
+      Polymorphism
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1138,7 +1168,10 @@
   
 
 
-<h1 id="oop">OOP</h1>
+  <h1>OOP</h1>
+
+<div class="highlight"><pre><span></span><code># OOP
+</code></pre></div>
 <h2 id="_1">整理</h2>
 <h3 id="_2">声明 &amp; 定义</h3>
 <p>声明不分配内存，定义分配内存</p>
@@ -1192,6 +1225,15 @@
 </tr>
 </tbody>
 </table>
+<h3 id="tricks">Tricks</h3>
+<ul>
+<li>
+<p>编程复杂度 与 现实要求 冲突时，一般选择服从现实要求比较“顺”</p>
+</li>
+<li>
+<p>没有成员变量的类 的 size 为1，用来区分，但是在其子类中不会有这个区分，即为0</p>
+</li>
+</ul>
 <h2 id="buzzwords">Buzzwords</h2>
 <ul>
 <li>
@@ -1785,6 +1827,60 @@
 <p><strong>Name Hiding</strong></p>
 <ul>
 <li>一旦出现overload，则所有同名的函数都得覆写，否则父类的会被隐藏</li>
+</ul>
+</li>
+<li>
+<p><strong>Inheritance Access Protection</strong></p>
+<ul>
+<li>
+<p>public / protected / private: 定义继承的父类成员的访问权限</p>
+</li>
+<li>
+<p>private: default(并不是OOP语意)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="polymorphism">Polymorphism</h3>
+<blockquote>
+<p>多态性，静态声明 &amp; 动态类型</p>
+</blockquote>
+<ul>
+<li>
+<p>Subtyping</p>
+<p>子类对象可以赋给父类对象, 所有父类具有的派生类都有</p>
+<p><img alt="1714098664603" src="../image/OOP/1714098664603.png" /> </p>
+</li>
+<li>
+<p>Up-casting</p>
+<p>向上造型，子类对象赋给父类对象（指针 / 引用），不会丢失子类的信息</p>
+<p>但是只能调用父类的成员，不能调用子类的成员</p>
+<p><strong>virtual</strong></p>
+<ul>
+<li>
+<p>定义一个接口，让编译器知道该函数将会被子类覆写，从而可以在Up-casting时用父类指针/引用调用子类函数</p>
+</li>
+<li>
+<p>本质上是动态变量的绑定（dynamic binding），即在运行时根据dynamic type才确定调用的函数，而非编译时的静态绑定。因此速度会相对慢一点，除非编译器发现是静态绑定，会自动转为静态绑定。</p>
+</li>
+<li>
+<p>编译器执行静态检查，因此父类内的接口不可省略</p>
+</li>
+<li>
+<p>内存存储：</p>
+<p><strong>头部</strong>有一个vptr指针，且为构造时存入</p>
+<ul>
+<li>
+<p><strong>vptr</strong>：虚函数表指针，指向虚函数表，存储虚函数的地址</p>
+</li>
+<li>
+<p><strong>vtable</strong>：虚函数表，存储虚函数的地址</p>
+</li>
+<li>
+<p><strong>vfunc</strong>：虚函数，存储函数的地址  </p>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
