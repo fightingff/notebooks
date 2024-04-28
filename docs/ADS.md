@@ -1470,12 +1470,12 @@ We can also represent a n-degree polynomial as a vector of n points $\{(x_1, A(x
 
 > proof: **Lagrange Interpolation using Vandermonde Matrix**
 >
-> $$ \begin{bmatrix} 1 & x_1 & x_1^2 & \cdots & x_1^{n-1} \\ 
-1 & x_2 & x_2^2 & \cdots & x_2^{n-1} \\ 
+> $$ \begin{bmatrix} 1 & x_0 & x_0^2 & \cdots & x_0^{n-1} \\ 
+1 & x_1 & x_1^2 & \cdots & x_1^{n-1} \\ 
 \vdots & \vdots & \vdots & \ddots & \vdots \\ 
 1 & x_{n-1} & x_{n-1}^2 & \cdots & x_{n-1}^{n-1} \end{bmatrix} 
 \begin{bmatrix} a_0 \\ a_1 \\ \vdots \\ a_{n-1} \end{bmatrix} = 
-\begin{bmatrix} A(x_1) \\ A(x_2) \\ \vdots \\ A(x_{n-1}) \end{bmatrix} $$
+\begin{bmatrix} A(x_0) \\ A(x_1) \\ \vdots \\ A(x_{n-1}) \end{bmatrix} $$
 >
 > If all $x_i$ are unique, then the determinant of the vandermonde matrix is $\prod_{1 \leq i < j \leq n} (x_j - x_i) \neq 0$, which means there exists a unique solution for the coefficient vector, or say, the polynomial can be uniquely represented by the n points
 
