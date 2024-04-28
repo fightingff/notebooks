@@ -1477,7 +1477,7 @@ We can also represent a n-degree polynomial as a vector of n points $\{(x_1, A(x
 \begin{bmatrix} a_0 \\ a_1 \\ \vdots \\ a_{n-1} \end{bmatrix} = 
 \begin{bmatrix} A(x_0) \\ A(x_1) \\ \vdots \\ A(x_{n-1}) \end{bmatrix} $$
 >
-> If all $x_i$ are unique, then the determinant of the vandermonde matrix is $\prod_{1 \leq i < j \leq n} (x_j - x_i) \neq 0$, which means there exists a unique solution for the coefficient vector, or say, the polynomial can be uniquely represented by the n points
+> If all $x_i$ are unique, then the determinant of the vandermonde matrix is $\prod_{0 \leq i < j < n} (x_j - x_i) \neq 0$, which means there exists a unique solution for the coefficient vector, or say, the polynomial can be uniquely represented by the n points
 
 Then the polynomial multiplication can be seen as the vector dot product, which can be done in $O(n)$
 
