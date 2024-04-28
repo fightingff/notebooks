@@ -3453,12 +3453,12 @@
 <p>We can also represent a n-degree polynomial as a vector of n points <span class="arithmatex">\(\{(x_1, A(x_1)), (x_2, A(x_2)), ... (x_{n-1},A(x_{n-1}))\}\)</span></p>
 <blockquote>
 <p>proof: <strong>Lagrange Interpolation using Vandermonde Matrix</strong></p>
-<div class="arithmatex">\[ \begin{bmatrix} 1 &amp; x_1 &amp; x_1^2 &amp; \cdots &amp; x_1^{n-1} \\ 
-1 &amp; x_2 &amp; x_2^2 &amp; \cdots &amp; x_2^{n-1} \\ 
+<div class="arithmatex">\[ \begin{bmatrix} 1 &amp; x_0 &amp; x_0^2 &amp; \cdots &amp; x_0^{n-1} \\ 
+1 &amp; x_1 &amp; x_1^2 &amp; \cdots &amp; x_1^{n-1} \\ 
 \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ 
 1 &amp; x_{n-1} &amp; x_{n-1}^2 &amp; \cdots &amp; x_{n-1}^{n-1} \end{bmatrix} 
 \begin{bmatrix} a_0 \\ a_1 \\ \vdots \\ a_{n-1} \end{bmatrix} = 
-\begin{bmatrix} A(x_1) \\ A(x_2) \\ \vdots \\ A(x_{n-1}) \end{bmatrix} \]</div>
+\begin{bmatrix} A(x_0) \\ A(x_1) \\ \vdots \\ A(x_{n-1}) \end{bmatrix} \]</div>
 <p>If all <span class="arithmatex">\(x_i\)</span> are unique, then the determinant of the vandermonde matrix is <span class="arithmatex">\(\prod_{1 \leq i &lt; j \leq n} (x_j - x_i) \neq 0\)</span>, which means there exists a unique solution for the coefficient vector, or say, the polynomial can be uniquely represented by the n points</p>
 </blockquote>
 <p>Then the polynomial multiplication can be seen as the vector dot product, which can be done in <span class="arithmatex">\(O(n)\)</span></p>
