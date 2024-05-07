@@ -1767,3 +1767,123 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
         return 0;
     }
     ```
+
+----
+
+### NP-Completeness
+
+- **P: Polynomial Time**
+
+    - The class of problems that can be solved in polynomial time
+
+- **NP: Nondeterministic Polynomial Time**
+
+    - The class of problems for which a solution can be verified in polynomial time
+
+- **NP-Hard**
+
+    - A problem is NP-Hard if every problem in NP can be reduced to it in polynomial time ($L^{'} \leq_p L$, not harder than)
+
+    - **May not in NP**
+
+- **NP-Complete**
+
+    - A problem is NP-Complete if it is **in NP** and is **NP-Hard**
+  
+- Some items:
+
+    - deterministic turing machine: a machine that can only have one possible state at any time
+    
+    - non-deterministic turing machine: a machine that can have multiple possible states at any time, and can choose best one
+
+- Some NPC problems
+
+    - **SAT**: Given a boolean formula, is there an assignment of truth values to the variables that makes the formula true?
+    
+    - **3-SAT**: Given a boolean formula in conjunctive normal form, where each clause has exactly 3 literals, is there an assignment of truth values to the variables that makes the formula true?
+    
+    - **Vertex Cover**: Given a graph G and an integer k, is there a set of k vertices such that each edge in G is incident to at least one vertex in the set?
+    
+    - **Hamiltonian Cycle**: Given a graph G, is there a simple cycle that visits every vertex exactly once?
+    
+    - **Subset Sum**: Given a set of integers and an integer k, is there a subset of the integers that sums to k?
+    
+    - **Traveling Salesman Problem**: Given a set of cities and distances between them, is there a tour that visits each city exactly once and has total length at most k?
+    
+    - **Knapsack Problem**: Given a set of items, each with a weight and a value, and a knapsack with a weight limit, is there a subset of the items that fits in the knapsack and has total value at least k?
+    
+    - **Partition**: Given a set of integers, is there a partition of the integers into two sets such that the sum of the integers in each set is equal?
+
+----
+
+### Approximation
+
+> $\rho(n)$-approximation algorithm: $\max\{\frac{C}{C^*},\frac{C^*}{C}\}\leq \rho(n)$
+
+- approximation scheme: $\forall \epsilon > 0, \exists \rho(n) \leq 1 + \epsilon$
+
+- PTAS: Polynomial Time Approximation Scheme
+
+    复杂度为规模n的一个多项式
+
+- FPTAS: Fully Polynomial Time Approximation Scheme
+
+    复杂度同时为规模n以及 $\frac{1}{\epsilon}$ 的一个多项式
+
+- Some problems:
+
+    - Vertex Cover: $\rho(n) = 2$
+    
+        - 每次挑选一条边，将其两端的点加入集合，并删除对应邻边，直到所有边都被覆盖 
+    
+    - Set Cover: $\rho(n) = O(\log n)$
+    
+        - 每次选择覆盖最多未覆盖元素的集合，直到所有元素都被覆盖
+
+    - 三角不等式约束的TSP: $\rho(n) = 2$
+
+        - 生成树的最小边权和即为TSP的下界，然后遍历生成树使得每条边恰好被访问两次，根据三角不等式，可以证明这个解为上界
+    
+    - Bin packing
+    
+        - Next Fit: $\rho(n) = 2$
+        
+            - 每次只考虑上一桶能否装下，则相邻桶相加必大于1,从而得出上界 
+
+        - First Fit: $\rho(n) = 1.7$  
+        
+            - 每次找到第一个能装下的桶
+        
+        - Best Fit：$\rho(n) = 1.7$
+        
+            - 每次找到最合适的桶（剩余空间最小的）
+        
+        - Online：$\rho(n) \geq \frac{5}{3}$ 
+    
+        - Offline: $\rho(n) \leq \frac{11}{9}M+\frac{6}{9}$
+    
+    - Knapsack
+    
+        - greedy
+
+            $P_{greedy} = \max \{P_{max},P_{density}\}$
+
+            ![1714996604887](image/ADS/1714996604887.png)  
+
+        - round
+        
+            ![1714996744439](image/ADS/1714996744439.png)
+    
+    - K-centers
+    
+        - binary search & check: $\rho(n) = 2$
+
+            - 二分搜索半径，然后检查直径为2r是否能够覆盖所有点 
+
+                ![1714997132626](image/ADS/1714997132626.png)
+        
+        - smarter way: $\rho(n) = 2$
+        
+            ![1714997308174](image/ADS/1714997308174.png) 
+        
+        - lower bound: $\rho(n) = 2$

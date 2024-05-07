@@ -550,6 +550,24 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#np-completeness" class="md-nav__link">
+    <span class="md-ellipsis">
+      NP-Completeness
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#approximation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Approximation
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -990,6 +1008,24 @@
   <a href="#fft-fntt" class="md-nav__link">
     <span class="md-ellipsis">
       FFT &amp; FNTT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#np-completeness" class="md-nav__link">
+    <span class="md-ellipsis">
+      NP-Completeness
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#approximation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Approximation
     </span>
   </a>
   
@@ -3869,6 +3905,184 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <a id="__codelineno-9-139" name="__codelineno-9-139"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <a id="__codelineno-9-140" name="__codelineno-9-140"></a><span class="p">}</span>
 </code></pre></div></td></tr></table></div>
+</li>
+</ul>
+<hr />
+<h3 id="np-completeness">NP-Completeness</h3>
+<ul>
+<li>
+<p><strong>P: Polynomial Time</strong></p>
+<ul>
+<li>The class of problems that can be solved in polynomial time</li>
+</ul>
+</li>
+<li>
+<p><strong>NP: Nondeterministic Polynomial Time</strong></p>
+<ul>
+<li>The class of problems for which a solution can be verified in polynomial time</li>
+</ul>
+</li>
+<li>
+<p><strong>NP-Hard</strong></p>
+<ul>
+<li>
+<p>A problem is NP-Hard if every problem in NP can be reduced to it in polynomial time (<span class="arithmatex">\(L^{'} \leq_p L\)</span>, not harder than)</p>
+</li>
+<li>
+<p><strong>May not in NP</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>NP-Complete</strong></p>
+<ul>
+<li>A problem is NP-Complete if it is <strong>in NP</strong> and is <strong>NP-Hard</strong></li>
+</ul>
+</li>
+<li>
+<p>Some items:</p>
+<ul>
+<li>
+<p>deterministic turing machine: a machine that can only have one possible state at any time</p>
+</li>
+<li>
+<p>non-deterministic turing machine: a machine that can have multiple possible states at any time, and can choose best one</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Some NPC problems</p>
+<ul>
+<li>
+<p><strong>SAT</strong>: Given a boolean formula, is there an assignment of truth values to the variables that makes the formula true?</p>
+</li>
+<li>
+<p><strong>3-SAT</strong>: Given a boolean formula in conjunctive normal form, where each clause has exactly 3 literals, is there an assignment of truth values to the variables that makes the formula true?</p>
+</li>
+<li>
+<p><strong>Vertex Cover</strong>: Given a graph G and an integer k, is there a set of k vertices such that each edge in G is incident to at least one vertex in the set?</p>
+</li>
+<li>
+<p><strong>Hamiltonian Cycle</strong>: Given a graph G, is there a simple cycle that visits every vertex exactly once?</p>
+</li>
+<li>
+<p><strong>Subset Sum</strong>: Given a set of integers and an integer k, is there a subset of the integers that sums to k?</p>
+</li>
+<li>
+<p><strong>Traveling Salesman Problem</strong>: Given a set of cities and distances between them, is there a tour that visits each city exactly once and has total length at most k?</p>
+</li>
+<li>
+<p><strong>Knapsack Problem</strong>: Given a set of items, each with a weight and a value, and a knapsack with a weight limit, is there a subset of the items that fits in the knapsack and has total value at least k?</p>
+</li>
+<li>
+<p><strong>Partition</strong>: Given a set of integers, is there a partition of the integers into two sets such that the sum of the integers in each set is equal?</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="approximation">Approximation</h3>
+<blockquote>
+<p><span class="arithmatex">\(\rho(n)\)</span>-approximation algorithm: <span class="arithmatex">\(\max\{\frac{C}{C^*},\frac{C^*}{C}\}\leq \rho(n)\)</span></p>
+</blockquote>
+<ul>
+<li>
+<p>approximation scheme: <span class="arithmatex">\(\forall \epsilon &gt; 0, \exists \rho(n) \leq 1 + \epsilon\)</span></p>
+</li>
+<li>
+<p>PTAS: Polynomial Time Approximation Scheme</p>
+<p>复杂度为规模n的一个多项式</p>
+</li>
+<li>
+<p>FPTAS: Fully Polynomial Time Approximation Scheme</p>
+<p>复杂度同时为规模n以及 <span class="arithmatex">\(\frac{1}{\epsilon}\)</span> 的一个多项式</p>
+</li>
+<li>
+<p>Some problems:</p>
+<ul>
+<li>
+<p>Vertex Cover: <span class="arithmatex">\(\rho(n) = 2\)</span></p>
+<ul>
+<li>每次挑选一条边，将其两端的点加入集合，并删除对应邻边，直到所有边都被覆盖 </li>
+</ul>
+</li>
+<li>
+<p>Set Cover: <span class="arithmatex">\(\rho(n) = O(\log n)\)</span></p>
+<ul>
+<li>每次选择覆盖最多未覆盖元素的集合，直到所有元素都被覆盖</li>
+</ul>
+</li>
+<li>
+<p>三角不等式约束的TSP: <span class="arithmatex">\(\rho(n) = 2\)</span></p>
+<ul>
+<li>生成树的最小边权和即为TSP的下界，然后遍历生成树使得每条边恰好被访问两次，根据三角不等式，可以证明这个解为上界</li>
+</ul>
+</li>
+<li>
+<p>Bin packing</p>
+<ul>
+<li>
+<p>Next Fit: <span class="arithmatex">\(\rho(n) = 2\)</span></p>
+<ul>
+<li>每次只考虑上一桶能否装下，则相邻桶相加必大于1,从而得出上界 </li>
+</ul>
+</li>
+<li>
+<p>First Fit: <span class="arithmatex">\(\rho(n) = 1.7\)</span>  </p>
+<ul>
+<li>每次找到第一个能装下的桶</li>
+</ul>
+</li>
+<li>
+<p>Best Fit：<span class="arithmatex">\(\rho(n) = 1.7\)</span></p>
+<ul>
+<li>每次找到最合适的桶（剩余空间最小的）</li>
+</ul>
+</li>
+<li>
+<p>Online：<span class="arithmatex">\(\rho(n) \geq \frac{5}{3}\)</span> </p>
+</li>
+<li>
+<p>Offline: <span class="arithmatex">\(\rho(n) \leq \frac{11}{9}M+\frac{6}{9}\)</span></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Knapsack</p>
+<ul>
+<li>
+<p>greedy</p>
+<p><span class="arithmatex">\(P_{greedy} = \max \{P_{max},P_{density}\}\)</span></p>
+<p><img alt="1714996604887" src="../image/ADS/1714996604887.png" />  </p>
+</li>
+<li>
+<p>round</p>
+<p><img alt="1714996744439" src="../image/ADS/1714996744439.png" /></p>
+</li>
+</ul>
+</li>
+<li>
+<p>K-centers</p>
+<ul>
+<li>
+<p>binary search &amp; check: <span class="arithmatex">\(\rho(n) = 2\)</span></p>
+<ul>
+<li>
+<p>二分搜索半径，然后检查直径为2r是否能够覆盖所有点 </p>
+<p><img alt="1714997132626" src="../image/ADS/1714997132626.png" /></p>
+</li>
+</ul>
+</li>
+<li>
+<p>smarter way: <span class="arithmatex">\(\rho(n) = 2\)</span></p>
+<p><img alt="1714997308174" src="../image/ADS/1714997308174.png" /> </p>
+</li>
+<li>
+<p>lower bound: <span class="arithmatex">\(\rho(n) = 2\)</span></p>
+</li>
+</ul>
+</li>
+</ul>
 </li>
 </ul>
 
