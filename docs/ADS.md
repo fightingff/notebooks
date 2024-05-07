@@ -1880,7 +1880,7 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
             - 二分搜索半径，然后检查直径为2r是否能够覆盖所有点 
 
-                ![1714997132626](image/ADS/1714997132626.png)
+                ![17149         97132626](image/ADS/1714997132626.png)
         
         - smarter way: $\rho(n) = 2$
         
