@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.4">
     
     
       
@@ -4782,7 +4782,7 @@ $$</p>
 <p>当<span class="arithmatex">\(F^+=F_1^+\cup F_2^+\cup...\)</span>时称这个拆分满足依赖保持(<strong>注意这仅仅是个充分条件</strong>)</p>
 <p>同样的，由于函数闭包的计算代价过高，可以使用如下<strong>属性闭包</strong>来代替。相当于每次计算某条依赖限定在 <span class="arithmatex">\(F_i\)</span> 上的属性闭包，再合并起来，检查是否将这条依赖保持 </p>
 <p><img alt="1714203819519" src="../image/Database/1714203819519.png" /></p>
-<p><em>第三范式是满足依赖保持的最高范式, BC范式不能保证依赖保持</em>**</p>
+<p><em>第三范式是满足依赖保持的最高范式, BC范式不能保证依赖保持</em></p>
 <h3 id="_13">第三范式</h3>
 <h4 id="_14">三大范式</h4>
 <ul>
@@ -5100,19 +5100,30 @@ $$</p>
 <p>另一方面你的数据结构怎么与储存介质相配合优化，比如最重要的怎么以扇区为单位大小读写？</p>
 <h3 id="_22">单条记录</h3>
 <h4 id="_23">定长数据</h4>
-<p>按行存放（<strong>Row-Oriented Storage</strong>）的定长数据的增查改都容易实现，删除一般有两种方式：</p>
+<p>按行存放（<strong>Row-Oriented Storage</strong>）的定长数据的增查改都容易实现（一般不允许跨block存储），删除一般有三种方式：</p>
 <ul>
-<li>删除后的空位用链表串联供下次插入用（图中所示）</li>
-<li>删除后将最下面的一个数据移到删除后的空位</li>
+<li>
+<p>删除后将后面的数据前移（可以保持某些键的顺序）</p>
+</li>
+<li>
+<p>删除后的空位用链表串联供下次插入用</p>
+</li>
+<li>
+<p>删除后将最下面的一个数据移到删除后的空位</p>
+</li>
 </ul>
-<p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427103406875.png" alt="image-20220427103406875" style="zoom:50%;" /></p>
 <p>但是数据还可以按列存放，称为<strong>Columnar Representation或Column-Oriented Storage</strong>：</p>
 <ul>
-<li>增删查改的实现与上面类似的</li>
-<li>按列存放更有利于向量运算</li>
-<li>如果按属性访问多于按tuple访问，这种储存方式会更快</li>
+<li>
+<p>增删查改的实现与上面类似的</p>
+</li>
+<li>
+<p>按列存放更有利于向量运算</p>
+</li>
+<li>
+<p>如果按属性访问多于按tuple访问，这种储存方式会更快</p>
+</li>
 </ul>
-<p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427135738878.png" alt="image-20220427135738878" style="zoom:55%;" /></p>
 <h4 id="_24">不定长数据</h4>
 <ul>
 <li>
@@ -5125,23 +5136,35 @@ $$</p>
 </ul>
 <p>最常见的结构如图所示：</p>
 <ul>
-<li>定长的数据和不定长数据的定长表示放前面</li>
-<li>空位图放中间</li>
-<li>不定长数据的本体放后面</li>
+<li>
+<p>定长的数据和不定长数据的定长表示放前面</p>
+</li>
+<li>
+<p>空位图放中间</p>
+</li>
+<li>
+<p>不定长数据的本体放后面</p>
+</li>
 </ul>
-<p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427105742228.png" alt="image-20220427105742228" style="zoom:45%;" /></p>
+<p><img alt="1715221718522" src="../image/Database/1715221718522.png" /></p>
 <h3 id="_25">数据页</h3>
 <p>定长数据非常容易构建数据页。</p>
 <p>不定长数据的数据页一般采用两头夹击的结构便于对齐。最常见的实现方式如图，Header包含本页中records相关信息：</p>
 <ul>
-<li>record数量，方便下一次插入record指针，防止将free space中的数据视为record指针</li>
-<li>free space末尾位置，方便下一次插入record</li>
-<li>指向各record的指针（一般是偏移量形式）</li>
+<li>
+<p>record数量，方便下一次插入record指针，防止将free space中的数据视为record指针</p>
+</li>
+<li>
+<p>free space末尾位置，方便下一次插入record</p>
+</li>
+<li>
+<p>指向各record的指针（一般是偏移量形式）</p>
+</li>
 </ul>
-<p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427110832599.png" alt="image-20220427110832599" style="zoom:40%;" /></p>
+<p><img alt="1715221964148" src="../image/Database/1715221964148.png" /></p>
 <h3 id="_26">文件组织</h3>
 <p>需要设计单条数据和数据页如何分布在文件内部。下图是几种常见的结构：</p>
-<p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220427113558547.png" alt="image-20220427113558547" style="zoom:45%;" /></p>
+<p><img alt="1715222315167" src="../image/Database/1715222315167.png" /></p>
 <h4 id="heap">Heap</h4>
 <p>Heap常用的优化方式是Free-space map，剩余空间图中的元素表示对应的block中还有多少剩余空间。例如下图中first level表示从第0个块开始，块内剩余空间分别为4、2、1、4、7...个单位。</p>
 <p>当文件非常大时，还可以将Free-space map分层形成树形结构，例如下图中将first level每4个一组创建了第二层map。</p>
