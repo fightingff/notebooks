@@ -508,3 +508,85 @@
     > 传递指针，销毁原对象
 
     - 使用 `std::move()` 转为右值
+
+### Overloading Operator
+
+- Can
+
+    ![1715911657490](image/OOP/1715911657490.png)
+
+- Can't
+
+    ![1715911919152](image/OOP/1715911919152.png)
+
+- Don't
+  
+    `&&` `||` `,`
+
+#### ProtoTypes
+
+- Tips
+
+    ![1715913261767](image/OOP/1715913261767.png)
+
+- Member operator
+
+    *注意，调用时左边应该为对象（左结合）*
+
+    - binary
+
+        - `T operator+(const T &x)`
+
+    - unary
+
+        - `T operator-()`
+
+- Global operator
+
+    *为了访问私有变量，可以使用 public / friend*
+
+    - binary
+
+        - `T operator+(const T &x, const T &y)`
+
+    - unary
+
+        - `T operator-(const T &x)`
+
+- Some
+
+    ![1715913842344](image/OOP/1715913842344.png)
+
+    ![1715914279609](image/OOP/1715914279609.png)
+
+    (Relational, just need define `==` & `<`)
+
+    ![1715914907475](image/OOP/1715914907475.png)
+
+    ![1715915485582](image/OOP/1715915485582.png)
+
+    ![1715915499073](image/OOP/1715915499073.png)
+
+    ![1715915619644](image/OOP/1715915619644.png)
+
+    ![1715915874386](image/OOP/1715915874386.png)
+
+    ![1715916428225](image/OOP/1715916428225.png)
+
+#### Argument passing
+
+- read-only argument: `const T &x`
+
+- const member function(not change `this`): `const T`
+
+- const result(can't be L-value): `const T`
+
+- always use reference
+
+#### Type conversion
+
+> `explicit` to avoid `implicit conversion`
+
+![1715916652058](image/OOP/1715916652058.png)
+
+![1715916854154](image/OOP/1715916854154.png)
