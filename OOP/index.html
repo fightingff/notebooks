@@ -656,6 +656,48 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#overloading-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overloading Operator
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Overloading Operator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prototypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      ProtoTypes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#argument-passing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Argument passing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type conversion
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1160,6 +1202,48 @@
       Copy &amp; Move
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overloading-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overloading Operator
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Overloading Operator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prototypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      ProtoTypes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#argument-passing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Argument passing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type conversion
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1963,6 +2047,97 @@
 </ul>
 </li>
 </ul>
+<h3 id="overloading-operator">Overloading Operator</h3>
+<ul>
+<li>
+<p>Can</p>
+<p><img alt="1715911657490" src="../image/OOP/1715911657490.png" /></p>
+</li>
+<li>
+<p>Can't</p>
+<p><img alt="1715911919152" src="../image/OOP/1715911919152.png" /></p>
+</li>
+<li>
+<p>Don't</p>
+<p><code>&amp;&amp;</code> <code>||</code> <code>,</code></p>
+</li>
+</ul>
+<h4 id="prototypes">ProtoTypes</h4>
+<ul>
+<li>
+<p>Tips</p>
+<p><img alt="1715913261767" src="../image/OOP/1715913261767.png" /></p>
+</li>
+<li>
+<p>Member operator</p>
+<p><em>注意，调用时左边应该为对象（左结合）</em></p>
+<ul>
+<li>
+<p>binary</p>
+<ul>
+<li><code>T operator+(const T &amp;x)</code></li>
+</ul>
+</li>
+<li>
+<p>unary</p>
+<ul>
+<li><code>T operator-()</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Global operator</p>
+<p><em>为了访问私有变量，可以使用 public / friend</em></p>
+<ul>
+<li>
+<p>binary</p>
+<ul>
+<li><code>T operator+(const T &amp;x, const T &amp;y)</code></li>
+</ul>
+</li>
+<li>
+<p>unary</p>
+<ul>
+<li><code>T operator-(const T &amp;x)</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Some</p>
+<p><img alt="1715913842344" src="../image/OOP/1715913842344.png" /></p>
+<p><img alt="1715914279609" src="../image/OOP/1715914279609.png" /></p>
+<p>(Relational, just need define <code>==</code> &amp; <code>&lt;</code>)</p>
+<p><img alt="1715914907475" src="../image/OOP/1715914907475.png" /></p>
+<p><img alt="1715915485582" src="../image/OOP/1715915485582.png" /></p>
+<p><img alt="1715915499073" src="../image/OOP/1715915499073.png" /></p>
+<p><img alt="1715915619644" src="../image/OOP/1715915619644.png" /></p>
+<p><img alt="1715915874386" src="../image/OOP/1715915874386.png" /></p>
+<p><img alt="1715916428225" src="../image/OOP/1715916428225.png" /></p>
+</li>
+</ul>
+<h4 id="argument-passing">Argument passing</h4>
+<ul>
+<li>
+<p>read-only argument: <code>const T &amp;x</code></p>
+</li>
+<li>
+<p>const member function(not change <code>this</code>): <code>const T</code></p>
+</li>
+<li>
+<p>const result(can't be L-value): <code>const T</code></p>
+</li>
+<li>
+<p>always use reference</p>
+</li>
+</ul>
+<h4 id="type-conversion">Type conversion</h4>
+<blockquote>
+<p><code>explicit</code> to avoid <code>implicit conversion</code></p>
+</blockquote>
+<p><img alt="1715916652058" src="../image/OOP/1715916652058.png" /></p>
+<p><img alt="1715916854154" src="../image/OOP/1715916854154.png" /></p>
 
 
 
