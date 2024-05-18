@@ -31,6 +31,8 @@ theme:
   name: material
   highlightjs: true
   hljs_style: atom-one-dark
+  features:
+    - content.code.copy
 
 extra_css:
     - stylesheets/extra.css
@@ -44,6 +46,8 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.arithmatex:
       generic: true
+  - admonition
+  - pymdownx.details
 
 extra_javascript:
   - javascripts/mathjax.js

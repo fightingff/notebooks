@@ -1247,10 +1247,9 @@
 </li>
 </ul>
 </li>
-<li>
-<p>Code</p>
-</li>
 </ul>
+<details class="collapsible">
+<summary>Code</summary>
 <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">AVL Tree</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
@@ -1375,6 +1374,7 @@
 <a id="__codelineno-0-61" name="__codelineno-0-61"></a>
 <a id="__codelineno-0-62" name="__codelineno-0-62"></a><span class="p">}</span><span class="n">Tree</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div>
+</details>
 <hr />
 <h3 id="splay">Splay</h3>
 <ul>
@@ -1443,10 +1443,9 @@
 <li>Splaying roughly halves the depth of most nodes on the access path. </li>
 </ul>
 </li>
-<li>
-<p>Code (Not checked yet)</p>
-</li>
 </ul>
+<details class="collapsible">
+<summary>Code (Not checked yet)</summary>
 <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Splay Tree</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
@@ -1553,6 +1552,7 @@
 <a id="__codelineno-1-52" name="__codelineno-1-52"></a><span class="w">    </span><span class="p">}</span>
 <a id="__codelineno-1-53" name="__codelineno-1-53"></a><span class="p">}</span><span class="n">Tree</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div>
+</details>
 <hr />
 <h3 id="b-tree">B+ Tree</h3>
 <blockquote>
@@ -1626,10 +1626,9 @@
 </li>
 </ul>
 </li>
-<li>
-<p>Code (Delete Not Carefully Checked yet)</p>
-</li>
 </ul>
+<details class="collapsible">
+<summary>Code (Delete Not Carefully Checked yet)</summary>
 <p>我觉得B+树最恶心的一点就在于他的内部节点与叶结点定义的不一致性，导致编写代码非常麻烦（<em>对于我这种具有“统一性写法”强迫症的人来说</em>）</p>
 <p>结果就是白白花费数小时去写掺杂着各种 IsLeaf 运算的式子，和无穷无尽的Debug</p>
 <p>因此，<strong>惨痛教训：很多时候可以通过简单分类，增加代码长度，大大降低编码复杂度！！！</strong> </p>
@@ -1925,6 +1924,7 @@
 <a id="__codelineno-2-145" name="__codelineno-2-145"></a><span class="w">    </span><span class="p">}</span>
 <a id="__codelineno-2-146" name="__codelineno-2-146"></a><span class="p">}</span><span class="n">B</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div>
+</details>
 <hr />
 <h3 id="rb-tree">RB Tree</h3>
 <p><em>第二节课就讲手撕红黑树 &amp; B+树，这就是ZJU的ADS, 恐怖如斯……</em></p>
@@ -2139,10 +2139,9 @@
 </li>
 </ul>
 </li>
-<li>
-<p>Code </p>
-</li>
 </ul>
+<details class="collapsible">
+<summary>Code</summary>
 <p><em>面向Luogu P3369平衡树模板题写的，跑得嘎嘎快，这就是RBTree! 但是花了我一下午debug！！！</em></p>
 <p><strong>主要注意空节点的一些处理（提前将对应指针记下来防止后面被更改），以及及时更新根节点的指针</strong></p>
 <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Red Black Tree</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">  1</a></span>
@@ -2429,6 +2428,7 @@
 <a id="__codelineno-3-141" name="__codelineno-3-141"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="nf">Next</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">){</span><span class="k">return</span><span class="w"> </span><span class="n">Next</span><span class="p">(</span><span class="n">Rot</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);}</span>
 <a id="__codelineno-3-142" name="__codelineno-3-142"></a><span class="p">}</span><span class="n">Tree</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div>
+</details>
 <hr />
 <h3 id="reverse-index">Reverse Index</h3>
 <p>就是一个邻接矩阵一样的感觉，附加了一些简单的优化，没啥好说的</p>
@@ -2524,10 +2524,9 @@
 </li>
 </ul>
 </li>
-<li>
-<p>Code (passed Luogu P3377)</p>
-</li>
 </ul>
+<details class="collapsible">
+<summary>Code (passed Luogu P3377)</summary>
 <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Leftist Tree</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
@@ -2596,6 +2595,7 @@
 <a id="__codelineno-4-33" name="__codelineno-4-33"></a><span class="p">};</span>
 <a id="__codelineno-4-34" name="__codelineno-4-34"></a><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">Leftist</span><span class="o">::</span><span class="n">NIL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Node</span><span class="p">(</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">);</span><span class="w">  </span><span class="c1">// NULL Node</span>
 </code></pre></div></td></tr></table></div>
+</details>
 <hr />
 <h3 id="skew-heap">Skew Heap</h3>
 <blockquote>
@@ -2659,9 +2659,8 @@
 <p>下面说明一下为什么提前终止不会影响摊还代价：</p>
 <p>首先，提前终止确实会导致剩下的那棵子树中的重节点未被转化为轻节点</p>
 <p>但是观察上方 <span class="arithmatex">\(\Delta \Phi(i)\)</span> 的式子会发现，这部分 <span class="arithmatex">\(\Delta h\)</span> 在前后的势能函数中保持不变，会被直接抵消，因此原式仍然成立</p>
-<ul>
-<li>Code（passed Luogu P3377）</li>
-</ul>
+<details class="collapsible">
+<summary>Code（passed Luogu P3377）</summary>
 <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">SkewHeap</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
@@ -2722,6 +2721,7 @@
 <a id="__codelineno-5-29" name="__codelineno-5-29"></a><span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">Merge</span><span class="p">(</span><span class="n">SkewHeap</span><span class="w"> </span><span class="n">T</span><span class="p">){</span><span class="n">Rot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Merge</span><span class="p">(</span><span class="n">Rot</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">.</span><span class="n">Rot</span><span class="p">);}</span>
 <a id="__codelineno-5-30" name="__codelineno-5-30"></a><span class="p">};</span>
 </code></pre></div></td></tr></table></div>
+</details>
 <hr />
 <h3 id="binomial-queue">Binomial Queue</h3>
 <ul>
@@ -2810,14 +2810,13 @@
 </li>
 </ul>
 </li>
-<li>
-<p><strong>Code</strong> (Passed Luogu P3378)</p>
+</ul>
+<details>
+<summary>Code (Passed Luogu P3378)</summary>
 <p>纯属自己NT，想要实现全链表版的，然后就被各种NULL指针和坏指针折磨（包括但不限于<strong>空指针判断、结构体重载小于号后忘记加“*”导致指针内存地址比大小等</strong>）</p>
 <p>而且我越写越觉得课件中为了满足left-child-next-sibling的存储方式而倒排儿子实在是太智障了，因为二进制加法应该是从低位开始运算，这样会导致删除操作过于尴尬，甚至需要额外开销反转链表等</p>
 <p>因此经历各种错误后，我选择正排儿子，保证merge的统一性，并且分别使用左右指针来记录最左边的儿子和最右边的儿子，保证了二项树合并仍然为O(1)，~~用较小的空间大大降低了编码复杂度~~</p>
 <p>此外，由于用链表实现，两棵二项树包括进位的二项树的大小关系并不能保证，因此在双指针的基础上又要加入各种繁琐的判断，确实是有点麻烦的，还是数组实现比较好！！！</p>
-</li>
-</ul>
 <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Binomial Queue</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
@@ -2996,6 +2995,7 @@
 <a id="__codelineno-6-88" name="__codelineno-6-88"></a><span class="w">    </span><span class="p">}</span>
 <a id="__codelineno-6-89" name="__codelineno-6-89"></a><span class="p">};</span>
 </code></pre></div></td></tr></table></div>
+</details>
 <hr />
 <h3 id="fibonacci-heap">Fibonacci Heap</h3>
 <ul>
@@ -3134,8 +3134,9 @@
 </li>
 </ul>
 </li>
-<li>
-<p>Code (Passed Luogu P3371 &amp; P4779)</p>
+</ul>
+<details class="collapsible">
+<summary>Code (Passed Luogu P3371 &amp; P4779)</summary>
 <p>斐波那契的优越性主要体现在插入和减小关键字的操作上，因为它可以在<span class="arithmatex">\(O(1)\)</span>的时间内完成</p>
 <p>因此，在删除较少的情况下，斐波那契堆的效率是非常高的，但是在删除较多的情况下，由于总体常数较大，可能会比一般的堆更慢</p>
 <p><strong>经典：斐波那契堆优化DIJ 复杂度 <span class="arithmatex">\(O(N + MlogM) --&gt; O(NlogN + M)\)</span>，在稠密图的优化效果还是非常明显的</strong></p>
@@ -3397,8 +3398,7 @@
 <a id="__codelineno-7-128" name="__codelineno-7-128"></a><span class="w">    </span><span class="p">}</span>
 <a id="__codelineno-7-129" name="__codelineno-7-129"></a><span class="p">};</span>
 </code></pre></div></td></tr></table></div>
-</li>
-</ul>
+</details>
 <hr />
 <h2 id="algorithm">Algorithm</h2>
 <hr />
@@ -3750,6 +3750,10 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <div class="arithmatex">\[T_h(x) = x N_{h-1}^2= x(T_{h-1}(x) + xT_{h-1}^2(x))^2\]</div>
 <p>The answer is the sum of all <span class="arithmatex">\(a_n\)</span></p>
 <p><em>If the module prime is not good like 998244353 with primitive root, we need complicated MTT, which I haven't learned yet</em></p>
+</li>
+</ul>
+<details class="collapsible">
+<summary>Code</summary>
 <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">RB-Tree Count</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">  1</a></span>
 <span class="normal"><a href="#__codelineno-9-2">  2</a></span>
 <span class="normal"><a href="#__codelineno-9-3">  3</a></span>
@@ -4030,8 +4034,7 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <a id="__codelineno-9-139" name="__codelineno-9-139"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <a id="__codelineno-9-140" name="__codelineno-9-140"></a><span class="p">}</span>
 </code></pre></div></td></tr></table></div>
-</li>
-</ul>
+</details>
 <hr />
 <h3 id="np-completeness">NP-Completeness</h3>
 <ul>
@@ -4194,7 +4197,7 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <ul>
 <li>
 <p>二分搜索半径，然后检查直径为2r是否能够覆盖所有点 </p>
-<p><img alt="17149         97132626" src="../image/ADS/1714997132626.png" /></p>
+<p><img alt="1714997132626" src="../image/ADS/1714997132626.png" /></p>
 </li>
 </ul>
 </li>
@@ -4256,7 +4259,7 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a7c05c9e.min.js"></script>

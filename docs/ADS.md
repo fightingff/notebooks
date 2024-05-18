@@ -44,74 +44,74 @@
         
         - ![LR / RL Rotation](./images/LR.png)
     
-- Code
+??? collapsible "Code"
 
-```cpp title="AVL Tree" linenums="1"
+    ```cpp title="AVL Tree" linenums="1"
 
-struct Node{
-    int data, H;
-    Node *Ls, *Rs;
-    Node(int data): data(data), H(0), Ls(NULL), Rs(NULL){}
-    int Update(){
-        int HL = -1, HR = -1;
-        if(Ls != NULL) HL = Ls->H;
-        if(Rs != NULL) HR = Rs->H;
-        H = max(HL, HR) + 1;
-        return abs(HL - HR);
-    }
-};
-struct AVL{
-    Node *Rot;
-    
-    //Structure
-    void Clear(Node *x){
-        if(x->Ls) Clear(x->Ls);
-        if(x->Rs) Clear(x->Rs);
-        delete x;
-    }
-    Node *Insert(Node *p, int x){
-        if(p == NULL) return new Node(x);
-        if(x < p->data) p->Ls = Insert(p->Ls, x);else p->Rs = Insert(p->Rs, x);
-
-        if(p->Update() > 1) return Balance(p,x);
-        return p;
-    }
-    void Rotate(Node **X, Node **Y, bool p){
-        // p = 0 -> Left, p = 1 -> Right
-        // rotate X to Y
-        if(!p){
-            (*Y)->Ls = (*X)->Rs;
-            (*X)->Rs = *Y;
-        }else{
-            (*Y)->Rs = (*X)->Ls;
-            (*X)->Ls = *Y;
+    struct Node{
+        int data, H;
+        Node *Ls, *Rs;
+        Node(int data): data(data), H(0), Ls(NULL), Rs(NULL){}
+        int Update(){
+            int HL = -1, HR = -1;
+            if(Ls != NULL) HL = Ls->H;
+            if(Rs != NULL) HR = Rs->H;
+            H = max(HL, HR) + 1;
+            return abs(HL - HR);
         }
-        (*Y)->Update(), (*X)->Update();
-    }
-    Node *Balance(Node *Trouble, int x){
-        Node *G = Trouble, *F, *X;
-        bool p, q;
-        if(x < G->data) F = G->Ls, p = 0;else F = G->Rs, p = 1;
-        if(x < F->data) X = F->Ls, q = 0;else X = F->Rs, q = 1;
-        if(p ^ q) Rotate(&X, &F, q), Rotate(&X, &G, p);
-            else Rotate(&F, &G, p), X = F;
-        return X;
-    }
+    };
+    struct AVL{
+        Node *Rot;
+        
+        //Structure
+        void Clear(Node *x){
+            if(x->Ls) Clear(x->Ls);
+            if(x->Rs) Clear(x->Rs);
+            delete x;
+        }
+        Node *Insert(Node *p, int x){
+            if(p == NULL) return new Node(x);
+            if(x < p->data) p->Ls = Insert(p->Ls, x);else p->Rs = Insert(p->Rs, x);
 
-    void Print(Node *x){
-        printf("%d ",x->data);
-        if(x->Ls) Print(x->Ls);
-        if(x->Rs) Print(x->Rs);
-    }
+            if(p->Update() > 1) return Balance(p,x);
+            return p;
+        }
+        void Rotate(Node **X, Node **Y, bool p){
+            // p = 0 -> Left, p = 1 -> Right
+            // rotate X to Y
+            if(!p){
+                (*Y)->Ls = (*X)->Rs;
+                (*X)->Rs = *Y;
+            }else{
+                (*Y)->Rs = (*X)->Ls;
+                (*X)->Ls = *Y;
+            }
+            (*Y)->Update(), (*X)->Update();
+        }
+        Node *Balance(Node *Trouble, int x){
+            Node *G = Trouble, *F, *X;
+            bool p, q;
+            if(x < G->data) F = G->Ls, p = 0;else F = G->Rs, p = 1;
+            if(x < F->data) X = F->Ls, q = 0;else X = F->Rs, q = 1;
+            if(p ^ q) Rotate(&X, &F, q), Rotate(&X, &G, p);
+                else Rotate(&F, &G, p), X = F;
+            return X;
+        }
 
-    // User
-    void Clear(){if(Rot) Clear(Rot);Rot = NULL;}
-    void PrintRoot(){printf("%d\n",Rot->data);}
-    void Insert(int x){Rot = Insert(Rot, x);}
-    
-}Tree;
+        void Print(Node *x){
+            printf("%d ",x->data);
+            if(x->Ls) Print(x->Ls);
+            if(x->Rs) Print(x->Rs);
+        }
 
-```
+        // User
+        void Clear(){if(Rot) Clear(Rot);Rot = NULL;}
+        void PrintRoot(){printf("%d\n",Rot->data);}
+        void Insert(int x){Rot = Insert(Rot, x);}
+        
+    }Tree;
+
+    ```
 
 ----
 
@@ -155,65 +155,65 @@ struct AVL{
     
     - Splaying roughly halves the depth of most nodes on the access path. 
 
-- Code (Not checked yet)
+??? collapsible "Code (Not checked yet)"
 
-```cpp title="Splay Tree" linenums="1"
+    ```cpp title="Splay Tree" linenums="1"
 
-struct Node{
-    Node *fa, *v[2];
-    int data;
-    Node (int x, Node *F, Node *Pivot):data(x),fa(F),v{Pivot, Pivot}{}
-};
-typedef Node *Pt;
-Pt NUL;// A trick to avoid NULL pointer
-struct SplayTree{
-    Pt Rot;
-    void Print(Pt i){// Preorder
-        if(i == NUL) return;
-        cout << i->data << " ";
-        Print(i->v[0]), Print(i->v[1]);
-    }
-    bool Is(Pt i){return (i->fa->v[1] == i);}// 0: left son, 1: right son
-    void Rotate(Pt i){ // Rotate i to its father
-        Pt F = i->fa, G = F->fa; bool p = Is(i), q = Is(F);
-        F->v[p] = i->v[p ^ 1], i->v[p^1]->fa = F;
-        F->fa = i, i->v[p^1] = F;
-        G->v[q] = i, i->fa = G;
-    }
-    void Splay(Pt i){// Splay i to the root
-        while(i->fa != NUL){
-            if(i->fa->fa != NUL) Rotate(Is(i) == Is(i->fa) ? i->fa : i), Rotate(i);
-                else Rotate(i);
+    struct Node{
+        Node *fa, *v[2];
+        int data;
+        Node (int x, Node *F, Node *Pivot):data(x),fa(F),v{Pivot, Pivot}{}
+    };
+    typedef Node *Pt;
+    Pt NUL;// A trick to avoid NULL pointer
+    struct SplayTree{
+        Pt Rot;
+        void Print(Pt i){// Preorder
+            if(i == NUL) return;
+            cout << i->data << " ";
+            Print(i->v[0]), Print(i->v[1]);
         }
-        Rot = i;
-    }
-    void Insert(Pt &i, Pt F, int x){
-        if(i == NUL) return (void)(Splay(i = new Node(x, F, NUL)));
-        Insert(i->v[x > i->data], i, x);
-    }
-
-    // User Interface
-    void Clear(){Rot = NUL = new Node(-1, NULL, NULL);}
-    void Print(){Print(Rot);cout << endl;}
-    void Insert(int x){Insert(Rot, NUL, x);}
-    void Find(int x){
-        Pt i = Rot;
-        while(i != NUL && i->data != x) i = i->v[x > i->data];
-        if(i != NUL) Splay(i);
-    }
-    void Delete(int x){
-        Find(x);// Splay x to the root
-        if(Rot->v[0] == NUL) Rot = Rot->v[1], Rot->fa = NUL;
-        else{
-            Pt i = Rot->v[0], X = Rot;
-            while(i->v[1] != NUL) i = i->v[1];// Find the maximum in the left subtree
-            Splay(i);
-            i->v[1] = X->v[1], X->v[1]->fa = i;
+        bool Is(Pt i){return (i->fa->v[1] == i);}// 0: left son, 1: right son
+        void Rotate(Pt i){ // Rotate i to its father
+            Pt F = i->fa, G = F->fa; bool p = Is(i), q = Is(F);
+            F->v[p] = i->v[p ^ 1], i->v[p^1]->fa = F;
+            F->fa = i, i->v[p^1] = F;
+            G->v[q] = i, i->fa = G;
         }
-    }
-}Tree;
+        void Splay(Pt i){// Splay i to the root
+            while(i->fa != NUL){
+                if(i->fa->fa != NUL) Rotate(Is(i) == Is(i->fa) ? i->fa : i), Rotate(i);
+                    else Rotate(i);
+            }
+            Rot = i;
+        }
+        void Insert(Pt &i, Pt F, int x){
+            if(i == NUL) return (void)(Splay(i = new Node(x, F, NUL)));
+            Insert(i->v[x > i->data], i, x);
+        }
 
-```
+        // User Interface
+        void Clear(){Rot = NUL = new Node(-1, NULL, NULL);}
+        void Print(){Print(Rot);cout << endl;}
+        void Insert(int x){Insert(Rot, NUL, x);}
+        void Find(int x){
+            Pt i = Rot;
+            while(i != NUL && i->data != x) i = i->v[x > i->data];
+            if(i != NUL) Splay(i);
+        }
+        void Delete(int x){
+            Find(x);// Splay x to the root
+            if(Rot->v[0] == NUL) Rot = Rot->v[1], Rot->fa = NUL;
+            else{
+                Pt i = Rot->v[0], X = Rot;
+                while(i->v[1] != NUL) i = i->v[1];// Find the maximum in the left subtree
+                Splay(i);
+                i->v[1] = X->v[1], X->v[1]->fa = i;
+            }
+        }
+    }Tree;
+
+    ```
 
 ----
 
@@ -259,162 +259,162 @@ struct SplayTree{
         
         - 若到达根节点，且根节点关键字数目为0，删除根节点，即全树高度减一        
         
-- Code (Delete Not Carefully Checked yet)
+??? collapsible "Code (Delete Not Carefully Checked yet)"
 
-我觉得B+树最恶心的一点就在于他的内部节点与叶结点定义的不一致性，导致编写代码非常麻烦（*对于我这种具有“统一性写法”强迫症的人来说*）
+    我觉得B+树最恶心的一点就在于他的内部节点与叶结点定义的不一致性，导致编写代码非常麻烦（*对于我这种具有“统一性写法”强迫症的人来说*）
 
-结果就是白白花费数小时去写掺杂着各种 IsLeaf 运算的式子，和无穷无尽的Debug
+    结果就是白白花费数小时去写掺杂着各种 IsLeaf 运算的式子，和无穷无尽的Debug
 
-因此，**惨痛教训：很多时候可以通过简单分类，增加代码长度，大大降低编码复杂度！！！** 
+    因此，**惨痛教训：很多时候可以通过简单分类，增加代码长度，大大降低编码复杂度！！！** 
 
-```cpp title="B+ Tree" linenums="1"
-const int Order = 5;
-struct Node{
-    int M;                  //  Number of keys
-    int Key[Order + 1];     //  Keys
-    Node* Child[Order + 1]; //  Children
-    Node *Ls, *Rs;          //  Left and Right Sibling
-    int Height;              //  Height of the node for printing
-    Node(){
-        M = Height = 0;
-        Ls = Rs = NULL;
-        for(int i = 0; i <= Order; i++) Child[i] = NULL, Key[i] = 0;
-    }
-    Node *Split(){
-        Node *j = new Node();
-        j->Height = Height;
-        j->Rs = Rs, Rs = j, j->Ls = this;
-        if(Height){ // Internal Node
-            for(int k = (Order + 1 >> 1); k < M ; k++){
-                j->Key[j->M] = Key[k], j->Child[j->M] = Child[k];
-                j->M++;
+    ```cpp title="B+ Tree" linenums="1"
+    const int Order = 5;
+    struct Node{
+        int M;                  //  Number of keys
+        int Key[Order + 1];     //  Keys
+        Node* Child[Order + 1]; //  Children
+        Node *Ls, *Rs;          //  Left and Right Sibling
+        int Height;              //  Height of the node for printing
+        Node(){
+            M = Height = 0;
+            Ls = Rs = NULL;
+            for(int i = 0; i <= Order; i++) Child[i] = NULL, Key[i] = 0;
+        }
+        Node *Split(){
+            Node *j = new Node();
+            j->Height = Height;
+            j->Rs = Rs, Rs = j, j->Ls = this;
+            if(Height){ // Internal Node
+                for(int k = (Order + 1 >> 1); k < M ; k++){
+                    j->Key[j->M] = Key[k], j->Child[j->M] = Child[k];
+                    j->M++;
+                }
+                j->Child[j->M] = Child[M], M = (M - 1 >> 1);
+            }else{  // Leaf Node
+                for(int k = (Order + 1 >> 1); k < M ; k++) j->Key[j->M++] = Key[k];
+                M = (M + 1 >> 1);
             }
-            j->Child[j->M] = Child[M], M = (M - 1 >> 1);
-        }else{  // Leaf Node
-            for(int k = (Order + 1 >> 1); k < M ; k++) j->Key[j->M++] = Key[k];
-            M = (M + 1 >> 1);
+            return j;
         }
-        return j;
-    }
-};
-int tp[Order << 1]; Node *tq[Order << 1];
-struct BpTree{
-    Node *Rot;
-    #define IsLeaf(x) ((x)->Height == 0)
-    void Insert(Node *i, Node *F, int x){
-        int k;
-        if(IsLeaf(i)){// Leaf Node can contain more keys
-            for(k = 0; k < i->M; k++) if(i->Key[k] == x) return (void)(printf("Key %d is duplicated\n", x));
-            while(k && i->Key[k - 1] > x) i->Key[k] = i->Key[k - 1], k--;
-            i->Key[k] = x, i->M++;
-            return;
+    };
+    int tp[Order << 1]; Node *tq[Order << 1];
+    struct BpTree{
+        Node *Rot;
+        #define IsLeaf(x) ((x)->Height == 0)
+        void Insert(Node *i, Node *F, int x){
+            int k;
+            if(IsLeaf(i)){// Leaf Node can contain more keys
+                for(k = 0; k < i->M; k++) if(i->Key[k] == x) return (void)(printf("Key %d is duplicated\n", x));
+                while(k && i->Key[k - 1] > x) i->Key[k] = i->Key[k - 1], k--;
+                i->Key[k] = x, i->M++;
+                return;
+            }
+
+            // search for the child to insert
+            for(k = 0; k < i->M; k++) if(i->Key[k] > x) break;
+            Insert(i->Child[k], i, x);
+            if(i->Child[k]->M - (IsLeaf(i->Child[k])) < Order) return;
+
+            // split the child
+            Node *j = i->Child[k]->Split();
+            for(int t = i->M; t > k; t--) i->Child[t + 1] = i->Child[t], i->Key[t] = i->Key[t - 1];
+            i->Child[k + 1] = j, i->Key[k] = i->Child[k]->Key[i->Child[k]->M], i->M++;
         }
-
-        // search for the child to insert
-        for(k = 0; k < i->M; k++) if(i->Key[k] > x) break;
-        Insert(i->Child[k], i, x);
-        if(i->Child[k]->M - (IsLeaf(i->Child[k])) < Order) return;
-
-        // split the child
-        Node *j = i->Child[k]->Split();
-        for(int t = i->M; t > k; t--) i->Child[t + 1] = i->Child[t], i->Key[t] = i->Key[t - 1];
-        i->Child[k + 1] = j, i->Key[k] = i->Child[k]->Key[i->Child[k]->M], i->M++;
-    }
-    int GetChild(Node *F, Node *i){
-        for(int k = 0; k <= F->M; k++) if(F->Child[k] == i) return k;
-        return -1;
-    }
-    void Delete(Node *i, Node *F, int x){
-        int k;
-        if(IsLeaf(i)){
-            for(k = 0; k < i->M; k++) if(i->Key[k] >= x) break;
-            if(i->Key[k] != x) return;
-            i->M--;
-            for(; k < i->M; k++) i->Key[k] = i->Key[k + 1];
-            return;
+        int GetChild(Node *F, Node *i){
+            for(int k = 0; k <= F->M; k++) if(F->Child[k] == i) return k;
+            return -1;
         }
-        for(k = 0; k < i->M ; k++) if(i->Key[k] > x) break;
-        Node *s = i->Child[k], *t = k == i->M ? i->Child[k - 1] : i->Child[k + 1];
-        Delete(s, i, x);
-        if(s->M + 1 - IsLeaf(s) >= (Order + 1 >> 1)) return;
-        
-        if(k == i->M) swap(s,t), k--;// s --> t
-        if(IsLeaf(s)){ // cope with leaf node
-            if(s->M + t->M > Order){// Borrow from sibling
-                int cnt = (s->M + t->M >> 1), M = 0;
-                for(int j = 0; j < s->M; j++) tp[++M] = s->Key[j];
-                for(int j = 0; j < t->M; j++) tp[++M] = t->Key[j];//merge together
-
-                s->M = t->M = 0;
-                for(int j = 1;j <= cnt; j++) s->Key[s->M++] = tp[j];//average
-                for(int j = cnt + 1; j <= M; j++) t->Key[t->M++] = tp[j];
-                i->Key[k] = t->Key[0];
-            }else{ // merge leaf
-                for(int j = 0; j < t->M; j++) s->Key[s->M++] = t->Key[j];
+        void Delete(Node *i, Node *F, int x){
+            int k;
+            if(IsLeaf(i)){
+                for(k = 0; k < i->M; k++) if(i->Key[k] >= x) break;
+                if(i->Key[k] != x) return;
                 i->M--;
-                for(int j = k; j < i->M; j++) i->Key[j] = i->Key[j + 1], i->Child[j + 1] = i->Child[j + 2];
-                s->Rs = t->Rs;
-                if(t->Rs != NULL) t->Rs->Ls = s;
+                for(; k < i->M; k++) i->Key[k] = i->Key[k + 1];
+                return;
             }
-        }else{
-            if(s->M + 1 + t->M + 1 > Order){// Borrow from sibling(average with sibling)
-                int cnt = (s->M + t->M >> 1), M = 0;
-                for(int j = 0; j < s->M; j++) tp[++M] = s->Key[j], tq[M] = s->Child[j];
-                tp[++M] = i->Key[k], tq[M] = s->Child[s->M];
-                for(int j = 0; j < t->M; j++) tp[++M] = t->Key[j], tq[M] = t->Child[j];
-                tq[M + 1] = t->Child[t->M];//merge together
-                
-                s->M = t->M = 0;
-                for(int j = 1; j <= cnt; j++) s->Key[s->M] = tp[j], s->Child[s->M++] = tq[j];
-                s->Child[s->M] = tq[cnt + 1];
-                for(int j = cnt + 2; j <= M; j++) t->Key[t->M] = tp[j], t->Child[t->M++] = tq[j];
-                t->Child[t->M] = tq[M + 1];//average
-                i->Key[k] = tp[cnt + 1];
+            for(k = 0; k < i->M ; k++) if(i->Key[k] > x) break;
+            Node *s = i->Child[k], *t = k == i->M ? i->Child[k - 1] : i->Child[k + 1];
+            Delete(s, i, x);
+            if(s->M + 1 - IsLeaf(s) >= (Order + 1 >> 1)) return;
+            
+            if(k == i->M) swap(s,t), k--;// s --> t
+            if(IsLeaf(s)){ // cope with leaf node
+                if(s->M + t->M > Order){// Borrow from sibling
+                    int cnt = (s->M + t->M >> 1), M = 0;
+                    for(int j = 0; j < s->M; j++) tp[++M] = s->Key[j];
+                    for(int j = 0; j < t->M; j++) tp[++M] = t->Key[j];//merge together
+
+                    s->M = t->M = 0;
+                    for(int j = 1;j <= cnt; j++) s->Key[s->M++] = tp[j];//average
+                    for(int j = cnt + 1; j <= M; j++) t->Key[t->M++] = tp[j];
+                    i->Key[k] = t->Key[0];
+                }else{ // merge leaf
+                    for(int j = 0; j < t->M; j++) s->Key[s->M++] = t->Key[j];
+                    i->M--;
+                    for(int j = k; j < i->M; j++) i->Key[j] = i->Key[j + 1], i->Child[j + 1] = i->Child[j + 2];
+                    s->Rs = t->Rs;
+                    if(t->Rs != NULL) t->Rs->Ls = s;
+                }
             }else{
-                s->Key[s->M] = i->Key[k];
-                for(int j = 0; j < t->M; j++) s->Key[++s->M] = t->Key[j], s->Child[s->M] = t->Child[j];
-                s->Child[++s->M] = t->Child[t->M];
-                i->M--;
-                for(int j = k; j < i->M; j++) i->Key[j] = i->Key[j + 1], i->Child[j + 1] = i->Child[j + 2];
+                if(s->M + 1 + t->M + 1 > Order){// Borrow from sibling(average with sibling)
+                    int cnt = (s->M + t->M >> 1), M = 0;
+                    for(int j = 0; j < s->M; j++) tp[++M] = s->Key[j], tq[M] = s->Child[j];
+                    tp[++M] = i->Key[k], tq[M] = s->Child[s->M];
+                    for(int j = 0; j < t->M; j++) tp[++M] = t->Key[j], tq[M] = t->Child[j];
+                    tq[M + 1] = t->Child[t->M];//merge together
+                    
+                    s->M = t->M = 0;
+                    for(int j = 1; j <= cnt; j++) s->Key[s->M] = tp[j], s->Child[s->M++] = tq[j];
+                    s->Child[s->M] = tq[cnt + 1];
+                    for(int j = cnt + 2; j <= M; j++) t->Key[t->M] = tp[j], t->Child[t->M++] = tq[j];
+                    t->Child[t->M] = tq[M + 1];//average
+                    i->Key[k] = tp[cnt + 1];
+                }else{
+                    s->Key[s->M] = i->Key[k];
+                    for(int j = 0; j < t->M; j++) s->Key[++s->M] = t->Key[j], s->Child[s->M] = t->Child[j];
+                    s->Child[++s->M] = t->Child[t->M];
+                    i->M--;
+                    for(int j = k; j < i->M; j++) i->Key[j] = i->Key[j + 1], i->Child[j + 1] = i->Child[j + 2];
+                }
             }
         }
-    }
 
-    // interface for user
-    void Clear(){Rot = new Node();}
-    void Insert(int x){
-        Insert(Rot, NULL, x);
-        Node *i = Rot;
-        if(i->M - IsLeaf(i) >= Order){// Split the root if necessary
-            Rot = new Node();
-            Node *j = i->Split();
-            Rot->Key[0] = i->Key[i->M], Rot->M = 1, Rot->Child[0] = i, Rot->Child[1] = j;
-            Rot->Height = i->Height + 1;
+        // interface for user
+        void Clear(){Rot = new Node();}
+        void Insert(int x){
+            Insert(Rot, NULL, x);
+            Node *i = Rot;
+            if(i->M - IsLeaf(i) >= Order){// Split the root if necessary
+                Rot = new Node();
+                Node *j = i->Split();
+                Rot->Key[0] = i->Key[i->M], Rot->M = 1, Rot->Child[0] = i, Rot->Child[1] = j;
+                Rot->Height = i->Height + 1;
+            }
         }
-    }
 
-    void Delete(int x){
-        if(Rot == NULL) return(void)(puts("Empty"));
-        Delete(Rot, NULL, x);
-        if(!Rot->M) Rot = Rot->Child[0];
-    }
-    void Print(){// BFS
-        if(Rot == NULL) return (void)(puts("Empty"));
-        queue<Node*> Q;
-        Q.push(Rot);
-        int lst = Rot->Height;
-        while(!Q.empty()){
-            Node *x = Q.front(); Q.pop();
-            if(x->Height != lst) putchar('\n'), lst = x->Height;
-            putchar('[');
-            for(int i = 0; i < x->M - 1; i++) printf("%d,", x->Key[i]);
-            printf("%d]", x->Key[x->M - 1]);
-            for(int i = 0; i <= x->M; i++) if(x->Child[i] != NULL) Q.push(x->Child[i]);
+        void Delete(int x){
+            if(Rot == NULL) return(void)(puts("Empty"));
+            Delete(Rot, NULL, x);
+            if(!Rot->M) Rot = Rot->Child[0];
         }
-        puts("");
-    }
-}B;
-```
+        void Print(){// BFS
+            if(Rot == NULL) return (void)(puts("Empty"));
+            queue<Node*> Q;
+            Q.push(Rot);
+            int lst = Rot->Height;
+            while(!Q.empty()){
+                Node *x = Q.front(); Q.pop();
+                if(x->Height != lst) putchar('\n'), lst = x->Height;
+                putchar('[');
+                for(int i = 0; i < x->M - 1; i++) printf("%d,", x->Key[i]);
+                printf("%d]", x->Key[x->M - 1]);
+                for(int i = 0; i <= x->M; i++) if(x->Child[i] != NULL) Q.push(x->Child[i]);
+            }
+            puts("");
+        }
+    }B;
+    ```
 
 ----
 
@@ -547,157 +547,157 @@ struct BpTree{
 
     - *上面提到的都是自底向上调整的方法，还有一种自顶向下的办法，即在用循环插入/寻找关键字的同时对树的形态进行维护和调整，使得插入/删除后树的形态直接满足要求，这种方法会跑得更快一点*
 
-- Code 
+??? collapsible "Code" 
 
-*面向Luogu P3369平衡树模板题写的，跑得嘎嘎快，这就是RBTree! 但是花了我一下午debug！！！*
+    *面向Luogu P3369平衡树模板题写的，跑得嘎嘎快，这就是RBTree! 但是花了我一下午debug！！！*
 
-**主要注意空节点的一些处理（提前将对应指针记下来防止后面被更改），以及及时更新根节点的指针**
+    **主要注意空节点的一些处理（提前将对应指针记下来防止后面被更改），以及及时更新根节点的指针**
 
-```cpp title="Red Black Tree" linenums="1"
-const int INF = 1e9;
-enum Color {RED, BLACK};
-struct Node{
-    int data, size; // size denotes the number of nodes in subtree x
-    Color color;
-    Node *v[2], *F;
-    Node(int x = 0, Color c = BLACK, Node *fa = NULL, Node *NIL = NULL){
-        data = x, size = 0, color = c, F = fa;
-        v[0] = v[1] = NIL;
-    }
-    void Update(){size = v[0]->size + v[1]->size + 1;}
-};
-typedef Node *Pt;
-Pt NIL = new Node(-1, BLACK, NIL, NIL);
-struct RBTree{
-    Node *Rot;
-    #define Is(i) ((i)->F->v[1] == (i))
-    void Rotate(Pt i){ // Rotate i to i->F
-        Pt F = i->F; bool p = Is(i), q = Is(F);
-        F->v[p] = i->v[p ^ 1], i->v[p ^ 1]->F = F;// first cope with external nodes
-        i->F = F->F, F->F->v[q] = i;               // then i and F
-        F->F = i, i->v[p ^ 1] = F;
-        F->Update(), i->Update();
-        if(F == Rot) Rot = i;
-    }
-    void FixUp_Insert(Pt i){
-        while(i->F->color == RED){
-            bool p = Is(i), q = Is(i->F) ^ 1;
-            Pt F = i->F, U = F->F->v[q];
-            
-            if(U->color == RED){ // case 1: uncle is red, black down
-                F->color = U->color = BLACK;
-                F->F->color = RED, i = F->F;
-                continue;
-            }
-
-            if(p == q){ // case 2: uncle is black but same side, rotate to case 3
-                Rotate(i);
-                swap(i, F), p ^= 1;
-            }
-
-            // case 3: uncle is black and different side, rotate and recolor
-            F->color = BLACK, F->F->color = RED;
-            Rotate(F);
-            break;
+    ```cpp title="Red Black Tree" linenums="1"
+    const int INF = 1e9;
+    enum Color {RED, BLACK};
+    struct Node{
+        int data, size; // size denotes the number of nodes in subtree x
+        Color color;
+        Node *v[2], *F;
+        Node(int x = 0, Color c = BLACK, Node *fa = NULL, Node *NIL = NULL){
+            data = x, size = 0, color = c, F = fa;
+            v[0] = v[1] = NIL;
         }
-    }
-    void Insert(Pt &i, Pt fa, int x){
-        if(i == NIL){
-            i = new Node(x, RED, fa, NIL), i->size = 1;
-            FixUp_Insert(i);
-            return;
+        void Update(){size = v[0]->size + v[1]->size + 1;}
+    };
+    typedef Node *Pt;
+    Pt NIL = new Node(-1, BLACK, NIL, NIL);
+    struct RBTree{
+        Node *Rot;
+        #define Is(i) ((i)->F->v[1] == (i))
+        void Rotate(Pt i){ // Rotate i to i->F
+            Pt F = i->F; bool p = Is(i), q = Is(F);
+            F->v[p] = i->v[p ^ 1], i->v[p ^ 1]->F = F;// first cope with external nodes
+            i->F = F->F, F->F->v[q] = i;               // then i and F
+            F->F = i, i->v[p ^ 1] = F;
+            F->Update(), i->Update();
+            if(F == Rot) Rot = i;
         }
-        i->size++, Insert(i->v[x > i->data], i, x);
-    }
-    Pt Find(Pt i, int x){
-        if(i == NIL) return NIL;
-        i->size--;
-        if(i->data == x) return i;
-        return Find(i->v[x > i->data], x);
-    }
-    void FixUp_Delete(Pt i){
-        // Print();
-        while(i != Rot && i->color == BLACK){
-            bool p = Is(i);
-            Pt F = i->F, S = F->v[p ^ 1];
-            if(S->color == RED){ // case 1: sibling is red
-                S->color = BLACK, F->color = RED;
+        void FixUp_Insert(Pt i){
+            while(i->F->color == RED){
+                bool p = Is(i), q = Is(i->F) ^ 1;
+                Pt F = i->F, U = F->F->v[q];
+                
+                if(U->color == RED){ // case 1: uncle is red, black down
+                    F->color = U->color = BLACK;
+                    F->F->color = RED, i = F->F;
+                    continue;
+                }
+
+                if(p == q){ // case 2: uncle is black but same side, rotate to case 3
+                    Rotate(i);
+                    swap(i, F), p ^= 1;
+                }
+
+                // case 3: uncle is black and different side, rotate and recolor
+                F->color = BLACK, F->F->color = RED;
+                Rotate(F);
+                break;
+            }
+        }
+        void Insert(Pt &i, Pt fa, int x){
+            if(i == NIL){
+                i = new Node(x, RED, fa, NIL), i->size = 1;
+                FixUp_Insert(i);
+                return;
+            }
+            i->size++, Insert(i->v[x > i->data], i, x);
+        }
+        Pt Find(Pt i, int x){
+            if(i == NIL) return NIL;
+            i->size--;
+            if(i->data == x) return i;
+            return Find(i->v[x > i->data], x);
+        }
+        void FixUp_Delete(Pt i){
+            // Print();
+            while(i != Rot && i->color == BLACK){
+                bool p = Is(i);
+                Pt F = i->F, S = F->v[p ^ 1];
+                if(S->color == RED){ // case 1: sibling is red
+                    S->color = BLACK, F->color = RED;
+                    Rotate(S);
+                    S = F->v[p ^ 1];
+                    // if(S == NIL) assert(i != NIL);
+                }
+                
+                if(S->v[0]->color == BLACK && S->v[1]->color == BLACK){ // case 2: sibling is black and both children are black
+                    S->color = RED, i = F;
+                    continue;
+                }
+
+                if(S->v[p ^ 1]->color == BLACK){ // case 3: sibling is black and the child in the opposite side is black
+                    S->v[p]->color = BLACK, S->color = RED;
+                    Rotate(S->v[p]);// rotate to case 4
+                    S = F->v[p ^ 1];
+                }
+
+                // case 4: sibling is black and the child in the opposite side is red
+                S->color = F->color, F->color = BLACK, S->v[p ^ 1]->color = BLACK;
                 Rotate(S);
-                S = F->v[p ^ 1];
-                // if(S == NIL) assert(i != NIL);
+                i = Rot;
             }
-            
-            if(S->v[0]->color == BLACK && S->v[1]->color == BLACK){ // case 2: sibling is black and both children are black
-                S->color = RED, i = F;
-                continue;
-            }
-
-            if(S->v[p ^ 1]->color == BLACK){ // case 3: sibling is black and the child in the opposite side is black
-                S->v[p]->color = BLACK, S->color = RED;
-                Rotate(S->v[p]);// rotate to case 4
-                S = F->v[p ^ 1];
-            }
-
-            // case 4: sibling is black and the child in the opposite side is red
-            S->color = F->color, F->color = BLACK, S->v[p ^ 1]->color = BLACK;
-            Rotate(S);
-            i = Rot;
+            i->color = BLACK;
         }
-        i->color = BLACK;
-    }
-    int Rank(Pt i, int x){
-        if(i == NIL) return 0;
-        if(i->data < x) return i->v[0]->size + 1 + Rank(i->v[1], x);
-        return Rank(i->v[0], x);
-    }
-    int Kth(Pt i, int k){
-        if(i->v[0]->size + 1 == k) return i->data;
-        if(i->v[0]->size + 1 < k) return Kth(i->v[1], k - i->v[0]->size - 1);
-        return Kth(i->v[0], k);
-    }
-    int Pre(Pt i, int x){
-        if(i == NIL) return -INF;
-        if(i->data < x) return max(i->data, Pre(i->v[1], x));
-        return Pre(i->v[0], x);
-    }
-    int Next(Pt i, int x){
-        if(i == NIL) return INF;
-        if(i->data > x) return min(i->data, Next(i->v[0], x));
-        return Next(i->v[1], x);
-    }
-
-    // interface for user
-    void Clear(){Rot = NIL;}
-    void Insert(int x){
-        Insert(Rot, NIL, x);
-        Rot->color = BLACK;
-    }
-    void Delete(int x){
-        Pt i = Find(Rot, x);
-        Color dc = i->color;// deleted color
-        if(i == NIL) return;
-        if(i->v[0] == NIL || i->v[1] == NIL){ // i has at most one child
-            bool p = (i->v[1] != NIL);
-            i->v[p]->F = i->F, i->F->v[Is(i)] = i->v[p];
-            i = i->v[p];
-            if(i->F == NIL) Rot = i;
-        }else{
-            Pt j = i->v[0];j->size--;
-            while(j->v[1] != NIL) j = j->v[1], j->size--;// maximum in left subtree
-
-            dc = j->color;
-            i->data = j->data;// replace i with j
-            i = j->v[0], i->F = j->F, j->F->v[Is(j)] = i; // delete j
+        int Rank(Pt i, int x){
+            if(i == NIL) return 0;
+            if(i->data < x) return i->v[0]->size + 1 + Rank(i->v[1], x);
+            return Rank(i->v[0], x);
         }
-        if(dc == BLACK) FixUp_Delete(i);
-    }
-    int Rank(int x){return Rank(Rot, x);}
-    int Kth(int k){return Kth(Rot, k);}
-    int Pre(int x){return Pre(Rot, x);}
-    int Next(int x){return Next(Rot, x);}
-}Tree;
+        int Kth(Pt i, int k){
+            if(i->v[0]->size + 1 == k) return i->data;
+            if(i->v[0]->size + 1 < k) return Kth(i->v[1], k - i->v[0]->size - 1);
+            return Kth(i->v[0], k);
+        }
+        int Pre(Pt i, int x){
+            if(i == NIL) return -INF;
+            if(i->data < x) return max(i->data, Pre(i->v[1], x));
+            return Pre(i->v[0], x);
+        }
+        int Next(Pt i, int x){
+            if(i == NIL) return INF;
+            if(i->data > x) return min(i->data, Next(i->v[0], x));
+            return Next(i->v[1], x);
+        }
 
-```
+        // interface for user
+        void Clear(){Rot = NIL;}
+        void Insert(int x){
+            Insert(Rot, NIL, x);
+            Rot->color = BLACK;
+        }
+        void Delete(int x){
+            Pt i = Find(Rot, x);
+            Color dc = i->color;// deleted color
+            if(i == NIL) return;
+            if(i->v[0] == NIL || i->v[1] == NIL){ // i has at most one child
+                bool p = (i->v[1] != NIL);
+                i->v[p]->F = i->F, i->F->v[Is(i)] = i->v[p];
+                i = i->v[p];
+                if(i->F == NIL) Rot = i;
+            }else{
+                Pt j = i->v[0];j->size--;
+                while(j->v[1] != NIL) j = j->v[1], j->size--;// maximum in left subtree
+
+                dc = j->color;
+                i->data = j->data;// replace i with j
+                i = j->v[0], i->F = j->F, j->F->v[Is(j)] = i; // delete j
+            }
+            if(dc == BLACK) FixUp_Delete(i);
+        }
+        int Rank(int x){return Rank(Rot, x);}
+        int Kth(int k){return Kth(Rot, k);}
+        int Pre(int x){return Pre(Rot, x);}
+        int Next(int x){return Next(Rot, x);}
+    }Tree;
+
+    ```
 
 ----
 
@@ -768,44 +768,44 @@ struct RBTree{
 
     - 而左偏树的合并操作显然复杂度为右路径长度之和，因此复杂度为$O(logN)$  
 
-- Code (passed Luogu P3377)
+??? collapsible "Code (passed Luogu P3377)"
 
-```cpp title="Leftist Tree" linenums="1"
-struct Node{
-    int Key, pos, Npl;
-    Node *Ls, *Rs;
-    Node(int _Key, int _Npl = 0,  int _pos = 0, Node *_s = NULL):Key(_Key), Npl(_Npl), Ls(_s), Rs(_s), pos(_pos){}
-    bool operator <(const Node &Y)const{return Key == Y.Key ? pos < Y.pos : Key < Y.Key;} // for this specific test problem
-};
-class Leftist{
-    private:
-        Node *Rot;
-        static Node *NIL;
-        Node *Merge(Node *L, Node *R){
-            if(L == NIL) return R;
-            if(R == NIL) return L;
-            if(*R < *L) swap(L, R); // choose the root
-            L->Rs = Merge(L->Rs, R);
-            if(L->Ls->Npl < L->Rs->Npl) swap(L->Ls, L->Rs); // maintain the property
-            L->Npl = L->Rs->Npl + 1;        // update Npl
-            return L;
-        }
-    public:
-        Leftist():Rot(NIL){}
-        void Clear(){Rot = NIL;}
-        void Push(int Key, int pos = 0){Rot = Merge(Rot, new Node(Key, 0, pos, NIL));}
-        bool Empty(){return Rot != NIL;}
-        int Top(){return Rot->Key;}
-        int Top_pos(){return Rot->pos;} // for this specific problem
-        int Pop(){
-            int Key = Rot->Key;
-            Rot = Merge(Rot->Ls, Rot->Rs);
-            return Key;
-        }
-        void Merge(Leftist T){Rot = Merge(Rot, T.Rot);}
-};
-Node *Leftist::NIL = new Node(-1, -1);  // NULL Node
-```
+    ```cpp title="Leftist Tree" linenums="1"
+    struct Node{
+        int Key, pos, Npl;
+        Node *Ls, *Rs;
+        Node(int _Key, int _Npl = 0,  int _pos = 0, Node *_s = NULL):Key(_Key), Npl(_Npl), Ls(_s), Rs(_s), pos(_pos){}
+        bool operator <(const Node &Y)const{return Key == Y.Key ? pos < Y.pos : Key < Y.Key;} // for this specific test problem
+    };
+    class Leftist{
+        private:
+            Node *Rot;
+            static Node *NIL;
+            Node *Merge(Node *L, Node *R){
+                if(L == NIL) return R;
+                if(R == NIL) return L;
+                if(*R < *L) swap(L, R); // choose the root
+                L->Rs = Merge(L->Rs, R);
+                if(L->Ls->Npl < L->Rs->Npl) swap(L->Ls, L->Rs); // maintain the property
+                L->Npl = L->Rs->Npl + 1;        // update Npl
+                return L;
+            }
+        public:
+            Leftist():Rot(NIL){}
+            void Clear(){Rot = NIL;}
+            void Push(int Key, int pos = 0){Rot = Merge(Rot, new Node(Key, 0, pos, NIL));}
+            bool Empty(){return Rot != NIL;}
+            int Top(){return Rot->Key;}
+            int Top_pos(){return Rot->pos;} // for this specific problem
+            int Pop(){
+                int Key = Rot->Key;
+                Rot = Merge(Rot->Ls, Rot->Rs);
+                return Key;
+            }
+            void Merge(Leftist T){Rot = Merge(Rot, T.Rot);}
+    };
+    Node *Leftist::NIL = new Node(-1, -1);  // NULL Node
+    ```
 
 ----
 
@@ -865,40 +865,40 @@ Node *Leftist::NIL = new Node(-1, -1);  // NULL Node
 
 但是观察上方 $\Delta \Phi(i)$ 的式子会发现，这部分 $\Delta h$ 在前后的势能函数中保持不变，会被直接抵消，因此原式仍然成立
 
-- Code（passed Luogu P3377）
+??? collapsible "Code（passed Luogu P3377）"
 
-```cpp title="SkewHeap" linenums="1"
-struct Node{
-    int Key, pos;
-    Node *Ls, *Rs;
-    Node(int _Key, int _pos):Key(_Key), pos(_pos), Ls(NULL), Rs(NULL){}
-    bool operator <(const Node &Y)const{return Key == Y.Key ? pos < Y.pos : Key < Y.Key;} // for this specific test problem
-};
-class SkewHeap{
-    private:
-        Node *Rot;
-        Node *Merge(Node *L, Node *R){
-            if(L == NULL) return R;         
-            if(R == NULL) return L;
-            if(*R < *L) swap(L, R); // choose the smaller one as the root
-            swap(L->Ls, L->Rs);
-            L->Ls = Merge(L->Ls, R);
-            return L;
-        }
-    public:
-        void Clear(){Rot = NULL;}
-        void Push(int Key, int pos = 0){Rot = Merge(Rot, new Node(Key, pos));}
-        bool Empty(){return Rot != NULL;}
-        int Top(){return Rot->Key;}
-        int Top_pos(){return Rot->pos;}
-        int Pop(){
-            int Key = Rot->Key;
-            Rot = Merge(Rot->Ls, Rot->Rs);
-            return Key;
-        }
-        void Merge(SkewHeap T){Rot = Merge(Rot, T.Rot);}
-};
-```
+    ```cpp title="SkewHeap" linenums="1"
+    struct Node{
+        int Key, pos;
+        Node *Ls, *Rs;
+        Node(int _Key, int _pos):Key(_Key), pos(_pos), Ls(NULL), Rs(NULL){}
+        bool operator <(const Node &Y)const{return Key == Y.Key ? pos < Y.pos : Key < Y.Key;} // for this specific test problem
+    };
+    class SkewHeap{
+        private:
+            Node *Rot;
+            Node *Merge(Node *L, Node *R){
+                if(L == NULL) return R;         
+                if(R == NULL) return L;
+                if(*R < *L) swap(L, R); // choose the smaller one as the root
+                swap(L->Ls, L->Rs);
+                L->Ls = Merge(L->Ls, R);
+                return L;
+            }
+        public:
+            void Clear(){Rot = NULL;}
+            void Push(int Key, int pos = 0){Rot = Merge(Rot, new Node(Key, pos));}
+            bool Empty(){return Rot != NULL;}
+            int Top(){return Rot->Key;}
+            int Top_pos(){return Rot->pos;}
+            int Pop(){
+                int Key = Rot->Key;
+                Rot = Merge(Rot->Ls, Rot->Rs);
+                return Key;
+            }
+            void Merge(SkewHeap T){Rot = Merge(Rot, T.Rot);}
+    };
+    ```
 
 ----
 
@@ -954,7 +954,7 @@ class SkewHeap{
         
         - 删除本质上就是二项队列的合并，因此复杂为$O(logN)$  
 
-- **Code** (Passed Luogu P3378)
+??? "Code (Passed Luogu P3378)"
 
     纯属自己NT，想要实现全链表版的，然后就被各种NULL指针和坏指针折磨（包括但不限于**空指针判断、结构体重载小于号后忘记加“*”导致指针内存地址比大小等**）
 
@@ -965,97 +965,97 @@ class SkewHeap{
     此外，由于用链表实现，两棵二项树包括进位的二项树的大小关系并不能保证，因此在双指针的基础上又要加入各种繁琐的判断，确实是有点麻烦的，还是数组实现比较好！！！
 
 
-```cpp title="Binomial Queue" linenums="1"
-class BinomialQueue{
-private:
-    struct Node{
-        int data, size;
-        Node *Ls, *nxt, *Rs;    // left-child-next-sibling + right-child to simplify the coding
-        Node(int _data): data(_data), size(1), Ls(NULL), nxt(NULL), Rs(NULL){}
-        bool operator < (const Node &rhs) const{return data < rhs.data;}
-    };
-    Node *Rots;
-    Node *Merge(Node *i, Node *j){// Merge two binomial trees in O(1)
-        if(i == NULL) return j;
-        if(j == NULL) return i;
-        if(*j < *i) swap(i, j);
-        if(i->Ls == NULL) i->Ls = i->Rs = j; else i->Rs->nxt = j, i->Rs = j;
-        i->size += j->size, i->nxt = j->nxt = NULL;
-        return i;
-    }
-    void Merge(BinomialQueue *BQ){
-        if(BQ == NULL) return;
-        Node *i = Rots, *j = BQ->Rots, *k = NULL, *t = NULL, *tp = NULL; 
-        // i is the current node of this, j is the current node of BQ, k is the carry node
-        // t is the new line of the result, tp is the current node of the new line
-        Rots = NULL;
-        while(i != NULL || j != NULL || k != NULL){
-            if(i == NULL || (j != NULL && j->size < i->size)) swap(i, j);
-            Node *nxti = NULL, *nxtj = NULL;
-            if(i != NULL) nxti = i->nxt;
-            if(j != NULL) nxtj = j->nxt; // store the next node of i and j, otherwise it will be changed
-            if(i != NULL && j != NULL){ // easy task 
-                if(k != NULL && k->size < i->size) tp = k, k= NULL;          // easy
-                else if(i->size == j->size) tp = k, k = Merge(i, j), i = nxti, j = nxtj; // 1 + 1 + ?
-                else if(k != NULL) tp = NULL, k = Merge(i, k), i = nxti;    // 1 + 1 + 0
-                else tp = i, i = nxti;                                      // 1
-            }else{
-                int cnt = (i != NULL) + (j != NULL) + (k != NULL);
-                if(cnt == 1){   // 1 node in the line  1 + 0 + 0
-                    if(i != NULL) tp = i, i = nxti;
-                    else if(j != NULL) tp = j, j = nxtj;
-                    else tp = k, k = NULL;
+    ```cpp title="Binomial Queue" linenums="1"
+    class BinomialQueue{
+    private:
+        struct Node{
+            int data, size;
+            Node *Ls, *nxt, *Rs;    // left-child-next-sibling + right-child to simplify the coding
+            Node(int _data): data(_data), size(1), Ls(NULL), nxt(NULL), Rs(NULL){}
+            bool operator < (const Node &rhs) const{return data < rhs.data;}
+        };
+        Node *Rots;
+        Node *Merge(Node *i, Node *j){// Merge two binomial trees in O(1)
+            if(i == NULL) return j;
+            if(j == NULL) return i;
+            if(*j < *i) swap(i, j);
+            if(i->Ls == NULL) i->Ls = i->Rs = j; else i->Rs->nxt = j, i->Rs = j;
+            i->size += j->size, i->nxt = j->nxt = NULL;
+            return i;
+        }
+        void Merge(BinomialQueue *BQ){
+            if(BQ == NULL) return;
+            Node *i = Rots, *j = BQ->Rots, *k = NULL, *t = NULL, *tp = NULL; 
+            // i is the current node of this, j is the current node of BQ, k is the carry node
+            // t is the new line of the result, tp is the current node of the new line
+            Rots = NULL;
+            while(i != NULL || j != NULL || k != NULL){
+                if(i == NULL || (j != NULL && j->size < i->size)) swap(i, j);
+                Node *nxti = NULL, *nxtj = NULL;
+                if(i != NULL) nxti = i->nxt;
+                if(j != NULL) nxtj = j->nxt; // store the next node of i and j, otherwise it will be changed
+                if(i != NULL && j != NULL){ // easy task 
+                    if(k != NULL && k->size < i->size) tp = k, k= NULL;          // easy
+                    else if(i->size == j->size) tp = k, k = Merge(i, j), i = nxti, j = nxtj; // 1 + 1 + ?
+                    else if(k != NULL) tp = NULL, k = Merge(i, k), i = nxti;    // 1 + 1 + 0
+                    else tp = i, i = nxti;                                      // 1
+                }else{
+                    int cnt = (i != NULL) + (j != NULL) + (k != NULL);
+                    if(cnt == 1){   // 1 node in the line  1 + 0 + 0
+                        if(i != NULL) tp = i, i = nxti;
+                        else if(j != NULL) tp = j, j = nxtj;
+                        else tp = k, k = NULL;
+                    }
+                    else if(k->size == i->size) tp = NULL, k = Merge(i, k), i = nxti;  // 1 + 0 + 1
+                    else tp = k, k = NULL;   // 0 + 0 + 1 
                 }
-                else if(k->size == i->size) tp = NULL, k = Merge(i, k), i = nxti;  // 1 + 0 + 1
-                else tp = k, k = NULL;   // 0 + 0 + 1 
+                if(tp != NULL)
+                    if(Rots == NULL) Rots = t = tp;else t->nxt = tp, t = t->nxt;
+                if(j == NULL && k == NULL){t->nxt = i;break;} // break the loop to minimize the time complexity
             }
-            if(tp != NULL)
-                if(Rots == NULL) Rots = t = tp;else t->nxt = tp, t = t->nxt;
-            if(j == NULL && k == NULL){t->nxt = i;break;} // break the loop to minimize the time complexity
         }
-    }
 
-public:
-    BinomialQueue(): Rots(NULL){}
-    BinomialQueue(Node *x): Rots(x){}
-    bool Empty(){return Rots == NULL;}
-    int Top(){  // return the minimum element
-        if(Empty()) return -1;
-        Node *i = Rots;
-        int res = i->data;
-        while(i != NULL) res = min(res, i->data), i = i->nxt;
-        return res;
-    }
-
-    void Insert(int x){Merge(new BinomialQueue(new Node(x)));}
-
-    int Pop(){ // pop the min
-        if(Empty()) return -1;
-        Node *i = Rots, *Pre = NULL, *Pos = i, *Pos_Pre = NULL;
-        while(i != NULL){
-            if(*i < *Pos) Pos = i, Pos_Pre = Pre;
-            Pre = i, i = i->nxt;
+    public:
+        BinomialQueue(): Rots(NULL){}
+        BinomialQueue(Node *x): Rots(x){}
+        bool Empty(){return Rots == NULL;}
+        int Top(){  // return the minimum element
+            if(Empty()) return -1;
+            Node *i = Rots;
+            int res = i->data;
+            while(i != NULL) res = min(res, i->data), i = i->nxt;
+            return res;
         }
-        if(Pos_Pre == NULL) Rots = Pos->nxt;else Pos_Pre->nxt = Pos->nxt;
 
-        int res = Pos->data;
-        Merge(new BinomialQueue(Pos->Ls));
-        return res;
-    }
+        void Insert(int x){Merge(new BinomialQueue(new Node(x)));}
 
-    void Print(){  // for debug
-        queue<Node *>Q;
-        Q.push(Rots);
-        while(!Q.empty()){
-            Node *j = Q.front(); Q.pop();
-            if(j == NULL) continue;
-            for(; j != NULL; j = j->nxt) Q.push(j->Ls), printf("%d ", j->data);
+        int Pop(){ // pop the min
+            if(Empty()) return -1;
+            Node *i = Rots, *Pre = NULL, *Pos = i, *Pos_Pre = NULL;
+            while(i != NULL){
+                if(*i < *Pos) Pos = i, Pos_Pre = Pre;
+                Pre = i, i = i->nxt;
+            }
+            if(Pos_Pre == NULL) Rots = Pos->nxt;else Pos_Pre->nxt = Pos->nxt;
+
+            int res = Pos->data;
+            Merge(new BinomialQueue(Pos->Ls));
+            return res;
+        }
+
+        void Print(){  // for debug
+            queue<Node *>Q;
+            Q.push(Rots);
+            while(!Q.empty()){
+                Node *j = Q.front(); Q.pop();
+                if(j == NULL) continue;
+                for(; j != NULL; j = j->nxt) Q.push(j->Ls), printf("%d ", j->data);
+                puts("");
+            }
             puts("");
         }
-        puts("");
-    }
-};
-```
+    };
+    ```
 
 ----
 
@@ -1154,7 +1154,7 @@ public:
             >
             > $$\hat c_i = O(k) + \Delta \Phi = O(1)$$
     
-- Code (Passed Luogu P3371 & P4779)
+??? collapsible "Code (Passed Luogu P3371 & P4779)"
 
     斐波那契的优越性主要体现在插入和减小关键字的操作上，因为它可以在$O(1)$的时间内完成
 
@@ -1625,6 +1625,8 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
     *If the module prime is not good like 998244353 with primitive root, we need complicated MTT, which I haven't learned yet*
 
+??? collapsible "Code"
+
     ```c++ title="RB-Tree Count" linenums="1"
     #include<bits/stdc++.h>
     using namespace std;
@@ -1880,7 +1882,7 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
             - 二分搜索半径，然后检查直径为2r是否能够覆盖所有点 
 
-                ![17149         97132626](image/ADS/1714997132626.png)
+                ![1714997132626](image/ADS/1714997132626.png)
         
         - smarter way: $\rho(n) = 2$
         
