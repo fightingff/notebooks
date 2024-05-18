@@ -9,14 +9,17 @@ nav:
   - Home: index.md
   - ZJU CS Masters' Notes: https://isshikihugh.github.io/zju-cs-asio/
   - Courses:
-      - x86 Asm: ASM.md
-      - Digit Logic Design: DigitLogic.md
-      - CS 231n: CS231n.md
-      - ADS: ADS.md
-      - OOP: OOP.md
-      - Information Theory: Info.md
-      - Database: Database.md
-      - Computer Organization: RiscV.md
+      - 大一:
+        - x86 Asm: ASM.md
+      - 大二上:
+        - Digit Logic Design: DigitLogic.md
+        - CS 231n: CS231n.md
+      - 大二下:
+        - ADS: ADS.md
+        - OOP: OOP.md
+        - Information Theory: Info.md
+        - Database: Database.md
+        - Computer Organization: RiscV.md
   - Tools:
       - Git: Git.md
       - Makefile & CMake: Make.md
