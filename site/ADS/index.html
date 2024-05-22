@@ -689,6 +689,24 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#local-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local Search
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#randomized-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Randomized Algorithm
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1151,6 +1169,24 @@
   <a href="#approximation" class="md-nav__link">
     <span class="md-ellipsis">
       Approximation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#local-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local Search
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#randomized-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Randomized Algorithm
     </span>
   </a>
   
@@ -4209,6 +4245,164 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <p>lower bound: <span class="arithmatex">\(\rho(n) = 2\)</span></p>
 </li>
 </ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="local-search">Local Search</h3>
+<ul>
+<li>
+<p><strong>Gradient Descent</strong></p>
+<ul>
+<li>
+<p>从一个初始解开始，每次选择一个邻域内的更优解，直到找不到更优解为止</p>
+</li>
+<li>
+<p>但是可能会陷入局部最优解</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Metropolis Algorithm</strong></p>
+<ul>
+<li>
+<p>一种蒙特卡洛采样算法，以一定概率（<span class="arithmatex">\(e^{-\frac{\Delta{cost}}{kT}}\)</span>）接受更差的解，从而避免陷入局部最优解</p>
+<p><img alt="1716288591558" src="../image/ADS/1716288591558.png" /></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Simulated Annealing</strong></p>
+<ul>
+<li>模拟退火算法，是Metropolis Algorithm的一个变种，通过逐渐降低接受更差解的概率，从而逐渐收敛到全局最优解</li>
+</ul>
+</li>
+<li>
+<p><strong>Example</strong></p>
+<ul>
+<li>
+<p>Vertex Cover</p>
+<ul>
+<li>
+<p>从全集开始，每次随机删除一个点，检查是否仍然是覆盖</p>
+</li>
+<li>
+<p>可能会陷入局部最优解，可以通过Metropolis Algorithm或者Simulated Annealing来避免</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Hopfield Network</p>
+<ul>
+<li>
+<p>Definations</p>
+<p><img alt="1716288689372" src="../image/ADS/1716288689372.png" /></p>
+</li>
+<li>
+<p>算法流程：每次随机翻转一个不稳定的点，直到所有点都稳定为止</p>
+<p><img alt="1716289393712" src="../image/ADS/1716289393712.png" /></p>
+</li>
+<li>
+<p>势能分析：<span class="arithmatex">\(\Phi(S) = \sum_{e \in good} |W_e|\)</span></p>
+<p>那么每次翻转一个点，势能至少增大1，因此最多需要<span class="arithmatex">\(\sum_{e} |W_e|\)</span>次翻转，一定可以达到一个最大值</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Max-Cut</p>
+<ul>
+<li>
+<p>类似 Hopfield Network，每次随机翻转一个点(更改阵营)，直到所有点都稳定为止</p>
+</li>
+<li>
+<p>近似算法</p>
+<p><img alt="1716290549633" src="../image/ADS/1716290549633.png" /></p>
+<div class="admonition 简要证明">
+<p class="admonition-title">简要证明</p>
+<p>考虑<span class="arithmatex">\((1+\frac{1}{x})^x \geq 2\)</span>，代入<span class="arithmatex">\(x=\frac{|V|}{2\epsilon}\)</span>，则每<span class="arithmatex">\(x\)</span>次翻转势能至少增大为原来的2倍</p>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="randomized-algorithm">Randomized Algorithm</h3>
+<ul>
+<li>
+<p><strong>Hiring Problem</strong></p>
+<p><em>(在数模课上已经研究过各种抽象版本了)</em></p>
+<ul>
+<li>
+<p>Naive (Randomized Permutaion)</p>
+<blockquote>
+<p>每次雇佣比前面所有人都优秀的人</p>
+</blockquote>
+<ul>
+<li>
+<p>期望雇佣人数：</p>
+<p>考虑第i个人为最优秀的概率为<span class="arithmatex">\(\frac{1}{i}\)</span>，则期望雇佣人数</p>
+<div class="arithmatex">\[c_n = \sum_{i=1}^{n} \frac{1}{i} \approx \ln n\]</div>
+</li>
+</ul>
+<div class="admonition randomizing permutaion">
+<p class="admonition-title">Randomizing</p>
+<ol>
+<li>
+<p>给每个元素随机赋予一个优先级（一般为<span class="arithmatex">\([1, n^3]\)</span>），然后按照优先级排序</p>
+</li>
+<li>
+<p>对于每个元素<span class="arithmatex">\(i\)</span>，随机与<span class="arithmatex">\([i+1, n]\)</span>的某一个元素进行交换</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Online</p>
+<blockquote>
+<p>总共只雇佣1人，每次需要当场做决定</p>
+</blockquote>
+<ul>
+<li>
+<p>期望雇佣到最优秀的人：</p>
+<p>考虑先考察前<span class="arithmatex">\(k\)</span>个人，然后使用前面的策略，即选择第一个比前面所有人都优秀的人</p>
+<p>对于第<span class="arithmatex">\(i\)</span>个人，其为最优秀的概率为<span class="arithmatex">\(\frac{1}{n}\)</span></p>
+<p>而他要被选到，需要前面位置在<span class="arithmatex">\([k+1, i-1]\)</span>的人都不被选，也即前面<span class="arithmatex">\(i-1\)</span>个人的最大值只能在<span class="arithmatex">\([1, k]\)</span>中，概率为<span class="arithmatex">\(\frac{k}{i-1}\)</span></p>
+<p><strong>显然</strong>，上述两个条件是独立的，因此成功选到<span class="arithmatex">\(i\)</span>且他恰好是最优秀的概率为<span class="arithmatex">\(\frac{1}{n} \cdot \frac{k}{i-1}\)</span></p>
+<p>从而雇佣到最优秀的人的概率为</p>
+<div class="arithmatex">\[\sum_{i=k+1}^{n} \frac{1}{n} \cdot \frac{k}{i-1} = \frac{k}{n} \sum_{i=k}^{n-1} \frac{1}{i} \approx \frac{k}{n} \ln \frac{n}{k}\]</div>
+<p>对<span class="arithmatex">\(k\)</span>求导，得到</p>
+<div class="arithmatex">\[\frac{d}{dk} \frac{k}{n} \ln \frac{n}{k} = \frac{1}{n}（\ln{n} - \ln{k} - 1） = 0 \implies k = \frac{n}{e}\]</div>
+<p>从而取<span class="arithmatex">\(k = \frac{n}{e}\)</span>时，概率最大，为<span class="arithmatex">\(\frac{1}{e}\)</span></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Randomized Quick Sort</strong></p>
+<ul>
+<li>
+<p>期望时间复杂度：<span class="arithmatex">\(O(n \log n)\)</span></p>
+</li>
+<li>
+<p>最坏时间复杂度：<span class="arithmatex">\(O(n^2)\)</span> </p>
+</li>
+<li>
+<p>证明：</p>
+<p><strong>快速排序算法的复杂度本质上来源于划分时与pivot的比较次数</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>为了便于分析，我们下面所说的第<span class="arithmatex">\(i\)</span>个元素，指的是在排序后的序列中的第<span class="arithmatex">\(i\)</span>个元素，而不是在原序列中的第<span class="arithmatex">\(i\)</span>个元素</p>
+<p><strong>做到相关题目时需要小心！！！</strong></p>
+</div>
+<p>考虑第<span class="arithmatex">\(i\)</span>与第<span class="arithmatex">\(j\)</span>个元素的比较次数，显然最多比较1次，因为比较<strong>当且仅当</strong>其中一个被选为pivot，另一个被划分后不会再被比较</p>
+<p>从而比较次数的期望<span class="arithmatex">\(E_{ij} = 1 \cdot P_{ij} = P_{ij}\)</span></p>
+<p>而两者要比较，除了其中一个被选为pivot外，还需要他们没有被划分为到两边，即他们之间没有其他元素被选为pivot</p>
+<p>因此，对于<span class="arithmatex">\([i,j]\)</span>这个子区间，pivot的选择是等概的，<span class="arithmatex">\(P_{ij} = \frac{2}{j-i+1}\)</span>（即选择<span class="arithmatex">\(i\)</span>或<span class="arithmatex">\(j\)</span>作为pivot的概率）</p>
+<p>从而，对于整个序列，比较次数的期望为</p>
+<div class="arithmatex">\[E(n) = \sum_{i=1}^{n-1} \sum_{j=i+1}^{n} P_{ij} = \sum_{i=1}^{n-1} \sum_{j=i+1}^{n} \frac{2}{j-i+1} &lt; 2n \sum_{k=1}^{n} \frac{1}{k} = O(n \log n)\]</div>
 </li>
 </ul>
 </li>
