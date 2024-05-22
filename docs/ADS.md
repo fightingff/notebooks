@@ -1889,3 +1889,131 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
             ![1714997308174](image/ADS/1714997308174.png) 
         
         - lower bound: $\rho(n) = 2$
+
+### Local Search
+
+- **Gradient Descent**
+
+    - 从一个初始解开始，每次选择一个邻域内的更优解，直到找不到更优解为止
+
+    - 但是可能会陷入局部最优解
+
+- **Metropolis Algorithm**
+
+    - 一种蒙特卡洛采样算法，以一定概率（$e^{-\frac{\Delta{cost}}{kT}}$）接受更差的解，从而避免陷入局部最优解
+
+        ![1716288591558](image/ADS/1716288591558.png)
+
+- **Simulated Annealing**
+
+    - 模拟退火算法，是Metropolis Algorithm的一个变种，通过逐渐降低接受更差解的概率，从而逐渐收敛到全局最优解
+
+- **Example**
+
+    - Vertex Cover
+
+        - 从全集开始，每次随机删除一个点，检查是否仍然是覆盖
+        
+        - 可能会陷入局部最优解，可以通过Metropolis Algorithm或者Simulated Annealing来避免
+    
+    - Hopfield Network
+
+        - Definations
+          
+            ![1716288689372](image/ADS/1716288689372.png)
+        
+        - 算法流程：每次随机翻转一个不稳定的点，直到所有点都稳定为止
+            
+            ![1716289393712](image/ADS/1716289393712.png)
+        
+        - 势能分析：$\Phi(S) = \sum_{e \in good} |W_e|$
+
+            那么每次翻转一个点，势能至少增大1，因此最多需要$\sum_{e} |W_e|$次翻转，一定可以达到一个最大值
+    
+    - Max-Cut
+
+        - 类似 Hopfield Network，每次随机翻转一个点(更改阵营)，直到所有点都稳定为止
+        
+        - 近似算法
+
+            ![1716290549633](image/ADS/1716290549633.png)
+
+            !!! 简要证明
+                
+                考虑$(1+\frac{1}{x})^x \geq 2$，代入$x=\frac{|V|}{2\epsilon}$，则每$x$次翻转势能至少增大为原来的2倍
+
+----
+
+### Randomized Algorithm
+
+- **Hiring Problem**
+
+    *(在数模课上已经研究过各种抽象版本了)*
+
+    - Naive (Randomized Permutaion)
+    
+        > 每次雇佣比前面所有人都优秀的人
+
+        - 期望雇佣人数：
+        
+            考虑第i个人为最优秀的概率为$\frac{1}{i}$，则期望雇佣人数
+
+            $$c_n = \sum_{i=1}^{n} \frac{1}{i} \approx \ln n$$
+    
+        !!! Randomizing Permutaion
+        
+            1. 给每个元素随机赋予一个优先级（一般为$[1, n^3]$），然后按照优先级排序
+            
+            2. 对于每个元素$i$，随机与$[i+1, n]$的某一个元素进行交换
+
+    - Online
+    
+        > 总共只雇佣1人，每次需要当场做决定
+
+        - 期望雇佣到最优秀的人：
+        
+            考虑先考察前$k$个人，然后使用前面的策略，即选择第一个比前面所有人都优秀的人
+
+            对于第$i$个人，其为最优秀的概率为$\frac{1}{n}$
+
+            而他要被选到，需要前面位置在$[k+1, i-1]$的人都不被选，也即前面$i-1$个人的最大值只能在$[1, k]$中，概率为$\frac{k}{i-1}$
+
+            **显然**，上述两个条件是独立的，因此成功选到$i$且他恰好是最优秀的概率为$\frac{1}{n} \cdot \frac{k}{i-1}$
+
+            从而雇佣到最优秀的人的概率为
+
+            $$\sum_{i=k+1}^{n} \frac{1}{n} \cdot \frac{k}{i-1} = \frac{k}{n} \sum_{i=k}^{n-1} \frac{1}{i} \approx \frac{k}{n} \ln \frac{n}{k}$$
+
+            对$k$求导，得到
+
+            $$\frac{d}{dk} \frac{k}{n} \ln \frac{n}{k} = \frac{1}{n}（\ln{n} - \ln{k} - 1） = 0 \implies k = \frac{n}{e}$$
+
+            从而取$k = \frac{n}{e}$时，概率最大，为$\frac{1}{e}$
+    
+- **Randomized Quick Sort**
+
+    - 期望时间复杂度：$O(n \log n)$
+    
+    - 最坏时间复杂度：$O(n^2)$ 
+
+    - 证明：
+    
+        **快速排序算法的复杂度本质上来源于划分时与pivot的比较次数**
+
+        !!! warning
+            
+            为了便于分析，我们下面所说的第$i$个元素，指的是在排序后的序列中的第$i$个元素，而不是在原序列中的第$i$个元素
+
+            **做到相关题目时需要小心！！！**
+
+        考虑第$i$与第$j$个元素的比较次数，显然最多比较1次，因为比较**当且仅当**其中一个被选为pivot，另一个被划分后不会再被比较
+
+        从而比较次数的期望$E_{ij} = 1 \cdot P_{ij} = P_{ij}$
+
+        而两者要比较，除了其中一个被选为pivot外，还需要他们没有被划分为到两边，即他们之间没有其他元素被选为pivot
+
+        因此，对于$[i,j]$这个子区间，pivot的选择是等概的，$P_{ij} = \frac{2}{j-i+1}$（即选择$i$或$j$作为pivot的概率）
+
+        从而，对于整个序列，比较次数的期望为
+
+        $$E(n) = \sum_{i=1}^{n-1} \sum_{j=i+1}^{n} P_{ij} = \sum_{i=1}^{n-1} \sum_{j=i+1}^{n} \frac{2}{j-i+1} < 2n \sum_{k=1}^{n} \frac{1}{k} = O(n \log n)$$
