@@ -590,3 +590,101 @@
 ![1715916652058](image/OOP/1715916652058.png)
 
 ![1715916854154](image/OOP/1715916854154.png)
+
+### Template
+
+> generic programming（泛型编程）
+
+- Function Template
+
+    本质上也是声明，由编译器发现相关调用后创建，因此需要在头文件中定义
+
+    ```c++
+    template <class / typename T>
+    T func(T x, T y) {
+        return x + y;
+    }
+    //强制类型调用
+    func<T>();
+    ```
+    !!! danger
+
+        模板函数必须保证调用的参数类型完全一致，自动类型转换无效！
+    
+    ??? 函数调用顺序
+
+        1. 精确类型
+        
+        2. 精确模板
+        
+        3. overloading  
+
+- Class Template
+
+    ```c++
+    template <class T>
+    class A {
+        T x;
+        T f(T x);
+    };
+    template <class T>
+    T A<T>::f(T x) {
+        return x;
+    }
+
+    // 调用
+    A<type> a;
+    ```
+
+- 拓展用法
+
+    - 多个模板参数
+
+        ```c++
+        template <class T, class U ...>
+        ```
+    
+    - 嵌套模板
+
+        ```c++
+        template <Class<T> >    //现代编译器无所谓那个空格了
+        
+        template <int (*)(Class<T> ) > //函数指针
+        ```
+    
+    - 默认参数
+
+        ```c++
+        template <class T, int para = default>  // 内部相当于一个字面量
+        ```
+    
+    - 继承模板
+
+        ```c++
+        template <class T>
+        class B : public A<T> {
+            ...
+        }
+        ```
+    
+    - friend
+
+        ```c++
+        template <class T>
+        class A {
+            friend T;
+        }
+        ```
+
+    - static member
+
+        相当于每种类型都有一个独立的 static member
+        
+        ```c++
+        template <class T>
+        class A {
+            static int x;
+        }
+        template <class T>
+        int A<T>::x = 0;
+        ```
