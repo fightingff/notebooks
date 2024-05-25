@@ -1782,7 +1782,7 @@ Worst Case：buffer小
 
         每次递归划分将大小变为原来的$\frac{1}{M-1}$直至到$M$，因此需要$\lceil \log_{M-1} (b_s) - 1\rceil$次递归
 
-        - transfer: $2(b_r + b_s) \times \lceil \log_{M-1} (b_s) - 1\rceil + 3(b_r + b_s) + b_r + b_s$
+        - transfer: $2(b_r + b_s) \times \lceil \log_{M-1} (b_s) - 1\rceil + b_r + b_s$
 
         - seek: $2(\lceil \frac{b_r}{b_{br}} \rceil + \lceil \frac{b_s}{b_{bs}} \rceil) \times \lceil \log_{M-1} (b_s) - 1\rceil$ 
 
