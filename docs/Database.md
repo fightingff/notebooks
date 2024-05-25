@@ -932,8 +932,6 @@ $$
 
 在第一范式的基础上，要求非主属性对所有candidate key不能有部分依赖。例如下面这个关系：
 
-<img src="https://pic4.zhimg.com/51e2689ac9416a91800e63101bee9db7_b.jpg" alt="img" style="zoom:49%;" />
-
 （学号，课名）是一个candidate key，但是姓名、系名都是对学号的函数依赖，即对候选键的部分依赖，所以上面这个数据库不满足第二范式，但是满足第一范式。
 
 - 第三范式
@@ -1533,149 +1531,348 @@ B+树不仅可以作为索引的结构，还可以直接作为文件组织的结
 对数据库的任何一个查询操作都大致可以分为一下三个步骤：
 
 1. 解析和翻译：检查所输入语句的语法正确性，并将其翻译成机器能够读懂的形式。
+
 2. 优化：从众多可选的执行方法中选择最优的一种方法。
+
 3. 执行：按照前一步决定的方法执行并返回结果。
 
-本章的目的是介绍三种最常用的查询语句内部可供选择的实现方法，以及对应的复杂度计算，最后简要介绍语句存在复杂嵌套时的流水线执行方法。
+考虑的参数：
 
-### Seek
+![1716603229316](image/Database/1716603229316.png)
 
-Seek时间包含磁盘寻道（ts）和数据读取（tr）两部分开销。根据经验，对HDD，一次寻道所需的时间约等于40单位数据读取所需的时间，而对SSD这个数字大约是10。
+（一般来说seek时间大于transfer时间）
 
-本节中seek专注于磁盘开销，不考虑CPU等周边设备。
+### Selection
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220507183629832.png" alt="image-20220507183629832" style="zoom:40%;" />
+#### Equations
 
-以下是一图流浓缩版。
+- A1 (Linear Scan)
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/IMG_783C25A55D82-1.jpeg" alt="IMG_783C25A55D82-1" style="zoom: 50%;" />
+    线性扫描，通过一次寻道找到起始位置，然后扫描所有数据块（同样很容易应用到任何条件的查询）
 
-#### 详解
+    所需的时间是$b_r\times t_T+ 1 \times t_s$（$b_r$为数据表所含的数据块个数）
 
-##### A1 (Linear Scan)
+    *当属于键值记录查找（找到就停）时，平均时间为$\frac{b_r}{2} \times t_T+ 1 \times t_s$*
 
-即线性搜索，每一次seek所需的最坏时间是$b_r\times t_r+t_s$，其中br是总数据量。
+- A2/A3 (Primary Index Scan)
 
-意义是，如果假定所有数据顺序存放，顺序查找只需要一次寻道，但是可能需要完整读取所有数据才能找到所查找的量。
+    利用索引优化查询速度，同样考虑单点key查询与多数据查询
 
-##### A2/A3 (Primary Index Scan)
+    - 单点查询，先通过索引树结构定位到数据库，再通过一次定位+读取获得对应数据内容
 
-本节讨论查询的条件包含主键的情况。
+        时间代价为$(h_i+1)\times (t_T+t_s)$，其中$h_i$是索引的层数
 
-- 利用**稠密的**主索引进行搜索，每一次seek所需的最坏时间是$(h_i+1)\times (t_r+t_s)$，其中hi是索引的层数。以B+树索引为例：
+    - 多点查询，最后可能要到多个数据库读取数据，因此要额外的一次定位+多次读取数据块
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220507184750882.png" alt="image-20220507184750882" style="zoom:45%;" />
+        时间代价为$h_i \times (t_T + t_s) + t_s + b \times t_T$，$b$为涉及的数据块
 
-- 利用**稀疏的**主索引进行搜索，与A2的区别是最后一层对应的数据块中可能有多个数据，下面用b表示。
+- A4 (Secondary Index scan)
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220507185140262.png" alt="image-20220507185140262" style="zoom:45%;" />
+    利用辅助索引进行搜索。
 
-##### A4 (Secondary Index scan)
+    - 单点查询与聚集索引相同，为$(h_i+1)\times (t_T+t_s)$
 
-利用辅助索引进行搜索。
+    - 多点查询，无法通过一次定位后顺序扫描，因此需要在索引树上多次定位+读取数据块
 
-- 当查询的值包含编制辅助索引的值时A4与A2、A3没有区别。
+        时间代价为$(h_i + b)\times (t_T + t_s)$，$b$为涉及的数据块 
 
-- 当查询的值不包含编制辅助索引的值时（习惯记为A4‘），可以适当改进索引的结构如下图所示，了解即可：
+#### Comparison
 
-    <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220507185649613.png" alt="image-20220507185649613" style="zoom:45%;" />
+- A5（Clustered Index Scan）
 
-##### A5/A6 (Scan With Comparison)
+    首先在索引树上定位到 起始的/结束的 满足条件的数据块，再进行顺序扫描获得所有满足条件的数据
 
-本节讨论的是含单一比较条件的查询。
+- A6（Non-Clustered Index Scan）
 
-- 如果存在根据查询项目编制的索引，情况可以视为A3的变种。
+    同样首先在索引树上定位到 起始的/结束的 满足条件的数据块，然后在索引树上进行扫描和获取数据（非聚集索引，每次都必须重新seek+transfer）
 
-    <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220507185844521.png" alt="image-20220507185844521" style="zoom:45%;" />
+#### Conjunction
 
-- 如果不存在，情况视为A4’的变种，了解即可。
+- A7
 
-    <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220507190158968.png" alt="image-20220507190158968" style="zoom:45%;" />
+    获取满足部分条件的数据存入缓冲区，检查其他条件是否满足
 
-##### A7/A8/A9 (Scan With Complex Comparisons)
+- A8
 
-本节讨论的是比较条件较为复杂时的做法，了解即可。
+    通过复合索引进行直接查询
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220507190336139.png" alt="image-20220507190336139" style="zoom:45%;" />
+- A9
 
-### Sort
+    每次将结果集合做交集
 
-归并排序是DBMS中最常用的排序方法，它分组进行、并行性好的特性非常适合数据量很大的场合。本节着重讨论归并排序的开销。
+![1716609288358](image/Database/1716609288358.png)
 
-归并排序的空间复杂度为N+1，过程如图。这里使用的是单个缓冲块的结构，多个缓冲块的复杂度分析请自行完成（可以参考Merge Join一节）。
+#### Disjunction
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508115049854.png" alt="image-20220508115049854" style="zoom:40%;" />
+- A10
 
-时间复杂度的分析如下，注意块传输量复杂度和seek开销复杂度含义区别。
+    对结果集合求并集
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508120114184.png" alt="image-20220508120114184" style="zoom:50%;" />
+    容斥原理求补集
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508120131954.png" alt="image-20220508120131954" style="zoom:50%;" />
+![1716609564731](image/Database/1716609564731.png)
+
+#### Bitmap Index Scan
+
+平衡索引查询（散点查询快）与直接扫描（多数据时快）的效率
+
+![1716609869971](image/Database/1716609869971.png)
+
+### External Sort
+
+> 数据的转移需要在buffer中进行，但可能数据过大，无法完整写入buffer,因此需要分段进行多路归并排序
+
+具体步骤：
+
+1. 将数据按照 缓冲区block数目M 分成N段run，每段内可以调用内部排序算法进行排序
+
+2. 将至多M-1段存入缓冲区（此时可以将理解为存了M-1段的指针），剩下一段作为输出指针，执行多路排序算法
+
+    对当前所有的run进行一轮merge, 此时每M-1段合并成了一段
+
+3. 重复过程2直至所有段合并成一段
+
+复杂度分析：
+
+> 考虑到合并时每一段使用一个block所耗费的seek的数量太多，效率下降，可以考虑$b_b$个block作为初始的段长
+
+- 每次合并的段数：$\lfloor \frac{M}{b_b} \rfloor - 1$
+
+- 合并的总轮数（pass）：$\lceil \log_{\lfloor \frac{M}{b_b} \rfloor - 1} (\lceil \frac{b_r}{M} \rceil) \rceil（这里实际上是N = \frac{b_r}{M}）$
+
+- **Transfer**
+
+    - 每轮的transfer（线性，读+写）：$2b_r$
+
+    - 总transfer（忽略最后一次的写，因为可能作为某个输出而不写）：$b_r \times (2\lceil \log_{\lfloor \frac{M}{b_b} \rfloor - 1} (\lceil \frac{b_r}{M} \rceil) \rceil + 1)$
+
+- **Seek**
+
+    - 生成初始的run（线性读+写）：$2 \lceil \frac{b_r}{M} \rceil$
+
+    - 每轮的seek：$2 \lceil \frac{b_r}{b_b} \rceil$
+
+    - 总seek（同样忽略最后一次写）：$2 \lceil \frac{b_r}{M} \rceil + \lceil \frac{b_r}{b_b} \rceil \times 2(\lceil \log_{\lfloor \frac{M}{b_b} \rfloor - 1} (\lceil \frac{b_r}{M} \rceil) \rceil - 1)$  
 
 ### Join
 
 #### Nested-Loop Join
 
-以tuple为外关系的单位进行Join
+![1716619726979](image/Database/1716619726979.png)
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508121447539.png" alt="image-20220508121447539" style="zoom:33%;" />
+Worst Case： buffer只有2个block, 一个用于读取R，一个用于读取S
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508121513548.png" alt="image-20220508121513548" style="zoom:33%;" />
+- transfer: $b_r + n_r \times b_s$
+
+- seek: $b_r + n_r$
+
+!!! note
+
+    这里需要考虑所谓的连续性 本质上是磁盘的物理结构决定的，seek即磁盘的磁头寻道
+
+    比如这里内层循环后磁头的位置已经改变了，因此回到外循环时要重新寻道回去
+
+Best Case： buffer可以全部存下
+
+- transfer：$b_r + b_s$
+
+- seek: $1 + 1 = 2$
 
 #### Block Nested-Loop Join
 
 仍然是循环结构，但是以block为外关系的单位。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508121640857.png" alt="image-20220508121640857" style="zoom:33%;" />
+![1716622172663](image/Database/1716622172663.png)
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508121715704.png" alt="image-20220508121715704" style="zoom:33%;" />
+Worst Case：buffer小
+  
+- transfer：$b_r + b_r \times b_s$
 
-如果空间允许多个block。
+- seek: $2 b_r$
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508121904940.png" alt="image-20220508121904940" style="zoom:33%;" />
+Best Case: buffer足够
+
+- transfer: $b_r + b_r$
+
+- seek: $1 + 1$
+
+!!! note
+
+    折中的优化方法：**注意到外循环的$b_r$作为乘积项影响很大，考虑将buffer中M-2个block作为外循环的单位，降低外循环的复杂度**
+
+    这样相当于将外部循环的次数变为了$\lceil \frac{b_r}{M-2} \rceil$
+
+    - transfer: $b_r + \lceil \frac{b_r}{M-2} \rceil \times b_s$
+    
+    - seek: $2 \lceil \frac{b_r}{M-2} \rceil$  
 
 #### Indexed Nested-Loop Join
 
-join需要匹配的量如果编制了索引，join的做法可以从遍历变为查找。利用索引进行join的复杂度主要取决于nr的大小。
+考虑使用索引来加速内层循环的查询
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508122039944.png" alt="image-20220508122039944" style="zoom: 50%;" />
+Worst Case：buffer小
 
-其中c指利用索引seek的开销，视索引的种类而定。
-#### Merge Join
+由于索引查询有前面提到的各种策略，这里用一个常数$c$来代表一次查询操作的代价
 
-用类似归并排序的方法进行join，注意这里讨论的是两张表中按需要匹配的列顺序存放的情况，如果不是则还要先排序。其中bb是各自使用的缓冲块的数量，实际join双方使用的缓冲块数量可以不相等。
+则总代价为：$b_r \times (t_T + t_s)+ n_r \times c$
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508122509781.png" alt="image-20220508122509781" style="zoom:33%;" />
+可以看出，这里的代价受外循环的影响较大，**因此应该尽量选择数目较小的表作为外循环**
+
+#### Sort-Merge Join
+
+> **只适用于取等号（自然连接）这种的**
+
+用类似归并算法的双指针方法，对两个有序表进行join
+
+若**不考虑排序**，可以做到线性时间复杂度，显然效率非常高
+
+- transfer: $b_r + b_s$
+
+- seek: $\lceil \frac{b_r}{b_{br}} \rceil + \lceil \frac{b_s}{b_{bs}} \rceil$
+
+!!! Hybrid-Merge Join
+
+    若其中一个表有序，而另一个表具有辅助索引，可以将有序表与辅助索引的叶子节点进行合并，得到一个混合的地址数据表
+
+    然后按地址进行排序，加快读取的速度，完成join
 
 #### Hash Join
 
-哈希join是为join中需要匹配的属性编制哈希表，然后逐哈希表分块进行。比较特别的是，哈希分块的大小和block大小不一定匹配，会有空间的浪费，因此计算分块数量时需要补一个修正因子。
+> 同样只适用于取等号的情况，本质利用相同属性值的哈希值相同的特点（相同哈希值不一定属性相同），对数据进行分块处理
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508123339871.png" alt="image-20220508123339871" style="zoom:33%;" />
+- 分块：将两个表分别使用hash进行分块
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508123914766.png" alt="image-20220508123914766" style="zoom:33%;" />
+- 其中一个表作为build input，用**另一个hash函数**对每一块建立hash索引
 
-如果hash表对应的分块还是过大，可以进一步分块以适应内存，称为Recursive Partition。
+- 另一个表作为probe input，对每一块进行hash，然后在build input的索引中查找相应的join目标
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508125522909.png" alt="image-20220508125522909" style="zoom:33%;" />
+![1716639743086](image/Database/1716639743086.png)
 
-所以复杂度为。
+注意到划分后每个hash块的大小应该控制在buffer的大小内，因此有$n_h \geq \lceil \frac{b_s}{M} \rceil \times f$，$n_h$为hash块的个数，$f$（fudge factor）为避让系数用于降低下述散列表溢出的概率
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508125738530.png" alt="image-20220508125738530" style="zoom:33%;" />
+- **Recursive Partition**
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508125807655.png" alt="image-20220508125807655" style="zoom: 33%;" />
+如果$n_h$太大，$M \leq \sqrt{b_s}$，划分时就无法一趟完成，这时就需要使用多层级的递归划分
 
-### Pipeline
+每次不够就划分成M-1个子块，然后对每个子块再进行递归划分，直到整个子块可以全部放入buffer
 
-流水线是每一条查询操作内部的抽象实现方式。
+- **Overflowing**
 
-从推动逻辑可以划分为两类。
+    > 散列划分出现**偏斜**，导致部分过满，部分过空
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508131547847.png" alt="image-20220508131547847" style="zoom:33%;" />
+    - 避让因子：$f = 1.2$
 
-每一个环节又可以划分成三个阶段，下面以demand-driven pipeline为例。
+    - 溢出分解：将溢出的部分再次进行散列划分，直到全部放入buffer
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220508131646363.png" alt="image-20220508131646363" style="zoom:33%;" />
+    - 溢出避免：划分时划分成小块，在不溢出的情况下再合并成大块
+
+    !!! danger
+
+        当属性值大量重复时，上述策略可能都会失效，此时可以考虑前面的其他join方法  
+
+- **代价分析**
+
+    - 不需要递归
+
+        - transfer: $2(b_r + b_s)（初始划分） + (b_s + b_r)（索引中探查） + 4 n_h（三个阶段的多余块）= 3(b_r + b_s) + 4 n_h$
+
+        - seek: $2(\lceil \frac{b_r}{b_{br}} \rceil + \lceil \frac{b_s}{b_{bs}} \rceil) （划分\&写回）+ (n_h + n_h)（索引中探查）= 2(\lceil \frac{b_r}{b_{br}} \rceil + \lceil \frac{b_s}{b_{bs}} \rceil) + 2n_h$
+
+    - 需要递归
+
+        每次递归划分将大小变为原来的$\frac{1}{M-1}$直至到$M$，因此需要$\lceil \log_{M-1} (b_s) - 1\rceil$次递归
+
+        - transfer: $2(b_r + b_s) \times \lceil \log_{M-1} (b_s) - 1\rceil + 3(b_r + b_s) + b_r + b_s$
+
+        - seek: $2(\lceil \frac{b_r}{b_{br}} \rceil + \lceil \frac{b_s}{b_{bs}} \rceil) \times \lceil \log_{M-1} (b_s) - 1\rceil$ 
+
+    - 最优情况，buffer足够大，直接退化为简单的O(1)对应：
+
+        - transfer: $b_r + b_s$
+
+        - seek: $1 + 1$
+
+- *Hybrid Hash Join*
+    
+    - 当内存较大又不是超级大时，可以考虑将一部分内存用来存第一个划分$s_0$不用写回，并且在处理$r_0$划分时直接当场解决，又少了一次写回的代价
+    
+    - 一般当$M >> \sqrt{b_s}$时，可以考虑使用这种方法
+
+#### Complex Join
+
+循环嵌套一起做，或者每次做一个条件后进行集合运算
+
+![1716642948613](image/Database/1716642948613.png)
+
+### Other Operations 
+
+- Duplicate Elimination
+
+    - 排序去重，相邻的相同元素直接跳过
+
+    - Hash去重，直接避免重复插入 
+
+- Projection
+
+    每个元组做投影，然后去重
+
+- Aggregation
+
+    - 类似去重的方法，对相关属性进行聚合处理
+
+    - 还可以考虑从部分聚合开始，逐步向上聚合
+
+- Set Operations
+
+    同样利用 排序/哈希等方法处理
+  
+- Outer Join
+
+    - 先计算出所有的内连接，然后再将外连接的部分补充进去
+
+    - 修改连接算法，如嵌套循环连接处理单侧外连接很方便，归并算法处理外连接都很方便
+
+### Expression
+
+#### Materialization
+
+> 每个子查询结果都作为一个临时表存储，然后再进行下一步操作
+
+可以使用double buffering模型，一部分计算，一部分写出加快速度
+
+**时间代价 = 两子查询的时间代价 + 两子查询的结果合并写入时间代价**
+
+#### Pipeline
+
+> 减少临时文件数，而是将多个关系操作组合成一个流水线，一个操作的输出直接作为下一个操作的输入
+
+**同一阶段的操作并行运行，但是必须要前面的所有操作都完成后才能进行下一步**
+
+- Demand-Driven (Lazy) Pipeline - Pull
+
+    ![1716644558855](image/Database/1716644558855.png)
+
+- Producer-Driven (Eager) Pipeline - Push
+
+    ![1716644586102](image/Database/1716644586102.png)
+
+- 执行算法
+
+    - 阻塞操作
+
+        如sort等，需要等待所有数据到达后再进行操作
+
+    - 一些操作可以并行进行处理输入流，如projection和selection
+
+        ??? "double-pipelined join"
+
+            ![1716645207767](image/Database/1716645207767.png)
+
+??? "Cache Conscious Algorithm"
+
+    ![1716644890270](image/Database/1716644890270.png)
+
+----
 
 ## 十六章 查询优化
 
@@ -1745,10 +1942,6 @@ join需要匹配的量如果编制了索引，join的做法可以从遍历变为
 
 - **还有各种集合的运算律推广**
 
-    <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516023154719.png" alt="image-20220516023154719" style="zoom:50%;" />
-
-    <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516023210312.png" alt="image-20220516023210312" style="zoom:50%;" />
-
 常用的套路有
 
 - 选择提前做，减少不需要的列
@@ -1760,8 +1953,6 @@ join需要匹配的量如果编制了索引，join的做法可以从遍历变为
 
 以下是常用的用于估算复杂度的表信息，对数据库中的表这些数据往往是现成并且定期更新的，难点在于中间结果的信息估算。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516203128145.png" alt="image-20220516203128145" style="zoom:50%;" />
-
 #### Selection Size Estimation
 
 - 单个属性选择认为数据均匀分布：
@@ -1769,15 +1960,11 @@ join需要匹配的量如果编制了索引，join的做法可以从遍历变为
     - 范围条件查询，$\frac{返回Size}{整个表Size}=\frac{查询的范围}{总范围即max-min}$
 - 多个属性选择时认为属性之间独立分布：
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516204056582.png" alt="image-20220516204056582" style="zoom:50%;" />
-
 #### Join Size Estimation
 
 - 两张表没有用于匹配的列时，返回大小是两者大小之积
 
 - 一般情况下估算如下
-
-    <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516205020324.png" alt="image-20220516205020324" style="zoom:50%;" />
 
 - 两张表存在外键约束时，返回值不大于被约束的表的大小
 
@@ -1785,15 +1972,7 @@ join需要匹配的量如果编制了索引，join的做法可以从遍历变为
 
 #### Other Estimations
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516205048326.png" alt="image-20220516205048326" style="zoom:50%;" />
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516205108732.png" alt="image-20220516205108732" style="zoom:50%;" />
-
 #### Estimation of Distinct Value
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516205443571.png" alt="image-20220516205443571" style="zoom:50%;" />
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516205453043.png" alt="image-20220516205453043" style="zoom:50%;" />
 
 ### Cost Base Optimize
 
@@ -1804,37 +1983,21 @@ join需要匹配的量如果编制了索引，join的做法可以从遍历变为
     - 嵌套的语句计算量不一定最小，但是可以配合流水线提高执行效率，最终时间复杂度反而小
 2. 适当的选择计划途径，可以列出所有选项还是使用启发式搜索
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516211342064.png" alt="image-20220516211342064" style="zoom:50%;" />
-
 #### Join-Order Selection
 
 连续Join的顺序选择是最经典的一类优化问题。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516212000152.png" alt="image-20220516212000152" style="zoom:50%;" />
-
 往往采用动态规划方法，**伪代码要会**：
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516212314539.png" alt="image-20220516212314539" style="zoom:50%;" />
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516212325269.png" alt="image-20220516212325269" style="zoom:50%;" />
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516213325915.png" alt="image-20220516213325915" style="zoom:50%;" />
-
 下面是一些已经证明的复杂度结论。
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516213946420.png" alt="image-20220516213946420" style="zoom:50%;" />
 
 #### Heuristic Optimize
 
 使用一般性的经验做启发性的优化，本节了解常见的优化习惯即可。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516214112004.png" alt="image-20220516214112004" style="zoom:50%;" />
-
 #### Nested Subqueries Optimize
 
 首先了解**相关变量**和**相关执行**两个词的含义：
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516214739959.png" alt="image-20220516214739959" style="zoom:50%;" />
 
 对嵌套查询语句优化，需要学习**半连接**的用法：
 
@@ -1843,15 +2006,9 @@ join需要匹配的量如果编制了索引，join的做法可以从遍历变为
 
 借半连接即可将嵌套子查询拆成单级的结构，回到一般的优化问题。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516215122427.png" alt="image-20220516215122427" style="zoom:50%;" />
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516215306548.png" alt="image-20220516215306548" style="zoom:50%;" />
-
 ### Materialized View Maintainance
 
 差分维护：只需要处理更新的tuple与其他表的数据关系即可，不需要全体重新计算。下图中ir、dr指新加入、新删除的tuple，有其他关系代数的view处理逻辑也是相同的，在此仅用最简单的Join做例子。
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220516221713816.png" alt="image-20220516221713816" style="zoom:50%;" />
 
 维护含Aggregate Operation的view注意有时需要额外维护过程量，例如view中有平均值时可以额外维护sum和count便于后续有插入和删除时能够差分更新而不需要全表重新统计。
 
@@ -1879,8 +2036,6 @@ Transation的实现要求四个特性**ACID**：
 - Partially Committed：逻辑操作已经执行完毕，但是相关数据可能还在buffer或者正在进行写回
 - Committed：数据完整写回，Transaction正式结束
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519143837010.png" alt="image-20220519143837010" style="zoom:33%;" />
-
 **ACID中最难实现的是并发控制**，这也是本章的重点内容。
 
 ### 并发控制
@@ -1891,13 +2046,9 @@ Transation的实现要求四个特性**ACID**：
 
 - 串行调度：几个一起来我都一个一个执行，非常容易保证数据一致但是性能低下。注意在严格的并发语境下，只要没有破坏数据一致性，两个操作无论先执行哪一个都可以认为是正确的。
 
-    <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519145648671.png" alt="image-20220519145648671" style="zoom: 50%;" />
-
 - 并行调度：实际内部并不是先完整执行一个再另一个，性能上限高但是数据很容易不一致。例如下图中S3是一个好的并行调度但是S4不是，它破坏了一致性。
 
     - 好的并行调度与串行调度的结果应该相同（S3与S1），意味着上层始终可以按照严格串行来理解和调用数据库即使其内部并不一定是串行调度。这就是**Isolation**。
-
-    <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519145927738.png" alt="image-20220519145927738" style="zoom:50%;" />
 
 ### Schedule Serialize
 
@@ -1905,21 +2056,15 @@ Transation的实现要求四个特性**ACID**：
 
 每个Transaction可以分为若干次读、运算、写，其中会发生数据不一致（**Conflict**）的只有多个Transaction并发读写同一个数据这一种情况（全部只读不会发生冲突，运算由CPU而不是DBMS负责）。所以下面我们只关注有读有写这一种情况。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519163515566.png" alt="image-20220519163515566" style="zoom:40%;" />
-
 #### Conflict Serializability
 
 - 如果S可以通过交换相互不冲突的语句转换为S‘，或者说S与S‘所有相互冲突的Instructions以相同的顺序排列，称S和S‘是**冲突等价（conflict equivalent）**的。
 
 - 如果S冲突等价于一个串行调度序列，称S是**冲突可串行的（conflict serializable）**。
 
-    <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519160512827.png" alt="image-20220519160512827" style="zoom:40%;" />
-
 - 如果并发调度下某一个Transaction失败需要回滚会带动其他Transaction一起回滚，称为**级联回滚（cascading rollback）**，如果一个调度序列不会引起任何级联回滚，称它是**非级联序列（cascadeless schedule）**。下图中是一个反面例子，这样的序列被认为是不好的。
 
     - 实现非级联序列的具体要求是，并发Transaction们对同一个数据有读有写时，任意做了写入的Transaction必须commit，下一个Transaction才能从中读。例如下图序列有写但是没有commit，所以不满足cascadelessness。
-
-    <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519162254646.png" alt="image-20220519162254646" style="zoom:40%;" />
 
 - 当以一个并发调度序列中，如果一个txn从另外一个调txn的结果中读取数据，那么它应该在另外txn的commit之后commit。满足这一条件的调度称为**Recoverable可恢复的**。
 
@@ -1927,19 +2072,11 @@ Transation的实现要求四个特性**ACID**：
 
 当且仅当Precidence图中无环（注意这是有向图的环）时，某个schedule是冲突可串的。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519163609017.png" alt="image-20220519163609017" style="zoom:40%;" />
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519163703055.png" alt="image-20220519163703055" style="zoom:50%;" />
-
 下面是一个具体的例子：
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220525100614094.png" alt="image-20220525100614094" style="zoom:50%;" />
 
 ### Trade Off
 
 第一节中就提到了，串行调度数据安全性强而性能弱，并行调度反之。实际使用中这往往不是一个选择题，而是取折中的问题。下面列出了常见的四种并行化的层次。
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519164900362.png" alt="image-20220519164900362" style="zoom:50%;" />
 
 ## 十八章 并发控制
 
@@ -1958,13 +2095,9 @@ Transation的实现要求四个特性**ACID**：
 
 锁策略一般的是Lock Table实现，用哈希表归类数据，每个数据下辖链表储存当前锁的情况。例如下图中17数据派锁给T23，123数据派锁给T1、T8而T2在等待。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220522100650187.png" alt="image-20220522100650187" style="zoom:40%;" />
-
 #### 常见问题
 
 - **Dead Lock**：锁协议最大的问题是死锁不能被完全避免。
-
-    <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220519170328050.png" alt="image-20220519170328050" style="zoom:40%;" />
 
 - **Startvation**：另一种常见的情况是，派出了过多的S锁，导致出现一个X锁请求时，必须等待此前S锁全部收回，造成时间浪费。
 
@@ -1977,15 +2110,11 @@ Transation的实现要求四个特性**ACID**：
     - 不管同一个事务内需要在多少个数据项上加锁，所有的加锁操作都只能在同一个阶段完成，在这个阶段内，不允许对已经加锁的数据项进行解锁操作。
     - 反之，任何一次解锁即视为这个Transaction进入解锁期，此后不允许该Transaction新加任何锁。
 
-![image-20220522095432698](%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220522095432698.png)
-
 又因为锁是对单个数据而言的，这种策略保证了schedule serializability，例如下图中：
 
 - Transaction1对数据B有读有写，因此在第2条操作时T1会申请X锁。
 - Transaction2对数据B也有读有写，但是因为X锁不能共存，所以在T1完成对B的所有操作并主动解锁B之前，T2无法申请到对B的锁，也就无法进行对B的操作。
 - 所以下图中T1、T2对B的环形关系在2PL中是不存在的，即2PL保证了Conflict Serializable。
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220525100637514.png" alt="image-20220525100637514" style="zoom:50%;" />
 
 二阶段锁策略保证了冲突可串行性，但是不能保证得到的序列是非级联回滚的，因此有了两种衍生策略：
 
@@ -2004,8 +2133,6 @@ Transation的实现要求四个特性**ACID**：
 
 下图是一个数据树的例子。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220529144815495.png" alt="image-20220529144815495" style="zoom:33%;" />
-
 特性：
 
 - **保证冲突可串行化**
@@ -2021,8 +2148,6 @@ Transation的实现要求四个特性**ACID**：
 
 Granularity译为粒度。锁协议相关内容中，我们将加锁的对象泛指为“数据”，但是实际上“数据“指代的内容量可大可小，下图便是一个例子，从整个数据库到每一个tuple，可以用一个树型结构表示。其中的每一个节点都可以视为“数据”。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220529154413915.png" alt="image-20220529154413915" style="zoom:50%;" />
-
 对“数据”加锁时应该遵循如下原则：
 
 - 对某节点加或解S/X锁时，**自上而下的**
@@ -2031,8 +2156,6 @@ Granularity译为粒度。锁协议相关内容中，我们将加锁的对象泛
 - 加解锁遵循2PL原则。
 - 不同锁之间的共存关系如下图
     - IS/IX可以共存。某数据上IS、IX两把锁都存在时，习惯上合并写为SIX
-    - <img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220529155708270.png" alt="image-20220529155708270" style="zoom:50%;" />
-
 ### Handling Deadlock
 
 死锁是锁协议必须要解决的问题。解决思路一般有：
@@ -2051,8 +2174,6 @@ Granularity译为粒度。锁协议相关内容中，我们将加锁的对象泛
 ### 检测死锁
 
 用类似前序图的等待图关联各个事务。箭头从Ti指向Tj意味着Ti正在等待Tj解锁某个数据，自己才能加锁以继续执行操作。注意与前序图不同的是，前序图随Schedule的确定而确定，执行过程中不会变化；而等待图在运行过程中时时可能改动。
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220529174421930.png" alt="image-20220529174421930" style="zoom:50%;" />
 
 ## 十九章 错误恢复
 
@@ -2107,8 +2228,6 @@ Granularity译为粒度。锁协议相关内容中，我们将加锁的对象泛
 - 由14-16行的补偿日志判断T2发生了回滚，因此不需要再次Undo
 - 所以Undo List中只有T4
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220601164936523.png" alt="image-20220601164936523" style="zoom:50%;" />
-
 #### Fuzzy Check Point
 
 常规Check Point写disk时会停止Schedule造成性能浪费，因此有了Fuzzy Checkpoint这一改进策略：
@@ -2152,8 +2271,6 @@ Logical Undo一定不是幂等的，所以回滚时如果看到Operation-abort�
 
 Logical Undo和Physical Undo又可以相嵌套。
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220601194658127.png" alt="image-20220601194658127" style="zoom:50%;" />
-
 ### ARIES
 
 **Log Sequence Number (LSN)** 可以看作是Log的身份证号。 
@@ -2167,11 +2284,7 @@ Logical Undo和Physical Undo又可以相嵌套。
 - Buff和Disk中的每一个页都保存其数据对应的最新的LSN。
 - Dirty Page Table中PageID是当前所有的脏页，PageLSN是更改PageID数据的最新LSN，**RecLSN是写Disk之后改Buff的最早的一条Log的LSN。**
 
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220601201530562.png" alt="image-20220601201530562" style="zoom:50%;" />
-
 在Log中添加指针加速遍历。
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220601202354910.png" alt="image-20220601202354910" style="zoom:50%;" />
 
 #### ARIES具体步骤
 
@@ -2201,5 +2314,3 @@ Logical Undo和Physical Undo又可以相嵌套。
      - 如果需要的话补充记录CRS，重点是UndoNextLSN指向该txn下一条需要Undo的Log
 
 思路和常规的恢复相同，但是利用上面介绍的指针和数据结构进行了加速。
-
-<img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0.assets/image-20220601203307534.png" alt="image-20220601203307534" style="zoom:50%;" />
