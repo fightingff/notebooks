@@ -1876,12 +1876,6 @@ Worst Case：buffer小
 
 ## 十六章 查询优化
 
-对数据库的任何一个查询操作都大致可以分为一下三个步骤：
-
-1. 解析和翻译：检查所输入语句的语法正确性，并将其翻译成机器能够读懂的形式。
-2. 优化：从众多可选的执行方法中选择最优的一种方法。
-3. 执行：按照前一步决定的方法执行并返回结果。
-
 本章的目的是具体实现如何选择执行语句的最优方案，大致又可以分为两步：
 
 1. 列出与当前语句等价的内部执行方案
@@ -1892,125 +1886,267 @@ Worst Case：buffer小
 
 ### Equivalence Rules
 
-常用的逻辑层面的等价关系有：
+> 查询结果一般为 **Multisets of Tuples**，等价表达式即 在合法的数据库上结果完全相同 *（注意集合是无序的）*
 
-- **$\sigma$条件的分解和交换**
-    $$
-    \sigma_{\theta_1 \wedge \theta_2}(E) = \sigma_{\theta_1}(\sigma_{\theta_2}(E)) =  \sigma_{\theta_2}(\sigma_{\theta_1}(E))
-    $$
+![1716704968040](image/Database/1716704968040.png)
 
-- **$\sigma$选择笛卡尔积等价于条件连接（后者一般更快）**
-    $$
-    \begin{aligned}
-    \sigma_\theta(E_1\times E_2) & =E_1\Join_\theta E_2
-    \end{aligned}
-    $$
+![1716704999491](image/Database/1716704999491.png)
 
-- **$\sigma$的条件可以和条件连接合并，有时也可以分配给连接的对象**
-    $$
-    \sigma_{\theta_1}(E_1\Join_{\theta_2} E_2) = E_1 \Join_{\theta_1 \wedge \theta_2}E_2\\
-    \\
-    \sigma_{\theta_1 \wedge \theta_2}(E_1 \Join_\theta E_2)=(\sigma_{\theta_1}(E_1))\Join_\theta(\sigma_{\theta_2}(E_2))\\
-    when\ \theta_1,\theta_2\ involve\ attributes\ only\ in\ E_1, E_2\ perspectively.
-    $$
+![1716705173860](image/Database/1716705173860.png)
 
-- **不分内外关系的连接可交换**
-    $$
-    E_1 \Join_{(\theta)}E_2 = E_2 \Join_{(\theta)}E_1
-    $$
+![1716707417558](image/Database/1716707417558.png)
 
-- **自然连接可结合，条件连接有时可结合**
-    $$
-    (E_1 \Join E_2) \Join E_3 = E_1 \Join (E_2 \Join E_3)\\
-    \\
-    (E_1 \Join_{\theta_1} E_2)\Join_{\theta_2 \wedge \theta_3} E_3 = 
-    	E_1 \Join_{\theta_1 \wedge \theta_3} (E_2 \Join_{\theta_2} E_3)\\
-    when\ \theta_2\ involves\ attributes\ only\ in\ E_2\ and\ E_3
-    $$
+![1716707576340](image/Database/1716707576340.png)
 
-- **$\Pi$条件可分配**
-    $$
-    \Pi_{L_1 \cup L_2}(E_1 \Join_{(\theta)}E_2)=(\Pi_{L_1}(E_1))\Join_{(\theta)}(\Pi_{L_2}(E_2))\\
-    when\ L_1, L_2\ involve\ attributes\ only\ in\ E_1,E_2\ perspectively.
-    $$
+![1716707602951](image/Database/1716707602951.png)
 
-- **$\Pi$条件可合并**
-    $$
-    \Pi_{\theta_1}(\Pi_{\theta_2}(\Pi_{\theta_3}...(\Pi_{\theta_n}(E)))) = \Pi_{\theta_{commom}}(E)\\
-    \theta_{commom}是\theta_1到\theta_n的交集
-    $$
+策略：
 
-- **还有各种集合的运算律推广**
+通过上述规则将查询语句转化为等价的形式，选择最优的执行方案
+
+*实际使用中往往是引用经验式的规则，想要列出所有可能的实现逻辑一般是不可能的*
 
 常用的套路有
 
-- 选择提前做，减少不需要的列
-- 连续的join先做结果较少的，减少中间结果需要的空间
+- Space sharing & Time programming
 
-实际使用中往往是引用经验式的规则，想要列出所有可能的实现逻辑一般是不可能的。
+- 选择提前做selection & projection，减少不需要的行数和列数
+
+- 连续的join先做结果较少的，减少中间结果需要的空间（有点类似动态规划经典问题 矩阵乘法）
 
 ### Statistical Cost Estimation
 
-以下是常用的用于估算复杂度的表信息，对数据库中的表这些数据往往是现成并且定期更新的，难点在于中间结果的信息估算。
+??? 一些定义
+
+    ![1716709482195](image/Database/1716709482195.png)
+
+#### Histogram
+
+> 记录每个属性取值的频率，需要随着数据库的更新实时更新
+
+- Equi-width：等宽
+
+- Equi-depth：等高
 
 #### Selection Size Estimation
 
-- 单个属性选择认为数据均匀分布：
-    - 等于条件查询，$\frac{返回Size}{整个表Size}=\frac{1}{查询条件总数}$
-    - 范围条件查询，$\frac{返回Size}{整个表Size}=\frac{查询的范围}{总范围即max-min}$
-- 多个属性选择时认为属性之间独立分布：
+- 如果有相关的Histogram，直接使用其值即可
+
+- 否则，粗略认为数据满足均匀分布：
+
+    - 单点： $\frac{n_r}{V(A,r)}$
+
+    - 区域（以小于为例）：
+
+        $$
+        \left \{
+            \begin{aligned}
+                0 &\qquad v < min(A,r)\\
+                n_r \times \frac{v - \min(A,r)}{max(A,r) - min(A,r)} & \qquad min(A,r) \leq v < max(A,r)\\
+                n_r & \qquad v \geq max(A,r)
+            \end{aligned}
+        \right.
+        $$
+
+        *若毫无相关信息，一般认为满足项为$\frac{n_r}{2}$*
+
+    - 复合条件
+
+        使用概率分析，对于每个条件，根据前面所述计算其满足的概率$\frac{s_i}{n_r}$
+
+        - Conjunction：$n_r \times \prod \frac{s_i}{n_r}$
+
+        - Disjunction（容斥）：$n_r \times (1 - \prod (1 - \frac{s_i}{n_r}))$
+
+        - Negation：$n_r - n_p$ 
 
 #### Join Size Estimation
 
-- 两张表没有用于匹配的列时，返回大小是两者大小之积
+- 笛卡尔积：
 
-- 一般情况下估算如下
+    - $n_{r\times s} = n_r \times n_s$
 
-- 两张表存在外键约束时，返回值不大于被约束的表的大小
+    - $l_{r\times s} = l_r + l_s$
 
-- 两张表用于匹配的列是其一的Key时，返回值不大于另一张表的大小
+- 自然连接根据 $R \cap S$ 的情况估计
+
+    - $R \cap S = \emptyset$，则 $R\Join S = R \times S$
+
+    - $R \cap S \rightarrow R (S)$，即交集为某一表的主键，则说明每一个元组最多有一个与之匹配，因此$n_{r\Join s} \leq n_s(n_r)$
+
+    - $R \cap S$为外键，此时每一个元组恰好有一个与之匹配，因此$n_{r\Join s} = n_r(n_s)$
+
+    - $R \cap S$非键值，则同样考虑均匀概率分布,对于表中的每一个元组考虑其可能匹配的个数，即相当于上述的给定单值的selection，有$n_{r\Join s} = \frac{n_r \times n_s}{max(V(A,r),V(A,s))}$
+
+- 对于一般连接$R \Join_{\theta} S$，可以转化为$\sigma_{\theta}(R \times S)$，然后使用上述方法估计
+
+- 对于外连接，可以看成自然连接+额外元组，有$n_{r⟗s} = n_{r\Join s} + n_r + n_s$
 
 #### Other Estimations
 
+![1716726772210](image/Database/1716726772210.png)
+
 #### Estimation of Distinct Value
+
+- Selection
+
+    - 单点取等： 显然就为条件中的不同值个数
+
+    - 区间取值（比大小）： $V(A,r) \times P_{select}$
+
+    - 复杂情况： 直接粗略估计，$min(V(A,r), n_{\sigma_{\theta(r)}})$ 
+
+- Join：
+
+    - 假设$A = A_r \cup A_s$，则$V(A,r\Join s) = min(V(A_r,r) \times V(A_s - A_r, s), V(A_r - A_s, r) \times V(A_s, s), n_{r \Join s})$
+
+        这里设$V(\emptyset,r) = 1$
+
+- Projection
+
+    - $V(\Pi_{A}(r),r) = V(A,r)$
+
+- Aggregation
+
+    - $V(G_F(A),r) = min(V(A,r), V(G,r))$
 
 ### Cost Base Optimize
 
-主要思想如下：
+!!! warning
 
-1. 局部最优解不一定是整体最优解
-    - hash-join一般更快，但merge-join得到的结果是有序的
-    - 嵌套的语句计算量不一定最小，但是可以配合流水线提高执行效率，最终时间复杂度反而小
-2. 适当的选择计划途径，可以列出所有选项还是使用启发式搜索
+    1. 局部最优解不一定是整体最优解
+
+        - hash-join一般更快，但merge-join得到的结果是有序的
+
+        - 嵌套的语句计算量不一定最小，但是可以配合流水线提高执行效率，最终时间复杂度反而小
+
+    2. 适当的选择计划途径，可以列出所有选项还是使用启发式搜索
 
 #### Join-Order Selection
 
-连续Join的顺序选择是最经典的一类优化问题。
+考虑$n$个连续join，顺序有$\frac{(2(n-1))!}{(n-1)!}$（卡特兰数），可以用类似矩阵连乘的动态规划求解（但是顺序不定）
 
-往往采用动态规划方法，**伪代码要会**：
+- 若选择bushy tree, 复杂度为$\sum_{i=1}^{n} \binom{n}{i} \times 2^i = (1+2)^n = O(3^n)$ （考虑大小为i的子集的更新代价为$2^i$）
 
-下面是一些已经证明的复杂度结论。
+    $F(S) = min(F(S_k) + F(S - S_k) + Join(S_k, S-S_k))$
+
+- 若为left-deep tree，更新复杂度为$O(i)$，总复杂度降为$O(n 2^n)$
+  
+    $F(S) = min(F(r) + F(S - r) + Join(r, S-r))$
+
+??? "Left Deep Join Tree定义"
+
+    ![1716728651407](image/Database/1716728651407.png)
+
+- Interesting Sort Order
+
+    尽量让前面的排序预先为后面的操作做一些优化
+
+#### Cost Based Optimization with Equivalence Rules
+
+通过前面提到的表达式推导的形式寻找最优解，需要解决下述问题：
+
+- 节省空间的表达式表示形式
+
+- 检测相同表达式重复推导的技术
+
+- 基于缓存的记忆化动态规划
 
 #### Heuristic Optimize
 
-使用一般性的经验做启发性的优化，本节了解常见的优化习惯即可。
+- 尽早执行 Selection
+
+- 尽早执行 Projection
+
+- 尽早执行 条件严苛的指令 来筛选、降低表的大小
+
+- 启发式+其他策略混合（如cost-based）
+
+- 其他策略：只考虑left deep join order，optimization cost budget及时终止优化，plan caching 复用策略
 
 #### Nested Subqueries Optimize
 
-首先了解**相关变量**和**相关执行**两个词的含义：
+> **相关变量（correlation variable）：** 外层查询需要传入内层嵌套子查询的变量
+>
+> **相关执行（correlated evaluation）：** 外层对from的表列表直接作笛卡尔积得到所有元组，然后将嵌套子查询视为一个关于相关变量的函数，对每个元组进行check
 
-对嵌套查询语句优化，需要学习**半连接**的用法：
+![1716732873796](image/Database/1716732873796.png)
 
-- 检查一个结果集（外表）的记录是否在另外一个结果集（字表）中存在匹配记录，半连接仅关注”子表是否存在匹配记录”，而并不考虑”子表存在多少条匹配记录”，半连接的返回结果集仅使用外表的数据集，查询语句中IN或EXISTS语句常使用半连接来处理。
-- 与之对应的还有反半连接，检查一个结果集（外表）的记录是否在另外一个结果集（字表）中存在匹配记录，当且仅当字表中没有匹配记录时在返回结果集中包含仅使用外表的数据集。
+显然上面的方法效率很低，一般尝试将 嵌套子查询 转化为 多连接（注意下面例子的重复元组不同，Join会多一点）
 
-借半连接即可将嵌套子查询拆成单级的结构，回到一般的优化问题。
+![1716732901355](image/Database/1716732901355.png)
 
-### Materialized View Maintainance
+- semijoin ⋉
 
-差分维护：只需要处理更新的tuple与其他表的数据关系即可，不需要全体重新计算。下图中ir、dr指新加入、新删除的tuple，有其他关系代数的view处理逻辑也是相同的，在此仅用最简单的Join做例子。
+    - 检查一个结果集（外表）的记录是否在另外一个结果集（字表）中存在匹配记录，本质上半连接仅关注”子表是否存在匹配记录”，而并不考虑”子表存在多少条匹配记录”
 
-维护含Aggregate Operation的view注意有时需要额外维护过程量，例如view中有平均值时可以额外维护sum和count便于后续有插入和删除时能够差分更新而不需要全表重新统计。
+        ![1716733909198](image/Database/1716733909198.png)
+
+        半连接的返回结果集仅使用外表的数据集，查询语句中IN或EXISTS语句常使用半连接来处理
+
+        ![1716733867727](image/Database/1716733867727.png)
+
+    - 与之对应的还有反半连接anti-semijoin，检查一个结果集（外表）的记录是否在另外一个结果集（字表）中存在匹配记录，当且仅当字表中没有匹配记录时在返回结果集中包含仅使用外表的数据集
+
+借半连接即可将嵌套子查询拆成单级的结构，回到一般的优化问题
+
+### Materialized View
+
+通过一定冗余提高系统效率
+
+#### Materialized View Maintenance
+
+> 维护有 **立即的视图维护（immediate）** 和 **延迟的视图维护（differed）**
+
+- *人工维护*
+
+- *触发器维护*
+
+- **差分维护：**
+  
+    只需要处理更新的tuple与其他表的数据关系差异（differential）即可，不需要全体重新计算
+
+    下面$i_r$指新插入的元组，$d_r$指删除的元组
+
+    - Join
+
+        ![1716735022061](image/Database/1716735022061.png)
+
+    - Selection
+
+        ![1716735054509](image/Database/1716735054509.png)
+
+    - Projection
+
+        使用一个count计数，考虑是否需要更新
+
+    - Aggregation
+
+        count、sum、avg等都比较好维护，增加一些辅助量即可
+
+        min、max可能维护代价太大（删除）
+
+    - Set Operation
+
+        根据集合操作的含义维护即可 
+
+    - Expression
+
+        从小的子表达式开始向上推导
+
+#### Query Optimization
+
+- 替换查询直接利用物化视图
+
+- 使用物化视图的地方替换成其定义，可能获得更高的效率
+
+#### Materialized View Selection
+
+类似索引选择，目标都是加速系统的整体效率
+
+具体还得妥善分析系统的工作负载（workload）来决定
+
+----
 
 ## 十七章 Transaction
 

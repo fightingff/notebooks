@@ -1813,6 +1813,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#histogram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Histogram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#selection-size-estimation" class="md-nav__link">
     <span class="md-ellipsis">
       Selection Size Estimation
@@ -1873,6 +1882,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#cost-based-optimization-with-equivalence-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cost Based Optimization with Equivalence Rules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#heuristic-optimize" class="md-nav__link">
     <span class="md-ellipsis">
       Heuristic Optimize
@@ -1896,11 +1914,44 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#materialized-view-maintainance" class="md-nav__link">
+  <a href="#materialized-view" class="md-nav__link">
     <span class="md-ellipsis">
-      Materialized View Maintainance
+      Materialized View
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Materialized View">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#materialized-view-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Materialized View Maintenance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#materialized-view-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Materialized View Selection
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -3663,6 +3714,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#histogram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Histogram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#selection-size-estimation" class="md-nav__link">
     <span class="md-ellipsis">
       Selection Size Estimation
@@ -3723,6 +3783,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#cost-based-optimization-with-equivalence-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cost Based Optimization with Equivalence Rules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#heuristic-optimize" class="md-nav__link">
     <span class="md-ellipsis">
       Heuristic Optimize
@@ -3746,11 +3815,44 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#materialized-view-maintainance" class="md-nav__link">
+  <a href="#materialized-view" class="md-nav__link">
     <span class="md-ellipsis">
-      Materialized View Maintainance
+      Materialized View
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Materialized View">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#materialized-view-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Materialized View Maintenance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#materialized-view-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Materialized View Selection
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -6244,12 +6346,6 @@ $$</p>
 </details>
 <hr />
 <h2 id="_32">十六章 查询优化</h2>
-<p>对数据库的任何一个查询操作都大致可以分为一下三个步骤：</p>
-<ol>
-<li>解析和翻译：检查所输入语句的语法正确性，并将其翻译成机器能够读懂的形式。</li>
-<li>优化：从众多可选的执行方法中选择最优的一种方法。</li>
-<li>执行：按照前一步决定的方法执行并返回结果。</li>
-</ol>
 <p>本章的目的是具体实现如何选择执行语句的最优方案，大致又可以分为两步：</p>
 <ol>
 <li>
@@ -6261,126 +6357,323 @@ $$</p>
 </li>
 </ol>
 <h3 id="equivalence-rules">Equivalence Rules</h3>
-<p>常用的逻辑层面的等价关系有：</p>
-<ul>
-<li>
-<p><strong><span class="arithmatex">\(\sigma\)</span>条件的分解和交换</strong>
-    $$
-    \sigma_{\theta_1 \wedge \theta_2}(E) = \sigma_{\theta_1}(\sigma_{\theta_2}(E)) =  \sigma_{\theta_2}(\sigma_{\theta_1}(E))
-    $$</p>
-</li>
-<li>
-<p><strong><span class="arithmatex">\(\sigma\)</span>选择笛卡尔积等价于条件连接（后者一般更快）</strong>
-    $$
-    \begin{aligned}
-    \sigma_\theta(E_1\times E_2) &amp; =E_1\Join_\theta E_2
-    \end{aligned}
-    $$</p>
-</li>
-<li>
-<p><strong><span class="arithmatex">\(\sigma\)</span>的条件可以和条件连接合并，有时也可以分配给连接的对象</strong>
-    $$
-    \sigma_{\theta_1}(E_1\Join_{\theta_2} E_2) = E_1 \Join_{\theta_1 \wedge \theta_2}E_2\
-    \
-    \sigma_{\theta_1 \wedge \theta_2}(E_1 \Join_\theta E_2)=(\sigma_{\theta_1}(E_1))\Join_\theta(\sigma_{\theta_2}(E_2))\
-    when\ \theta_1,\theta_2\ involve\ attributes\ only\ in\ E_1, E_2\ perspectively.
-    $$</p>
-</li>
-<li>
-<p><strong>不分内外关系的连接可交换</strong>
-    $$
-    E_1 \Join_{(\theta)}E_2 = E_2 \Join_{(\theta)}E_1
-    $$</p>
-</li>
-<li>
-<p><strong>自然连接可结合，条件连接有时可结合</strong>
-    $$
-    (E_1 \Join E_2) \Join E_3 = E_1 \Join (E_2 \Join E_3)\
-    \
-    (E_1 \Join_{\theta_1} E_2)\Join_{\theta_2 \wedge \theta_3} E_3 = 
-        E_1 \Join_{\theta_1 \wedge \theta_3} (E_2 \Join_{\theta_2} E_3)\
-    when\ \theta_2\ involves\ attributes\ only\ in\ E_2\ and\ E_3
-    $$</p>
-</li>
-<li>
-<p><strong><span class="arithmatex">\(\Pi\)</span>条件可分配</strong>
-    $$
-    \Pi_{L_1 \cup L_2}(E_1 \Join_{(\theta)}E_2)=(\Pi_{L_1}(E_1))\Join_{(\theta)}(\Pi_{L_2}(E_2))\
-    when\ L_1, L_2\ involve\ attributes\ only\ in\ E_1,E_2\ perspectively.
-    $$</p>
-</li>
-<li>
-<p><strong><span class="arithmatex">\(\Pi\)</span>条件可合并</strong>
-    $$
-    \Pi_{\theta_1}(\Pi_{\theta_2}(\Pi_{\theta_3}...(\Pi_{\theta_n}(E)))) = \Pi_{\theta_{commom}}(E)\
-    \theta_{commom}是\theta_1到\theta_n的交集
-    $$</p>
-</li>
-<li>
-<p><strong>还有各种集合的运算律推广</strong></p>
-</li>
-</ul>
+<blockquote>
+<p>查询结果一般为 <strong>Multisets of Tuples</strong>，等价表达式即 在合法的数据库上结果完全相同 <em>（注意集合是无序的）</em></p>
+</blockquote>
+<p><img alt="1716704968040" src="../image/Database/1716704968040.png" /></p>
+<p><img alt="1716704999491" src="../image/Database/1716704999491.png" /></p>
+<p><img alt="1716705173860" src="../image/Database/1716705173860.png" /></p>
+<p><img alt="1716707417558" src="../image/Database/1716707417558.png" /></p>
+<p><img alt="1716707576340" src="../image/Database/1716707576340.png" /></p>
+<p><img alt="1716707602951" src="../image/Database/1716707602951.png" /></p>
+<p>策略：</p>
+<p>通过上述规则将查询语句转化为等价的形式，选择最优的执行方案</p>
+<p><em>实际使用中往往是引用经验式的规则，想要列出所有可能的实现逻辑一般是不可能的</em></p>
 <p>常用的套路有</p>
 <ul>
-<li>选择提前做，减少不需要的列</li>
-<li>连续的join先做结果较少的，减少中间结果需要的空间</li>
+<li>
+<p>Space sharing &amp; Time programming</p>
+</li>
+<li>
+<p>选择提前做selection &amp; projection，减少不需要的行数和列数</p>
+</li>
+<li>
+<p>连续的join先做结果较少的，减少中间结果需要的空间（有点类似动态规划经典问题 矩阵乘法）</p>
+</li>
 </ul>
-<p>实际使用中往往是引用经验式的规则，想要列出所有可能的实现逻辑一般是不可能的。</p>
 <h3 id="statistical-cost-estimation">Statistical Cost Estimation</h3>
-<p>以下是常用的用于估算复杂度的表信息，对数据库中的表这些数据往往是现成并且定期更新的，难点在于中间结果的信息估算。</p>
+<details class="一些定义">
+<summary>一些定义</summary>
+<p><img alt="1716709482195" src="../image/Database/1716709482195.png" /></p>
+</details>
+<h4 id="histogram">Histogram</h4>
+<blockquote>
+<p>记录每个属性取值的频率，需要随着数据库的更新实时更新</p>
+</blockquote>
+<ul>
+<li>
+<p>Equi-width：等宽</p>
+</li>
+<li>
+<p>Equi-depth：等高</p>
+</li>
+</ul>
 <h4 id="selection-size-estimation">Selection Size Estimation</h4>
 <ul>
-<li>单个属性选择认为数据均匀分布：<ul>
-<li>等于条件查询，<span class="arithmatex">\(\frac{返回Size}{整个表Size}=\frac{1}{查询条件总数}\)</span></li>
-<li>范围条件查询，<span class="arithmatex">\(\frac{返回Size}{整个表Size}=\frac{查询的范围}{总范围即max-min}\)</span></li>
+<li>
+<p>如果有相关的Histogram，直接使用其值即可</p>
+</li>
+<li>
+<p>否则，粗略认为数据满足均匀分布：</p>
+<ul>
+<li>
+<p>单点： <span class="arithmatex">\(\frac{n_r}{V(A,r)}\)</span></p>
+</li>
+<li>
+<p>区域（以小于为例）：</p>
+<div class="arithmatex">\[
+\left \{
+    \begin{aligned}
+        0 &amp;\qquad v &lt; min(A,r)\\
+        n_r \times \frac{v - \min(A,r)}{max(A,r) - min(A,r)} &amp; \qquad min(A,r) \leq v &lt; max(A,r)\\
+        n_r &amp; \qquad v \geq max(A,r)
+    \end{aligned}
+\right.
+\]</div>
+<p><em>若毫无相关信息，一般认为满足项为<span class="arithmatex">\(\frac{n_r}{2}\)</span></em></p>
+</li>
+<li>
+<p>复合条件</p>
+<p>使用概率分析，对于每个条件，根据前面所述计算其满足的概率<span class="arithmatex">\(\frac{s_i}{n_r}\)</span></p>
+<ul>
+<li>
+<p>Conjunction：<span class="arithmatex">\(n_r \times \prod \frac{s_i}{n_r}\)</span></p>
+</li>
+<li>
+<p>Disjunction（容斥）：<span class="arithmatex">\(n_r \times (1 - \prod (1 - \frac{s_i}{n_r}))\)</span></p>
+</li>
+<li>
+<p>Negation：<span class="arithmatex">\(n_r - n_p\)</span> </p>
+</li>
 </ul>
 </li>
-<li>多个属性选择时认为属性之间独立分布：</li>
+</ul>
+</li>
 </ul>
 <h4 id="join-size-estimation">Join Size Estimation</h4>
 <ul>
 <li>
-<p>两张表没有用于匹配的列时，返回大小是两者大小之积</p>
+<p>笛卡尔积：</p>
+<ul>
+<li>
+<p><span class="arithmatex">\(n_{r\times s} = n_r \times n_s\)</span></p>
 </li>
 <li>
-<p>一般情况下估算如下</p>
+<p><span class="arithmatex">\(l_{r\times s} = l_r + l_s\)</span></p>
+</li>
+</ul>
 </li>
 <li>
-<p>两张表存在外键约束时，返回值不大于被约束的表的大小</p>
+<p>自然连接根据 <span class="arithmatex">\(R \cap S\)</span> 的情况估计</p>
+<ul>
+<li>
+<p><span class="arithmatex">\(R \cap S = \emptyset\)</span>，则 <span class="arithmatex">\(R\Join S = R \times S\)</span></p>
 </li>
 <li>
-<p>两张表用于匹配的列是其一的Key时，返回值不大于另一张表的大小</p>
+<p><span class="arithmatex">\(R \cap S \rightarrow R (S)\)</span>，即交集为某一表的主键，则说明每一个元组最多有一个与之匹配，因此<span class="arithmatex">\(n_{r\Join s} \leq n_s(n_r)\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(R \cap S\)</span>为外键，此时每一个元组恰好有一个与之匹配，因此<span class="arithmatex">\(n_{r\Join s} = n_r(n_s)\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(R \cap S\)</span>非键值，则同样考虑均匀概率分布,对于表中的每一个元组考虑其可能匹配的个数，即相当于上述的给定单值的selection，有<span class="arithmatex">\(n_{r\Join s} = \frac{n_r \times n_s}{max(V(A,r),V(A,s))}\)</span></p>
+</li>
+</ul>
+</li>
+<li>
+<p>对于一般连接<span class="arithmatex">\(R \Join_{\theta} S\)</span>，可以转化为<span class="arithmatex">\(\sigma_{\theta}(R \times S)\)</span>，然后使用上述方法估计</p>
+</li>
+<li>
+<p>对于外连接，可以看成自然连接+额外元组，有<span class="arithmatex">\(n_{r⟗s} = n_{r\Join s} + n_r + n_s\)</span></p>
 </li>
 </ul>
 <h4 id="other-estimations">Other Estimations</h4>
+<p><img alt="1716726772210" src="../image/Database/1716726772210.png" /></p>
 <h4 id="estimation-of-distinct-value">Estimation of Distinct Value</h4>
-<h3 id="cost-base-optimize">Cost Base Optimize</h3>
-<p>主要思想如下：</p>
-<ol>
-<li>局部最优解不一定是整体最优解<ul>
-<li>hash-join一般更快，但merge-join得到的结果是有序的</li>
-<li>嵌套的语句计算量不一定最小，但是可以配合流水线提高执行效率，最终时间复杂度反而小</li>
+<ul>
+<li>
+<p>Selection</p>
+<ul>
+<li>
+<p>单点取等： 显然就为条件中的不同值个数</p>
+</li>
+<li>
+<p>区间取值（比大小）： <span class="arithmatex">\(V(A,r) \times P_{select}\)</span></p>
+</li>
+<li>
+<p>复杂情况： 直接粗略估计，<span class="arithmatex">\(min(V(A,r), n_{\sigma_{\theta(r)}})\)</span> </p>
+</li>
 </ul>
 </li>
-<li>适当的选择计划途径，可以列出所有选项还是使用启发式搜索</li>
-</ol>
-<h4 id="join-order-selection">Join-Order Selection</h4>
-<p>连续Join的顺序选择是最经典的一类优化问题。</p>
-<p>往往采用动态规划方法，<strong>伪代码要会</strong>：</p>
-<p>下面是一些已经证明的复杂度结论。</p>
-<h4 id="heuristic-optimize">Heuristic Optimize</h4>
-<p>使用一般性的经验做启发性的优化，本节了解常见的优化习惯即可。</p>
-<h4 id="nested-subqueries-optimize">Nested Subqueries Optimize</h4>
-<p>首先了解<strong>相关变量</strong>和<strong>相关执行</strong>两个词的含义：</p>
-<p>对嵌套查询语句优化，需要学习<strong>半连接</strong>的用法：</p>
+<li>
+<p>Join：</p>
 <ul>
-<li>检查一个结果集（外表）的记录是否在另外一个结果集（字表）中存在匹配记录，半连接仅关注”子表是否存在匹配记录”，而并不考虑”子表存在多少条匹配记录”，半连接的返回结果集仅使用外表的数据集，查询语句中IN或EXISTS语句常使用半连接来处理。</li>
-<li>与之对应的还有反半连接，检查一个结果集（外表）的记录是否在另外一个结果集（字表）中存在匹配记录，当且仅当字表中没有匹配记录时在返回结果集中包含仅使用外表的数据集。</li>
+<li>
+<p>假设<span class="arithmatex">\(A = A_r \cup A_s\)</span>，则<span class="arithmatex">\(V(A,r\Join s) = min(V(A_r,r) \times V(A_s - A_r, s), V(A_r - A_s, r) \times V(A_s, s), n_{r \Join s})\)</span></p>
+<p>这里设<span class="arithmatex">\(V(\emptyset,r) = 1\)</span></p>
+</li>
 </ul>
-<p>借半连接即可将嵌套子查询拆成单级的结构，回到一般的优化问题。</p>
-<h3 id="materialized-view-maintainance">Materialized View Maintainance</h3>
-<p>差分维护：只需要处理更新的tuple与其他表的数据关系即可，不需要全体重新计算。下图中ir、dr指新加入、新删除的tuple，有其他关系代数的view处理逻辑也是相同的，在此仅用最简单的Join做例子。</p>
-<p>维护含Aggregate Operation的view注意有时需要额外维护过程量，例如view中有平均值时可以额外维护sum和count便于后续有插入和删除时能够差分更新而不需要全表重新统计。</p>
+</li>
+<li>
+<p>Projection</p>
+<ul>
+<li><span class="arithmatex">\(V(\Pi_{A}(r),r) = V(A,r)\)</span></li>
+</ul>
+</li>
+<li>
+<p>Aggregation</p>
+<ul>
+<li><span class="arithmatex">\(V(G_F(A),r) = min(V(A,r), V(G,r))\)</span></li>
+</ul>
+</li>
+</ul>
+<h3 id="cost-base-optimize">Cost Base Optimize</h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<ol>
+<li>
+<p>局部最优解不一定是整体最优解</p>
+<ul>
+<li>
+<p>hash-join一般更快，但merge-join得到的结果是有序的</p>
+</li>
+<li>
+<p>嵌套的语句计算量不一定最小，但是可以配合流水线提高执行效率，最终时间复杂度反而小</p>
+</li>
+</ul>
+</li>
+<li>
+<p>适当的选择计划途径，可以列出所有选项还是使用启发式搜索</p>
+</li>
+</ol>
+</div>
+<h4 id="join-order-selection">Join-Order Selection</h4>
+<p>考虑<span class="arithmatex">\(n\)</span>个连续join，顺序有<span class="arithmatex">\(\frac{(2(n-1))!}{(n-1)!}\)</span>（卡特兰数），可以用类似矩阵连乘的动态规划求解（但是顺序不定）</p>
+<ul>
+<li>
+<p>若选择bushy tree, 复杂度为<span class="arithmatex">\(\sum_{i=1}^{n} \binom{n}{i} \times 2^i = (1+2)^n = O(3^n)\)</span> （考虑大小为i的子集的更新代价为<span class="arithmatex">\(2^i\)</span>）</p>
+<p><span class="arithmatex">\(F(S) = min(F(S_k) + F(S - S_k) + Join(S_k, S-S_k))\)</span></p>
+</li>
+<li>
+<p>若为left-deep tree，更新复杂度为<span class="arithmatex">\(O(i)\)</span>，总复杂度降为<span class="arithmatex">\(O(n 2^n)\)</span></p>
+<p><span class="arithmatex">\(F(S) = min(F(r) + F(S - r) + Join(r, S-r))\)</span></p>
+</li>
+</ul>
+<details>
+<summary>Left Deep Join Tree定义</summary>
+<p><img alt="1716728651407" src="../image/Database/1716728651407.png" /></p>
+</details>
+<ul>
+<li>
+<p>Interesting Sort Order</p>
+<p>尽量让前面的排序预先为后面的操作做一些优化</p>
+</li>
+</ul>
+<h4 id="cost-based-optimization-with-equivalence-rules">Cost Based Optimization with Equivalence Rules</h4>
+<p>通过前面提到的表达式推导的形式寻找最优解，需要解决下述问题：</p>
+<ul>
+<li>
+<p>节省空间的表达式表示形式</p>
+</li>
+<li>
+<p>检测相同表达式重复推导的技术</p>
+</li>
+<li>
+<p>基于缓存的记忆化动态规划</p>
+</li>
+</ul>
+<h4 id="heuristic-optimize">Heuristic Optimize</h4>
+<ul>
+<li>
+<p>尽早执行 Selection</p>
+</li>
+<li>
+<p>尽早执行 Projection</p>
+</li>
+<li>
+<p>尽早执行 条件严苛的指令 来筛选、降低表的大小</p>
+</li>
+<li>
+<p>启发式+其他策略混合（如cost-based）</p>
+</li>
+<li>
+<p>其他策略：只考虑left deep join order，optimization cost budget及时终止优化，plan caching 复用策略</p>
+</li>
+</ul>
+<h4 id="nested-subqueries-optimize">Nested Subqueries Optimize</h4>
+<blockquote>
+<p><strong>相关变量（correlation variable）：</strong> 外层查询需要传入内层嵌套子查询的变量</p>
+<p><strong>相关执行（correlated evaluation）：</strong> 外层对from的表列表直接作笛卡尔积得到所有元组，然后将嵌套子查询视为一个关于相关变量的函数，对每个元组进行check</p>
+</blockquote>
+<p><img alt="1716732873796" src="../image/Database/1716732873796.png" /></p>
+<p>显然上面的方法效率很低，一般尝试将 嵌套子查询 转化为 多连接（注意下面例子的重复元组不同，Join会多一点）</p>
+<p><img alt="1716732901355" src="../image/Database/1716732901355.png" /></p>
+<ul>
+<li>
+<p>semijoin ⋉</p>
+<ul>
+<li>
+<p>检查一个结果集（外表）的记录是否在另外一个结果集（字表）中存在匹配记录，本质上半连接仅关注”子表是否存在匹配记录”，而并不考虑”子表存在多少条匹配记录”</p>
+<p><img alt="1716733909198" src="../image/Database/1716733909198.png" /></p>
+<p>半连接的返回结果集仅使用外表的数据集，查询语句中IN或EXISTS语句常使用半连接来处理</p>
+<p><img alt="1716733867727" src="../image/Database/1716733867727.png" /></p>
+</li>
+<li>
+<p>与之对应的还有反半连接anti-semijoin，检查一个结果集（外表）的记录是否在另外一个结果集（字表）中存在匹配记录，当且仅当字表中没有匹配记录时在返回结果集中包含仅使用外表的数据集</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>借半连接即可将嵌套子查询拆成单级的结构，回到一般的优化问题</p>
+<h3 id="materialized-view">Materialized View</h3>
+<p>通过一定冗余提高系统效率</p>
+<h4 id="materialized-view-maintenance">Materialized View Maintenance</h4>
+<blockquote>
+<p>维护有 <strong>立即的视图维护（immediate）</strong> 和 <strong>延迟的视图维护（differed）</strong></p>
+</blockquote>
+<ul>
+<li>
+<p><em>人工维护</em></p>
+</li>
+<li>
+<p><em>触发器维护</em></p>
+</li>
+<li>
+<p><strong>差分维护：</strong></p>
+<p>只需要处理更新的tuple与其他表的数据关系差异（differential）即可，不需要全体重新计算</p>
+<p>下面<span class="arithmatex">\(i_r\)</span>指新插入的元组，<span class="arithmatex">\(d_r\)</span>指删除的元组</p>
+<ul>
+<li>
+<p>Join</p>
+<p><img alt="1716735022061" src="../image/Database/1716735022061.png" /></p>
+</li>
+<li>
+<p>Selection</p>
+<p><img alt="1716735054509" src="../image/Database/1716735054509.png" /></p>
+</li>
+<li>
+<p>Projection</p>
+<p>使用一个count计数，考虑是否需要更新</p>
+</li>
+<li>
+<p>Aggregation</p>
+<p>count、sum、avg等都比较好维护，增加一些辅助量即可</p>
+<p>min、max可能维护代价太大（删除）</p>
+</li>
+<li>
+<p>Set Operation</p>
+<p>根据集合操作的含义维护即可 </p>
+</li>
+<li>
+<p>Expression</p>
+<p>从小的子表达式开始向上推导</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="query-optimization">Query Optimization</h4>
+<ul>
+<li>
+<p>替换查询直接利用物化视图</p>
+</li>
+<li>
+<p>使用物化视图的地方替换成其定义，可能获得更高的效率</p>
+</li>
+</ul>
+<h4 id="materialized-view-selection">Materialized View Selection</h4>
+<p>类似索引选择，目标都是加速系统的整体效率</p>
+<p>具体还得妥善分析系统的工作负载（workload）来决定</p>
+<hr />
 <h2 id="transaction">十七章 Transaction</h2>
 <p>Transaction直译为事物，是一次数据库操作若干执行操作组成的抽象概念。Transaction的提出是为了维护数据的完整性。</p>
 <h3 id="acid">ACID</h3>
