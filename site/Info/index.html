@@ -710,12 +710,51 @@
   
 </li>
         
-          <li class="md-nav__item">
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_15" class="md-nav__link">
     <span class="md-ellipsis">
-      理论极限
+      有损压缩
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="有损压缩">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      率失真理论
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="率失真理论">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      失真度量函数：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      率失真信源编码定理
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1123,12 +1162,51 @@
   
 </li>
         
-          <li class="md-nav__item">
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_15" class="md-nav__link">
     <span class="md-ellipsis">
-      理论极限
+      有损压缩
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="有损压缩">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      率失真理论
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="率失真理论">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      失真度量函数：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      率失真信源编码定理
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1716,8 +1794,16 @@
 <p><span class="arithmatex">\(C = max I(X,Y)\)</span></p>
 </li>
 <li>
-<p>平行信道</p>
+<p>平行信道（积信道）</p>
 <p><img alt="1714274493908" src="../image/Info/1714274493908.png" /></p>
+</li>
+<li>
+<p>开关信道（和信道）</p>
+<p><img alt="1716686892752" src="../image/Info/1716686892752.png" /></p>
+</li>
+<li>
+<p>级联信道</p>
+<p><img alt="1716686998568" src="../image/Info/1716686998568.png" /></p>
 </li>
 <li>
 <p>对称信道</p>
@@ -1740,7 +1826,82 @@
 息在该信道上无错误地可靠传输。</p>
 </blockquote>
 <p><img alt="1715481390465" src="../image/Info/1715481390465.png" /></p>
-<h3 id="_15">理论极限</h3>
+<h2 id="_15">有损压缩</h2>
+<div class="admonition quote">
+<p class="admonition-title">Quote</p>
+<p><img alt="1716688808426" src="../image/Info/1716688808426.png" /></p>
+</div>
+<h3 id="_16">率失真理论</h3>
+<blockquote>
+<p>给定失真率的要求下，数据压缩技术的理论极限</p>
+<p>注意信息的度量看的是<strong>信息的熵</strong>，即典型列个数，而不是符号数</p>
+</blockquote>
+<p><img alt="1716690853034" src="../image/Info/1716690853034.png" /></p>
+<ul>
+<li>
+<p><em>Lloyds算法（效率不高）</em></p>
+<p>假设用R个比特来表示信息，则相当于做信息区域上的<span class="arithmatex">\(2^R-means\)</span>算法</p>
+<p><img alt="1716690717003" src="../image/Info/1716690717003.png" /></p>
+</li>
+</ul>
+<h4 id="_17">失真度量函数：</h4>
+<p>香农给出的是其抽象形式，实际上可以是任意的度量函数</p>
+<p><img alt="1716691295759" src="../image/Info/1716691295759.png" /></p>
+<details class="常见失真度量函数">
+<summary>常见失真度量函数</summary>
+<ul>
+<li>
+<p><strong>Hamming失真</strong></p>
+<div class="arithmatex">\[ D(x,\hat x) = \left\{ \begin{array}{ll} 0 &amp; x = \hat x \\ 1 &amp; x \neq \hat x \end{array} \right. \]</div>
+<p>此时失真率为错误率</p>
+<div class="arithmatex">\[ Ed(X,\hat X) = P(X \neq \hat X) \]</div>
+</li>
+<li>
+<p><strong>平方误差失真</strong></p>
+<div class="arithmatex">\[ D(x,\hat x) = (x-\hat x)^2 \]</div>
+</li>
+</ul>
+</details>
+<ul>
+<li>
+<p>失真的规范化</p>
+<p>即每个符号取正确自身值时的失真为0</p>
+<div class="arithmatex">\[ C_x = \min_{\hat x} d(x,\hat x) = 0\]</div>
+<p><img alt="1716692552371" src="../image/Info/1716692552371.png" /></p>
+</li>
+<li>
+<p>零比特编码</p>
+<p>虽然比特速率为0, 但是不同的<span class="arithmatex">\(\hat x\)</span>导致的失真率也是不同的，应有最小值</p>
+<p>比如说对于一个高斯变量，取<span class="arithmatex">\(\hat x = 0\)</span>时取到最小值<span class="arithmatex">\(D = \sigma ^ 2\)</span>；否则若取<span class="arithmatex">\(\hat x \neq 0\)</span>，容易证明<span class="arithmatex">\(D\)</span>会变大</p>
+<p>因此，零比特编码最小平均失真 就是 <strong>编码的最大失真</strong></p>
+<p><img alt="1716692840998" src="../image/Info/1716692840998.png" /></p>
+</li>
+<li>
+<p><strong>信息率失真函数</strong></p>
+<p><img alt="1716693121975" src="../image/Info/1716693121975.png" /></p>
+<p>核心即是找到下方的这条 <strong>理论极限的曲线</strong>，右上方的点可达，左下方的点不可达</p>
+<p>即 误差率确定，最小极限比特数；比特数确定，最小极限误差率</p>
+<p>其中</p>
+<ul>
+<li>
+<p>率失真函数<span class="arithmatex">\(R(D)\)</span>是失真率<span class="arithmatex">\(D\)</span>的函数，表示在失真率<span class="arithmatex">\(D\)</span>下的最小比特数</p>
+</li>
+<li>
+<p>失真率函数<span class="arithmatex">\(D(R)\)</span>是比特数<span class="arithmatex">\(R\)</span>的函数，表示在比特数<span class="arithmatex">\(R\)</span>下的最小失真率</p>
+</li>
+</ul>
+<p><img alt="1716693493350" src="../image/Info/1716693493350.png" /></p>
+<div class="admonition quote">
+<p class="admonition-title">Quote</p>
+<p>上面的定义本质上是将失真函数转化为了一个优化问题，但是比较复杂</p>
+<p>在前面的基础上，定义 <strong>信息率失真函数</strong></p>
+<p><img alt="1716698244701" src="../image/Info/1716698244701.png" /></p>
+</div>
+</li>
+</ul>
+<h4 id="_18">率失真信源编码定理</h4>
+<div class="arithmatex">\[ R^{(I)} (D) = R(D) \]</div>
+<p>从而该函数的求解变成了一个类似信道容量计算的凸优化问题</p>
 
 
 
