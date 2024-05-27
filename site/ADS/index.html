@@ -707,6 +707,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#parallel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parallel
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1187,6 +1196,15 @@
   <a href="#randomized-algorithm" class="md-nav__link">
     <span class="md-ellipsis">
       Randomized Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parallel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parallel
     </span>
   </a>
   
@@ -4403,6 +4421,201 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <p>因此，对于<span class="arithmatex">\([i,j]\)</span>这个子区间，pivot的选择是等概的，<span class="arithmatex">\(P_{ij} = \frac{2}{j-i+1}\)</span>（即选择<span class="arithmatex">\(i\)</span>或<span class="arithmatex">\(j\)</span>作为pivot的概率）</p>
 <p>从而，对于整个序列，比较次数的期望为</p>
 <div class="arithmatex">\[E(n) = \sum_{i=1}^{n-1} \sum_{j=i+1}^{n} P_{ij} = \sum_{i=1}^{n-1} \sum_{j=i+1}^{n} \frac{2}{j-i+1} &lt; 2n \sum_{k=1}^{n} \frac{1}{k} = O(n \log n)\]</div>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="parallel">Parallel</h3>
+<p>通过并行加速算法的执行。很多时候为了挖掘并行性，可能会设计一个工作负载变大的算法，但是由于并行性，整体的运行效率反而会提高。</p>
+<ul>
+<li>
+<p>运行基础：</p>
+<ul>
+<li>
+<p>PRAM（Parallel Random Access Machine）</p>
+</li>
+<li>
+<p>Access</p>
+<p><img alt="1716796219037" src="../image/ADS/1716796219037.png" /></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>关键定义</strong></p>
+<ul>
+<li>
+<p><span class="arithmatex">\(T_p\)</span> 表示p个处理器时的实际工作效率，也即处理器并行调用的次数</p>
+</li>
+<li>
+<p><span class="arithmatex">\(W\)</span> (Workload) 表示总工作量，易知 <span class="arithmatex">\(W = T_1\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(D\)</span> (Depth) 表示并行层数，易知 <span class="arithmatex">\(D = T_{\infty}\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(\frac{W}{p} \leq T_p \leq \frac{W}{p} + D\)</span> </p>
+</li>
+</ul>
+</li>
+<li>
+<p>Summation</p>
+<ul>
+<li>
+<p>Balanced Binary Tree 模型（Bottom-Up）</p>
+<p><span class="arithmatex">\(D = O(log N)\)</span> </p>
+<p><span class="arithmatex">\(W = O(N)\)</span></p>
+<p><img alt="1716797023603" src="../image/ADS/1716797023603.png" /></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Prefix-Summation</p>
+<ul>
+<li>
+<p>由于需要计算前缀和，因此在上述计算出的B节点的基础上，进行Top-Down计算，计算每个节点到起最右节点的前缀和，记为C</p>
+<p>更新策略：</p>
+<ul>
+<li>
+<p>若为右儿子，则易得值和父节点相等</p>
+</li>
+<li>
+<p>若为左儿子，则需要从上一层父节点的左兄弟获得前半段的结果，再累加上自己</p>
+</li>
+</ul>
+<p><img alt="1716797772615" src="../image/ADS/1716797772615.png" /></p>
+</li>
+<li>
+<p>复杂度相当于在原来算法的基础上多做了一遍而已，没有影响</p>
+<p><span class="arithmatex">\(D = O(log N)\)</span> </p>
+<p><span class="arithmatex">\(W = O(N)\)</span></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Merge</p>
+<ul>
+<li>
+<p>考虑归并排序的merge环节，如果使用常规的串行来做，复杂度为线性<span class="arithmatex">\(O(N)\)</span></p>
+<p>为了挖掘并行性，我们希望为每一个元素直接找到其合并后的顺序，而这本质上就是找两个序列中有多少个数比自己小：</p>
+<p><strong>己方的由于有序已经通过位置得到，只要得到对方序列中的个数即可，而这本质上就是一个在有序序列中求rank问题</strong></p>
+<p><img alt="1716799518583" src="../image/ADS/1716799518583.png" /></p>
+</li>
+<li>
+<p>并行二分查找：</p>
+<p>每个元素在对方序列中进行二分查找</p>
+<p><span class="arithmatex">\(D = O(log N)\)</span></p>
+<p><span class="arithmatex">\(W = O(N log N)\)</span></p>
+</li>
+<li>
+<p>分块：</p>
+<p>通过巧妙的设计平衡复杂度：</p>
+<p>在每个序列中每 <span class="arithmatex">\(p\)</span>个元素 取一个pivot进行二分查找，找到其在对方序列中的位置</p>
+<p><span class="arithmatex">\(D = O(logN),\qquad W = O(\frac{N}{p} \times logN)\)</span></p>
+<p>此时根据连接关系，两个序列都被分成了小于等于<span class="arithmatex">\(p\)</span>的块，并且这些块应当按顺序与对应块进行合并，此时对对应的块之间调用朴素的串行方法进行合并即可</p>
+<p><span class="arithmatex">\(D = O(p), \qquad W = O(N)\)</span></p>
+<p><img alt="1716800170720" src="../image/ADS/1716800170720.png" /></p>
+<p>综上，若取<span class="arithmatex">\(p=logN\)</span>，得到</p>
+<p><span class="arithmatex">\(D = O(log N)\)</span></p>
+<p><span class="arithmatex">\(W = O(N)\)</span></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Maximum Finding</p>
+<details>
+<summary>结论速览</summary>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><span class="arithmatex">\(W\)</span></th>
+<th><span class="arithmatex">\(D\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>朴素分治</td>
+<td><span class="arithmatex">\(O(logN)\)</span></td>
+<td><span class="arithmatex">\(O(NlogN)\)</span></td>
+</tr>
+<tr>
+<td>并行二重循环</td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td><span class="arithmatex">\(O(N^2)\)</span></td>
+</tr>
+<tr>
+<td>递归分块（<span class="arithmatex">\(p=\sqrt{N}\)</span>）</td>
+<td><span class="arithmatex">\(O(loglogN)\)</span></td>
+<td><span class="arithmatex">\(O(NloglogN)\)</span></td>
+</tr>
+<tr>
+<td>递归分块（<span class="arithmatex">\(p=loglogN\)</span>）</td>
+<td><span class="arithmatex">\(O(loglogN)\)</span></td>
+<td><span class="arithmatex">\(O(N)\)</span></td>
+</tr>
+<tr>
+<td>随机采样</td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td><span class="arithmatex">\(O(N)\)</span></td>
+</tr>
+</tbody>
+</table>
+</details>
+<ul>
+<li>
+<p>利用前面求和类似的<strong>Balanced Binary Tree 分治</strong></p>
+<p><span class="arithmatex">\(D = O(logN)\)</span></p>
+<p><span class="arithmatex">\(W = O(N)\)</span></p>
+</li>
+<li>
+<p>充分挖掘并行性，采用<strong>并行的二重循环</strong>，即并行进行<span class="arithmatex">\(N^2\)</span>对比较，一旦有一组比较不满足则淘汰（需要common CRCW策略支持）</p>
+<p><span class="arithmatex">\(D = O(1)\)</span></p>
+<p><span class="arithmatex">\(W = O(N^2)\)</span></p>
+</li>
+<li>
+<p>考虑<strong>递归分块</strong>，可以得到所谓 <strong>Doubly-logarithmic Paradigm</strong></p>
+<p>若每<span class="arithmatex">\(p\)</span>个分成一块，块与块之间并行处理，最后对<span class="arithmatex">\(\frac{N}{p}\)</span>块进行汇总，则容易得到复杂度的递推式</p>
+<p><span class="arithmatex">\(D(N) = D(p) + F_D(\frac{N}{p}), \qquad W(N) = \frac{N}{p}W(p) + F_W(\frac{N}{p})\)</span></p>
+<p>若都采用上述 <strong>并行二重循环</strong> 的方法，则有 </p>
+<p><span class="arithmatex">\(D(N) = D(p) + O(1), \qquad W(N) = \frac{N}{p}W(p) + O((\frac{N}{p})^2)\)</span></p>
+<p>取<span class="arithmatex">\(p=\sqrt{N}\)</span>，可以得到优化：</p>
+<p><span class="arithmatex">\(D(N) = O(loglogN)\)</span></p>
+<p><span class="arithmatex">\(W(N) = O(N log log N)\)</span></p>
+</li>
+<li>
+<p><strong>究极硬凑</strong></p>
+<p>在前面递归分块得到的比较优秀的算法基础上，考虑先使用<span class="arithmatex">\(p=loglogN\)</span>分块，每一个块内直接用朴素的串行线性算法进行求解，而合并时使用上方的<strong>递归分块</strong>方法</p>
+<p><span class="arithmatex">\(D(N) = O(p) + O(loglog \frac{N}{p}) = O(loglogN)\)</span></p>
+<p><span class="arithmatex">\(W(N) = O(N) + O(\frac{N}{p} loglog \frac{N}{p}) = O(N)\)</span></p>
+</li>
+<li>
+<p><strong>随机采样</strong></p>
+<ol>
+<li>
+<p>随机选取<span class="arithmatex">\(N^{\frac{7}{8}}\)</span>个元素作为采样的序列</p>
+<p><span class="arithmatex">\(D = O(1), \qquad W = O(N^{\frac{7}{8}})\)</span></p>
+</li>
+<li>
+<p>每<span class="arithmatex">\(N^{\frac{1}{8}}\)</span>为一块分组，得到<span class="arithmatex">\(N^{\frac{3}{4}}\)</span>块，每组内使用 <strong>并行二重循环</strong> 进行求解最大值</p>
+<p><span class="arithmatex">\(D = O(1), \qquad W = O(N^{\frac{3}{4}} \times (N^{\frac{1}{8}})^2) = O(N)\)</span></p>
+</li>
+<li>
+<p>每<span class="arithmatex">\(N^{\frac{1}{4}}\)</span>为一块分组，得到<span class="arithmatex">\(N^{\frac{1}{2}}\)</span>块，每组内使用 <strong>并行二重循环</strong> 进行求解最大值</p>
+<p><span class="arithmatex">\(D = O(1), \qquad W = O(N^{\frac{1}{2}} \times (N^{\frac{1}{4}})^2) = O(N)\)</span></p>
+</li>
+<li>
+<p>剩下的 <span class="arithmatex">\(N^{\frac{1}{2}}\)</span> 块直接使用 <strong>并行二重循环</strong> 求解最终答案</p>
+<p><span class="arithmatex">\(D = O(1), \qquad W = O((N^{\frac{1}{2}})^2) = O(N)\)</span></p>
+</li>
+</ol>
+<p>综上，总复杂度为</p>
+<p><span class="arithmatex">\(D=O(1)\)</span></p>
+<p><span class="arithmatex">\(W=O(N)\)</span></p>
+<details>
+<summary>补充说明</summary>
+<p><img alt="1716803496033" src="../image/ADS/1716803496033.png" /></p>
+</details>
 </li>
 </ul>
 </li>
