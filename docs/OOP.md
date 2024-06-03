@@ -379,6 +379,8 @@
 
 ## Composition
 
+----
+
 ### Embedded Objects
 
 > A class **has** other classes
@@ -396,6 +398,8 @@
     - resource is to be allocated / connected at run-time
     
     - *Only C++ can use fully* 
+
+----
 
 ### Inheritance
 
@@ -438,6 +442,8 @@
     - public / protected / private: 定义继承的父类成员的访问权限
 
     - private: default(并不是OOP语意)
+
+----
 
 ### Polymorphism
 
@@ -483,6 +489,8 @@
 
     - virtual inheritance 处理菱形继承关系，不将父类放到子类中，而利用指针索引
 
+----
+
 ### Copy & Move
 
 - **copy constructor**
@@ -508,6 +516,8 @@
     > 传递指针，销毁原对象
 
     - 使用 `std::move()` 转为右值
+
+----
 
 ### Overloading Operator
 
@@ -590,6 +600,8 @@
 ![1715916652058](image/OOP/1715916652058.png)
 
 ![1715916854154](image/OOP/1715916854154.png)
+
+----
 
 ### Template
 
@@ -688,3 +700,63 @@
         template <class T>
         int A<T>::x = 0;
         ```
+
+----
+
+### Exception
+
+??? danger "处理异常办法"
+
+    1. 直接终止程序
+    
+    2. 返回错误码(简单可行)
+    
+    3. 抛出异常  
+
+- **throw**
+
+    可以用`throw`关键字来声明过程可能发生的异常(实际在C++11开始已经不推荐使用了，因为不是在编译时检查)
+
+    若抛出非法异常，程序会终止，触发`std::bad_exception`，调用`std::unexpected()`函数(默认终止程序，可以人为覆写`std::set_unexpected(func)`)
+
+    ```c++
+    function() throw(Type1, Type2); //只能抛出Type1, Type2
+    function() throw(...); //可以抛出任何异常,貌似会报错，不如不写
+    function() throw(); //不抛出异常
+    function() noexcept; //不抛出异常
+    ```
+
+- **try-catch**
+
+    handler 选择原则：
+
+        - 对于一般类型，会选择精确的匹配，一般不会自动转换
+        
+        - 对于类，会使用**“is-a”**关系进行逐条判断，因此子类的异常处理应该放在父类前面
+
+    ```c++
+    try {
+        ...
+    } catch (Type &e) { // 一般用引用，避免拷贝
+        ...
+    } catch (...) { // ... 表示捕获所有异常
+        ...
+        throw;  // propagate, 继续向上层抛出同样的异常，只能在catch中使用
+    }
+    ```
+
+- std::exception
+
+    ![1717408534157](image/OOP/1717408534157.png)
+
+- special case
+
+    - constructor
+
+        分两步：先进行成员基本初始化（**指针赋0**），再申请内存空间等资源，如果失败则抛出异常
+
+        否则若中途抛出异常，如内存分配了一半，指针还未赋值，析构函数无法释放内存，造成内存泄漏
+ 
+    - destructor
+
+        会触发`std::terminate()`函数，因此析构函数不应该抛出异常，应该在设计时避免
