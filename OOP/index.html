@@ -830,6 +830,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#exception" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exception
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1391,6 +1400,15 @@
   <a href="#template" class="md-nav__link">
     <span class="md-ellipsis">
       Template
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exception" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exception
     </span>
   </a>
   
@@ -1997,6 +2015,7 @@
 </li>
 </ul>
 <h2 id="composition">Composition</h2>
+<hr />
 <h3 id="embedded-objects">Embedded Objects</h3>
 <blockquote>
 <p>A class <strong>has</strong> other classes</p>
@@ -2026,6 +2045,7 @@
 </ul>
 </li>
 </ul>
+<hr />
 <h3 id="inheritance">Inheritance</h3>
 <blockquote>
 <p>继承性，面向对象的重要思想</p>
@@ -2099,6 +2119,7 @@
 </ul>
 </li>
 </ul>
+<hr />
 <h3 id="polymorphism">Polymorphism</h3>
 <blockquote>
 <p>多态性，静态声明 &amp; 动态类型</p>
@@ -2159,6 +2180,7 @@
 </ul>
 </li>
 </ul>
+<hr />
 <h3 id="copy-move">Copy &amp; Move</h3>
 <ul>
 <li>
@@ -2196,6 +2218,7 @@
 </ul>
 </li>
 </ul>
+<hr />
 <h3 id="overloading-operator">Overloading Operator</h3>
 <ul>
 <li>
@@ -2287,6 +2310,7 @@
 </blockquote>
 <p><img alt="1715916652058" src="../image/OOP/1715916652058.png" /></p>
 <p><img alt="1715916854154" src="../image/OOP/1715916854154.png" /></p>
+<hr />
 <h3 id="template">Template</h3>
 <blockquote>
 <p>generic programming（泛型编程）</p>
@@ -2383,6 +2407,69 @@
 <a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
 <a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="kt">int</span><span class="w"> </span><span class="n">A</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 </code></pre></div>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="exception">Exception</h3>
+<details class="danger">
+<summary>处理异常办法</summary>
+<ol>
+<li>
+<p>直接终止程序</p>
+</li>
+<li>
+<p>返回错误码(简单可行)</p>
+</li>
+<li>
+<p>抛出异常  </p>
+</li>
+</ol>
+</details>
+<ul>
+<li>
+<p><strong>throw</strong></p>
+<p>可以用<code>throw</code>关键字来声明过程可能发生的异常(实际在C++11开始已经不推荐使用了，因为不是在编译时检查)</p>
+<p>若抛出非法异常，程序会终止，触发<code>std::bad_exception</code>，调用<code>std::unexpected()</code>函数(默认终止程序，可以人为覆写<code>std::set_unexpected(func)</code>)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">function</span><span class="p">()</span><span class="w"> </span><span class="k">throw</span><span class="p">(</span><span class="n">Type1</span><span class="p">,</span><span class="w"> </span><span class="n">Type2</span><span class="p">);</span><span class="w"> </span><span class="c1">//只能抛出Type1, Type2</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">function</span><span class="p">()</span><span class="w"> </span><span class="k">throw</span><span class="p">(...);</span><span class="w"> </span><span class="c1">//可以抛出任何异常,貌似会报错，不如不写</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="n">function</span><span class="p">()</span><span class="w"> </span><span class="k">throw</span><span class="p">();</span><span class="w"> </span><span class="c1">//不抛出异常</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="n">function</span><span class="p">()</span><span class="w"> </span><span class="k">noexcept</span><span class="p">;</span><span class="w"> </span><span class="c1">//不抛出异常</span>
+</code></pre></div>
+</li>
+<li>
+<p><strong>try-catch</strong></p>
+<p>handler 选择原则：</p>
+<div class="highlight"><pre><span></span><code>- 对于一般类型，会选择精确的匹配，一般不会自动转换
+
+- 对于类，会使用**“is-a”**关系进行逐条判断，因此子类的异常处理应该放在父类前面
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span><span class="p">...</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Type</span><span class="w"> </span><span class="o">&amp;</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// 一般用引用，避免拷贝</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span><span class="p">...</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(...)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// ... 表示捕获所有异常</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="p">...</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span><span class="k">throw</span><span class="p">;</span><span class="w">  </span><span class="c1">// propagate, 继续向上层抛出同样的异常，只能在catch中使用</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>std::exception</p>
+<p><img alt="1717408534157" src="../image/OOP/1717408534157.png" /></p>
+</li>
+<li>
+<p>special case</p>
+<ul>
+<li>
+<p>constructor</p>
+<p>分两步：先进行成员基本初始化（<strong>指针赋0</strong>），再申请内存空间等资源，如果失败则抛出异常</p>
+<p>否则若中途抛出异常，如内存分配了一半，指针还未赋值，析构函数无法释放内存，造成内存泄漏</p>
+</li>
+<li>
+<p>destructor</p>
+<p>会触发<code>std::terminate()</code>函数，因此析构函数不应该抛出异常，应该在设计时避免</p>
 </li>
 </ul>
 </li>
