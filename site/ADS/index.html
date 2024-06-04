@@ -716,6 +716,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#external-sorting" class="md-nav__link">
+    <span class="md-ellipsis">
+      External Sorting
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1205,6 +1214,15 @@
   <a href="#parallel" class="md-nav__link">
     <span class="md-ellipsis">
       Parallel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-sorting" class="md-nav__link">
+    <span class="md-ellipsis">
+      External Sorting
     </span>
   </a>
   
@@ -4615,6 +4633,92 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <details>
 <summary>补充说明</summary>
 <p><img alt="1716803496033" src="../image/ADS/1716803496033.png" /></p>
+</details>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="external-sorting">External Sorting</h3>
+<ul>
+<li>
+<p><strong>External Memory Model</strong></p>
+<ul>
+<li>
+<p>有内存和外存之分，内存可以快速进行随机访问，而外存实现随机访问需要开销很大的I/O操作</p>
+</li>
+<li>
+<p>通常内存远小于外存，因此需要设计一些算法，在内存里进行实际排序，在外存中只进行尽可能少的顺序I/O操作</p>
+</li>
+</ul>
+</li>
+<li>
+<p>一些基本概念</p>
+<ul>
+<li>
+<p><strong>Block</strong>：内存和外存之间的数据传输单位，可以认为是一个固定大小的数据块</p>
+</li>
+<li>
+<p><strong>Run</strong>：一次内存排序的结果，即一个有序的子序列，初始一般为内存大小</p>
+</li>
+<li>
+<p><strong>Tape</strong>：抽象模型，可以理解为顺序读写的磁头，一般 k-way merge 需要 k + 1 个tape</p>
+</li>
+<li>
+<p><strong>Pass</strong>：一次内存排序的过程，即将外存数据读入内存，进行排序，然后写回外存</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>External Merge Sort</strong></p>
+<ul>
+<li>
+<p>Split：</p>
+<ul>
+<li>
+<p>常规：将外存数据分成若干块，每块大小为内存大小，然后在内存中调用内部排序算法进行排序，写回磁盘</p>
+</li>
+<li>
+<p><strong>Replacement Selection</strong>：</p>
+<blockquote>
+<p>增大run的初始大小，降低pass的次数，提高效率</p>
+</blockquote>
+<p>大佬Donald Knuth发明的算法：使用内存维护一个堆，每次将堆顶元素写入外存，然后将新元素加入堆。若新写入的元素比当前run的末尾元素小，则应该新开一个run,此时直接将该元素放到内存末尾，即内存前半部分为堆空间，后半部分为下一个run的缓存，等到堆空间为空则进行重建堆继续上述过程。</p>
+<p>可以使用所谓“snowplow”理论感性理解其run的大小会增大为原来的两倍，从而减少pass的次数</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Merge：</p>
+<ul>
+<li>
+<p>k-way merge：</p>
+<p>将k个run的第一个元素块读入内存，留下一个内存块作为输出buffer, 使用堆进行k路归并排序，然后将结果写回外存，直到所有run都被合并</p>
+<p>这样所需的内存为<span class="arithmatex">\(block = k+1\)</span></p>
+<p>优化的<span class="arithmatex">\(pass = 1 + \lceil \log_k(runs) \rceil\)</span></p>
+</li>
+<li>
+<p><strong>并行优化：</strong></p>
+<p>上述朴素的多路合并算法有个问题，当某路的数据块处理完时，整个算法会被阻塞，等待这一路的新数据块写入（一般认为数据块不能同时读写）</p>
+<p>为此，可以考虑使用并行手段，每个数据块分成2部分，一部分为当前处理的数据块，另一部分为并行写入下一个数据块，从而避免阻塞（输出buffer同理）</p>
+<p>此时需要的<span class="arithmatex">\(block = 2 k + 2\)</span></p>
+</li>
+<li>
+<p><strong>tape 优化</strong></p>
+<p>朴素的k-way merge算法需要k+1个tape，但是实际上可以通过一些技巧，充分利用空间，达到只需k个tape</p>
+<div class="admonition example">
+<p class="admonition-title">以二路归并为例</p>
+<p><img alt="1717481621618" src="../image/ADS/1717481621618.png" /></p>
+<p>通过分配初始run的个数为斐波那契数列，每次的run的个数可以辗转相减、滚动减小</p>
+</div>
+<p>对于k路归并，可以通过类似的方法，使用k阶斐波那契数列</p>
+<p>但是这样的方法显然会导致pass的次数增加，因此需要权衡</p>
+</li>
+</ul>
+<details class="note">
+<summary>迭代归并</summary>
+<p>对于多路归并，除了使用堆进行辅助外，还可以使用迭代归并的方法，即每次合并两个run</p>
+<p>“合并果子”即视感，可以使用哈夫曼树进行优化</p>
+<p><img alt="1717485368247" src="../image/ADS/1717485368247.png" /></p>
 </details>
 </li>
 </ul>
