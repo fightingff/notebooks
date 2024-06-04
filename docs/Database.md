@@ -2150,69 +2150,119 @@ Worst Case：buffer小
 
 ## 十七章 Transaction
 
-Transaction直译为事物，是一次数据库操作若干执行操作组成的抽象概念。Transaction的提出是为了维护数据的完整性。
+Transaction直译为事务，是一次数据库操作 **若干实际执行的操作** 组成的抽象概念
 
-### ACID
+Transaction的提出主要是为了解决两个问题：
+
+- 数据库的并发操作，从而提高数据库的性能和效率，具体表现为 吞吐量（throughput）和响应时间（response time）
+
+- 数据库的错误处理（crash recovery）
+
+### ACID 原则
 
 Transation的实现要求四个特性**ACID**：
 
-- **Automicity原子性**：要么Transaction内的所有操作都成功要么都失败回滚，不允许部分成功部分失败。
-- **Consistency一致性**：Transaction的发生前后应该保证数据与操作逻辑一致。
-- **Isolation隔离性**：Transaction应该对上层隐藏并发实现，无论并发的Transaction在内部以什么顺序执行，都要保证返回的结果正确且具体实现过程和并发信息与上层隔离，操作的中间结果对上层也是隐藏的。
-- **Durability持久性**：数据必须被安全的保存后Transaction才能结束，例如断电等等意外不能对已结束的Transaction的结果数据造成任何影响。
+- **Automicity原子性**：要么Transaction内的所有操作都成功要么都失败回滚，不允许部分成功部分失
 
-为了实现ACID，我们为Transaction定义了多种状态：
+- **Consistency一致性**：Transaction的发生前后应该保证数据与操作逻辑一致，例如完整性约束、外键约束、逻辑约束等等
 
-- Active：正在执行
-- Failed：出现错误，终止
-- Aborted：发生错误之后，正在尝试善后
-    - 可能是restart，例如读写的数据页和其他Transaction冲突
-    - 可能是kill，例如这个Transaction本身不满足一些要求，不可能被顺利执行
-    - 两种可能的操作在下图中未画出
-- Partially Committed：逻辑操作已经执行完毕，但是相关数据可能还在buffer或者正在进行写回
-- Committed：数据完整写回，Transaction正式结束
+- **Isolation隔离性**：Transaction应该对上层隐藏并发实现，无论并发的Transaction在内部以什么顺序执行，都要保证返回的结果正确；并且具体实现过程和并发信息与上层隔离，操作的中间结果对上层也是隐藏的
 
-**ACID中最难实现的是并发控制**，这也是本章的重点内容。
+- **Durability持久性**：数据必须被安全的保存后Transaction才能结束，例如断电等等意外不能对已结束的Transaction的结果数据造成任何影响
+
+??? note "Transaction定义状态"
+
+    - Active：正在执行
+
+    - Failed：出现错误，终止
+
+    - Aborted：发生错误之后，正在尝试善后
+
+        - 可能是restart，例如读写的数据页和其他Transaction冲突
+
+        - 可能是kill，例如这个Transaction本身不满足一些要求，不可能被顺利执
+      
+    - Partially Committed：逻辑操作已经执行完毕，但是相关数据可能还在buffer或者正在进行写回
+
+    - Committed：数据完整写回，Transaction正式结束
 
 ### 并发控制
 
-首先引入**Schedule**的概念：指并发Transaction的各个子操作在DBMS内部的具体执行步骤。
+**Schedule**：指并发Transaction的各个子操作在DBMS内部的具体执行步骤。
 
-现在给出两个并发的操作：Let *T*1 transfer $50 from *A* to *B*, and *T*2 transfer 10% of the balance from *A* to *B*，可能的Schedule有：
+- 串行调度：一个一个串行执行事务，只要各事务满足ACID，非常容易保证数据一致但是性能低下。注意在严格的并发语境下，只要没有破坏数据一致性，两个操作无论先执行哪一个都可以认为是正确的
 
-- 串行调度：几个一起来我都一个一个执行，非常容易保证数据一致但是性能低下。注意在严格的并发语境下，只要没有破坏数据一致性，两个操作无论先执行哪一个都可以认为是正确的。
+- 并行调度：实际内部并不是先完整执行一个再另一个，性能上限高但是数据很容易不一致
 
-- 并行调度：实际内部并不是先完整执行一个再另一个，性能上限高但是数据很容易不一致。例如下图中S3是一个好的并行调度但是S4不是，它破坏了一致性。
+本书并不考虑多条指令并发的“真·并行调度”，只关注我们以什么策略来生成一条执行序列，满足下列要求
 
-    - 好的并行调度与串行调度的结果应该相同（S3与S1），意味着上层始终可以按照严格串行来理解和调用数据库即使其内部并不一定是串行调度。这就是**Isolation**。
+![1717492396907](image/Database/1717492396907.png)
 
-### Schedule Serialize
+#### Serializability
 
-本书并不考虑多条指令并发的“真·并行调度”，只关注我们以什么策略来生成单条执行序列。
+每个Transaction可以分为若干次读、运算、写，其中会发生数据不一致（**Conflict**）的只有多个Transaction**并发读写同一个数据**这一种情况（全部只读不会发生冲突，运算由CPU而不是DBMS负责），所以下面我们主要关注有读有写这一种情况
 
-每个Transaction可以分为若干次读、运算、写，其中会发生数据不一致（**Conflict**）的只有多个Transaction并发读写同一个数据这一种情况（全部只读不会发生冲突，运算由CPU而不是DBMS负责）。所以下面我们只关注有读有写这一种情况。
+- Conflict Serializability
 
-#### Conflict Serializability
+    如果S可以通过交换相互不冲突的语句转换为S‘，或者说S与S‘所有相互冲突的Instructions以相同的顺序排列，称S和S‘是**冲突等价（conflict equivalent）**的
 
-- 如果S可以通过交换相互不冲突的语句转换为S‘，或者说S与S‘所有相互冲突的Instructions以相同的顺序排列，称S和S‘是**冲突等价（conflict equivalent）**的。
+    如果S冲突等价于一个串行调度序列，称S是**冲突可串行的（conflict serializable）**。
 
-- 如果S冲突等价于一个串行调度序列，称S是**冲突可串行的（conflict serializable）**。
+    ??? example
 
-- 如果并发调度下某一个Transaction失败需要回滚会带动其他Transaction一起回滚，称为**级联回滚（cascading rollback）**，如果一个调度序列不会引起任何级联回滚，称它是**非级联序列（cascadeless schedule）**。下图中是一个反面例子，这样的序列被认为是不好的。
+        - conflict serializable
 
-    - 实现非级联序列的具体要求是，并发Transaction们对同一个数据有读有写时，任意做了写入的Transaction必须commit，下一个Transaction才能从中读。例如下图序列有写但是没有commit，所以不满足cascadelessness。
+            ![1717490106116](image/Database/1717490106116.png)
 
-- 当以一个并发调度序列中，如果一个txn从另外一个调txn的结果中读取数据，那么它应该在另外txn的commit之后commit。满足这一条件的调度称为**Recoverable可恢复的**。
+        - not conflict serializable
 
-### Precedence Graph
+            ![1717490135297](image/Database/1717490135297.png)
 
-当且仅当Precidence图中无环（注意这是有向图的环）时，某个schedule是冲突可串的。
+- View Serializability
 
-下面是一个具体的例子：
+    同样也有 view equivalent, 看着比较复杂，实际上就是考虑每一次的读要符合原来操作顺序的值，并且最后一次写的事务应该保持一致
+
+    ![1717490766941](image/Database/1717490766941.png)
+
+    容易发现，在这个定义下，view serializability就相当于conflict serializability的一个弱化版，可能存在blind write（未读取而写）问题
+
+    !!! warning
+
+        若考虑运算等一些其他操作，会有除这两者之外的serializability
+
+        如下面 schedule<T1,T5>
+
+        ![1717491448315](image/Database/1717491448315.png)
+
+- Precedence Graph
+
+    $T_i \rightarrow T_j$: $\quad T_i$ 与 $T_j$有冲突并且$T_i$先执行
+
+    当且仅当Precidence图中无环（注意这是有向图的环）时，某个schedule是冲突可串的（显然可以用topo sort解决）
+
+    但对于 视图可串行 的检测属于NP-C问题，因此没有有效算法，只能用一些必要条件进行check
+
+#### Recoverable Schedule
+
+如果并发调度下某一个Transaction失败需要回滚会带动其他Transaction一起回滚，称为**级联回滚（cascading rollback）**，如果一个调度序列不会引起任何级联回滚，称它是**非级联序列（cascadeless schedule）**
+
+??? danger "not recoverable"
+
+    ![1717492088548](image/Database/1717492088548.png)
+
+实现非级联序列的具体要求是，并发Transaction们对同一个数据有读有写时，任意**做了写入的Transaction必须先commit，下一个Transaction才能从中读**
 
 ### Trade Off
 
-第一节中就提到了，串行调度数据安全性强而性能弱，并行调度反之。实际使用中这往往不是一个选择题，而是取折中的问题。下面列出了常见的四种并行化的层次。
+第一节中就提到了，串行调度数据安全性强而性能弱，并行调度反之。
+
+实际使用中这往往不是一个选择题，通过一些tradeoff(accuracy, week consistency...)取折中。下面列出了常见的四种并行化的层次：
+
+![1717492579162](image/Database/1717492579162.png)
+
+??? note "额外控制手段"
+
+    ![1717492807743](image/Database/1717492807743.png)
 
 ## 十八章 并发控制
 
