@@ -2266,100 +2266,263 @@ Transation的实现要求四个特性**ACID**：
 
 ## 十八章 并发控制
 
-前一章从调度原理上介绍了并发控制，而本章是讲解其具体的实现步骤。
+前一章从调度原理上介绍了并发控制，而本章是讲解其具体的实现步骤
+
+!!! warning
+
+    **Schedules not possible under two-phase locking are possible under the tree protocol, and vice versa.**
 
 ### Lock-Based Protocols
 
 锁是Transaction对某个数据的权限申请，由并发管理器控制。
 
 - **exclusive (X) mode**: Data item can be both read as well as written. X-lock is requested using  **lock-X** instruction.
+
 - **shared (S) mode**: Data item can only be read. S-lock is requested using  **lock-S** instruction.
 
-根据上述逻辑，对某一块数据，没有X锁时可以分享多把S锁给不同Transaction，但是存在一把X锁后就不能再有任何其他锁。这种做法一定程度上避免了混乱的读写。
+根据上述逻辑，对某一块数据，没有X锁时可以分享多把S锁给不同Transaction，但是存在一把X锁后就不能再有任何其他锁。这种做法一定程度上避免了混乱的读写
+
+![1717637119400](image/Database/1717637119400.png)
 
 #### 内部实现
 
-锁策略一般的是Lock Table实现，用哈希表归类数据，每个数据下辖链表储存当前锁的情况。例如下图中17数据派锁给T23，123数据派锁给T1、T8而T2在等待。
+??? note "Atomatic Acquisition of Locks"
+
+    ![1717761635492](image/Database/1717761635492.png)
+
+    ![1717761657812](image/Database/1717761657812.png)
+
+锁策略一般由lock manager 管理，通过数据结构Lock Table实现，用哈希表归类数据，每个数据下挂链表储存当前锁的请求序列（一般还会为每个事务建立锁链表）
+
+- 新请求：将新节点挂到链表的后端
+
+- 解锁：从链表中删除对应节点，并检查该节点后续的请求进行处理
 
 #### 常见问题
 
-- **Dead Lock**：锁协议最大的问题是死锁不能被完全避免。
+- **Dead Lock**：锁协议最大的问题是死锁不能被完全避免,比如下图只能通过回滚其中一个Transaction来解决
 
-- **Startvation**：另一种常见的情况是，派出了过多的S锁，导致出现一个X锁请求时，必须等待此前S锁全部收回，造成时间浪费。
+    ![1717637451937](image/Database/1717637451937.png)
+
+- **Startvation**：另一种常见的情况是，派出了过多的S锁，导致出现一个X锁请求时，必须等待此前S锁全部回滚收回，造成时间浪费
 
 #### Two-phase Lock Protocols
 
 为了解决各个Transaction在任意时刻随意加锁解锁带来前一节中提到的问题，出现了二阶段的锁策略：
 
 - 二阶段锁策略2PL是对单个Transaction而言的
-- 两阶段锁强调的是加锁（增长阶段，growing phase）和解锁（缩减阶段，shrinking phase）这两项操作，且每项操作各自为一个阶段。
+
+- 两阶段锁强调的是加锁（增长阶段，growing phase）和解锁（缩减阶段，shrinking phase）这两项操作，且每项操作各自为一个阶段
+
     - 不管同一个事务内需要在多少个数据项上加锁，所有的加锁操作都只能在同一个阶段完成，在这个阶段内，不允许对已经加锁的数据项进行解锁操作。
+
     - 反之，任何一次解锁即视为这个Transaction进入解锁期，此后不允许该Transaction新加任何锁。
 
-又因为锁是对单个数据而言的，这种策略保证了schedule serializability，例如下图中：
+又因为锁是对单个数据而言的，这种策略保证了schedule serializability
 
-- Transaction1对数据B有读有写，因此在第2条操作时T1会申请X锁。
-- Transaction2对数据B也有读有写，但是因为X锁不能共存，所以在T1完成对B的所有操作并主动解锁B之前，T2无法申请到对B的锁，也就无法进行对B的操作。
-- 所以下图中T1、T2对B的环形关系在2PL中是不存在的，即2PL保证了Conflict Serializable。
+??? note "proof"
+
+    We prove by contradiction.
+
+    Suppose that there exists a two-phase lock that is not serializable. Then, there must be a cycle in the precedence graph.
+
+    Let $T_1\rightarrow T_2 \rightarrow \ldots \rightarrow T_n \rightarrow T_1$ be the transactions in the cycle, $\alpha_i$ denote the lock point of $T_i$. Then, we have $\alpha_1 < \alpha_2 < \ldots < \alpha_n < \alpha_1$, which is a contradiction.
+
+    Therefore, every two-phase lock is serializable.
 
 二阶段锁策略保证了冲突可串行性，但是不能保证得到的序列是非级联回滚的，因此有了两种衍生策略：
 
-- 默认2PL：只要Transaction不需要再申请新锁，并且对某个数据的所有操作都已经完成，那么对这个数据的锁就可以被释放，即使此时Transaction内还有其他操作没有进行。
-- **Strict Two-phase Locking**：一个Transaction会保留它的X锁直到commit/abort之前。
+- 默认2PL：只要Transaction不需要再申请新锁，并且对某个数据的所有操作都已经完成，那么对这个数据的锁就可以被释放，即使此时Transaction内还有其他操作没有进行
 
-- **Rigorous Two-phase Locking**：一个Transaction会保留它的所有锁直到commit/abort之前。 
+- **Strict Two-phase Locking**：一个Transaction会保留它的X锁直到commit/abort之前
 
-#### Tree-Based Protocol
+- **Rigorous Two-phase Locking**：一个Transaction会保留它的所有锁直到commit/abort之前
 
-树协议的要求是：
+### Tree-Based Protocol ($\in$ Graph-Based Protocol)
 
-- Transaction只能申请X锁，并且对一个数据只能申锁一次。
-- Transaction的第一把锁可以是任何数据项的；接下来，只有该事务持有了数据项的父节点的锁，才可以给数据项加锁。
-- 数据项可以在任何时候解锁。
+!!! note "Graph-Based Protocol"
 
-下图是一个数据树的例子。
+    ![1717762311231](image/Database/1717762311231.png)
 
-特性：
+树协议的要求：
+
+- *图结构要是一棵有根树*
+
+- Transaction只能申请X锁，并且同一个事务对一个数据只能申锁一次
+
+- Transaction的第一把锁可以是任何数据项的；接下来，只有该事务持有了数据项的父节点的锁，才可以给数据项加锁
+
+- 数据项可以在任何时候解锁
+
+**特性：**
 
 - **保证冲突可串行化**
-- **保证无死锁**（优于2PL）
-- 不保证无联级回滚，但可通过增加限制**“排他锁只有到事务结束时才可以释放”**来实现
+
 - 相比二阶段锁协议解锁时间自由
 
-问题：
+- **保证无死锁**
+
+- 不保证可恢复性和无联级回滚，但可通过增加限制降低一定并发性来实现
+
+??? note "trade off"
+
+    - 可恢复性&无联级回滚：事务结束前不允许释放排他锁，但是会降低并发性
+    
+    - 可恢复性：为每个数据设立 **提交依赖**（对为提交数据的读操作），只有当所有依赖的数据都提交后，即都已经正确写入后，才能提交；当某个数据项被回滚时，所有依赖于它的数据也要回滚
+
+缺点：
 
 - 有时会给不需要访问的数据项加锁（要求先给父节点加锁），会增加锁开销
 
-### Multiple Granularity
-
-Granularity译为粒度。锁协议相关内容中，我们将加锁的对象泛指为“数据”，但是实际上“数据“指代的内容量可大可小，下图便是一个例子，从整个数据库到每一个tuple，可以用一个树型结构表示。其中的每一个节点都可以视为“数据”。
-
-对“数据”加锁时应该遵循如下原则：
-
-- 对某节点加或解S/X锁时，**自上而下的**
-    - 对它的所有孩子节点加或解S/X锁
-    - 对它的所有祖先节点加或解IS/IX锁（Intention Share/eXclusive 意向锁 用于标识）
-- 加解锁遵循2PL原则。
-- 不同锁之间的共存关系如下图
-    - IS/IX可以共存。某数据上IS、IX两把锁都存在时，习惯上合并写为SIX
 ### Handling Deadlock
 
-死锁是锁协议必须要解决的问题。解决思路一般有：
+??? example
 
-- 一次性申请Transaction需要的所有锁，全部申请完成后再执行
-    - 效率低下，一般不用
-- 使用树策略进行加解锁
-    - 前一节中已经提到
-- **Timeout-Based Scheme**：等待加锁达到一定时长后整个事务回滚，从头来过
+    ![1717852620755](image/Database/1717852620755.png)
 
-- **Wait-die Scheme**：两个事务相互死锁，后开始的回滚给先开始的让路
+#### 死锁预防
+  
+> 通过一些规则避免死锁的发生
+
+- **pre-declaration:**
+
+    在事务执行前一次性申请Transaction需要的所有锁，封锁所有的数据项
+
+    - 事务开始前难以确定需要的锁
+
+    - 许多锁可能会被浪费
+
+- **graph-based protocol:**
+
+    使用图协议给所有的数据项加一个次序，要求事务必须按照这个次序加锁，如前述的树协议
+
+- **Wait-die Scheme**
+
+    两个事务相互死锁，根据赋予的时间戳，若当前事务先于请求冲突的事务，等待；否则，直接自己回滚滚蛋（先入为主）
+
     - 缺点是回滚后重新计先后，于是后开始的回滚后仍然是后开始的，这有可能导致某个事务一直得不到执行
-- **Wound-wait Scheme**：两个事务相互死锁，先开始的回滚给后开始的让路
+
+- **Wound-wait Scheme**
+
+    两个事务相互死锁，根据赋予的时间戳，若当前事务晚于请求冲突的事务，等待；否则，直接回滚自己让位（长江后浪推前浪）
+
     - 缺点是先开始一般意味着已经执行的操作更多，所以回滚的成本更高
 
-### 检测死锁
+- **Timeout**
 
-用类似前序图的等待图关联各个事务。箭头从Ti指向Tj意味着Ti正在等待Tj解锁某个数据，自己才能加锁以继续执行操作。注意与前序图不同的是，前序图随Schedule的确定而确定，执行过程中不会变化；而等待图在运行过程中时时可能改动。
+    为每个事务设置一个超时时间，超时后直接回滚
+
+    - 简单粗暴，但是时间难以把握，应用场景有限
+
+#### 检测死锁
+
+用类似前序图的等待图（wait-for graph）关联各个事务,箭头从Ti指向Tj意味着Ti正在等待Tj解锁某个数据，自己才能加锁以继续执行操作。
+
+同样通过检测图中是否有环来判断是否有死锁，有环则有死锁，否则没有。
+
+!!! danger "注意区分"
+
+    与前序图不同的是，前序图随Schedule的确定而确定，执行过程中不会变化；而等待图在运行过程中时时可能改动
+
+#### 死锁恢复
+
+要破坏死锁，只能通过回滚某些事务（victim）
+
+??? note "Victim Selection"
+
+    - 目前与未来的运算时间估计
+    
+    - 事务目前与未来使用的资源量估计
+    
+    - 事务回滚涉及的事务数目
+
+- Total Rollback
+
+    彻底回滚选定的事务，然后重新开始
+
+- Partial Rollback
+
+    total rollback可能导致过多不必要的回滚，因此有了partial rollback，只回滚必要的部分，即回滚到消除死锁的状态就停止
+
+### Multiple Granularity
+
+Granularity译为粒度,前面锁协议相关内容中，我们将加锁的对象泛指为“数据”，但是实际上“数据“指代的内容量可大可小，组织成一种树形层次结构
+
+如下图所示，从整个数据库到每一个tuple，可以用一个树型结构表示，其中的每一个节点都可以视为“数据”
+
+![1717854468344](image/Database/1717854468344.png)
+
+通过对多粒度的支持，可以更好地选择加锁策略，从而平衡并发性和性能
+
+![1717854704323](image/Database/1717854704323.png)
+
+具体实现时，对于每一个加锁请求，我们只需要对其所在的粒度进行 **显示加锁** 即可，而其子节点将会默认被 **隐式加锁**， 则查询时只要访问从根节点到叶子节点的路径上的所有数据项检查锁即可检查这种”隐式锁“；
+
+然而，当要给某个数据项加锁时，我们还得确认其子节点是否已经被加锁而导致“隐式锁”冲突，显然我们不会傻傻地检查整个子树~~（不然多粒度的设计就没有意义了）~~，这里通过引入意向锁（intention lock）来解决这个问题：当某个节点被加锁时，会对从根节点到该节点的路径上的所有节点加上意向锁，这样就可以通过检查节点的意向锁来判断子节点是否被加锁
+
+引入意向锁后的加锁冲突关系图如下（**S/X表示整棵子树的状态，IS/X表示子树内某个节点的状态**）
+
+![1717855249856](image/Database/1717855249856.png)
+
+??? note
+
+    多粒度增强了并发性，减少了锁开销
+
+    Lock granularity escalation策略: in case there are too many locks at a particular level, switch to higher granularity S or X lock
+
+### Other Operations
+
+#### Insert/Delete
+
+- **Insert**
+
+    插入数据后，需要对新数据项加排他锁，以保证数据的一致性
+
+    必须保证新插入的数据不能被其他事务访问，直到插入事务提交
+
+- **Delete**
+
+    删除数据前，需要对被删除的数据项加排他锁，以保证数据的一致性
+
+    必须小心删除操作与读写操作的冲突
+
+#### Predicate Reads
+
+- Phantom Phenomenon
+
+    本质为一个事务重复读取同一个范围的数据，但是在两次读取之间有另一个事务对数据进行了插入、修改（如将为锁上的数据改为查询的数据）等操作，一般的锁协议无法解决这个问题，从而导致两次读取的数据不一致，成为幻象现象
+
+- *暴力解决方案*
+
+    新建一个新数据项，用于记录查询的范围，对所有可能导致幻象现象的数据项加锁
+
+    显然会导致大量的锁开销，并大大降低并发性
+
+- **Index Locking**
+
+    只有当事务在索引的叶结点上找到相应的数据项时，才能真正访问这些数据
+
+    - 朴素做法：
+
+        对每个事务访问的所有叶结点索引项都加上共享锁
+
+        当要插入、删除、修改数据时，必须更新整个索引，也即需要对所有涉及的叶结点加上排他锁
+
+        此外，需要遵循两阶段锁协议
+
+    - Next-Key Locking
+
+        由于朴素做法中，需要对整个叶结点加锁，导致并发性能大大降低，为了避免上述问题，引入了Next-Key Locking
+
+        谓词查询时，对所有满足条件的 **索引数据项**以及后一个 **索引数据项**加共享锁
+
+        插入、删除、修改数据时，对所有满足条件的 **索引数据项**以及后一个 **索引数据项**加排他锁
+
+        这样当有幽灵数据出现时，必然会引起锁冲突，从而保证了数据的一致性
+
+        ??? example
+
+            ![1717857252124](image/Database/1717857252124.png)
 
 ## 十九章 错误恢复
 

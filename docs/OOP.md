@@ -760,3 +760,15 @@
     - destructor
 
         会触发`std::terminate()`函数，因此析构函数不应该抛出异常，应该在设计时避免
+
+### Smart Pointer
+
+> A reference count is a count of the number of times an object is shared
+>
+> UCObject: Use-Count Object
+>
+> UCPointer: Smart Use-Count Pointer point to UCObject
+
+![1717729817519](image/OOP/1717729817519.png)
+
+新建对象：新建临时UCP -> UCP赋值 -> UCP 析构
