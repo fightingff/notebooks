@@ -730,6 +730,30 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#chapter-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      chapter 6
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="chapter 6">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#disk-storage-and-dependability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disk Storage and Dependability
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1055,6 +1079,30 @@
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       运算
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      chapter 6
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="chapter 6">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#disk-storage-and-dependability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disk Storage and Dependability
     </span>
   </a>
   
@@ -1435,7 +1483,317 @@
 </li>
 <li>
 <p>method</p>
-<p><img alt="method" src="../images/method_float.png" />   </p>
+<p><img alt="method" src="../images/method_float.png" /></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="chapter-6">chapter 6</h2>
+<p><em>考试应该涉及的不多，这里简单的记录一下一些零碎的公式和概念</em></p>
+<div class="admonition note">
+<p class="admonition-title">Amdahl's Law</p>
+<blockquote>
+<p>说明了串行部分对并行化效率的影响</p>
+</blockquote>
+<ul>
+<li>
+<p><span class="arithmatex">\(Speedup = \frac{1}{(1 - f) + \frac{f}{s}}\)</span></p>
+</li>
+<li>
+<p>f: 被并行化的部分的比例</p>
+</li>
+<li>
+<p>s: 并行化部分的加速比</p>
+</li>
+</ul>
+</div>
+<h3 id="disk-storage-and-dependability">Disk Storage and Dependability</h3>
+<ul>
+<li>
+<p><strong>Disk</strong></p>
+<ul>
+<li>
+<p>特征</p>
+<p><img alt="1718162657748" src="../image/RiscV/1718162657748.png" /></p>
+</li>
+<li>
+<p>结构</p>
+<ul>
+<li>
+<p>Platter (盘片)，一般为堆叠的多个盘片</p>
+</li>
+<li>
+<p>Track (磁道)，盘片上的一圈</p>
+</li>
+<li>
+<p>Sector (扇区)，磁道上的一个片段  </p>
+</li>
+</ul>
+<p><img alt="1718162716068" src="../image/RiscV/1718162716068.png" /></p>
+</li>
+<li>
+<p>操作</p>
+<div class="arithmatex">\[ latency = seek + rotation + transfer + controller \]</div>
+<ul>
+<li>
+<p>Seek Time (寻道时间)</p>
+<p>minimum、<strong>average</strong>（一般给出这个常数）、maximum</p>
+</li>
+<li>
+<p>Rotational Latency (旋转延迟)</p>
+<div class="arithmatex">\[ 平均延迟_{旋转} =  \frac{0.5 圈}{转速} \]</div>
+</li>
+<li>
+<p>Transfer Time (传输时间)</p>
+<div class="arithmatex">\[ 传输时间 = \frac{数据大小}{传输速度} \]</div>
+</li>
+<li>
+<p>Disk Controller（控制器耗时）</p>
+<p>一般为给定常数</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<details class="note">
+<summary>Flash</summary>
+<p>Nonvolatile semiconductor storage（非易失性半导体存储器）</p>
+<p>相比磁盘，更小更快更好用，不过有擦写上限</p>
+<p><img alt="1718163465760" src="../image/RiscV/1718163465760.png" /></p>
+</details>
+<ul>
+<li>
+<p>性能优化：</p>
+<ul>
+<li>
+<p>人为调整访存顺序以减小seek time</p>
+</li>
+<li>
+<p>更好的控制器</p>
+</li>
+<li>
+<p>加缓存</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>有效性：</strong></p>
+<p><img alt="1718163666905" src="../image/RiscV/1718163666905.png" /></p>
+<ul>
+<li>
+<p>Fault Avoidance：生产结构上尽量避免</p>
+</li>
+<li>
+<p>Fault Tolerance：通过冗余设计，在出现故障时可以恢复正常运行</p>
+</li>
+<li>
+<p>Fault Forecasting：尝试预测故障发生</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>可靠性：</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">粗略估计</p>
+<p>如果使用 n 个独立的小磁盘来充当一个大磁盘，那么大磁盘的可靠性认为是小磁盘可靠性的<span class="arithmatex">\(\frac{1}{n}\)</span></p>
+</div>
+<ul>
+<li>
+<p><strong>RAID(Redundant Array of Inexpensive Disks)</strong></p>
+<p><img alt="1718165304989" src="../image/RiscV/1718165304989.png" /></p>
+<ul>
+<li>
+<p>RAID 0：No Redundancy</p>
+<ul>
+<li>无冗余，提高性能</li>
+</ul>
+</li>
+<li>
+<p>RAID 1：Disk Mirroring/Shadowing</p>
+<ul>
+<li>直接镜像复制一份，最高代价，最高可靠性</li>
+</ul>
+</li>
+<li>
+<p>*RAID 2</p>
+</li>
+<li>
+<p>RAID 3：Bit-Interleaved Parity Disk</p>
+<p>为每一位数据添加一个奇偶校验位，用于检测错误和恢复数据</p>
+<p>这样可以恢复一个磁盘的数据，但是无法恢复多个磁盘的数据</p>
+<p><img alt="1718177630414" src="../image/RiscV/1718177630414.png" /></p>
+</li>
+<li>
+<p>RAID 4：Block-Interleaved Parity Disk</p>
+<p>类似于 RAID 3，但是是以块（stride）为单位进行奇偶校验（一列为一个磁盘）</p>
+<p>little read只要读取一个磁盘就可以了，而不需要读取所有的磁盘</p>
+<p>little write需要根据数据变化重新计算奇偶校验位（两次异或），然后写入</p>
+<p>large write会写入一整行，可以直接重新计算整个校验块</p>
+<p><img alt="1718179783486" src="../image/RiscV/1718179783486.png" /></p>
+</li>
+<li>
+<p>RAID 5：Block-Interleaved Distributed Parity</p>
+<p>由于每次写入操作都会修改校验块，但是 RAID 4 的校验块是在一个磁盘上，因此会造成阻塞瓶颈</p>
+<p>因此 RAID 5 将校验块分布到所有的磁盘上，这样每次写入操作都会修改不同的校验块，提高了性能</p>
+<p><img alt="1718181157906" src="../image/RiscV/1718181157906.png" /></p>
+</li>
+<li>
+<p>RAID 6：P+Q Redundancy</p>
+<p>容易发现，前面的方法都只能恢复一个磁盘的数据，因此 RAID 6 引入了两个校验块，可以恢复至多两个磁盘的数据</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Buses and Other Connections</p>
+<ul>
+<li>
+<p>类型</p>
+<p><img alt="1718181117931" src="../image/RiscV/1718181117931.png" /></p>
+</li>
+<li>
+<p>内存</p>
+<p><img alt="1718182391046" src="../image/RiscV/1718182391046.png" /></p>
+</li>
+</ul>
+<details class="note">
+<summary>history</summary>
+<p><img alt="1718182753649" src="../image/RiscV/1718182753649.png" /></p>
+<p><img alt="1718182777997" src="../image/RiscV/1718182777997.png" /></p>
+</details>
+<ul>
+<li>
+<p>Synchronous vs. Asynchronous</p>
+<ul>
+<li>
+<p>同步：时钟信号同步</p>
+</li>
+<li>
+<p>异步：无需时钟信号同步  </p>
+<p><img alt="1718182975391" src="../image/RiscV/1718182975391.png" /></p>
+<ol>
+<li>
+<p>I/O发出读请求，内存读到信号，从数据总线读取地址，并发出Ack信号确认</p>
+</li>
+<li>
+<p>I/O 读取到Ack信号，停止发出请求，等待数据</p>
+</li>
+<li>
+<p>内存发现请求信号消失，完成一次握手，停止Ack信号</p>
+</li>
+<li>
+<p>内存读取对应数据，写入数据总线，并发出Data Ready信号</p>
+</li>
+<li>
+<p>I/O 读取到Data Ready信号，从数据总线读取数据，并发出Ack信号确认读取完毕</p>
+</li>
+<li>
+<p>内存读到Ack信号，停止发出数据，并不再发出Data Ready信号</p>
+</li>
+<li>
+<p>I/O 发现Ack信号消失，完成一次握手，停止Ack信号，整个数据读取过程结束</p>
+</li>
+</ol>
+</li>
+</ul>
+<details class="example">
+<summary>Example</summary>
+<p>异步带宽没有同步高，但是可以同时进行多个操作，因此在一些场景下异步更加适用</p>
+<p><img alt="1718184475081" src="../image/RiscV/1718184475081.png" /></p>
+<p><img alt="1718184491790" src="../image/RiscV/1718184491790.png" /> </p>
+</details>
+</li>
+<li>
+<p><strong>Bus Arbitration</strong></p>
+<p>为处理多任务，Bus可能会有多个请求，因此需要一个仲裁器来决定哪个请求优先</p>
+<p><img alt="1718184070088" src="../image/RiscV/1718184070088.png" /></p>
+</li>
+<li>
+<p><strong>Increase Bandwidth</strong></p>
+<p><img alt="1718184678335" src="../image/RiscV/1718184678335.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">transfer time（同步）</p>
+<ul>
+<li>
+<p>传输地址时间</p>
+</li>
+<li>
+<p>读数据时间</p>
+</li>
+<li>
+<p>传输数据时间(这里一般与数据总线的宽度有关)</p>
+</li>
+<li>
+<p>传输间隔时间等特殊时间</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p>Interfacing</p>
+<details class="note">
+<summary>I/O 交互的特征</summary>
+<p><img alt="1718185708925" src="../image/RiscV/1718185708925.png" /></p>
+<p><img alt="1718185720518" src="../image/RiscV/1718185720518.png" /></p>
+</details>
+<ul>
+<li>
+<p><strong>交互方式</strong></p>
+<p><img alt="1718190459665" src="../image/RiscV/1718190459665.png" /></p>
+<ul>
+<li>
+<p>Interrupt-Driven I/O mode</p>
+<ul>
+<li>
+<p>通过中断请求信号，CPU可以暂停当前操作，处理中断请求</p>
+</li>
+<li>
+<p>可以处理高并发性</p>
+</li>
+</ul>
+<p>计算：相当于在polling的基础上乘以操作比例</p>
+</li>
+<li>
+<p>Direct Memory Access (DMA)</p>
+<p><img alt="1718185877197" src="../image/RiscV/1718185877197.png" /></p>
+<p>不需要 CPU 参与，直接通过 DMA 控制器进行数据传输，不会占用 CPU 的功效</p>
+<p>计算：关注数据传输时间</p>
+</li>
+<li>
+<p>Polling</p>
+<ul>
+<li>
+<p>CPU 不断查询 I/O 状态，直到 I/O 完成</p>
+</li>
+<li>
+<p>会浪费 CPU 的功效</p>
+</li>
+</ul>
+<p>计算：频率 * polling 时间</p>
+</li>
+</ul>
+</li>
+<li>
+<p>bottleneck计算</p>
+<ul>
+<li>
+<p>min(Maximum I/O rate of CPU, Maximum I/O rate of bus)</p>
+<p><img alt="1718190079878" src="../image/RiscV/1718190079878.png" /></p>
+</li>
+<li>
+<p>Time per I/O</p>
+<p><img alt="1718190099101" src="../image/RiscV/1718190099101.png" /></p>
+<p>从而可以获得所需disk的吞吐量，从而计算得最少disk个数</p>
+</li>
+<li>
+<p>Bus</p>
+<p><img alt="1718190399440" src="../image/RiscV/1718190399440.png" /></p>
+</li>
+</ul>
 </li>
 </ul>
 </li>

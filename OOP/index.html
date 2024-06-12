@@ -2429,6 +2429,11 @@
 </ul>
 </li>
 </ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>一般模板（类）函数的定义和声明必须在同一个头文件中，因为模板在编译阶段实例化，否则会报错</strong></p>
+<p><em>还有一种很笨的方法可以将他们分开：直接在头文件中挨个定义相关的模板类</em></p>
+</div>
 <hr />
 <h3 id="exception">Exception</h3>
 <details class="danger">
