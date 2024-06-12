@@ -413,11 +413,11 @@
 
     ![1718182391046](image/RiscV/1718182391046.png)
 
-??? note "history"
+    ??? note "history"
 
-    ![1718182753649](image/RiscV/1718182753649.png)
+        ![1718182753649](image/RiscV/1718182753649.png)
 
-    ![1718182777997](image/RiscV/1718182777997.png)
+        ![1718182777997](image/RiscV/1718182777997.png)
 
 - Synchronous vs. Asynchronous
 
@@ -471,11 +471,11 @@
 
 - Interfacing
 
-??? note "I/O 交互的特征"
+    ??? note "I/O 交互的特征"
 
-    ![1718185708925](image/RiscV/1718185708925.png)
+        ![1718185708925](image/RiscV/1718185708925.png)
 
-    ![1718185720518](image/RiscV/1718185720518.png)
+        ![1718185720518](image/RiscV/1718185720518.png)
 
 - **交互方式**
 
