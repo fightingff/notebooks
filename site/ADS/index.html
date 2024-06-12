@@ -672,6 +672,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#greedy" class="md-nav__link">
+    <span class="md-ellipsis">
+      *Greedy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#np-completeness" class="md-nav__link">
     <span class="md-ellipsis">
       NP-Completeness
@@ -1169,6 +1178,15 @@
   <a href="#fft-fntt" class="md-nav__link">
     <span class="md-ellipsis">
       FFT &amp; FNTT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#greedy" class="md-nav__link">
+    <span class="md-ellipsis">
+      *Greedy
     </span>
   </a>
   
@@ -4108,8 +4126,42 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 </code></pre></div></td></tr></table></div>
 </details>
 <hr />
+<h3 id="greedy">*Greedy</h3>
+<p>就讲了最经典的<strong>任务调度</strong>问题和<strong>Huffman编码</strong>问题，略过了。</p>
+<details class="danger">
+<summary>❌</summary>
+<ul>
+<li>
+<p><img alt="1718195534324" src="../image/ADS/1718195534324.png" /></p>
+<p>一个构造例子如下，实际上下面的近似算法里面已经讲了 <strong>Set Cover</strong>的界是<span class="arithmatex">\(O(\log n)\)</span>，为2的是另一个选边算法</p>
+<p><img alt="1718195370827" src="../image/ADS/1718195370827.png" /></p>
+</li>
+<li>
+<p><img alt="1718195564421" src="../image/ADS/1718195564421.png" /></p>
+<p>大意了，应该想到算法1会导致之后新开的房间的任务排得不够紧密，导致出问题的</p>
+</li>
+</ul>
+</details>
+<hr />
 <h3 id="np-completeness">NP-Completeness</h3>
 <ul>
+<li>
+<p><strong>Relation</strong></p>
+<ul>
+<li>
+<p>P=NP</p>
+<p><img alt="1718197581566" src="../image/ADS/1718197581566.png" /></p>
+</li>
+<li>
+<p>P != NP</p>
+<p><img alt="1718197832233" src="../image/ADS/1718197832233.png" /></p>
+</li>
+<li>
+<p>Language Problem</p>
+<p><img alt="1718199261159" src="../image/ADS/1718199261159.png" /></p>
+</li>
+</ul>
+</li>
 <li>
 <p><strong>P: Polynomial Time</strong></p>
 <ul>
@@ -4180,6 +4232,31 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 </ul>
 </li>
 </ul>
+<details class="danger">
+<summary>❌</summary>
+<ul>
+<li>
+<p>SAT &amp; 3-SAT are NPC, but 2-SAT is P</p>
+</li>
+<li>
+<p><img alt="1718196769316" src="../image/ADS/1718196769316.png" /></p>
+<p>注意大O记号的含义！！！不一定要达到<span class="arithmatex">\(O(N^3)\)</span>!!!</p>
+<p>Clique也是NPC</p>
+</li>
+<li>
+<p><img alt="1718196847183" src="../image/ADS/1718196847183.png" /></p>
+<p>NP包括P,可能X是P？那样应该一个都不对 </p>
+</li>
+<li>
+<p><img alt="1718196879500" src="../image/ADS/1718196879500.png" /></p>
+<p>傻逼了，显然DAG的最长路随便做</p>
+<p>BC都是NPC，都是不可能有这么精确的算法的，有的话就P=NP了</p>
+</li>
+<li>
+<p><img alt="1718196906484" src="../image/ADS/1718196906484.png" />  </p>
+</li>
+</ul>
+</details>
 <hr />
 <h3 id="approximation">Approximation</h3>
 <blockquote>
@@ -4285,6 +4362,17 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 </ul>
 </li>
 </ul>
+<details class="danger">
+<summary>❌</summary>
+<ul>
+<li>
+<p><img alt="1718201093237" src="../image/ADS/1718201093237.png" /></p>
+</li>
+<li>
+<p><img alt="1718201114837" src="../image/ADS/1718201114837.png" /></p>
+</li>
+</ul>
+</details>
 <h3 id="local-search">Local Search</h3>
 <ul>
 <li>
@@ -4441,9 +4529,15 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <div class="arithmatex">\[E(n) = \sum_{i=1}^{n-1} \sum_{j=i+1}^{n} P_{ij} = \sum_{i=1}^{n-1} \sum_{j=i+1}^{n} \frac{2}{j-i+1} &lt; 2n \sum_{k=1}^{n} \frac{1}{k} = O(n \log n)\]</div>
 </li>
 </ul>
+<details class="danger">
+<summary>❌</summary>
+<ul>
+<li><img alt="1718202979689" src="../image/ADS/1718202979689.png" /></li>
+</ul>
+</details>
+<hr />
 </li>
 </ul>
-<hr />
 <h3 id="parallel">Parallel</h3>
 <p>通过并行加速算法的执行。很多时候为了挖掘并行性，可能会设计一个工作负载变大的算法，但是由于并行性，整体的运行效率反而会提高。</p>
 <ul>

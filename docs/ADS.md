@@ -1772,7 +1772,39 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
 ----
 
+### *Greedy
+
+就讲了最经典的**任务调度**问题和**Huffman编码**问题，略过了。
+
+??? danger "❌"
+
+    - ![1718195534324](image/ADS/1718195534324.png)
+    
+        一个构造例子如下，实际上下面的近似算法里面已经讲了 **Set Cover**的界是$O(\log n)$，为2的是另一个选边算法
+
+        ![1718195370827](image/ADS/1718195370827.png)
+    
+    - ![1718195564421](image/ADS/1718195564421.png)
+
+        大意了，应该想到算法1会导致之后新开的房间的任务排得不够紧密，导致出问题的
+
+----
+
 ### NP-Completeness
+
+- **Relation**
+
+    - P=NP
+
+        ![1718197581566](image/ADS/1718197581566.png)
+
+    - P != NP
+
+        ![1718197832233](image/ADS/1718197832233.png)
+
+    - Language Problem
+
+        ![1718199261159](image/ADS/1718199261159.png)
 
 - **P: Polynomial Time**
 
@@ -1795,26 +1827,47 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 - Some items:
 
     - deterministic turing machine: a machine that can only have one possible state at any time
-    
+
     - non-deterministic turing machine: a machine that can have multiple possible states at any time, and can choose best one
 
 - Some NPC problems
 
     - **SAT**: Given a boolean formula, is there an assignment of truth values to the variables that makes the formula true?
-    
+
     - **3-SAT**: Given a boolean formula in conjunctive normal form, where each clause has exactly 3 literals, is there an assignment of truth values to the variables that makes the formula true?
-    
+
     - **Vertex Cover**: Given a graph G and an integer k, is there a set of k vertices such that each edge in G is incident to at least one vertex in the set?
-    
+
     - **Hamiltonian Cycle**: Given a graph G, is there a simple cycle that visits every vertex exactly once?
-    
+
     - **Subset Sum**: Given a set of integers and an integer k, is there a subset of the integers that sums to k?
-    
+
     - **Traveling Salesman Problem**: Given a set of cities and distances between them, is there a tour that visits each city exactly once and has total length at most k?
-    
+
     - **Knapsack Problem**: Given a set of items, each with a weight and a value, and a knapsack with a weight limit, is there a subset of the items that fits in the knapsack and has total value at least k?
-    
+
     - **Partition**: Given a set of integers, is there a partition of the integers into two sets such that the sum of the integers in each set is equal?
+
+??? danger "❌"
+    - SAT & 3-SAT are NPC, but 2-SAT is P
+
+    - ![1718196769316](image/ADS/1718196769316.png)
+    
+        注意大O记号的含义！！！不一定要达到$O(N^3)$!!!
+
+        Clique也是NPC
+    
+    - ![1718196847183](image/ADS/1718196847183.png)
+
+        NP包括P,可能X是P？那样应该一个都不对 
+    
+    - ![1718196879500](image/ADS/1718196879500.png)
+    
+        傻逼了，显然DAG的最长路随便做
+
+        BC都是NPC，都是不可能有这么精确的算法的，有的话就P=NP了
+    
+    - ![1718196906484](image/ADS/1718196906484.png)  
 
 ----
 
@@ -1835,37 +1888,37 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 - Some problems:
 
     - Vertex Cover: $\rho(n) = 2$
-    
+
         - 每次挑选一条边，将其两端的点加入集合，并删除对应邻边，直到所有边都被覆盖 
-    
+
     - Set Cover: $\rho(n) = O(\log n)$
-    
+
         - 每次选择覆盖最多未覆盖元素的集合，直到所有元素都被覆盖
 
     - 三角不等式约束的TSP: $\rho(n) = 2$
 
         - 生成树的最小边权和即为TSP的下界，然后遍历生成树使得每条边恰好被访问两次，根据三角不等式，可以证明这个解为上界
-    
+
     - Bin packing
-    
+
         - Next Fit: $\rho(n) = 2$
-        
+
             - 每次只考虑上一桶能否装下，则相邻桶相加必大于1,从而得出上界 
 
         - First Fit: $\rho(n) = 1.7$  
-        
+
             - 每次找到第一个能装下的桶
-        
+
         - Best Fit：$\rho(n) = 1.7$
-        
+
             - 每次找到最合适的桶（剩余空间最小的）
-        
+
         - Online：$\rho(n) \geq \frac{5}{3}$ 
-    
+
         - Offline: $\rho(n) \leq \frac{11}{9}M+\frac{6}{9}$
-    
+
     - Knapsack
-    
+
         - greedy
 
             $P_{greedy} = \max \{P_{max},P_{density}\}$
@@ -1873,22 +1926,28 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
             ![1714996604887](image/ADS/1714996604887.png)  
 
         - round
-        
+
             ![1714996744439](image/ADS/1714996744439.png)
-    
+
     - K-centers
-    
+
         - binary search & check: $\rho(n) = 2$
 
             - 二分搜索半径，然后检查直径为2r是否能够覆盖所有点 
 
                 ![1714997132626](image/ADS/1714997132626.png)
-        
+
         - smarter way: $\rho(n) = 2$
-        
+
             ![1714997308174](image/ADS/1714997308174.png) 
-        
+
         - lower bound: $\rho(n) = 2$
+
+??? danger "❌"
+
+    - ![1718201093237](image/ADS/1718201093237.png)
+    
+    - ![1718201114837](image/ADS/1718201114837.png)
 
 ### Local Search
 
@@ -2018,6 +2077,10 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
         $$E(n) = \sum_{i=1}^{n-1} \sum_{j=i+1}^{n} P_{ij} = \sum_{i=1}^{n-1} \sum_{j=i+1}^{n} \frac{2}{j-i+1} < 2n \sum_{k=1}^{n} \frac{1}{k} = O(n \log n)$$
 
+
+    ??? danger "❌"
+
+        - ![1718202979689](image/ADS/1718202979689.png)
 ----
 
 ### Parallel
