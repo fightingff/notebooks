@@ -403,120 +403,120 @@
 
             容易发现，前面的方法都只能恢复一个磁盘的数据，因此 RAID 6 引入了两个校验块，可以恢复至多两个磁盘的数据
 
-    - Buses and Other Connections
+### Buses and Other Connections
 
-        - 类型
+- 类型
 
-            ![1718181117931](image/RiscV/1718181117931.png)
+    ![1718181117931](image/RiscV/1718181117931.png)
 
-        - 内存
+- 内存
 
-            ![1718182391046](image/RiscV/1718182391046.png)
+    ![1718182391046](image/RiscV/1718182391046.png)
+
+??? note "history"
+
+    ![1718182753649](image/RiscV/1718182753649.png)
+
+    ![1718182777997](image/RiscV/1718182777997.png)
+
+- Synchronous vs. Asynchronous
+
+    - 同步：时钟信号同步
+
+    - 异步：无需时钟信号同步  
+
+        ![1718182975391](image/RiscV/1718182975391.png)
+
+        1. I/O发出读请求，内存读到信号，从数据总线读取地址，并发出Ack信号确认
+
+        2. I/O 读取到Ack信号，停止发出请求，等待数据
+
+        3. 内存发现请求信号消失，完成一次握手，停止Ack信号
+
+        4. 内存读取对应数据，写入数据总线，并发出Data Ready信号
+
+        5. I/O 读取到Data Ready信号，从数据总线读取数据，并发出Ack信号确认读取完毕
+
+        6. 内存读到Ack信号，停止发出数据，并不再发出Data Ready信号
+
+        7. I/O 发现Ack信号消失，完成一次握手，停止Ack信号，整个数据读取过程结束
+
+    ??? example
+
+        异步带宽没有同步高，但是可以同时进行多个操作，因此在一些场景下异步更加适用
+
+        ![1718184475081](image/RiscV/1718184475081.png)
+
+        ![1718184491790](image/RiscV/1718184491790.png) 
+
+- **Bus Arbitration**
+
+    为处理多任务，Bus可能会有多个请求，因此需要一个仲裁器来决定哪个请求优先
+
+    ![1718184070088](image/RiscV/1718184070088.png)
+
+- **Increase Bandwidth**
+
+    ![1718184678335](image/RiscV/1718184678335.png)
+
+    !!! note "transfer time（同步）"
+
+        - 传输地址时间
         
-        ??? note "history"
+        - 读数据时间
+        
+        - 传输数据时间(这里一般与数据总线的宽度有关)
+        
+        - 传输间隔时间等特殊时间
 
-            ![1718182753649](image/RiscV/1718182753649.png)
+- Interfacing
 
-            ![1718182777997](image/RiscV/1718182777997.png)
+??? note "I/O 交互的特征"
 
-        - Synchronous vs. Asynchronous
+    ![1718185708925](image/RiscV/1718185708925.png)
 
-            - 同步：时钟信号同步
+    ![1718185720518](image/RiscV/1718185720518.png)
 
-            - 异步：无需时钟信号同步  
+- **交互方式**
 
-                ![1718182975391](image/RiscV/1718182975391.png)
+    ![1718190459665](image/RiscV/1718190459665.png)
 
-                1. I/O发出读请求，内存读到信号，从数据总线读取地址，并发出Ack信号确认
+    - Interrupt-Driven I/O mode
 
-                2. I/O 读取到Ack信号，停止发出请求，等待数据
+        - 通过中断请求信号，CPU可以暂停当前操作，处理中断请求
 
-                3. 内存发现请求信号消失，完成一次握手，停止Ack信号
+        - 可以处理高并发性
 
-                4. 内存读取对应数据，写入数据总线，并发出Data Ready信号
+        计算：相当于在polling的基础上乘以操作比例
 
-                5. I/O 读取到Data Ready信号，从数据总线读取数据，并发出Ack信号确认读取完毕
+    - Direct Memory Access (DMA)
 
-                6. 内存读到Ack信号，停止发出数据，并不再发出Data Ready信号
+        ![1718185877197](image/RiscV/1718185877197.png)
 
-                7. I/O 发现Ack信号消失，完成一次握手，停止Ack信号，整个数据读取过程结束
+        不需要 CPU 参与，直接通过 DMA 控制器进行数据传输，不会占用 CPU 的功效
 
-            ??? example
+        计算：关注数据传输时间
 
-                异步带宽没有同步高，但是可以同时进行多个操作，因此在一些场景下异步更加适用
+    - Polling
 
-                ![1718184475081](image/RiscV/1718184475081.png)
+        - CPU 不断查询 I/O 状态，直到 I/O 完成
 
-                ![1718184491790](image/RiscV/1718184491790.png) 
+        - 会浪费 CPU 的功效
 
-        - **Bus Arbitration**
+        计算：频率 * polling 时间
 
-            为处理多任务，Bus可能会有多个请求，因此需要一个仲裁器来决定哪个请求优先
+- bottleneck计算
 
-            ![1718184070088](image/RiscV/1718184070088.png)
+    - min(Maximum I/O rate of CPU, Maximum I/O rate of bus)
 
-        - **Increase Bandwidth**
+        ![1718190079878](image/RiscV/1718190079878.png)
 
-            ![1718184678335](image/RiscV/1718184678335.png)
+    - Time per I/O
 
-            !!! note "transfer time（同步）"
+        ![1718190099101](image/RiscV/1718190099101.png)
 
-                - 传输地址时间
-                
-                - 读数据时间
-                
-                - 传输数据时间(这里一般与数据总线的宽度有关)
-                
-                - 传输间隔时间等特殊时间
+        从而可以获得所需disk的吞吐量，从而计算得最少disk个数
 
-    - Interfacing
+    - Bus
 
-        ??? note "I/O 交互的特征"
-
-            ![1718185708925](image/RiscV/1718185708925.png)
-
-            ![1718185720518](image/RiscV/1718185720518.png)
-
-        - **交互方式**
-
-            ![1718190459665](image/RiscV/1718190459665.png)
-
-            - Interrupt-Driven I/O mode
-
-                - 通过中断请求信号，CPU可以暂停当前操作，处理中断请求
-
-                - 可以处理高并发性
-
-                计算：相当于在polling的基础上乘以操作比例
-
-            - Direct Memory Access (DMA)
-
-                ![1718185877197](image/RiscV/1718185877197.png)
-
-                不需要 CPU 参与，直接通过 DMA 控制器进行数据传输，不会占用 CPU 的功效
-
-                计算：关注数据传输时间
-
-            - Polling
-
-                - CPU 不断查询 I/O 状态，直到 I/O 完成
-
-                - 会浪费 CPU 的功效
-
-                计算：频率 * polling 时间
-
-        - bottleneck计算
-
-            - min(Maximum I/O rate of CPU, Maximum I/O rate of bus)
-
-                ![1718190079878](image/RiscV/1718190079878.png)
-
-            - Time per I/O
-
-                ![1718190099101](image/RiscV/1718190099101.png)
-
-                从而可以获得所需disk的吞吐量，从而计算得最少disk个数
-
-            - Bus
-
-                ![1718190399440](image/RiscV/1718190399440.png)
+        ![1718190399440](image/RiscV/1718190399440.png)
