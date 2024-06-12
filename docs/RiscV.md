@@ -273,7 +273,7 @@
 
             ![method](./images/method_float.png)
 
-## chapter 6
+## Chapter 6
 
 *考试应该涉及的不多，这里简单的记录一下一些零碎的公式和概念*
 
