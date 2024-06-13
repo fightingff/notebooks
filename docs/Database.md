@@ -2524,142 +2524,258 @@ Granularity译为粒度,前面锁协议相关内容中，我们将加锁的对�
 
             ![1717857252124](image/Database/1717857252124.png)
 
-## 十九章 错误恢复
+## 十九章 错误恢复（Log-Based Recovery）
+
+### 错误类型
+
+- **Transaction Failures**
+
+    - logical errors: 事务逻辑错误，如插入重复数据等
+
+    - system errors: 系统进入不良状态，如死锁
+
+- **System Crash**
+
+    > fail-stop assumption: 系统在发生错误时会停止运行，易失性数据丢失，非易失性数据不会丢失
+
+    - 硬件故障
+
+    - 软件故障 
+
+- **Disk Failure**
+
+    数据传输过程中由于磁头损坏等故障导致磁盘块内容丢失
 
 ### 日志
 
-对每一个事务的每一个write做记录：
+对每一个事务的每一个update做记录：
 
-- Transaction开始时，记录（Ti start）
-- 对每一个写操作，记录（事务编号Ti，写数据的位置D，原值V0，新值V1）
-- 提交时，记录（T1 commit/abort）
+- Transaction开始时，记录 `<Ti start>`
+
+- 对每一个写操作，记录 `<Ti, X, V0, V1>`（事务编号Ti，写数据的属性X，原值V0，新值V1）
+
+- 提交时，记录`<Ti commit/abort>`表示事务结束
 
 在更新时机上又有两种选择：
 
-- **deferred-modification**：
-    - 写操作在commit以前都是在临时变量中做，commit后一次写入buff/disk
 - **immediate-modification**：
-    - 允许在commit之前将值写入buff/disk
-    - **注意写log一定要在写buff/disk之前进行**
 
-本书中我们只讨论immediate的做法。
+    - 允许在commit之前将值写入buff/disk
+
+    - 数据具体何时、什么顺序真正写入disk是不确定的，交给缓冲区管理器决定 
+
+    !!! warning "WAL (Write-Ahead Logging Rule)"
+
+        - 为了保证日志的有效性，日志必须在数据写入之前先写入稳定的存储器，再执行相关数据的写操作
+
+        - Commit后数据可以在buff中停留但是Log必须立刻进入Disk等稳定存储器
+
+- *deferred-modification*：
+
+    - 延迟修改，写操作在commit以前都是在临时变量中做，commit时一次写入buff/disk
+
+（本书中我们只讨论immediate的做法）
 
 ### 日志恢复
 
-- **Undo**：指Transaction未Commit时的回滚，需要对每一个写操作利用上面的四元组做回滚，它保证了数据库的原子性。
-    - **Undo按时间倒序做**
-    - Commit之后相关日志即可从Undo List中移除
-
-- **Redo**：指Commit之后的重做。例如Commit即认为数据应该被持久的保存了，但Commit后一段时间里新数据可能还在buff里没有写入Disk，这时如果发生断电就需要利用Redo Log来保障数据持久性。
-    - **Redo按时间顺序做**
-    - Commit后事务相关记录进入Redo List
-    - Redo只有Physical的
-
-- **WAL (Write-Ahead Logging Rule)**：为了保证可恢复，Log必须比Data先写磁盘。
-    - Schedule中必须先写Log到Disk再改动数据
-    - Commit后数据可以在buff中停留但是Log必须立刻进入Disk
-
-- **Compensate Log**：Undo和Redo也是写操作，为了防止“恢复时出错，需要从恢复中恢复”的套娃情况，Undo/Redo也需要写Log，这种Log称为补偿日志。
-    - 一般只需要（事务编号Ti，写数据的位置D，恢复值V）三个信息
-    - 同时恢复的恢复应该具有**幂等性**，保证在套娃恢复时可以得到正确的结果
-        - A从950恢复到1000。这是幂等的，无论恢复多少次结果都是1000，因此是合适的恢复策略。
-        - A加50。这不是幂等的，多次恢复可能导致A的值反复相加。这是不好的恢复策略。
-
-多个Transaction同时回滚时先将未完成的Undo再将已完成的Redo。
+> 这里只讨论strict two-phase protocol下的恢复
 
 #### Check Point
 
-上面说到，一种需要Redo的典型场景是Commit后一段时间里新数据可能还在buff里没有写入Disk，这时如果发生断电就需要利用Redo Log来保障数据持久性。但是这也带来一个问题，数据在buff中的时间是有限的，迟早会进入非易失的存储器中，Redo已经进入Disk的事务是浪费。
+重复那些已经写入disk的数据操作是没有意义的。如果每次都从最开始的日志开始恢复，会有大量的重复操作和无用开销。
 
-所以每隔一段时间，我们停止schedule并强制将buff中的所有内容写入disk，并在Log中留下一条记录。记录的内容是当时还没有Commit的事务编号（已经Commit的事务再此之前都保证被写入disk了）。下图中假设在执行第18行前发生了断电需要回滚：
+所以每隔一段时间，我们停止schedule并强制将buff中的所有内容写入disk（包括Log），并在Log中留下一条记录`<checkpoint L>`作为标记点，记录L为当前还没有被Commit的事务编号（已经Commit的事务再此之前都保证被写入disk了）。
 
-- 由12行的checkpoint信息确定出T1、T3已经被持久保存，因此Redo只需要从12行开始
-- 由14-16行的补偿日志判断T2发生了回滚，因此不需要再次Undo
-- 所以Undo List中只有T4
+#### Undo/Redo
 
-#### Fuzzy Check Point
+一般的恢复过程分为两个阶段：
 
-常规Check Point写disk时会停止Schedule造成性能浪费，因此有了Fuzzy Checkpoint这一改进策略：
+首先Redo,保证所有数据都被写入（比如commit的数据可能在buff中被损坏了）
 
-1. 停止Schedule
-2. 写Checkpoint Log
-3. 记录Commit但是还没有写回Disk的数据的信息到表M中
-4. 继续Schedule
+然后Undo,将被打断的事务回滚，此时需要留下Compensating Log，记录回滚的操作
 
-这样省下了写Disk的时间，Schedule暂停时长会比常规做法短。但是这样做的话最新的Checkpoint Log并不保证数据可恢复，所以需要补充操作：
+??? note "Compensating Log"
 
-5. 设计一个指针，指向保证可恢复性的最后一条Checkpoint Log（不一定是最新的一条）
-6. 追踪M中数据的写入情况，实时更新指针
+    - 为了处理“恢复时出错，需要从恢复中恢复”的套娃情况，作为额外操作的Undo也需要写Log，这种Log就称为补偿日志
 
-从指针指向的Check Point作为恢复的起点即可。
+    - 一般只需要`<Ti, X, V>`（事务编号Ti，写数据X，恢复值V）三个信息
+  
+    - 同时恢复的恢复应该具有**幂等性**，保证在套娃恢复时可以得到正确的结果
+        
+        - A从950恢复到1000：这是幂等的，无论恢复多少次结果都是1000，因此是合适的恢复策略。
+        
+        - A加50：这不是幂等的，多次恢复可能导致A的值反复相加，这是不好的恢复策略。
 
-#### Log Buffer
+- Redo phase（repeating history）：
 
-上面提到我们总是希望日志被写到Disk中以保证数据可靠，但是这样会对Disk造成很大的压力，所以Log也需要Buffer。
+    ![1718269891247](image/Database/1718269891247.png)
 
-一般的策略是：
+- Undo phase（reversing history）：
 
-- 一般的Log可以存Buffer，定期转移到Disk中
-- **Check Point时将Log Buffer中所有内容写入DIsk，同时Check Point Log直接写Disk**
-- 数据写回Disk释放延后，只有对应的Log写进Disk才能写数据
+    ![1718269932712](image/Database/1718269932712.png)
 
-这样仍然保证了Log一定先于Data进入磁盘，所以不影响安全性。
+??? note "Fuzzy Check Point"
+
+    常规Check Point写disk时会强制停止Schedule造成性能浪费，因此有了Fuzzy Checkpoint这一改进策略，相当于每次Checkpoint时将需要写入的数据块记录下来，然后正常执行数据库操作的同时并行写入数据（当数据有冲突时那也没办法只能停了）：
+
+    ![1718270628055](image/Database/1718270628055.png)
+
+    这样子还需要用一个指针记录当前已经写完的部分，以便在恢复时找到正确的起始点
+
+    ![1718270705103](image/Database/1718270705103.png)
+
+#### Buffers
+
+- **Log Buffer**
+
+    上面提到我们总是希望日志被写到Disk中以保证数据可靠，但是这样会对Disk造成很大的压力，所以一般Log也需要Buffer
+
+    一般在 缓冲区已满、事务commit、Check Point时将Buffer中的Log写入Disk
+
+    ![1718270876339](image/Database/1718270876339.png)
+
+- **Data Buffer**
+
+    - 上面提到的恢复算法可以支持下面三种策略：
+
+        - force policy: 每次commit都要求强制写入Disk，保证数据的可靠性
+
+        - no-force policy: commit时只写入buff，可以等到满了或者Check Point时再写入Disk
+
+        - steal policy: uncommitted数据也可以直接写入Disk
+
+    - 写入保护策略（latch）：
+
+        在数据块写入时加排他锁，防止其他事务读写
 
 ### 磁盘恢复
 
 前一节主要解决回滚的实现和易失性存储入Mem的恢复。现在非易失性储存入Disk失效时的恢复：
 
 - 定期拷贝磁盘作为备份，称Dump
+
 - 类似于Check Point之于内存，恢复时找到最近的Dump和恢复Log，只做Redo
 
-### Logical Undo
+### 锁的提前释放和逻辑Undo
 
-例如插入索引，新建表等操作，是不能用此前提到的记录数据块新旧值的方法来做Undo的。要Undo这些操作，我们需要为每一个操作定义一个反操作，例如插入索引对删除索引，新建表对Drop表等，Undo某个操作即执行它的反操作。这就是Logical Undo。**因为反操作是一个相对独立的操作，所以有Logical Undo对提前释放锁有帮助。**
+- 逻辑操作
 
-Logical Undo一定不是幂等的，所以回滚时如果看到Operation-abort，意味着已经逻辑撤回过，不能再次Undo。
+    前面仅仅讨论了物理Undo（修改），但是有些操作，比如插入、删除，是无法通过简单物理Undo（即记录旧值和新值）来恢复的，这时候就需要逻辑Undo
 
-Logical Undo和Physical Undo又可以相嵌套。
+    并且这些操作在执行时只需要获取一个低级别的瞬时锁，操作完成就可以提前释放，而不用等到事务的释放阶段，以提高并发性
+
+    要Undo这些操作，我们需要为每一个操作定义一个反操作，例如插入索引对删除索引，新建表对Drop表等，Undo某个操作即执行它的反操作
+
+- 逻辑日志
+
+    ![1718277456514](image/Database/1718277456514.png)
+
+- 恢复算法
+
+    对于逻辑Undo，如果该逻辑操作已经完成，那么需要通过其提供的Undo操作来恢复，否则对其中不完整的操作进行物理Undo
+
+    并且Logical Undo一定不是幂等的，所以回滚时如果看到Operation-abort，意味着已经逻辑撤回过，不能再次Undo
+
+    ![1718277661562](image/Database/1718277661562.png)
+
+    ![1718277701028](image/Database/1718277701028.png)
 
 ### ARIES
 
-**Log Sequence Number (LSN)** 可以看作是Log的身份证号。 
+![1718279133705](image/Database/1718279133705.png)
 
-#### Physiological Redo
+#### Physiological Redo（物理逻辑Redo）
 
-合并多次Redo。例如两个事务将A从500改到600，又从600改到800，两者都commit后Redo Log可以合一为A从500到800，这对恢复没有影响。这种做法被称为半逻辑Redo，指不像逻辑Undo一样独立，但也不是完全物理的Redo。
+- 其为物理的，因为会标识出具体的受影响的数据页
+
+- 同时它记录的是逻辑操作，可能可以大大降低日志量
+
+!!! exmaple
+
+    删除记录操作，考虑后方数据前移
+
+    若采用物理Redo，需要记录所有移动的数据，开销很大
+
+    若采用逻辑Redo，只需要记录被删除的元组的数据页和删除操作，恢复时再执行删除操作即可
 
 #### ARIES Data Structure
 
-- Buff和Disk中的每一个页都保存其数据对应的最新的LSN。
-- Dirty Page Table中PageID是当前所有的脏页，PageLSN是更改PageID数据的最新LSN，**RecLSN是写Disk之后改Buff的最早的一条Log的LSN。**
+- **Log Sequence Number (LSN)** 
 
-在Log中添加指针加速遍历。
+    可以看作是Log的身份证号，ARIES将其存在数据页中，越晚标号越大（一般即为数据页号+页内偏移），标识哪些操作已经被实施
+
+- Page LSN
+
+    Buff和Disk等数据页都保存其数据对应的最新的LSN
+
+- Log Record
+
+    常规的Log记录一般包括LSN、事务ID、当前事务的上一条Log的LSN方便便利、操作信息
+
+    ![1718278805407](image/Database/1718278805407.png)
+
+    还有一种特殊的redo-only log是恢复时的操作，永远不需要undo。为了加快操作，CLR会记录一个UndoNextLSN指向下一个需要Undo的Log，来跳过不需要Undo的Log
+
+    ![1718278948840](image/Database/1718278948840.png)
+
+- Dirty Page Table
+
+    在表中保存当前所有的脏页PageID，并记录PageLSN（更改PageID数据的最新LSN），**RecLSN**（修改该Buff的最早的一条Log的LSN
+
+- CheckPoint Log
+
+    记录当前的CheckPoint，包括**Dirty Page Table**和**Active Transaction Table（未提交的事务以及其LastLSN）**
+
+    *需要注意的是，ARIES并不在CheckPoint时将所有数据写入Disk，而是让缓存在后台自己刷新*
 
 #### ARIES具体步骤
 
-1. 一般的Check Point
+核心是跳过一些不需要的操作，并利用一些指针等加速指令查找
 
-   - redo已经提交的，从上往下，从check point到commit或abort
+![1718279587109](image/Database/1718279587109.png)
 
-   - undo没有提交的，从下往上，从最后一条log到start
-2. ARIES：
+1. Analysis Pass：
 
-   - Analysis Pass：
-     - 第一步 读出所需的数据
-       - 读出数据
-       - RedoLSN=min(RecLSN)
-       - UndoList=all not-commit txn in check point log
-     - 第二步 从Check Point向后扫描
-       - 有新的txn start 加入UndoList
-       - 有写入 更新Dirty Page Table和该txn对应的LastLSN
-       - 有txn end（commit或abort） 把这个txn从UndoList放到RedoList
-   - Redo Pass：
-     - 从RedoLSN开始顺序扫描直到RedoList内所有txn都commit
-       - 如果RedoList内txn某update对应的页不在Dirty Page Table中或者其LSN小于对应页RecLSN，说明已经写入DIsk，不用操作
-       - 否则重做写入
-   - Undo Pass：
-     - 从下往上Undo
-     - 记得Undo要写log
-     - 如果需要的话补充记录CRS，重点是UndoNextLSN指向该txn下一条需要Undo的Log
+    - 从最近的Check Point开始，`RedoLSN=min(RecLSN)`，`UndoList=L`
 
-思路和常规的恢复相同，但是利用上面介绍的指针和数据结构进行了加速。
+    - 向下扫描，更新Dirty Page Table和UndoList
+
+        ![1718279993969](image/Database/1718279993969.png)
+
+    !!! note
+
+        - 维护RedoLSN是优化Redo执行的起点
+        
+        - 记录每个事务的LastLSN优化Undo执行的起点
+
+2. Redo Pass：
+
+    只重做那些真正需要重做的操作，即还没写入磁盘并处于操作期的buffer
+
+    ![1718280256818](image/Database/1718280256818.png)
+
+3. Undo Pass：
+
+    ![1718280887894](image/Database/1718280887894.png)
+
+    看起来非常复杂的操作，本质上就是为了维护相应的指针，加速查找（用`max(PrevLSN)`作为下一个undo的起点，同时让当前CLR的`PrevLSN`成为当前事务的上一条，即`PrevLSN`）
+
+    ![1718280803888](image/Database/1718280803888.png)
+
+    !!! note "Partial Undo"
+
+        ARIES支持部分Undo，即只Undo到某个特定的LSN（比如仅仅只是为了破坏死锁），这样可以避免不必要的Undo
+
+??? note "其他特征"
+
+    - 恢复独立性（recovery independence）：有些页的恢复可以独立进行
+    
+    - 保存点（savepoint）：在事务执行过程中，可以设置保存点，以便在回滚时直接回滚到某个保存点
+    
+    - 细粒度封锁（fine-grained locking）：在恢复时，可以只对需要恢复的数据项加锁，而不是整个事务
+    
+    - 恢复最优化（recovery optimization）：预先提取数据页、重做推迟等
+
+### 基于主存储的恢复
+
+![1718281501198](image/Database/1718281501198.png)
