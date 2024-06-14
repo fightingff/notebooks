@@ -778,3 +778,94 @@
 ![1717729817519](image/OOP/1717729817519.png)
 
 新建对象：新建临时UCP -> UCP赋值 -> UCP 析构
+
+## Design
+
+- Class Design:
+
+    - understandable
+
+    - maintainable
+
+    - reusable
+
+- Software Change:
+
+    - extended, maintained, ported, adapted
+
+- Code quality:
+
+    - Coupling（耦合）
+
+        模块联系的紧密程度，越低越好（loose coupling），从而提高可维护性
+
+        - 不需要知道对方的内部实现
+
+        - 修改一个模块不会影响其他模块(会影响所有依赖于当前模块的模块)
+
+    !!! note "解耦"
+
+        - call-back
+        
+            Actor依赖于Button, 从而Button不再依赖于Actor，可以重用
+
+            ```c++
+            class Listener {
+                virtual void onEvent() = 0;
+            }
+            class Event : public Listener{
+                Listener *listener;
+                void setListener(Listener *l) {
+                    listener = l;
+                }
+                void onEvent() {
+                    ...
+                }
+            }
+            class Actor{
+                Actor(Button *button) {
+                    button->setListener(this);
+                }
+                void onEvent() {
+                    ...
+                }
+            }
+            class Button{
+                Event *event;
+                void onClick() {
+                    event->onEvent();
+                }
+            }
+            ```
+        
+        - message mechanism
+
+            常用两种方式：
+
+            1. 通过中央媒介进行字符串消息传递，不知道具体模块信息
+
+            2. 由一个中间模块统一注册各个角色
+
+    - Cohesion（内聚）
+
+        一个模块所承担的功能聚焦在一起，功能的多样性越少越好
+
+        一个模块只负责一个业务逻辑 -> high cohesion
+
+- Code Duplication
+
+    - 设计问题，且非常难以维护
+
+- Responsibility-driven design
+
+    - 新增功能时，应该考虑哪个类应该负责这个功能
+
+    - 每个类应该只能负责处理自己的数据（**应该从数据出发设计类**），从而 localizing change
+
+- Refactoring
+
+    - 重构代码，使代码更易于理解和维护，重构的目的是为了提高代码质量，使代码更易于理解和维护
+
+    - 重构的原则是：不改变代码的功能，只改变代码的结构
+
+    - **回归测试：**重构后的代码要进行回归测试，确保重构后的代码没有引入新的bug

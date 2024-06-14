@@ -853,6 +853,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1434,6 +1443,15 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design
+    </span>
+  </a>
   
 </li>
       
@@ -2505,6 +2523,132 @@
 </blockquote>
 <p><img alt="1717729817519" src="../image/OOP/1717729817519.png" /></p>
 <p>新建对象：新建临时UCP -&gt; UCP赋值 -&gt; UCP 析构</p>
+<h2 id="design">Design</h2>
+<ul>
+<li>
+<p>Class Design:</p>
+<ul>
+<li>
+<p>understandable</p>
+</li>
+<li>
+<p>maintainable</p>
+</li>
+<li>
+<p>reusable</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Software Change:</p>
+<ul>
+<li>extended, maintained, ported, adapted</li>
+</ul>
+</li>
+<li>
+<p>Code quality:</p>
+<ul>
+<li>
+<p>Coupling（耦合）</p>
+<p>模块联系的紧密程度，越低越好（loose coupling），从而提高可维护性</p>
+<ul>
+<li>
+<p>不需要知道对方的内部实现</p>
+</li>
+<li>
+<p>修改一个模块不会影响其他模块(会影响所有依赖于当前模块的模块)</p>
+</li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">解耦</p>
+<ul>
+<li>
+<p>call-back</p>
+<p>Actor依赖于Button, 从而Button不再依赖于Actor，可以重用</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">Listener</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onEvent</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="p">}</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">Event</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">Listener</span><span class="p">{</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">    </span><span class="n">Listener</span><span class="w"> </span><span class="o">*</span><span class="n">listener</span><span class="p">;</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setListener</span><span class="p">(</span><span class="n">Listener</span><span class="w"> </span><span class="o">*</span><span class="n">l</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">        </span><span class="n">listener</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l</span><span class="p">;</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">onEvent</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">        </span><span class="p">...</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="p">}</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="k">class</span><span class="w"> </span><span class="nc">Actor</span><span class="p">{</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="w">    </span><span class="n">Actor</span><span class="p">(</span><span class="n">Button</span><span class="w"> </span><span class="o">*</span><span class="n">button</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="w">        </span><span class="n">button</span><span class="o">-&gt;</span><span class="n">setListener</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">onEvent</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="w">        </span><span class="p">...</span>
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="p">}</span>
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="k">class</span><span class="w"> </span><span class="nc">Button</span><span class="p">{</span>
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a><span class="w">    </span><span class="n">Event</span><span class="w"> </span><span class="o">*</span><span class="n">event</span><span class="p">;</span>
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">onClick</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a><span class="w">        </span><span class="n">event</span><span class="o">-&gt;</span><span class="n">onEvent</span><span class="p">();</span>
+<a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>message mechanism</p>
+<p>常用两种方式：</p>
+<ol>
+<li>
+<p>通过中央媒介进行字符串消息传递，不知道具体模块信息</p>
+</li>
+<li>
+<p>由一个中间模块统一注册各个角色</p>
+</li>
+</ol>
+</li>
+</ul>
+</div>
+<ul>
+<li>
+<p>Cohesion（内聚）</p>
+<p>一个模块所承担的功能聚焦在一起，功能的多样性越少越好</p>
+<p>一个模块只负责一个业务逻辑 -&gt; high cohesion</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Code Duplication</p>
+<ul>
+<li>设计问题，且非常难以维护</li>
+</ul>
+</li>
+<li>
+<p>Responsibility-driven design</p>
+<ul>
+<li>
+<p>新增功能时，应该考虑哪个类应该负责这个功能</p>
+</li>
+<li>
+<p>每个类应该只能负责处理自己的数据（<strong>应该从数据出发设计类</strong>），从而 localizing change</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Refactoring</p>
+<ul>
+<li>
+<p>重构代码，使代码更易于理解和维护，重构的目的是为了提高代码质量，使代码更易于理解和维护</p>
+</li>
+<li>
+<p>重构的原则是：不改变代码的功能，只改变代码的结构</p>
+</li>
+<li>
+<p><strong>回归测试：</strong>重构后的代码要进行回归测试，确保重构后的代码没有引入新的bug</p>
+</li>
+</ul>
+</li>
+</ul>
 
 
 
