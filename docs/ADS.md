@@ -26,9 +26,9 @@
 
 - 维护（Rotation）
 
-    - 由定义的严格性，可知只要处理最小不平衡子树即可
+    - 由定义的严格性，可知只要处理最小不平衡子树即可，并且上面还有可能不平衡，旋转复杂度也为$O(h)$
 
-    - **个人感觉旋转反而不够直观，更像是将下面的节点往上面“拎”起来，从而该节点（子树根节点）的各个儿子向两边“掉下去”，整棵子树也就像是被展平了一样更加平衡了**
+    - **个人感觉旋转反而不够直观，更像是将下面的节点往上面“拎”起来，从而该节点（子树根节点）的各个儿子向两边“掉下去”，整棵子树也就像是被展平了一样更加平衡了。需要注意的是更新的节点在下方，而真正处理（即结构报错）的节点在上方作为Grandparent**
 
     - LL / RR Rotation
 
@@ -1368,15 +1368,19 @@ $\alpha - \beta$ pruning
 
         ![1713338362260](image/ADS/1713338362260.png) 
 
-- Notes:
+??? danger "❌"
 
     Evaluating the time complexity in backtracking algorithms involves considering various factors. Some important elements that affect time complexity in backtracking include:
+
+        ![1718356767426](image/ADS/1718356767426.png)
 
     - The number of decisions or choices to be made at each step.
 
     - The size of the problem space or the search space.
 
     - Constraints and pruning techniques applied to reduce the search space.
+
+    - ![1718356738980](image/ADS/1718356738980.png)
 
 ----
 
@@ -1455,6 +1459,16 @@ $\alpha - \beta$ pruning
     $$= \Theta(N^{\log_b^a} \lg^{p+1}{N})$$
   
     ![log](./images/Master_log.png)
+
+??? danger "❌"
+
+    - ![1718357583418](image/ADS/1718357583418.png)
+
+        closest points pair problem，需要将坐标按照 x 轴排序
+
+        跨越中线的如下处理
+
+        ![1718424432204](image/ADS/1718424432204.png)
 
 ----
 
@@ -1787,6 +1801,10 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
     - ![1718195564421](image/ADS/1718195564421.png)
 
         大意了，应该想到算法1会导致之后新开的房间的任务排得不够紧密，导致出问题的
+    
+    - ![1718418929358](image/ADS/1718418929358.png)
+    
+    - ![1718418964692](image/ADS/1718418964692.png) 
 
 ----
 

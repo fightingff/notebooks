@@ -1305,10 +1305,10 @@
 <p>维护（Rotation）</p>
 <ul>
 <li>
-<p>由定义的严格性，可知只要处理最小不平衡子树即可</p>
+<p>由定义的严格性，可知只要处理最小不平衡子树即可，并且上面还有可能不平衡，旋转复杂度也为<span class="arithmatex">\(O(h)\)</span></p>
 </li>
 <li>
-<p><strong>个人感觉旋转反而不够直观，更像是将下面的节点往上面“拎”起来，从而该节点（子树根节点）的各个儿子向两边“掉下去”，整棵子树也就像是被展平了一样更加平衡了</strong></p>
+<p><strong>个人感觉旋转反而不够直观，更像是将下面的节点往上面“拎”起来，从而该节点（子树根节点）的各个儿子向两边“掉下去”，整棵子树也就像是被展平了一样更加平衡了。需要注意的是更新的节点在下方，而真正处理（即结构报错）的节点在上方作为Grandparent</strong></p>
 </li>
 <li>
 <p>LL / RR Rotation</p>
@@ -3601,9 +3601,12 @@
 </li>
 </ul>
 </li>
-<li>
-<p>Notes:</p>
+</ul>
+<details class="danger">
+<summary>❌</summary>
 <p>Evaluating the time complexity in backtracking algorithms involves considering various factors. Some important elements that affect time complexity in backtracking include:</p>
+<div class="highlight"><pre><span></span><code>![1718356767426](image/ADS/1718356767426.png)
+</code></pre></div>
 <ul>
 <li>
 <p>The number of decisions or choices to be made at each step.</p>
@@ -3614,9 +3617,11 @@
 <li>
 <p>Constraints and pruning techniques applied to reduce the search space.</p>
 </li>
-</ul>
+<li>
+<p><img alt="1718356738980" src="../image/ADS/1718356738980.png" /></p>
 </li>
 </ul>
+</details>
 <hr />
 <h3 id="divide-and-conquer">Divide and Conquer（分治）</h3>
 <blockquote>
@@ -3694,6 +3699,17 @@
 <p><img alt="log" src="../images/Master_log.png" /></p>
 </li>
 </ul>
+<details class="danger">
+<summary>❌</summary>
+<ul>
+<li>
+<p><img alt="1718357583418" src="../image/ADS/1718357583418.png" /></p>
+<p>closest points pair problem，需要将坐标按照 x 轴排序</p>
+<p>跨越中线的如下处理</p>
+<p><img alt="1718424432204" src="../image/ADS/1718424432204.png" /></p>
+</li>
+</ul>
+</details>
 <hr />
 <h3 id="fft-fntt">FFT &amp; FNTT</h3>
 <blockquote>
@@ -4139,6 +4155,12 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <li>
 <p><img alt="1718195564421" src="../image/ADS/1718195564421.png" /></p>
 <p>大意了，应该想到算法1会导致之后新开的房间的任务排得不够紧密，导致出问题的</p>
+</li>
+<li>
+<p><img alt="1718418929358" src="../image/ADS/1718418929358.png" /></p>
+</li>
+<li>
+<p><img alt="1718418964692" src="../image/ADS/1718418964692.png" /> </p>
 </li>
 </ul>
 </details>
