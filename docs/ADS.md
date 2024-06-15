@@ -1808,9 +1808,13 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
     - ![1718418929358](image/ADS/1718418929358.png)
     
+        题目意思应该是考察 **贪心可能只是最优解的一个子集，最优解不一定每一步都会采用贪心策略**
+
     ----
     
     - ![1718418964692](image/ADS/1718418964692.png) 
+
+        ？初始状态应该是w1 ？？？
 
 ----
 
@@ -1872,7 +1876,14 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
     - **Partition**: Given a set of integers, is there a partition of the integers into two sets such that the sum of the integers in each set is equal?
 
+- **Language**
+
+    ![1718450883879](image/ADS/1718450883879.png)
+
+    ![1718450926083](image/ADS/1718450926083.png)
+
 ??? danger "❌"
+    
     - SAT & 3-SAT are NPC, but 2-SAT is P
 
     ----
@@ -1889,6 +1900,7 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
         NP包括P,可能X是P？那样应该一个都不对 
 
+        NP应该是 “**暂时**”没有多项式解法？
     ----
     
     - ![1718196879500](image/ADS/1718196879500.png)
@@ -1980,7 +1992,7 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
     - ![1718201093237](image/ADS/1718201093237.png)
     
     ----
-    
+
     - ![1718201114837](image/ADS/1718201114837.png)
 
 ### Local Search
@@ -2115,6 +2127,21 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
     ??? danger "❌"
 
         - ![1718202979689](image/ADS/1718202979689.png)
+        
+            首先，由于是期望分析，可以直接把权值都看成1
+
+            B.
+
+            A. 每一个子句的概率被满足的概率为$1-\frac{1}{2^n}$，语句越长，概率越大。考虑最坏情况，n=1，此时概率恰好为$\frac{1}{2}$，因此满足提议
+
+            B. 同A，计算得子句被满足得概率最低为$\frac{7}{8}$，因此相应期望应为$\frac{8}{7}$
+
+            C. 同样考虑最坏情况，即子句尽量短：由于题目设定的条件，考虑长度1和2
+
+                则希望得到 $max_p min {p, min{1-p^2, 1-(1-p)^2, 1-p(1-p)}}$，计算得最大值为$p=\frac{\sqrt{5}-1}{2}$
+
+            D. 题目应该意思是更紧的界
+            
 ----
 
 ### Parallel
