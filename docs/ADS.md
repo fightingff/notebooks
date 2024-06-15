@@ -1466,7 +1466,7 @@ $\alpha - \beta$ pruning
 
         closest points pair problem，需要将坐标按照 x 轴排序
 
-        跨越中线的如下处理
+        跨越中线的如下处理，其中在递归过程中完成对y轴的排序
 
         ![1718424432204](image/ADS/1718424432204.png)
 
@@ -1797,12 +1797,18 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
         一个构造例子如下，实际上下面的近似算法里面已经讲了 **Set Cover**的界是$O(\log n)$，为2的是另一个选边算法
 
         ![1718195370827](image/ADS/1718195370827.png)
+
+    ----
     
     - ![1718195564421](image/ADS/1718195564421.png)
 
         大意了，应该想到算法1会导致之后新开的房间的任务排得不够紧密，导致出问题的
     
+    ----
+
     - ![1718418929358](image/ADS/1718418929358.png)
+    
+    ----
     
     - ![1718418964692](image/ADS/1718418964692.png) 
 
