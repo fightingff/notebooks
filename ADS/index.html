@@ -4162,11 +4162,17 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 </ul>
 <hr />
 <ul>
-<li><img alt="1718418929358" src="../image/ADS/1718418929358.png" /></li>
+<li>
+<p><img alt="1718418929358" src="../image/ADS/1718418929358.png" /></p>
+<p>题目意思应该是考察 <strong>贪心可能只是最优解的一个子集，最优解不一定每一步都会采用贪心策略</strong></p>
+</li>
 </ul>
 <hr />
 <ul>
-<li><img alt="1718418964692" src="../image/ADS/1718418964692.png" /> </li>
+<li>
+<p><img alt="1718418964692" src="../image/ADS/1718418964692.png" /> </p>
+<p>？初始状态应该是w1 ？？？</p>
+</li>
 </ul>
 </details>
 <hr />
@@ -4258,6 +4264,11 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 </li>
 </ul>
 </li>
+<li>
+<p><strong>Language</strong></p>
+<p><img alt="1718450883879" src="../image/ADS/1718450883879.png" /></p>
+<p><img alt="1718450926083" src="../image/ADS/1718450926083.png" /></p>
+</li>
 </ul>
 <details class="danger">
 <summary>❌</summary>
@@ -4277,6 +4288,7 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <li>
 <p><img alt="1718196847183" src="../image/ADS/1718196847183.png" /></p>
 <p>NP包括P,可能X是P？那样应该一个都不对 </p>
+<p>NP应该是 “<strong>暂时</strong>”没有多项式解法？</p>
 </li>
 </ul>
 <hr />
@@ -4566,12 +4578,22 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <details class="danger">
 <summary>❌</summary>
 <ul>
-<li><img alt="1718202979689" src="../image/ADS/1718202979689.png" /></li>
-</ul>
-</details>
-<hr />
+<li>
+<p><img alt="1718202979689" src="../image/ADS/1718202979689.png" /></p>
+<p>首先，由于是期望分析，可以直接把权值都看成1</p>
+<p>B.</p>
+<p>A. 每一个子句的概率被满足的概率为<span class="arithmatex">\(1-\frac{1}{2^n}\)</span>，语句越长，概率越大。考虑最坏情况，n=1，此时概率恰好为<span class="arithmatex">\(\frac{1}{2}\)</span>，因此满足提议</p>
+<p>B. 同A，计算得子句被满足得概率最低为<span class="arithmatex">\(\frac{7}{8}\)</span>，因此相应期望应为<span class="arithmatex">\(\frac{8}{7}\)</span></p>
+<p>C. 同样考虑最坏情况，即子句尽量短：由于题目设定的条件，考虑长度1和2</p>
+<div class="highlight"><pre><span></span><code>则希望得到 $max_p min {p, min{1-p^2, 1-(1-p)^2, 1-p(1-p)}}$，计算得最大值为$p=\frac{\sqrt{5}-1}{2}$
+</code></pre></div>
+<p>D. 题目应该意思是更紧的界</p>
 </li>
 </ul>
+</details>
+</li>
+</ul>
+<hr />
 <h3 id="parallel">Parallel</h3>
 <p>通过并行加速算法的执行。很多时候为了挖掘并行性，可能会设计一个工作负载变大的算法，但是由于并行性，整体的运行效率反而会提高。</p>
 <ul>
