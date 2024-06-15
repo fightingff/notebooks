@@ -1875,21 +1875,29 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 ??? danger "❌"
     - SAT & 3-SAT are NPC, but 2-SAT is P
 
+    ----
+
     - ![1718196769316](image/ADS/1718196769316.png)
     
         注意大O记号的含义！！！不一定要达到$O(N^3)$!!!
 
         Clique也是NPC
+
+    ----
     
     - ![1718196847183](image/ADS/1718196847183.png)
 
         NP包括P,可能X是P？那样应该一个都不对 
+
+    ----
     
     - ![1718196879500](image/ADS/1718196879500.png)
     
         傻逼了，显然DAG的最长路随便做
 
         BC都是NPC，都是不可能有这么精确的算法的，有的话就P=NP了
+    
+    ----
     
     - ![1718196906484](image/ADS/1718196906484.png)  
 
@@ -1970,6 +1978,8 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 ??? danger "❌"
 
     - ![1718201093237](image/ADS/1718201093237.png)
+    
+    ----
     
     - ![1718201114837](image/ADS/1718201114837.png)
 
