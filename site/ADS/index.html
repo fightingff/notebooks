@@ -4223,6 +4223,10 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <ul>
 <li>A problem is NP-Complete if it is <strong>in NP</strong> and is <strong>NP-Hard</strong></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Turing Halting Problem is not NPC, but it is NP-Hard </p>
+</div>
 </li>
 <li>
 <p>Some items:</p>
@@ -4301,7 +4305,10 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 </ul>
 <hr />
 <ul>
-<li><img alt="1718196906484" src="../image/ADS/1718196906484.png" />  </li>
+<li>
+<p><img alt="1718196906484" src="../image/ADS/1718196906484.png" />  </p>
+<p>D不一定，但是P根据上面的图是可以确定的</p>
+</li>
 </ul>
 </details>
 <hr />
@@ -4403,6 +4410,7 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 </li>
 <li>
 <p>lower bound: <span class="arithmatex">\(\rho(n) = 2\)</span></p>
+<p><img alt="1718513441249" src="../image/ADS/1718513441249.png" /></p>
 </li>
 </ul>
 </li>
@@ -4419,6 +4427,7 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <li><img alt="1718201114837" src="../image/ADS/1718201114837.png" /></li>
 </ul>
 </details>
+<hr />
 <h3 id="local-search">Local Search</h3>
 <ul>
 <li>
@@ -4482,7 +4491,7 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <p>Max-Cut</p>
 <ul>
 <li>
-<p>类似 Hopfield Network，每次随机翻转一个点(更改阵营)，直到所有点都稳定为止</p>
+<p>类似 Hopfield Network，每次随机翻转一个点(更改阵营)，直到所有点都稳定为止，这样可以达到2-approximation，但可能不一定能在多项式时间内终止</p>
 </li>
 <li>
 <p>近似算法</p>
@@ -4585,8 +4594,7 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <p>A. 每一个子句的概率被满足的概率为<span class="arithmatex">\(1-\frac{1}{2^n}\)</span>，语句越长，概率越大。考虑最坏情况，n=1，此时概率恰好为<span class="arithmatex">\(\frac{1}{2}\)</span>，因此满足提议</p>
 <p>B. 同A，计算得子句被满足得概率最低为<span class="arithmatex">\(\frac{7}{8}\)</span>，因此相应期望应为<span class="arithmatex">\(\frac{8}{7}\)</span></p>
 <p>C. 同样考虑最坏情况，即子句尽量短：由于题目设定的条件，考虑长度1和2</p>
-<div class="highlight"><pre><span></span><code>则希望得到 $max_p min {p, min{1-p^2, 1-(1-p)^2, 1-p(1-p)}}$，计算得最大值为$p=\frac{\sqrt{5}-1}{2}$
-</code></pre></div>
+<p>则希望得到 <span class="arithmatex">\(max_p min \{p, min\{1-p^2, 1-(1-p)^2, 1-p(1-p)\}\}\)</span>，计算得最大值为<span class="arithmatex">\(p=\frac{\sqrt{5}-1}{2}\)</span></p>
 <p>D. 题目应该意思是更紧的界</p>
 </li>
 </ul>
@@ -4788,6 +4796,7 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 </ul>
 </li>
 </ul>
+<hr />
 <h3 id="external-sorting">External Sorting</h3>
 <ul>
 <li>
@@ -4854,7 +4863,7 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 </li>
 <li>
 <p><strong>tape 优化</strong></p>
-<p>朴素的k-way merge算法需要k+1个tape，但是实际上可以通过一些技巧，充分利用空间，达到只需k个tape</p>
+<p>如上的k-way merge算法需要 2(k+1) 个tape，但是实际上可以通过一些技巧，充分利用空间，达到只需 k+1 个tape</p>
 <div class="admonition example">
 <p class="admonition-title">以二路归并为例</p>
 <p><img alt="1717481621618" src="../image/ADS/1717481621618.png" /></p>

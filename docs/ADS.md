@@ -1851,6 +1851,10 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 - **NP-Complete**
 
     - A problem is NP-Complete if it is **in NP** and is **NP-Hard**
+
+    !!! note
+
+        Turing Halting Problem is not NPC, but it is NP-Hard 
   
 - Some items:
 
@@ -1912,6 +1916,8 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
     ----
     
     - ![1718196906484](image/ADS/1718196906484.png)  
+
+        D不一定，但是P根据上面的图是可以确定的
 
 ----
 
@@ -1987,6 +1993,8 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
         - lower bound: $\rho(n) = 2$
 
+            ![1718513441249](image/ADS/1718513441249.png)
+
 ??? danger "❌"
 
     - ![1718201093237](image/ADS/1718201093237.png)
@@ -1994,6 +2002,8 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
     ----
 
     - ![1718201114837](image/ADS/1718201114837.png)
+
+----
 
 ### Local Search
 
@@ -2018,15 +2028,15 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
     - Vertex Cover
 
         - 从全集开始，每次随机删除一个点，检查是否仍然是覆盖
-        
+
         - 可能会陷入局部最优解，可以通过Metropolis Algorithm或者Simulated Annealing来避免
-    
+
     - Hopfield Network
 
         - Definations
-          
+
             ![1716288689372](image/ADS/1716288689372.png)
-        
+
         - 算法流程：每次随机翻转一个不稳定的点，直到所有点都稳定为止
             
             ![1716289393712](image/ADS/1716289393712.png)
@@ -2034,17 +2044,17 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
         - 势能分析：$\Phi(S) = \sum_{e \in good} |W_e|$
 
             那么每次翻转一个点，势能至少增大1，因此最多需要$\sum_{e} |W_e|$次翻转，一定可以达到一个最大值
-    
+
     - Max-Cut
 
-        - 类似 Hopfield Network，每次随机翻转一个点(更改阵营)，直到所有点都稳定为止
-        
+        - 类似 Hopfield Network，每次随机翻转一个点(更改阵营)，直到所有点都稳定为止，这样可以达到2-approximation，但可能不一定能在多项式时间内终止
+
         - 近似算法
 
             ![1716290549633](image/ADS/1716290549633.png)
 
             !!! 简要证明
-                
+
                 考虑$(1+\frac{1}{x})^x \geq 2$，代入$x=\frac{|V|}{2\epsilon}$，则每$x$次翻转势能至少增大为原来的2倍
 
 ----
@@ -2138,10 +2148,10 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
             C. 同样考虑最坏情况，即子句尽量短：由于题目设定的条件，考虑长度1和2
 
-                则希望得到 $max_p min {p, min{1-p^2, 1-(1-p)^2, 1-p(1-p)}}$，计算得最大值为$p=\frac{\sqrt{5}-1}{2}$
+            则希望得到 $max_p min \{p, min\{1-p^2, 1-(1-p)^2, 1-p(1-p)\}\}$，计算得最大值为$p=\frac{\sqrt{5}-1}{2}$
 
             D. 题目应该意思是更紧的界
-            
+
 ----
 
 ### Parallel
@@ -2308,6 +2318,8 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
             ![1716803496033](image/ADS/1716803496033.png)
 
+----
+
 ### External Sorting
 
 - **External Memory Model**
@@ -2360,7 +2372,7 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
         
         - **tape 优化**
         
-            朴素的k-way merge算法需要k+1个tape，但是实际上可以通过一些技巧，充分利用空间，达到只需k个tape
+            如上的k-way merge算法需要 2(k+1) 个tape，但是实际上可以通过一些技巧，充分利用空间，达到只需 k+1 个tape
 
             !!! example "以二路归并为例"
 
@@ -2379,4 +2391,3 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
             “合并果子”即视感，可以使用哈夫曼树进行优化
 
             ![1717485368247](image/ADS/1717485368247.png)
-            
