@@ -2057,6 +2057,10 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
                 考虑$(1+\frac{1}{x})^x \geq 2$，代入$x=\frac{|V|}{2\epsilon}$，则每$x$次翻转势能至少增大为原来的2倍
 
+    ??? danger "❌"
+
+        - ![1718519396643](image/ADS/1718519396643.png) 
+
 ----
 
 ### Randomized Algorithm
@@ -2317,6 +2321,14 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
         ??? "补充说明"
 
             ![1716803496033](image/ADS/1716803496033.png)
+        
+??? danger "❌"
+
+    - ![1718520978280](image/ADS/1718520978280.png)
+    
+    ----
+    
+    - ![1718521002827](image/ADS/1718521002827.png) 
 
 ----
 
@@ -2370,7 +2382,7 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
             此时需要的$block = 2 k + 2$
         
-        - **tape 优化**
+        - **Polyphase Merge(tape 优化)**
         
             如上的k-way merge算法需要 2(k+1) 个tape，但是实际上可以通过一些技巧，充分利用空间，达到只需 k+1 个tape
 
@@ -2391,3 +2403,7 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
             “合并果子”即视感，可以使用哈夫曼树进行优化
 
             ![1717485368247](image/ADS/1717485368247.png)
+
+??? danger "❌"
+
+    - ![1718521165861](image/ADS/1718521165861.png)
