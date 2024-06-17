@@ -779,6 +779,136 @@
 
 新建对象：新建临时UCP -> UCP赋值 -> UCP 析构
 
+- `static_cast`
+
+    静态转换，如默认类型间，子类指针当父类
+
+    *不会进行运行时类型检查，不安全*
+
+- `dynamic_cast`
+
+    动态转换，如多态类型间，子类指针当父类等down-casting
+
+    *会在cast时进行动态类型检查*
+
+- `const_cast`
+
+    用于修改（去掉）类型的const和volatile（必须与内存交互，不可暂存寄存器）属性
+
+- `reinterpret_cast`
+
+    重新解释类型，如指针和整数间的转换，几乎支持所有类型的转换
+
+    *不会进行类型检查，可能会破坏结构，不安全*
+
+### Stream
+
+??? note "background"
+
+    ![1718589909064](image/OOP/1718589909064.png)
+
+!!! danger
+
+    一般C类（scanf/printf）与C++类（cin/cout）不要混用，因为各自的缓冲区不同，可能会出现问题
+
+![1718590641763](image/OOP/1718590641763.png)
+
+（都是 istream/ostream 的子类）
+
+- 流的特性
+
+    - 单向流动
+
+    - 一维
+
+    - 不停流动，只能读取暂时的片段
+
+- Operations
+
+    - Extractor
+
+        ![1718591900144](image/OOP/1718591900144.png)
+        （cerr由 2> 重定向）
+
+        - Text Stream
+
+            - 可读
+
+            - 以行为单位
+
+            - 可能会被操作系统等进行翻译（如unix的\n）
+
+        - Binary Stream
+
+            - 二进制流
+
+            - 以字节为单位，不会被翻译修改
+
+        ![1718592620269](image/OOP/1718592620269.png)
+
+        （相当于把cin.get()的参数写到了get函数参数里）
+
+        ![1718592357164](image/OOP/1718592357164.png)
+
+        (一般不使用cin.getline(char*, int)，因为要预先构造一个char数组，不如直接用string)
+
+    - Inserter
+
+        ![1718592723094](image/OOP/1718592723094.png)
+
+        （Flush只能刷新当前文件的缓冲区，不一定刷新系统缓冲区）
+
+    - Manipulators
+
+        `#include <iomanip>`
+
+        !!! warning
+
+            一般 manipulator 都是一直有效的，直到下一个 manipulator 出现
+
+        - manip
+
+            ![1718592945298](image/OOP/1718592945298.png)
+
+        - create manip
+
+            ![1718593154217](image/OOP/1718593154217.png)
+
+        - flag
+
+            每一个 flag 都用一个 word 里的一个 bit 表示，因此可以直接用 `setf()` 和 `unsetf()` 来设置
+
+            ![1718593115924](image/OOP/1718593115924.png)
+
+            ![1718593893040](image/OOP/1718593893040.png)
+
+            ??? example
+
+                ![1718593957565](image/OOP/1718593957565.png)
+
+            ![1718593401719](image/OOP/1718593401719.png)
+
+            ??? example
+
+                ![1718593455167](image/OOP/1718593455167.png)
+
+    - Others
+
+        ![1718592317201](image/OOP/1718592317201.png)
+
+        ![1718592445349](image/OOP/1718592445349.png)
+
+        ![1718592697348](image/OOP/1718592697348.png)
+- States
+
+    ![1718593526361](image/OOP/1718593526361.png)
+
+    ![1718593552506](image/OOP/1718593552506.png)
+
+    ??? example
+
+        ![1718593742876](image/OOP/1718593742876.png)
+
 ## Design
 
 - Class Design:
