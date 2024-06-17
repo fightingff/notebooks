@@ -4785,7 +4785,7 @@
 <p><strong>using (A1, A2...)</strong>：tuple同名列中指定的部分列的值相等</p>
 </li>
 <li>
-<p><strong>on \&lt;predicate&gt;</strong>：按照特定的规则匹配，不限于同名列</p>
+<p><strong>on <code>&lt;predicate&gt;</code> </strong>：按照特定的规则匹配，不限于同名列</p>
 </li>
 </ul>
 </li>
@@ -4953,7 +4953,7 @@
 <p><strong>role</strong></p>
 <ul>
 <li>
-<p>有多个同类用户需要做统一的权限调整时，列出\&lt;user list&gt;的使用方式显然不便，此时就需要role。</p>
+<p>有多个同类用户需要做统一的权限调整时，列出 <code>&lt;user list&gt;</code> 的使用方式显然不便，此时就需要role。</p>
 </li>
 <li>
 <p>role是权限组成的集合，可以像面向一个用户一样赋予role各种权限，然后像赋予单个权限一样将role赋予用户。修改某个role对应的权限集合时，所有被赋予这个role身份的用户权限都会同时被修改。</p>
@@ -4969,7 +4969,7 @@
 <h2 id="sql_4">第五章 高级SQL</h2>
 <h3 id="sql-injection">SQL Injection</h3>
 <p>SQL用户端常常需要将用户的输入拼接为完整的sql语句。借助用户端输入框直接输入未预期的sql指令，又由于字符串拼接的缘故这条语句能够被后台执行，这称为sql注入。</p>
-<p>比变sql注入的办法是，不要将用户的输入直接作为数据库语句，而是套用一定的模板。</p>
+<p>避免sql注入的办法是，不要将用户的输入直接作为数据库语句，而是套用一定的模板。</p>
 <h3 id="stored-procedure">Stored Procedure</h3>
 <p>通过用户界面的前后端构建、传递、执行、回传sql代码带来大量的开销，所以现代sql都支持Stored Procedure。你可以将它理解为一种内建的小型编程语言，支持if-else、for、while等简单编程逻辑，用于构造执行一些sql语句，最终返回结果。sql还支持function，作用与之基本类似。</p>
 <p>因为它们是内建的，且大多采用类似C语言的编译执行方式，性能往往远高于在用户端拼接字符串构建并执行sql语句。</p>
@@ -5346,7 +5346,7 @@ $$</p>
 <ul>
 <li><em>第二范式（不重要）</em></li>
 </ul>
-<p>在第一范式的基础上，要求非主属性对所有candidate key不能有部分依赖。例如下面这个关系：</p>
+<p>在第一范式的基础上，要求非主属性对所有candidate key不能有部分依赖，就像candidate key被浪费了一样。例如下面这个关系：</p>
 <p>（学号，课名）是一个candidate key，但是姓名、系名都是对学号的函数依赖，即对候选键的部分依赖，所以上面这个数据库不满足第二范式，但是满足第一范式。</p>
 <ul>
 <li>第三范式</li>
@@ -5536,6 +5536,7 @@ $$</p>
 <p>Allowing some redundancy for performance(denormalization &amp; materialized view)</p>
 </li>
 </ul>
+<hr />
 <h2 id="_17">十二章 物理储存介质</h2>
 <p><img alt="1714016769851" src="../image/Database/1714016769851.png" /></p>
 <h3 id="_18">储存的评价</h3>
@@ -5587,7 +5588,7 @@ $$</p>
 <p>Too small : <strong>more transfer</strong></p>
 </li>
 <li>
-<p>Too large : <strong>space wasted</strong>   </p>
+<p>Too large : <strong>space wasted</strong></p>
 </li>
 </ul>
 </li>
@@ -5598,7 +5599,7 @@ $$</p>
 <p>Random access pattern: each access require a seek</p>
 </li>
 <li>
-<p>I/O opeartions per second(IOPS)    </p>
+<p>I/O opeartions per second(IOPS)</p>
 </li>
 </ul>
 </li>
@@ -5676,6 +5677,10 @@ $$</p>
 <p>如果按属性访问多于按tuple访问，这种储存方式会更快</p>
 </li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">materials</p>
+<p><img alt="1718636161938" src="../image/Database/1718636161938.png" /></p>
+</div>
 <h4 id="_24">不定长数据</h4>
 <ul>
 <li>
@@ -5730,7 +5735,7 @@ $$</p>
 <p>插入：先定位到对应插入位置，若当前block内有剩余空间可以直接插入，否则将数据存入“溢出块”中，利用指针结构连接起来。</p>
 </li>
 <li>
-<p>删除：改变指针指向以改变逻辑先后关系。空余位置的处理视单条数据的结构而定。</p>
+<p>删除：改变指针指向以改变逻辑先后关系。空余位置的处理视单条数据的结构而定，猜测可以用链表结构连接起来。</p>
 </li>
 </ul>
 <h4 id="multitable-clustering">Multitable Clustering</h4>

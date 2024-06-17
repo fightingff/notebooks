@@ -457,7 +457,7 @@ Join语句的基本功能是将两张表中的tuple按一定规则进行匹配�
 
     - **using (A1, A2...)**：tuple同名列中指定的部分列的值相等
 
-    - **on \<predicate\>**：按照特定的规则匹配，不限于同名列
+    - **on `<predicate>` **：按照特定的规则匹配，不限于同名列
 
 - Join Types（控制如何处理没有匹配对象的tuple）
 
@@ -584,7 +584,7 @@ ALTER TABLE table_name DROP INDEX index_name;//删除
 
 - **role**
 
-    - 有多个同类用户需要做统一的权限调整时，列出\<user list\>的使用方式显然不便，此时就需要role。
+    - 有多个同类用户需要做统一的权限调整时，列出 `<user list>` 的使用方式显然不便，此时就需要role。
 
     - role是权限组成的集合，可以像面向一个用户一样赋予role各种权限，然后像赋予单个权限一样将role赋予用户。修改某个role对应的权限集合时，所有被赋予这个role身份的用户权限都会同时被修改。
 
@@ -602,7 +602,7 @@ ALTER TABLE table_name DROP INDEX index_name;//删除
 
 SQL用户端常常需要将用户的输入拼接为完整的sql语句。借助用户端输入框直接输入未预期的sql指令，又由于字符串拼接的缘故这条语句能够被后台执行，这称为sql注入。
 
-比变sql注入的办法是，不要将用户的输入直接作为数据库语句，而是套用一定的模板。
+避免sql注入的办法是，不要将用户的输入直接作为数据库语句，而是套用一定的模板。
 
 ### Stored Procedure
 
@@ -935,7 +935,7 @@ $$
 
 - *第二范式（不重要）*
 
-在第一范式的基础上，要求非主属性对所有candidate key不能有部分依赖。例如下面这个关系：
+在第一范式的基础上，要求非主属性对所有candidate key不能有部分依赖，就像candidate key被浪费了一样。例如下面这个关系：
 
 （学号，课名）是一个candidate key，但是姓名、系名都是对学号的函数依赖，即对候选键的部分依赖，所以上面这个数据库不满足第二范式，但是满足第一范式。
 
@@ -974,19 +974,19 @@ $$
 - 关系模式：仓库（仓库名，管理员，物品名，数量）
 
 - 已知函数依赖：
-    
+
     - 仓库名->管理员
-    
+
     - 管理员->仓库名 （一个仓库只有一名管理员，一名管理员只能负责一个仓库）
-    
+
     - （仓库名，物品名）->数量
-    
+
     - （管理员，物品名）->数量
 
 - candidate key有：
-    
+
     - （仓库名，物品名）
-    
+
     - （管理员，物品名）
 
 - 所以主属性有：仓库名，物品名，管理员
@@ -1028,7 +1028,7 @@ $$
 #### 多值依赖
 
 > $\alpha \rightarrow \rightarrow \beta$ 表明 $\alpha$ 的每个值都对应于 $\beta$ 的一个或多个值，另一种说法是 $\alpha$ 与 $\beta$ 之间的联系是一对多且独立于其他属性的。
-> 
+>
 > （因此函数依赖本质上是一种特殊的多值依赖，多值依赖的处理方法和函数依赖也基本一致）
 >
 > *若关系r不满足给定的多值依赖，可以通过向r中增加元组来得到一个满足多值依赖的关系*
@@ -1079,11 +1079,11 @@ $$
     先找出$F_c$或$F_m$，然后将所有属性分为以下四类：
 
     - **L类：**仅存在于依赖左侧，一定是主属性
-    
+
     - **R类：**仅存在于依赖右侧，一定不是主属性
-    
+
     - **N类：**没有在任何函数依赖中出现过，一定是主属性，且存在于任何一个候选码中
-    
+
     - **LR类：**同时出现在了依赖两侧，**待定**
 
 - 第二步-找Candidate Key
@@ -1091,7 +1091,7 @@ $$
     这里是根据$F_c\ or\ F_m$分类，可以直接将L类和N类属性合并，检查其是不是candidate key。如果是根据原始关系集F分类，那么还需要逐一对N类属性与L类的所有子集的并集检查是不是candidate key，并不建议这么做。
 
     - 如果仅靠L类和N类就可以确定candidate key，则不需要考虑LR类。
-    
+
     - 如果L类与N类的并集不是candidate key，那么这个并集与LR类的所有子集逐一取并集检查是不是candidate key。确定一个candidate key后，真包含它的所有集合都不是candidate key，可以减少一些运算量。
 
 #### Design Guidelines
@@ -1102,7 +1102,7 @@ $$
 
 - Allowing some redundancy for performance(denormalization & materialized view)
 
-
+----
 
 ## 十二章 物理储存介质
 
@@ -1129,7 +1129,7 @@ $$
         - 也叫on-line storage，常见的flash memory、magnetic disks都属于此类
 
     - teriay storage 慢、非易失
-        
+
         - 也叫off-line storage，magnetic tape、optical storage属于此类
 
 - **也可以根据原理分类：**
@@ -1139,16 +1139,16 @@ $$
 - **Measures**
 
     - Disk block: logical unit for storage allocation and retrieval
-    
+
         - Too small : **more transfer**
-        
-        - Too large : **space wasted**   
-    
+
+        - Too large : **space wasted**
+
     - Sequential access pattern: seek required only for first block
-    
+
     - Random access pattern: each access require a seek
-    
-    - I/O opeartions per second(IOPS)    
+
+    - I/O opeartions per second(IOPS)
 
 ### 磁盘性能评价
 
@@ -1208,6 +1208,10 @@ $$
 
 - 如果按属性访问多于按tuple访问，这种储存方式会更快
 
+!!! note "materials"
+
+    ![1718636161938](image/Database/1718636161938.png)
+
 #### 不定长数据
 
 - 用null-bit map解决允许为NULL的数据储存。n个允许为空的属性需要n个bit的空位图，空位图中某一bit为0/1意味着对应的属性不是/是空的。
@@ -1264,7 +1268,7 @@ Heap常用的优化方式是Free-space map，剩余空间图中的元素表示�
 
 - 插入：先定位到对应插入位置，若当前block内有剩余空间可以直接插入，否则将数据存入“溢出块”中，利用指针结构连接起来。
 
-- 删除：改变指针指向以改变逻辑先后关系。空余位置的处理视单条数据的结构而定。
+- 删除：改变指针指向以改变逻辑先后关系。空余位置的处理视单条数据的结构而定，猜测可以用链表结构连接起来。
 
 #### Multitable Clustering
 
