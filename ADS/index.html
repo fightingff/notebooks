@@ -4292,7 +4292,6 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <li>
 <p><img alt="1718196847183" src="../image/ADS/1718196847183.png" /></p>
 <p>NP包括P,可能X是P？那样应该一个都不对 </p>
-<p>NP应该是 “<strong>暂时</strong>”没有多项式解法？</p>
 </li>
 </ul>
 <hr />
@@ -4420,11 +4419,17 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <details class="danger">
 <summary>❌</summary>
 <ul>
-<li><img alt="1718201093237" src="../image/ADS/1718201093237.png" /></li>
+<li>
+<p><img alt="1718201093237" src="../image/ADS/1718201093237.png" /></p>
+<p>有反例</p>
+</li>
 </ul>
 <hr />
 <ul>
-<li><img alt="1718201114837" src="../image/ADS/1718201114837.png" /></li>
+<li>
+<p><img alt="1718201114837" src="../image/ADS/1718201114837.png" /></p>
+<p>C</p>
+</li>
 </ul>
 </details>
 <hr />
@@ -4805,11 +4810,17 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <details class="danger">
 <summary>❌</summary>
 <ul>
-<li><img alt="1718520978280" src="../image/ADS/1718520978280.png" /></li>
+<li>
+<p><img alt="1718520978280" src="../image/ADS/1718520978280.png" /></p>
+<p>可以认为随机算法已经解决了</p>
+</li>
 </ul>
 <hr />
 <ul>
-<li><img alt="1718521002827" src="../image/ADS/1718521002827.png" /> </li>
+<li>
+<p><img alt="1718521002827" src="../image/ADS/1718521002827.png" /> </p>
+<p>题目意思为：给定选项里的数据，可以推出W(N) 和 T(N)</p>
+</li>
 </ul>
 </details>
 <hr />
@@ -4866,6 +4877,10 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <p>Merge：</p>
 <ul>
 <li>
+<p>Simple k-way merge</p>
+<p>在<span class="arithmatex">\(\frac{k}{2}\)</span>个tape间来回倒腾，因此所用 <span class="arithmatex">\(tape = 2k\)</span></p>
+</li>
+<li>
 <p>k-way merge：</p>
 <p>将k个run的第一个元素块读入内存，留下一个内存块作为输出buffer, 使用堆进行k路归并排序，然后将结果写回外存，直到所有run都被合并</p>
 <p>这样所需的内存为<span class="arithmatex">\(block = k+1\)</span></p>
@@ -4902,7 +4917,10 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <details class="danger">
 <summary>❌</summary>
 <ul>
-<li><img alt="1718521165861" src="../image/ADS/1718521165861.png" /></li>
+<li>
+<p><img alt="1718521165861" src="../image/ADS/1718521165861.png" /></p>
+<p>2k tapes </p>
+</li>
 </ul>
 </details>
 
