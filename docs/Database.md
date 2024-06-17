@@ -370,7 +370,7 @@ like是模糊搜索的关键字，可以用 % 表示任意多个字符，用 _ �
 
 配合各类代数操作
 
-group by先于select进行，创建一个仅包含代数操作列与group by列的临时表，select操作在这个临时表中进行。这带来两个特性：
+group by先于select进行，创建一个仅包含代数**操作列**与**group by列**的临时表，select操作在这个临时表中进行。这带来两个特性：
 
 - select...group by...可以在多个列名和列数不完全相同的表中进行，只要共有用于代数操作和group by的列就可以了。例如下面的表r1、r2……只要共有A1、A2（用于group by）和A3（用于sum）即可，其余列无所谓。
 
@@ -380,7 +380,7 @@ group by先于select进行，创建一个仅包含代数操作列与group by列�
     where P group by A1, A2
     ```
 
-- 同时select代数操作和其他的列时，其他列必须同时放在group by里面，因为不能选择临时表中没有的列。下面是两个错误的例子，ID不能被选择：
+- 同时select代数操作和其他的列时，其他列必须同时放在group by里面，因为不能选择临时表中没有的列，否则得不到理想中想要的结果（不一定报错）。下面是两个错误的例子，ID不能被选择：
 
     **即group by之后，每个group只能输出一行数据**
 
@@ -439,6 +439,8 @@ temp_table_name2(attribute_name1, attibute_name2...) as (),
     end
     ```
 
+----
+
 ## 第四章 SQL进阶
 
 ### Join
@@ -451,11 +453,11 @@ Join语句的基本功能是将两张表中的tuple按一定规则进行匹配�
 
     - **natural**：tuple所有同名列的值相等（默认），但是有**表结构未知错误合并**的风险
 
-        - natural 会合并同名列，且using也是相当于默认为natural
+        - natural 会合并同名列，且using也是相当于默认为natural（natural left join，natural在前)
 
     - **using (A1, A2...)**：tuple同名列中指定的部分列的值相等
 
-    - **on \<predicate>**：按照特定的规则匹配，不限于同名列
+    - **on \<predicate\>**：按照特定的规则匹配，不限于同名列
 
 - Join Types（控制如何处理没有匹配对象的tuple）
 
@@ -508,9 +510,9 @@ ALTER TABLE table_name DROP INDEX index_name;//删除
 
 - **Check(Predicate)**：自定义检查的条件，在数据表有改变时便会自动检查，例如 `CHECK (semester in ("spring", "autumn") )`。
 
-- **Foreign Key** : 外键约束，（*原则上，可以不是*）自定的若干个attribute组成的tuple一定是table_name的主键之一
+- **Foreign Key** : 外键约束，（*原则上，可以不是*）自定的若干个attribute组成的tuple一定是table_name的主键之一，**但是似乎指向的键一定要unique或primary**
 
-    `foreign key (attribute_name1, attribute_name2 ...) references table_name(attribute)`
+    `foreign key (attribute_name) references table_name(attribute)`
 
 约束被破坏时的处理方法：
 
@@ -521,6 +523,7 @@ ALTER TABLE table_name DROP INDEX index_name;//删除
 - assertion: 断言，always satisfy
 
 - trigger：Events & Actions
+
     - 有效但少用
 
 ### 特殊数据类型
@@ -564,7 +567,7 @@ ALTER TABLE table_name DROP INDEX index_name;//删除
     on <relation name or view name> to <user list>;//授予
 
     revoke <priviledge list or role name> 
-    on <relation name or view name> to <user list>;//收回
+    on <relation name or view name> from <user list>;//收回
     ```
 
 - 权限可以来自多个上级用户，相互可以重叠，例如有两者都为第三方授予了读取权限，此时即使有一方撤回了权限，第三方仍然可以正常读取。
@@ -581,8 +584,8 @@ ALTER TABLE table_name DROP INDEX index_name;//删除
 
 - **role**
 
-    - 有多个同类用户需要做统一的权限调整时，列出\<user list>的使用方式显然不便，此时就需要role。
-    
+    - 有多个同类用户需要做统一的权限调整时，列出\<user list\>的使用方式显然不便，此时就需要role。
+
     - role是权限组成的集合，可以像面向一个用户一样赋予role各种权限，然后像赋予单个权限一样将role赋予用户。修改某个role对应的权限集合时，所有被赋予这个role身份的用户权限都会同时被修改。
 
         ```mysql
@@ -590,6 +593,8 @@ ALTER TABLE table_name DROP INDEX index_name;//删除
         grant <priviledge list> on <relation name> to role_name;
         grant role_name to <user list>;
         ```
+
+----
 
 ## 第五章 高级SQL
 

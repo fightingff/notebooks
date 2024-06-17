@@ -4712,7 +4712,7 @@
 <p>聚集函数，顾名思义，能把同一列不同值聚集到一起处理为一个值</p>
 <h4 id="group-by">group by</h4>
 <p>配合各类代数操作</p>
-<p>group by先于select进行，创建一个仅包含代数操作列与group by列的临时表，select操作在这个临时表中进行。这带来两个特性：</p>
+<p>group by先于select进行，创建一个仅包含代数<strong>操作列</strong>与<strong>group by列</strong>的临时表，select操作在这个临时表中进行。这带来两个特性：</p>
 <ul>
 <li>
 <p>select...group by...可以在多个列名和列数不完全相同的表中进行，只要共有用于代数操作和group by的列就可以了。例如下面的表r1、r2……只要共有A1、A2（用于group by）和A3（用于sum）即可，其余列无所谓。</p>
@@ -4722,7 +4722,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>同时select代数操作和其他的列时，其他列必须同时放在group by里面，因为不能选择临时表中没有的列。下面是两个错误的例子，ID不能被选择：</p>
+<p>同时select代数操作和其他的列时，其他列必须同时放在group by里面，因为不能选择临时表中没有的列，否则得不到理想中想要的结果（不一定报错）。下面是两个错误的例子，ID不能被选择：</p>
 <p><strong>即group by之后，每个group只能输出一行数据</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">select</span><span class="w"> </span><span class="n">dept_name</span><span class="p">,</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="k">avg</span><span class="w"> </span><span class="p">(</span><span class="n">salary</span><span class="p">)</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">from</span><span class="w"> </span><span class="n">instructor</span>
@@ -4766,6 +4766,7 @@
 </code></pre></div>
 </li>
 </ul>
+<hr />
 <h2 id="sql_3">第四章 SQL进阶</h2>
 <h3 id="join">Join</h3>
 <p>Join语句的基本功能是将两张表中的tuple按一定规则进行匹配，将他们相同的列拼起来，不同的列全部保留，合成一个大tuple。</p>
@@ -4777,14 +4778,14 @@
 <li>
 <p><strong>natural</strong>：tuple所有同名列的值相等（默认），但是有<strong>表结构未知错误合并</strong>的风险</p>
 <ul>
-<li>natural 会合并同名列，且using也是相当于默认为natural</li>
+<li>natural 会合并同名列，且using也是相当于默认为natural（natural left join，natural在前)</li>
 </ul>
 </li>
 <li>
 <p><strong>using (A1, A2...)</strong>：tuple同名列中指定的部分列的值相等</p>
 </li>
 <li>
-<p><strong>on \<predicate></strong>：按照特定的规则匹配，不限于同名列</p>
+<p><strong>on \&lt;predicate&gt;</strong>：按照特定的规则匹配，不限于同名列</p>
 </li>
 </ul>
 </li>
@@ -4845,8 +4846,8 @@
 <p><strong>Check(Predicate)</strong>：自定义检查的条件，在数据表有改变时便会自动检查，例如 <code>CHECK (semester in ("spring", "autumn") )</code>。</p>
 </li>
 <li>
-<p><strong>Foreign Key</strong> : 外键约束，（<em>原则上，可以不是</em>）自定的若干个attribute组成的tuple一定是table_name的主键之一</p>
-<p><code>foreign key (attribute_name1, attribute_name2 ...) references table_name(attribute)</code></p>
+<p><strong>Foreign Key</strong> : 外键约束，（<em>原则上，可以不是</em>）自定的若干个attribute组成的tuple一定是table_name的主键之一，<strong>但是似乎指向的键一定要unique或primary</strong></p>
+<p><code>foreign key (attribute_name) references table_name(attribute)</code></p>
 </li>
 </ul>
 <p>约束被破坏时的处理方法：</p>
@@ -4927,7 +4928,7 @@
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">on</span><span class="w"> </span><span class="o">&lt;</span><span class="n">relation</span><span class="w"> </span><span class="k">name</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">view</span><span class="w"> </span><span class="k">name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="o">&lt;</span><span class="k">user</span><span class="w"> </span><span class="k">list</span><span class="o">&gt;</span><span class="p">;</span><span class="o">//</span><span class="n">授予</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">revoke</span><span class="w"> </span><span class="o">&lt;</span><span class="n">priviledge</span><span class="w"> </span><span class="k">list</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">role</span><span class="w"> </span><span class="k">name</span><span class="o">&gt;</span><span class="w"> </span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="k">on</span><span class="w"> </span><span class="o">&lt;</span><span class="n">relation</span><span class="w"> </span><span class="k">name</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">view</span><span class="w"> </span><span class="k">name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="o">&lt;</span><span class="k">user</span><span class="w"> </span><span class="k">list</span><span class="o">&gt;</span><span class="p">;</span><span class="o">//</span><span class="n">收回</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="k">on</span><span class="w"> </span><span class="o">&lt;</span><span class="n">relation</span><span class="w"> </span><span class="k">name</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">view</span><span class="w"> </span><span class="k">name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="o">&lt;</span><span class="k">user</span><span class="w"> </span><span class="k">list</span><span class="o">&gt;</span><span class="p">;</span><span class="o">//</span><span class="n">收回</span>
 </code></pre></div>
 </li>
 <li>
@@ -4952,7 +4953,7 @@
 <p><strong>role</strong></p>
 <ul>
 <li>
-<p>有多个同类用户需要做统一的权限调整时，列出\<user list>的使用方式显然不便，此时就需要role。</p>
+<p>有多个同类用户需要做统一的权限调整时，列出\&lt;user list&gt;的使用方式显然不便，此时就需要role。</p>
 </li>
 <li>
 <p>role是权限组成的集合，可以像面向一个用户一样赋予role各种权限，然后像赋予单个权限一样将role赋予用户。修改某个role对应的权限集合时，所有被赋予这个role身份的用户权限都会同时被修改。</p>
@@ -4964,6 +4965,7 @@
 </ul>
 </li>
 </ul>
+<hr />
 <h2 id="sql_4">第五章 高级SQL</h2>
 <h3 id="sql-injection">SQL Injection</h3>
 <p>SQL用户端常常需要将用户的输入拼接为完整的sql语句。借助用户端输入框直接输入未预期的sql指令，又由于字符串拼接的缘故这条语句能够被后台执行，这称为sql注入。</p>
