@@ -1904,7 +1904,6 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
         NP包括P,可能X是P？那样应该一个都不对 
 
-        NP应该是 “**暂时**”没有多项式解法？
     ----
     
     - ![1718196879500](image/ADS/1718196879500.png)
@@ -1999,9 +1998,13 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
     - ![1718201093237](image/ADS/1718201093237.png)
     
+        有反例
+
     ----
 
     - ![1718201114837](image/ADS/1718201114837.png)
+
+        C
 
 ----
 
@@ -2326,10 +2329,13 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
     - ![1718520978280](image/ADS/1718520978280.png)
     
+        可以认为随机算法已经解决了
+    
     ----
     
     - ![1718521002827](image/ADS/1718521002827.png) 
 
+        题目意思为：给定选项里的数据，可以推出W(N) 和 T(N)
 ----
 
 ### External Sorting
@@ -2366,6 +2372,10 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
     - Merge：
     
+        - Simple k-way merge
+
+            在$\frac{k}{2}$个tape间来回倒腾，因此所用 $tape = 2k$
+
         - k-way merge：
             
             将k个run的第一个元素块读入内存，留下一个内存块作为输出buffer, 使用堆进行k路归并排序，然后将结果写回外存，直到所有run都被合并
@@ -2407,3 +2417,5 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 ??? danger "❌"
 
     - ![1718521165861](image/ADS/1718521165861.png)
+
+        2k tapes 
