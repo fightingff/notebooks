@@ -848,6 +848,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stream
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1436,6 +1445,15 @@
   <a href="#smart-pointer" class="md-nav__link">
     <span class="md-ellipsis">
       Smart Pointer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stream
     </span>
   </a>
   
@@ -2523,6 +2541,146 @@
 </blockquote>
 <p><img alt="1717729817519" src="../image/OOP/1717729817519.png" /></p>
 <p>新建对象：新建临时UCP -&gt; UCP赋值 -&gt; UCP 析构</p>
+<ul>
+<li>
+<p><code>static_cast</code></p>
+<p>静态转换，如默认类型间，子类指针当父类</p>
+<p><em>不会进行运行时类型检查，不安全</em></p>
+</li>
+<li>
+<p><code>dynamic_cast</code></p>
+<p>动态转换，如多态类型间，子类指针当父类等down-casting</p>
+<p><em>会在cast时进行动态类型检查</em></p>
+</li>
+<li>
+<p><code>const_cast</code></p>
+<p>用于修改（去掉）类型的const和volatile（必须与内存交互，不可暂存寄存器）属性</p>
+</li>
+<li>
+<p><code>reinterpret_cast</code></p>
+<p>重新解释类型，如指针和整数间的转换，几乎支持所有类型的转换</p>
+<p><em>不会进行类型检查，可能会破坏结构，不安全</em></p>
+</li>
+</ul>
+<h3 id="stream">Stream</h3>
+<details class="note">
+<summary>background</summary>
+<p><img alt="1718589909064" src="../image/OOP/1718589909064.png" /></p>
+</details>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>一般C类（scanf/printf）与C++类（cin/cout）不要混用，因为各自的缓冲区不同，可能会出现问题</p>
+</div>
+<p><img alt="1718590641763" src="../image/OOP/1718590641763.png" /></p>
+<p>（都是 istream/ostream 的子类）</p>
+<ul>
+<li>
+<p>流的特性</p>
+<ul>
+<li>
+<p>单向流动</p>
+</li>
+<li>
+<p>一维</p>
+</li>
+<li>
+<p>不停流动，只能读取暂时的片段</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Operations</p>
+<ul>
+<li>
+<p>Extractor</p>
+<p><img alt="1718591900144" src="../image/OOP/1718591900144.png" />
+（cerr由 2&gt; 重定向）</p>
+<ul>
+<li>
+<p>Text Stream</p>
+<ul>
+<li>
+<p>可读</p>
+</li>
+<li>
+<p>以行为单位</p>
+</li>
+<li>
+<p>可能会被操作系统等进行翻译（如unix的\n）</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Binary Stream</p>
+<ul>
+<li>
+<p>二进制流</p>
+</li>
+<li>
+<p>以字节为单位，不会被翻译修改</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img alt="1718592620269" src="../image/OOP/1718592620269.png" /></p>
+<p>（相当于把cin.get()的参数写到了get函数参数里）</p>
+<p><img alt="1718592357164" src="../image/OOP/1718592357164.png" /></p>
+<p>(一般不使用cin.getline(char*, int)，因为要预先构造一个char数组，不如直接用string)</p>
+</li>
+<li>
+<p>Inserter</p>
+<p><img alt="1718592723094" src="../image/OOP/1718592723094.png" /></p>
+<p>（Flush只能刷新当前文件的缓冲区，不一定刷新系统缓冲区）</p>
+</li>
+<li>
+<p>Manipulators</p>
+<p><code>#include &lt;iomanip&gt;</code></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>一般 manipulator 都是一直有效的，直到下一个 manipulator 出现</p>
+</div>
+<ul>
+<li>
+<p>manip</p>
+<p><img alt="1718592945298" src="../image/OOP/1718592945298.png" /></p>
+</li>
+<li>
+<p>create manip</p>
+<p><img alt="1718593154217" src="../image/OOP/1718593154217.png" /></p>
+</li>
+<li>
+<p>flag</p>
+<p>每一个 flag 都用一个 word 里的一个 bit 表示，因此可以直接用 <code>setf()</code> 和 <code>unsetf()</code> 来设置</p>
+<p><img alt="1718593115924" src="../image/OOP/1718593115924.png" /></p>
+<p><img alt="1718593893040" src="../image/OOP/1718593893040.png" /></p>
+<details class="example">
+<summary>Example</summary>
+<p><img alt="1718593957565" src="../image/OOP/1718593957565.png" /></p>
+</details>
+<p><img alt="1718593401719" src="../image/OOP/1718593401719.png" /></p>
+<details class="example">
+<summary>Example</summary>
+<p><img alt="1718593455167" src="../image/OOP/1718593455167.png" /></p>
+</details>
+</li>
+</ul>
+</li>
+<li>
+<p>Others</p>
+<p><img alt="1718592317201" src="../image/OOP/1718592317201.png" /></p>
+<p><img alt="1718592445349" src="../image/OOP/1718592445349.png" /></p>
+<p><img alt="1718592697348" src="../image/OOP/1718592697348.png" />
+- States</p>
+</li>
+</ul>
+<p><img alt="1718593526361" src="../image/OOP/1718593526361.png" /></p>
+<p><img alt="1718593552506" src="../image/OOP/1718593552506.png" /></p>
+<details class="example">
+<summary>Example</summary>
+<p><img alt="1718593742876" src="../image/OOP/1718593742876.png" /></p>
+</details>
+</li>
+</ul>
 <h2 id="design">Design</h2>
 <ul>
 <li>
