@@ -4778,7 +4778,12 @@
 <li>
 <p><strong>natural</strong>：tuple所有同名列的值相等（默认），但是有<strong>表结构未知错误合并</strong>的风险</p>
 <ul>
-<li>natural 会合并同名列，且using也是相当于默认为natural（natural left join，natural在前)</li>
+<li>
+<p>natural 会合并同名列，且using也是相当于默认为natural（natural left join，natural在前)</p>
+</li>
+<li>
+<p>如果没有同名列，会默认输出笛卡尔积</p>
+</li>
 </ul>
 </li>
 <li>
@@ -5648,6 +5653,7 @@ $$</p>
 <p>Effective query processing algorithm (high-level optimization)</p>
 </li>
 </ul>
+<hr />
 <h2 id="_21">十三章 数据储存结构</h2>
 <p>一方面，你如何储存一个数据库，是每一张表对应一个文件，还是一个数据库对应一个大文件，还是其他的实现方式？在特定实现方式上怎么优化增删查改？</p>
 <p>另一方面你的数据结构怎么与储存介质相配合优化，比如最重要的怎么以扇区为单位大小读写？</p>
@@ -5679,6 +5685,9 @@ $$</p>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">materials</p>
+<ul>
+<li>可以支持向量操作（与编译结合）</li>
+</ul>
 <p><img alt="1718636161938" src="../image/Database/1718636161938.png" /></p>
 </div>
 <h4 id="_24">不定长数据</h4>
@@ -5790,6 +5799,7 @@ $$</p>
 <h4 id="force-output">Force Output</h4>
 <p>一般用于处理系统崩溃时的数据一致性问题</p>
 <p><img alt="1716365193120" src="../image/Database/1716365193120.png" /></p>
+<hr />
 <h2 id="_27">十四章 索引</h2>
 <p>索引是数据库中的一个重要概念，它可以加速数据库的操作，提高数据库的性能。</p>
 <p>但是索引会增加数据库的存储空间，并且需要实时维护。</p>
@@ -5900,9 +5910,10 @@ $$</p>
 <p><img alt="1716368536510" src="../image/Database/1716368536510.png" /></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
+<p><strong>注意这里的 n 一致指上面图中的 n</strong></p>
 <p>根节点：<span class="arithmatex">\([2, n]\)</span> 个孩子指针</p>
-<p>内部节点：<span class="arithmatex">\([\lceil \frac{n}{2} \rceil, n-1]\)</span> 个孩子指针</p>
-<p>叶子节点：<span class="arithmatex">\([\lceil \frac{n-1}{2} \rceil, n-1]\)</span> 个记录对（搜索码+记录指针），最后一个指向下一个叶子节点，从而将底层记录串联成线性表</p>
+<p>内部节点：<span class="arithmatex">\([\lceil \frac{n}{2} \rceil, n]\)</span> 个孩子指针</p>
+<p>叶子节点：<span class="arithmatex">\([\lceil \frac{n-1}{2} \rceil, n-1]\)</span> 个记录对（搜索码+记录指针），最后一个（即上图的Pn）指向下一个叶子节点，从而将底层记录串联成线性表</p>
 <p>一个页中可以存放的B+树索引个数为：
 $$
 单页中索引个数n=\frac{页大小-指针大小}{索引数据大小+指针大小}+1
@@ -5918,6 +5929,7 @@ $$</p>
 <li>
 <p>Operations</p>
 <p>与ADS课上所学基本一致，略</p>
+<p>一般前面节点分到 <span class="arithmatex">\(\lceil \frac{n}{2} \rceil\)</span> 个key</p>
 </li>
 <li>
 <p>Extensions</p>
@@ -5927,9 +5939,14 @@ $$</p>
 </li>
 <li>
 <p><strong>B+树文件结构</strong>，叶节点不是指针而是记录本身即可</p>
+<details class="note">
+<summary>B+树文件索引</summary>
+<p><img alt="1718673782319" src="../image/Database/1718673782319.png" /></p>
+<p><img alt="1718675613503" src="../image/Database/1718675613503.png" /></p>
+</details>
 </li>
 <li>
-<p><strong>**辅助索引的记录重定位</strong>代价较高，可以让辅助索引的叶结点直接存储搜索码而不是记录指针，这样可以减少重定位代价</p>
+<p><strong>辅助索引的记录重定位</strong>代价较高，因此可以让辅助索引的叶结点直接存储搜索码而不是记录指针，这样可以减少重定位代价（即更新索引的代价），但是在查询时需要额外代价作相应搜索码查找</p>
 </li>
 <li>
 <p><strong>字符串索引</strong>，进行前缀压缩，从而减少索引的大小</p>
@@ -5961,6 +5978,7 @@ $$</p>
 </li>
 <li>
 <p>插入之前先进行排序，比乱序插入更新索引的代价小，尤其对于B+树索引而言。</p>
+<p><img alt="1718675267089" src="../image/Database/1718675267089.png" /></p>
 </li>
 <li>
 <p>对B+树，批量插入还可以直接建叶节点，然后自叶向根Bottom-up插入，减少了插入时的IO操作</p>
@@ -6048,13 +6066,13 @@ $$</p>
 <p>动态散列</p>
 <ul>
 <li>
-<p>Periodic ReHashing，周期性翻倍</p>
+<p>Periodic ReHashing，周期性将桶的个数翻倍</p>
 </li>
 <li>
 <p>Linear Hashing， 增大rehash的条件</p>
 </li>
 <li>
-<p>Extendable Hashing，生成的哈希值为多位，但使用的偏移地址的位数是逐渐增加的</p>
+<p>Extendable Hashing，生成的哈希值为多位，但使用的偏移地址的位数是逐渐增加的（即相当于依据当前的数据量翻倍容量）</p>
 </li>
 </ul>
 </li>
@@ -6062,12 +6080,15 @@ $$</p>
 <h3 id="bitmap">Bitmap索引</h3>
 <ul>
 <li>
-<p>本质上就是一个简单数组，适用于数据量大，取值范围小的情况，此时可以降低索引的空间代价</p>
+<p>本质上就是用一个简单数组bitmap来映射索引关系，适用于数据量大，取值范围小的情况，此时可以降低索引的空间代价</p>
+<p>比如下图，相同为1,不同为0，长度 = 记录总数</p>
+<p><img alt="1718676704875" src="../image/Database/1718676704875.png" /></p>
 </li>
 <li>
 <p>核心优势在于<strong>位操作</strong>，可以快速进行<strong>位运算</strong>，如AND、OR、NOT等，因此适用于<strong>多值查询</strong>，如多值查询、范围查询等</p>
 </li>
 </ul>
+<hr />
 <h2 id="_31">十五章 查询操作</h2>
 <p>对数据库的任何一个查询操作都大致可以分为一下三个步骤：</p>
 <ol>
@@ -6098,11 +6119,11 @@ $$</p>
 <p>利用索引优化查询速度，同样考虑单点key查询与多数据查询</p>
 <ul>
 <li>
-<p>单点查询，先通过索引树结构定位到数据库，再通过一次定位+读取获得对应数据内容</p>
+<p>单点查询（key），先通过索引树结构定位到数据库，再通过一次定位+读取获得对应数据内容</p>
 <p>时间代价为<span class="arithmatex">\((h_i+1)\times (t_T+t_s)\)</span>，其中<span class="arithmatex">\(h_i\)</span>是索引的层数</p>
 </li>
 <li>
-<p>多点查询，最后可能要到多个数据库读取数据，因此要额外的一次定位+多次读取数据块</p>
+<p>多点查询（non-key），最后可能要到多个数据库读取数据，因此要额外的一次定位+多次读取数据块</p>
 <p>时间代价为<span class="arithmatex">\(h_i \times (t_T + t_s) + t_s + b \times t_T\)</span>，<span class="arithmatex">\(b\)</span>为涉及的数据块</p>
 </li>
 </ul>
@@ -6112,31 +6133,33 @@ $$</p>
 <p>利用辅助索引进行搜索。</p>
 <ul>
 <li>
-<p>单点查询与聚集索引相同，为<span class="arithmatex">\((h_i+1)\times (t_T+t_s)\)</span></p>
+<p>单点查询（key）与聚集索引相同，为<span class="arithmatex">\((h_i+1)\times (t_T+t_s)\)</span></p>
 </li>
 <li>
-<p>多点查询，无法通过一次定位后顺序扫描，因此需要在索引树上多次定位+读取数据块</p>
+<p>多点查询（non-key），无法通过一次定位后顺序扫描，因此需要在索引树上多次定位+读取数据块</p>
 <p>时间代价为<span class="arithmatex">\((h_i + b)\times (t_T + t_s)\)</span>，<span class="arithmatex">\(b\)</span>为涉及的数据块 </p>
 </li>
 </ul>
 </li>
 </ul>
 <h4 id="comparison">Comparison</h4>
+<p><em>直接使用线性扫描肯定没有问题，下面是使用索引辅助的方法</em></p>
 <ul>
 <li>
 <p>A5（Clustered Index Scan）</p>
-<p>首先在索引树上定位到 起始的/结束的 满足条件的数据块，再进行顺序扫描获得所有满足条件的数据</p>
+<p><img alt="1718678500725" src="../image/Database/1718678500725.png" /></p>
 </li>
 <li>
 <p>A6（Non-Clustered Index Scan）</p>
-<p>同样首先在索引树上定位到 起始的/结束的 满足条件的数据块，然后在索引树上进行扫描和获取数据（非聚集索引，每次都必须重新seek+transfer）</p>
+<p>（非聚集索引，每次都必须重新seek+transfer）</p>
+<p><img alt="1718678565587" src="../image/Database/1718678565587.png" /></p>
 </li>
 </ul>
 <h4 id="conjunction">Conjunction</h4>
 <ul>
 <li>
 <p>A7</p>
-<p>获取满足部分条件的数据存入缓冲区，检查其他条件是否满足</p>
+<p>获取满足部分条件（估计代价最小）的数据存入缓冲区，检查其他条件是否满足</p>
 </li>
 <li>
 <p>A8</p>
@@ -6158,7 +6181,7 @@ $$</p>
 </ul>
 <p><img alt="1716609564731" src="../image/Database/1716609564731.png" /></p>
 <h4 id="bitmap-index-scan">Bitmap Index Scan</h4>
-<p>平衡索引查询（散点查询快）与直接扫描（多数据时快）的效率</p>
+<p>平衡<strong>辅助索引</strong>查询（散点查询快）与直接扫描（多数据时快）的效率，相当于把物理存储的有序性重新组织出来，从而降低IO操作的代价</p>
 <p><img alt="1716609869971" src="../image/Database/1716609869971.png" /></p>
 <h3 id="external-sort">External Sort</h3>
 <blockquote>
@@ -6350,7 +6373,7 @@ $$</p>
 <p>不需要递归</p>
 <ul>
 <li>
-<p>transfer: <span class="arithmatex">\(2(b_r + b_s)（初始划分） + (b_s + b_r)（索引中探查） + 4 n_h（三个阶段的多余块）= 3(b_r + b_s) + 4 n_h\)</span></p>
+<p>transfer: <span class="arithmatex">\(2(b_r + b_s)（初始划分） + (b_s + b_r)（索引中探查） + 4 n_h（划分后的多余块，一般可以忽略）= 3(b_r + b_s) + 4 n_h\)</span></p>
 </li>
 <li>
 <p>seek: <span class="arithmatex">\(2(\lceil \frac{b_r}{b_{br}} \rceil + \lceil \frac{b_s}{b_{bs}} \rceil) （划分\&amp;写回）+ (n_h + n_h)（索引中探查）= 2(\lceil \frac{b_r}{b_{br}} \rceil + \lceil \frac{b_s}{b_{bs}} \rceil) + 2n_h\)</span></p>
@@ -6365,7 +6388,7 @@ $$</p>
 <p>transfer: <span class="arithmatex">\(2(b_r + b_s) \times \lceil \log_{M-1} (b_s) - 1\rceil + b_r + b_s\)</span></p>
 </li>
 <li>
-<p>seek: <span class="arithmatex">\(2(\lceil \frac{b_r}{b_{br}} \rceil + \lceil \frac{b_s}{b_{bs}} \rceil) \times \lceil \log_{M-1} (b_s) - 1\rceil\)</span> </p>
+<p>seek: <span class="arithmatex">\(2(\lceil \frac{b_r}{b_{br}} \rceil + \lceil \frac{b_s}{b_{bs}} \rceil) \times \lceil \log_{M-1} (b_s) - 1\rceil\)</span></p>
 </li>
 </ul>
 </li>
@@ -6406,7 +6429,7 @@ $$</p>
 <p>排序去重，相邻的相同元素直接跳过</p>
 </li>
 <li>
-<p>Hash去重，直接避免重复插入 </p>
+<p>Hash去重，直接避免重复插入</p>
 </li>
 </ul>
 </li>
@@ -6442,15 +6465,19 @@ $$</p>
 </li>
 </ul>
 <h3 id="expression">Expression</h3>
+<blockquote>
+<p>考虑计算含有多个运算的表达式</p>
+</blockquote>
 <h4 id="materialization">Materialization</h4>
 <blockquote>
 <p>每个子查询结果都作为一个临时表存储，然后再进行下一步操作</p>
 </blockquote>
-<p>可以使用double buffering模型，一部分计算，一部分写出加快速度</p>
+<p><img alt="1718681894296" src="../image/Database/1718681894296.png" /></p>
+<p>可以使用double buffering模型，即两个buffer轮流使用，一个承接数据，一个并行写磁盘，实现buffer写入磁盘时不需要中断当前进程</p>
 <p><strong>时间代价 = 两子查询的时间代价 + 两子查询的结果合并写入时间代价</strong></p>
 <h4 id="pipeline">Pipeline</h4>
 <blockquote>
-<p>减少临时文件数，而是将多个关系操作组合成一个流水线，一个操作的输出直接作为下一个操作的输入</p>
+<p>减少临时文件数，将多个关系操作组合成一个流水线，一个操作的输出直接作为下一个操作的输入</p>
 </blockquote>
 <p><strong>同一阶段的操作并行运行，但是必须要前面的所有操作都完成后才能进行下一步</strong></p>
 <ul>
@@ -6488,8 +6515,7 @@ $$</p>
 <p>本章的目的是具体实现如何选择执行语句的最优方案，大致又可以分为两步：</p>
 <ol>
 <li>
-<p>列出与当前语句等价的内部执行方案</p>
-<p>这里的执行方案既包括例如交换结合等逻辑层面的内容，也包括具体使用哪一种索引方法等实现层面的内容。</p>
+<p>列出与当前语句等价的内部执行方案，这里的执行方案既包括例如交换结合等逻辑层面的内容，也包括具体使用哪一种索引方法等实现层面的内容。</p>
 </li>
 <li>
 <p>快速估算每一种执行方案的复杂度并选其中最优的一种</p>
@@ -6605,7 +6631,7 @@ $$</p>
 <p><span class="arithmatex">\(R \cap S\)</span>为外键，此时每一个元组恰好有一个与之匹配，因此<span class="arithmatex">\(n_{r\Join s} = n_r(n_s)\)</span></p>
 </li>
 <li>
-<p><span class="arithmatex">\(R \cap S\)</span>非键值，则同样考虑均匀概率分布,对于表中的每一个元组考虑其可能匹配的个数，即相当于上述的给定单值的selection，有<span class="arithmatex">\(n_{r\Join s} = \frac{n_r \times n_s}{max(V(A,r),V(A,s))}\)</span></p>
+<p><span class="arithmatex">\(R \cap S = A\)</span>非键值，则同样考虑均匀概率分布,对于表中的每一个元组考虑其可能匹配的个数，即相当于上述的给定单值的selection，有<span class="arithmatex">\(n_{r\Join s} = \frac{n_r \times n_s}{max(V(A,r),V(A,s))}\)</span></p>
 </li>
 </ul>
 </li>
@@ -6695,7 +6721,8 @@ $$</p>
 <ul>
 <li>
 <p>Interesting Sort Order</p>
-<p>尽量让前面的排序预先为后面的操作做一些优化</p>
+<p>如果使用merge-join等操作，前面的排序可能会预先为后面的操作做一些优化</p>
+<p>因此这些也要在 DP 的过程中考虑进去，称为真正的 <strong>interesting sort order</strong></p>
 </li>
 </ul>
 <h4 id="cost-based-optimization-with-equivalence-rules">Cost Based Optimization with Equivalence Rules</h4>
@@ -6773,25 +6800,25 @@ $$</p>
 <p>下面<span class="arithmatex">\(i_r\)</span>指新插入的元组，<span class="arithmatex">\(d_r\)</span>指删除的元组</p>
 <ul>
 <li>
-<p>Join</p>
+<p>Join (<span class="arithmatex">\(v = r \Join s\)</span>)</p>
 <p><img alt="1716735022061" src="../image/Database/1716735022061.png" /></p>
 </li>
 <li>
-<p>Selection</p>
+<p>Selection(<span class="arithmatex">\(v = \sigma_{\theta}(r)\)</span>)</p>
 <p><img alt="1716735054509" src="../image/Database/1716735054509.png" /></p>
 </li>
 <li>
-<p>Projection</p>
+<p>Projection(<span class="arithmatex">\(v = \Pi_{A}(r)\)</span>)</p>
 <p>使用一个count计数，考虑是否需要更新</p>
 </li>
 <li>
-<p>Aggregation</p>
+<p>Aggregation(<span class="arithmatex">\(v = G_F(A,r)\)</span>)</p>
 <p>count、sum、avg等都比较好维护，增加一些辅助量即可</p>
 <p>min、max可能维护代价太大（删除）</p>
 </li>
 <li>
 <p>Set Operation</p>
-<p>根据集合操作的含义维护即可 </p>
+<p>根据集合操作的含义维护即可</p>
 </li>
 <li>
 <p>Expression</p>
@@ -6828,7 +6855,7 @@ $$</p>
 <p>Transation的实现要求四个特性<strong>ACID</strong>：</p>
 <ul>
 <li>
-<p><strong>Automicity原子性</strong>：要么Transaction内的所有操作都成功要么都失败回滚，不允许部分成功部分失</p>
+<p><strong>Automicity原子性</strong>：要么Transaction内的所有操作都成功要么都失败回滚，不允许部分成功部分失败</p>
 </li>
 <li>
 <p><strong>Consistency一致性</strong>：Transaction的发生前后应该保证数据与操作逻辑一致，例如完整性约束、外键约束、逻辑约束等等</p>
@@ -6856,7 +6883,7 @@ $$</p>
 <p>可能是restart，例如读写的数据页和其他Transaction冲突</p>
 </li>
 <li>
-<p>可能是kill，例如这个Transaction本身不满足一些要求，不可能被顺利执</p>
+<p>可能是kill，例如这个Transaction本身不满足一些要求，不可能被顺利执行</p>
 </li>
 </ul>
 </li>
@@ -6878,7 +6905,7 @@ $$</p>
 <p>并行调度：实际内部并不是先完整执行一个再另一个，性能上限高但是数据很容易不一致</p>
 </li>
 </ul>
-<p>本书并不考虑多条指令并发的“真·并行调度”，只关注我们以什么策略来生成一条执行序列，满足下列要求</p>
+<p>本书并不考虑多条指令并发的“真·并行调度”，只关注我们以什么策略来生成一条<strong>操作</strong>执行序列，满足下列要求</p>
 <p><img alt="1717492396907" src="../image/Database/1717492396907.png" /></p>
 <h4 id="serializability">Serializability</h4>
 <p>每个Transaction可以分为若干次读、运算、写，其中会发生数据不一致（<strong>Conflict</strong>）的只有多个Transaction<strong>并发读写同一个数据</strong>这一种情况（全部只读不会发生冲突，运算由CPU而不是DBMS负责），所以下面我们主要关注有读有写这一种情况</p>
@@ -6968,6 +6995,7 @@ $$</p>
 <p>解锁：从链表中删除对应节点，并检查该节点后续的请求进行处理</p>
 </li>
 </ul>
+<p><img alt="1718692268670" src="../image/Database/1718692268670.png" /></p>
 <h4 id="_36">常见问题</h4>
 <ul>
 <li>
@@ -6975,7 +7003,7 @@ $$</p>
 <p><img alt="1717637451937" src="../image/Database/1717637451937.png" /></p>
 </li>
 <li>
-<p><strong>Startvation</strong>：另一种常见的情况是，派出了过多的S锁，导致出现一个X锁请求时，必须等待此前S锁全部回滚收回，造成时间浪费</p>
+<p><strong>Startvation</strong>：另一种常见的情况是，派出了过多的S锁，导致出现一个X锁请求时，其会被后面的共享锁所阻塞（排他锁只能等待，而共享锁可以随便加），造成时间浪费</p>
 </li>
 </ul>
 <h4 id="two-phase-lock-protocols">Two-phase Lock Protocols</h4>
@@ -6996,7 +7024,6 @@ $$</p>
 </ul>
 </li>
 </ul>
-<p>又因为锁是对单个数据而言的，这种策略保证了schedule serializability</p>
 <details class="note">
 <summary>proof</summary>
 <p>We prove by contradiction.</p>
@@ -7004,7 +7031,7 @@ $$</p>
 <p>Let <span class="arithmatex">\(T_1\rightarrow T_2 \rightarrow \ldots \rightarrow T_n \rightarrow T_1\)</span> be the transactions in the cycle, <span class="arithmatex">\(\alpha_i\)</span> denote the lock point of <span class="arithmatex">\(T_i\)</span>. Then, we have <span class="arithmatex">\(\alpha_1 &lt; \alpha_2 &lt; \ldots &lt; \alpha_n &lt; \alpha_1\)</span>, which is a contradiction.</p>
 <p>Therefore, every two-phase lock is serializable.</p>
 </details>
-<p>二阶段锁策略保证了冲突可串行性，但是不能保证得到的序列是非级联回滚的，因此有了两种衍生策略：</p>
+<p>二阶段锁策略保证了冲突可串行性，但是不能保证得到的序列是非级联回滚的，因此有了两种衍生策略来解决这个问题：</p>
 <ul>
 <li>
 <p>默认2PL：只要Transaction不需要再申请新锁，并且对某个数据的所有操作都已经完成，那么对这个数据的锁就可以被释放，即使此时Transaction内还有其他操作没有进行</p>
