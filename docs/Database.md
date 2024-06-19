@@ -366,6 +366,8 @@ like是模糊搜索的关键字，可以用 % 表示任意多个字符，用 _ �
 
 聚集函数，顾名思义，能把同一列不同值聚集到一起处理为一个值
 
+**注意，where语句中不能使用聚合函数，只有select后或having语句中可以使用**
+
 #### group by
 
 配合各类代数操作
@@ -1779,19 +1781,25 @@ Worst Case：buffer小
 
 > 同样只适用于取等号的情况，本质利用相同属性值的哈希值相同的特点（相同哈希值不一定属性相同），对数据进行分块处理
 
-- 分块：将两个表分别使用hash进行分块
+- 分块：将两个表分别使用hash进行分块，分成 $n_h$ 个partition 
 
-- 其中一个表作为build input，用**另一个hash函数**对每一块建立hash索引
+- 其中一个表作为build input，用**另一个hash函数**对每一个 partition 在内存中建立hash索引
 
-- 另一个表作为probe input，对每一块进行hash，然后在build input的索引中查找相应的join目标
+- 另一个表作为probe input，直接读取相应partition的数据，根据后面建立的hash索引在 build input 的索引中查找相应的join目标
 
 ![1716639743086](image/Database/1716639743086.png)
 
-注意到划分后每个hash块的大小应该控制在buffer的大小内，因此有$n_h \geq \lceil \frac{b_s}{M} \rceil \times f$，$n_h$为hash块的个数，$f$（fudge factor）为避让系数用于降低下述散列表溢出的概率
+首先，划分时partition的个数不能超过内存总block数，不然无法正确划分（要为每一个partition留一个output buffer）
+
+划分后每个partition的大小应该控制在buffer的大小内，因为要在内存中为这一块建立一个索引
+
+$$ \lceil \frac{b_s}{M} \rceil \times f \leq n_h \leq M $$
+
+（ $f$（fudge factor）为避让系数用于降低下述散列表溢出的概率）
 
 - **Recursive Partition**
 
-如果$n_h$太大，$M \leq \sqrt{b_s}$，划分时就无法一趟完成，这时就需要使用多层级的递归划分
+由上可知，如果数据量太大，$M \leq \sqrt{b_s}$，划分时就无法一趟完成，这时就需要使用多层级的递归划分
 
 每次不够就划分成M-1个子块，然后对每个子块再进行递归划分，直到整个子块可以全部放入buffer
 
@@ -1813,17 +1821,29 @@ Worst Case：buffer小
 
     - 不需要递归
 
-        - transfer: $2(b_r + b_s)（初始划分） + (b_s + b_r)（索引中探查） + 4 n_h（划分后的多余块，一般可以忽略）= 3(b_r + b_s) + 4 n_h$
+        - transfer: 
+        
+            $2(b_r + b_s)（初始划分读+写） + (b_s + b_r)（索引中探查） + 4 n_h（划分后的多余块，每个partition最多多余1块，一般可以忽略$
+            
+            $= 3(b_r + b_s) + 4 n_h$
 
-        - seek: $2(\lceil \frac{b_r}{b_{br}} \rceil + \lceil \frac{b_s}{b_{bs}} \rceil) （划分\&写回）+ (n_h + n_h)（索引中探查）= 2(\lceil \frac{b_r}{b_{br}} \rceil + \lceil \frac{b_s}{b_{bs}} \rceil) + 2n_h$
+        - seek: 
+        
+            $2(\lceil \frac{b_r}{b_{br}} \rceil + \lceil \frac{b_s}{b_{bs}} \rceil) （划分\&写回，一次多读几块）+ (n_h + n_h)（索引中探查）$
+            
+            $= 2(\lceil \frac{b_r}{b_{br}} \rceil + \lceil \frac{b_s}{b_{bs}} \rceil) + 2n_h$
 
     - 需要递归
 
-        每次递归划分将大小变为原来的$\frac{1}{M-1}$直至到$M$，因此需要$\lceil \log_{M-1} (b_s) - 1\rceil$次递归
+        每次递归划分将大小变为原来的 $\frac{1}{M-1}$ 直至到 $M$，因此需要$\lceil \log_{M-1} (b_s) - 1\rceil$次递归
 
-        - transfer: $2(b_r + b_s) \times \lceil \log_{M-1} (b_s) - 1\rceil + b_r + b_s$
+        - transfer: 
+        
+            $2(b_r + b_s) \times \lceil \log_{M-1} (b_s) - 1\rceil + b_r + b_s$
 
-        - seek: $2(\lceil \frac{b_r}{b_{br}} \rceil + \lceil \frac{b_s}{b_{bs}} \rceil) \times \lceil \log_{M-1} (b_s) - 1\rceil$
+        - seek: 
+        
+            $2(\lceil \frac{b_r}{b_{br}} \rceil + \lceil \frac{b_s}{b_{bs}} \rceil) \times \lceil \log_{M-1} (b_s) - 1\rceil$
 
     - 最优情况，buffer足够大，直接退化为简单的O(1)对应：
 
