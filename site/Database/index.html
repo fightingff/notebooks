@@ -5978,11 +5978,11 @@ $$</p>
 <p>一个一个插入显然代价过高</p>
 </li>
 <li>
-<p>插入之前先进行排序，比乱序插入更新索引的代价小，尤其对于B+树索引而言。</p>
+<p>插入之前先进行排序，比乱序插入更新索引的代价小，因为相当于从左往右缓缓展开B+树，每个节点只需要写一次；否则，当树比较大内存存不下时，同一个节点就可能多次写，这显然对于效率的影响是致命的。不过，这样的话会每个节点会不满一点。</p>
 <p><img alt="1718675267089" src="../image/Database/1718675267089.png" /></p>
 </li>
 <li>
-<p>对B+树，批量插入还可以直接建叶节点，然后自叶向根Bottom-up插入，减少了插入时的IO操作</p>
+<p>对B+树，批量插入还可以排序后直接建叶节点，然后自叶向根取每一块的最小值Bottom-up建树，减少了插入时的IO操作，并且这样的树的节点基本都是满的。</p>
 </li>
 </ul>
 </li>
@@ -6958,6 +6958,7 @@ $$</p>
 </li>
 </ul>
 <h4 id="recoverable-schedule">Recoverable Schedule</h4>
+<p><img alt="1718881524990" src="../image/Database/1718881524990.png" /></p>
 <p>如果并发调度下某一个Transaction失败需要回滚会带动其他Transaction一起回滚，称为<strong>级联回滚（cascading rollback）</strong>，如果一个调度序列不会引起任何级联回滚，称它是<strong>非级联序列（cascadeless schedule）</strong></p>
 <details class="danger">
 <summary>not recoverable</summary>
