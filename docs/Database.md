@@ -158,7 +158,7 @@ Key是某一个relation中某几个attribute的集合。它的每一个子集也
     
     $r_{1}$ is the **referencing relation** of this foreign-key constraint and $r_{2}$ Is the **referenced relation**
 
-    `foreign key A referencing r2(B1)`
+    `foreign key A references r2(B1)`
 
 #### Schema Diagram
 
