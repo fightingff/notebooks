@@ -264,7 +264,7 @@ Key是某一个relation中某几个attribute的集合。它的每一个子集也
 
     - and 有0为假
 
-    - or    有1为真
+    - or 有1为真
 
     - 比较 / 算术等结果为unknown
 
@@ -274,7 +274,7 @@ Key是某一个relation中某几个attribute的集合。它的每一个子集也
 
     - 筛选distinct时，null = null
 
-    - NULL值不参与对列的代数函数，全NULL的tuple不会被count( )计数。没有非NULL元素时代数操作返回NULL，count( )返回0。
+    - NULL值不参与对列的代数函数，但是全NULL的tuple会被count(*)计数（直接数行数）。没有非NULL元素时代数操作返回NULL，count( )返回0。
 
 **注意：以上是教科书中的内容，其中char/varchar/int基本全世界通用，但是其他的数据类型在不同DBMS中语法及用法可能各有不同。**
 
@@ -2799,7 +2799,7 @@ Granularity译为粒度,前面锁协议相关内容中，我们将加锁的对�
 
 1. Analysis Pass：
 
-    - 从最近的Check Point开始，`RedoLSN=min(RecLSN)`，`UndoList=L`
+    - 从最近的Check Point开始，`RedoLSN=min(RecLSN, CheckPoint)`，`UndoList=L`
 
     - 向下扫描，更新Dirty Page Table和UndoList
 
