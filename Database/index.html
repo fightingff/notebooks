@@ -4601,7 +4601,7 @@
 <p>and 有0为假</p>
 </li>
 <li>
-<p>or    有1为真</p>
+<p>or 有1为真</p>
 </li>
 <li>
 <p>比较 / 算术等结果为unknown</p>
@@ -4616,7 +4616,7 @@
 <p>筛选distinct时，null = null</p>
 </li>
 <li>
-<p>NULL值不参与对列的代数函数，全NULL的tuple不会被count( )计数。没有非NULL元素时代数操作返回NULL，count( )返回0。</p>
+<p>NULL值不参与对列的代数函数，但是全NULL的tuple会被count(*)计数（直接数行数）。没有非NULL元素时代数操作返回NULL，count( )返回0。</p>
 </li>
 </ul>
 </li>
@@ -7490,7 +7490,7 @@ $$</p>
 <p>Analysis Pass：</p>
 <ul>
 <li>
-<p>从最近的Check Point开始，<code>RedoLSN=min(RecLSN)</code>，<code>UndoList=L</code></p>
+<p>从最近的Check Point开始，<code>RedoLSN=min(RecLSN, CheckPoint)</code>，<code>UndoList=L</code></p>
 </li>
 <li>
 <p>向下扫描，更新Dirty Page Table和UndoList</p>
