@@ -730,39 +730,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#chapter-6" class="md-nav__link">
-    <span class="md-ellipsis">
-      Chapter 6
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Chapter 6">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#disk-storage-and-dependability" class="md-nav__link">
-    <span class="md-ellipsis">
-      Disk Storage and Dependability
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#buses-and-other-connections" class="md-nav__link">
-    <span class="md-ellipsis">
-      Buses and Other Connections
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1098,39 +1065,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#chapter-6" class="md-nav__link">
-    <span class="md-ellipsis">
-      Chapter 6
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Chapter 6">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#disk-storage-and-dependability" class="md-nav__link">
-    <span class="md-ellipsis">
-      Disk Storage and Dependability
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#buses-and-other-connections" class="md-nav__link">
-    <span class="md-ellipsis">
-      Buses and Other Connections
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1152,6 +1086,7 @@
 <h1 id="_1">计算机组成</h1>
 <p><a href="https://xuan-insr.github.io/computer_organization/">超详细前辈笔记</a></p>
 <p>因此我只记录了一下自己遇到的重难点，以及自己的一些其他思考</p>
+<hr />
 <h2 id="chapter-1">Chapter 1</h2>
 <h3 id="eight-great-ideas-in-computer-architecture">Eight Great Ideas in Computer Architecture</h3>
 <ul>
@@ -1508,6 +1443,204 @@
 </ul>
 </li>
 </ul>
+<hr />
+<h1 id="chapter-4">Chapter 4</h1>
+<p>关于 <strong>单周期和流水线</strong> 佬的笔记已经很详细了，这里记录一下后面的ILP和Int相关的内容</p>
+<h3 id="ilpinstruction-level-parallelism">ILP（Instruction Level Parallelism）</h3>
+<p>为了提升指令级并行程度，一般有以下两种方法：</p>
+<ul>
+<li>
+<p>Deeper Pipeline</p>
+<p>增加流水线级数，从而可以同时执行更多指令，同时时钟周期变短</p>
+</li>
+<li>
+<p>Multiple Issue</p>
+<p>一次发射多条指令，或者说同时运行多条流水线</p>
+<p>主要处理两个问题：</p>
+<ul>
+<li>
+<p>指令打包（packaging）并放入发射槽（issue slot）</p>
+</li>
+<li>
+<p>数据和控制冒险</p>
+</li>
+</ul>
+</li>
+</ul>
+<details class="tip">
+<summary>Tip</summary>
+<p><img alt="1718953235230" src="../image/RiscV/1718953235230.png" /></p>
+</details>
+<h4 id="static-multiple-issue">Static Multiple Issue</h4>
+<p><img alt="1718941436008" src="../image/RiscV/1718941436008.png" /></p>
+<p><img alt="1718941920001" src="../image/RiscV/1718941920001.png" /></p>
+<blockquote>
+<p>Packet：VLIW（Very Long Instruction Word），一般要求对齐（可以加nop）</p>
+</blockquote>
+<div class="admonition example">
+<p class="admonition-title">常用的双发射</p>
+<p><img alt="1718952288932" src="../image/RiscV/1718952288932.png" /></p>
+</div>
+<ul>
+<li>
+<p>Ex harzard:</p>
+<p>只能分开到不同的Packet中，不能同时使用</p>
+</li>
+<li>
+<p>Load-Use Hazard:</p>
+<p>要把并行的流水线全部停掉，等待Load完成</p>
+</li>
+<li>
+<p>Unrolling Loop:</p>
+<p>通过展开循环，可以提高性能</p>
+<p>!!! "Register Renaming"</p>
+<div class="highlight"><pre><span></span><code>循环展开后，为每一层循环引入新的寄存器，消除一些数据冒险
+
+即消除反相关（anti-dependence）（name dependence）
+</code></pre></div>
+</li>
+</ul>
+<h4 id="dynamic-multiple-issue">Dynamic Multiple Issue</h4>
+<p><img alt="1718941457054" src="../image/RiscV/1718941457054.png" /></p>
+<blockquote>
+<p>由动态多发射处理器（Superscalar processors）动态调度来提高性能，抛弃编译器的一些静态调度，形成动态调度流水线</p>
+</blockquote>
+<p><img alt="1718952772755" src="../image/RiscV/1718952772755.png" /></p>
+<ul>
+<li>
+<p>发射时会将指令存到保留站（reservation station）中，等待相关数据准备好，相当于完成寄存器重命名</p>
+</li>
+<li>
+<p>中间执行单元（execution unit）会根据数据的准备情况，随时准备执行</p>
+</li>
+<li>
+<p>一般<strong>取值</strong>和<strong>译码</strong>按序进行，内部的执行单元乱序执行，最后提交阶段一般也常用<strong>按序提交</strong></p>
+</li>
+</ul>
+<h4 id="speculation">Speculation</h4>
+<p>不管是静态还是动态，都会使用一些预测技术来提高性能，如编译阶段、硬件执行阶段预测分支、预测载入等</p>
+<p>当预测错误时，需要一定手段进行回滚：</p>
+<p><img alt="1718941843928" src="../image/RiscV/1718941843928.png" /></p>
+<p>当预测时出现异常，一般会推迟异常：</p>
+<p><img alt="1718941821962" src="../image/RiscV/1718941821962.png" /></p>
+<h3 id="interruption-exception">Interruption &amp; Exception</h3>
+<ul>
+<li>
+<p>Risc-V mode</p>
+<p><img alt="1718953547067" src="../image/RiscV/1718953547067.png" /></p>
+<p><img alt="1718953627381" src="../image/RiscV/1718953627381.png" /></p>
+</li>
+<li>
+<p>Control and Status Registers (CSR)</p>
+<p>分为两类：</p>
+<ul>
+<li>
+<p>普通程序控制</p>
+</li>
+<li>
+<p>为一些高级权限的指令提供支持</p>
+</li>
+</ul>
+<div class="admonition quote">
+<p class="admonition-title">Quote</p>
+<p><img alt="1718953850081" src="../image/RiscV/1718953850081.png" /> </p>
+<p><img alt="1718953995548" src="../image/RiscV/1718953995548.png" /></p>
+</div>
+</li>
+</ul>
+<h4 id="m-mode">中断实现（M-mode为例）</h4>
+<details class="info">
+<summary>相关寄存器</summary>
+<p><img alt="1718954273644" src="../image/RiscV/1718954273644.png" /></p>
+</details>
+<details class="info">
+<summary>流水线CPU结构</summary>
+<p><img alt="1718955376915" src="../image/RiscV/1718955376915.png" /></p>
+</details>
+<ul>
+<li>
+<p>MEPC</p>
+<ul>
+<li>
+<p>WARL (Write Any Read Legal): 任何模式都可以写不会出异常，但是只有Machine模式可以读</p>
+</li>
+<li>
+<p>发生异常等<code>ecall / ebreak</code>，<code>MEPC &lt;= PC</code></p>
+</li>
+<li>
+<p>发生中断，<code>MEPC &lt;= PC + 4</code></p>
+</li>
+<li>
+<p>从中断返回 <code>MRET</code>，<code>PC &lt;= MEPC</code> </p>
+</li>
+</ul>
+</li>
+<li>
+<p>MSTATUS</p>
+<p>确定当前的权限模式和中断使能</p>
+</li>
+<li>
+<p>MIE(Enable)/MIP(Pending)</p>
+<ul>
+<li>
+<p>中断使能</p>
+</li>
+<li>
+<p>当前被挂起的中断</p>
+</li>
+</ul>
+</li>
+<li>
+<p>MTVEC(Machine Trap Vector Base Address)</p>
+<p><img alt="1718954602319" src="../image/RiscV/1718954602319.png" /></p>
+<ul>
+<li>
+<p>中断处理程序的基地址</p>
+</li>
+<li>
+<p>当前的mode</p>
+</li>
+<li>
+<p>查表方式：</p>
+<p><img alt="1718954640383" src="../image/RiscV/1718954640383.png" />  </p>
+</li>
+</ul>
+</li>
+<li>
+<p>MCAUSE</p>
+<p><img alt="1718954999064" src="../image/RiscV/1718954999064.png" /></p>
+<ul>
+<li>
+<p>WLRL（Write Legal Read Legal）：非法读写都会触发异常</p>
+</li>
+<li>
+<p>Exception Code与mtvec的向量模式相对应，在异步中断时，不同的模式会跳转到不同的入口</p>
+</li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">具体步骤</p>
+<p><img alt="1718955169210" src="../image/RiscV/1718955169210.png" /></p>
+<p>*多个中断发生时：</p>
+<ul>
+<li>
+<p>暴力选择处理最早的</p>
+</li>
+<li>
+<p>精确定位</p>
+</li>
+<li>
+<p>复杂多发射乱序执行：GG，太复杂  </p>
+</li>
+</ul>
+</div>
+<h4 id="_7">中断级别</h4>
+<p><img alt="1718955107035" src="../image/RiscV/1718955107035.png" /></p>
+<p><img alt="1718955121138" src="../image/RiscV/1718955121138.png" /></p>
+<h4 id="undefined-instruction-arithmetic-overflow">Undefined Instruction &amp; Arithmetic Overflow</h4>
+<h4 id="system-call-io-interrupt">System Call &amp; I/O Interrupt</h4>
+<hr />
 <h2 id="chapter-6">Chapter 6</h2>
 <p><em>考试应该涉及的不多，这里简单的记录一下一些零碎的公式和概念</em></p>
 <div class="admonition note">
