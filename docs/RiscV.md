@@ -4,6 +4,8 @@
 
 因此我只记录了一下自己遇到的重难点，以及自己的一些其他思考
 
+----
+
 ## Chapter 1
 
 ### Eight Great Ideas in Computer Architecture
@@ -272,6 +274,186 @@
         - method
 
             ![method](./images/method_float.png)
+
+----
+
+# Chapter 4
+
+关于 **单周期和流水线** 佬的笔记已经很详细了，这里记录一下后面的ILP和Int相关的内容
+
+### ILP（Instruction Level Parallelism）
+
+为了提升指令级并行程度，一般有以下两种方法：
+
+- Deeper Pipeline
+
+    增加流水线级数，从而可以同时执行更多指令，同时时钟周期变短
+
+- Multiple Issue
+
+    一次发射多条指令，或者说同时运行多条流水线
+
+    主要处理两个问题：
+
+    - 指令打包（packaging）并放入发射槽（issue slot）
+    
+    - 数据和控制冒险
+
+??? tip
+
+    ![1718953235230](image/RiscV/1718953235230.png)
+
+#### Static Multiple Issue
+
+![1718941436008](image/RiscV/1718941436008.png)
+
+![1718941920001](image/RiscV/1718941920001.png)
+
+> Packet：VLIW（Very Long Instruction Word），一般要求对齐（可以加nop）
+
+!!! example "常用的双发射"
+
+    ![1718952288932](image/RiscV/1718952288932.png)
+
+- Ex harzard:
+
+    只能分开到不同的Packet中，不能同时使用
+
+- Load-Use Hazard:
+
+    要把并行的流水线全部停掉，等待Load完成
+
+- Unrolling Loop:
+
+    通过展开循环，可以提高性能
+
+    !!! "Register Renaming"
+
+        循环展开后，为每一层循环引入新的寄存器，消除一些数据冒险
+
+        即消除反相关（anti-dependence）（name dependence）
+
+#### Dynamic Multiple Issue
+
+![1718941457054](image/RiscV/1718941457054.png)
+
+> 由动态多发射处理器（Superscalar processors）动态调度来提高性能，抛弃编译器的一些静态调度，形成动态调度流水线
+
+![1718952772755](image/RiscV/1718952772755.png)
+
+- 发射时会将指令存到保留站（reservation station）中，等待相关数据准备好，相当于完成寄存器重命名
+
+- 中间执行单元（execution unit）会根据数据的准备情况，随时准备执行
+
+- 一般**取值**和**译码**按序进行，内部的执行单元乱序执行，最后提交阶段一般也常用**按序提交**
+
+#### Speculation
+
+不管是静态还是动态，都会使用一些预测技术来提高性能，如编译阶段、硬件执行阶段预测分支、预测载入等
+
+当预测错误时，需要一定手段进行回滚：
+
+![1718941843928](image/RiscV/1718941843928.png)
+
+当预测时出现异常，一般会推迟异常：
+
+![1718941821962](image/RiscV/1718941821962.png)
+
+### Interruption & Exception
+
+- Risc-V mode
+
+    ![1718953547067](image/RiscV/1718953547067.png)
+
+    ![1718953627381](image/RiscV/1718953627381.png)
+
+- Control and Status Registers (CSR)
+
+    分为两类：
+
+    - 普通程序控制
+    
+    - 为一些高级权限的指令提供支持
+
+    !!! quote
+
+        ![1718953850081](image/RiscV/1718953850081.png) 
+
+        ![1718953995548](image/RiscV/1718953995548.png)
+
+#### 中断实现（M-mode为例）
+
+??? info "相关寄存器"
+
+    ![1718954273644](image/RiscV/1718954273644.png)
+
+??? info "流水线CPU结构"
+
+    ![1718955376915](image/RiscV/1718955376915.png)
+
+- MEPC
+
+    - WARL (Write Any Read Legal): 任何模式都可以写不会出异常，但是只有Machine模式可以读
+
+    - 发生异常等`ecall / ebreak`，`MEPC <= PC`
+    
+    - 发生中断，`MEPC <= PC + 4`
+    
+    - 从中断返回 `MRET`，`PC <= MEPC` 
+
+- MSTATUS
+
+    确定当前的权限模式和中断使能
+
+- MIE(Enable)/MIP(Pending)
+
+    - 中断使能
+   
+    - 当前被挂起的中断
+
+- MTVEC(Machine Trap Vector Base Address)
+
+    ![1718954602319](image/RiscV/1718954602319.png)
+
+    - 中断处理程序的基地址
+    
+    - 当前的mode
+
+    - 查表方式：
+
+        ![1718954640383](image/RiscV/1718954640383.png)  
+
+- MCAUSE
+
+    ![1718954999064](image/RiscV/1718954999064.png)
+
+    - WLRL（Write Legal Read Legal）：非法读写都会触发异常
+
+    - Exception Code与mtvec的向量模式相对应，在异步中断时，不同的模式会跳转到不同的入口
+
+!!! note "具体步骤"
+
+    ![1718955169210](image/RiscV/1718955169210.png)
+
+    *多个中断发生时：
+
+    - 暴力选择处理最早的
+    
+    - 精确定位
+    
+    - 复杂多发射乱序执行：GG，太复杂  
+
+#### 中断级别
+
+![1718955107035](image/RiscV/1718955107035.png)
+
+![1718955121138](image/RiscV/1718955121138.png)
+
+#### Undefined Instruction & Arithmetic Overflow
+
+
+#### System Call & I/O Interrupt
+----
 
 ## Chapter 6
 
