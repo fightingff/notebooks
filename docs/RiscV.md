@@ -327,7 +327,7 @@
 
     通过展开循环，可以提高性能
 
-    !!! "Register Renaming"
+    !!! note "Register Renaming"
 
         循环展开后，为每一层循环引入新的寄存器，消除一些数据冒险
 
