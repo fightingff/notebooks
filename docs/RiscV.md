@@ -361,6 +361,14 @@
 
 ### Interruption & Exception
 
+广义上，可以粗略分成下面两种：
+
+- Exception: Undefined Instruction & Arithmetic Overflow
+
+- Interrupt: System Call & I/O Interrupt
+
+#### 架构支持
+
 - Risc-V mode
 
     ![1718953547067](image/RiscV/1718953547067.png)
@@ -449,10 +457,6 @@
 
 ![1718955121138](image/RiscV/1718955121138.png)
 
-#### Undefined Instruction & Arithmetic Overflow
-
-
-#### System Call & I/O Interrupt
 ----
 
 ## Chapter 6
