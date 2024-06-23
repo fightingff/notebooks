@@ -530,6 +530,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      期末概念整理
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#data-structrure" class="md-nav__link">
     <span class="md-ellipsis">
       Data Structrure
@@ -1042,6 +1051,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      期末概念整理
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#data-structrure" class="md-nav__link">
     <span class="md-ellipsis">
       Data Structrure
@@ -1273,6 +1291,32 @@
 <blockquote>
 <p><em>第一节课就讲了AVL+Splay+摊还分析，让信息竞赛退役选手的我已经汗流浃背……</em></p>
 </blockquote>
+<h2 id="_1">期末概念整理</h2>
+<p>图论</p>
+<ul>
+<li>
+<p><strong>Vertex Cover</strong>： 最小顶点覆盖，最少的顶点使得每条边至少有一个端点在其中</p>
+<p>$\pho </p>
+</li>
+<li>
+<p><strong>Independent Set</strong>： 最大独立集，最多的顶点使得任意两个顶点不相邻</p>
+</li>
+<li>
+<p><strong>Dominating Set</strong>： 最小支配集，最少的顶点使得每个顶点或者在其中，或者与其中的某个顶点相邻</p>
+</li>
+<li>
+<p><strong>Clique</strong>： 最大团，最多的顶点使得团内任意两个顶点相邻</p>
+</li>
+<li>
+<p><strong>Vertex Cut</strong>：最小割，删掉点使得图不连通</p>
+</li>
+<li>
+<p><strong>Max Cut</strong>：交叉的边权值和最大</p>
+<p><img alt="1719158096260" src="../image/ADS/1719158096260.png" /></p>
+</li>
+</ul>
+<p>性质：</p>
+<p>二分图：最小割 = 最大匹配 = 最小点覆盖 = n-最大独立集</p>
 <h2 id="data-structrure">Data Structrure</h2>
 <hr />
 <h3 id="avl">AVL</h3>
@@ -4144,6 +4188,11 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <hr />
 <h3 id="greedy">*Greedy</h3>
 <p>就讲了最经典的<strong>任务调度</strong>问题和<strong>Huffman编码</strong>问题，略过了。</p>
+<div class="admonition note">
+<p class="admonition-title">Huffman Tree的一个小性质</p>
+<p>每个内部节点都有两个子节点，所有的字符集都在叶子节点上</p>
+<p>因此有 <span class="arithmatex">\(n_{\text{leaf}} + n_{\text{internal}} = 2 n_{\text{internal}} + 1\)</span>，即 <span class="arithmatex">\(n_{\text{leaf}} = n_{\text{internal}} + 1\)</span></p>
+</div>
 <details class="danger">
 <summary>❌</summary>
 <ul>
@@ -4241,6 +4290,7 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 </li>
 <li>
 <p>Some NPC problems</p>
+<p><img alt="1719153662079" src="../image/ADS/1719153662079.png" /></p>
 <ul>
 <li>
 <p><strong>SAT</strong>: Given a boolean formula, is there an assignment of truth values to the variables that makes the formula true?</p>
@@ -4900,7 +4950,7 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <p><img alt="1717481621618" src="../image/ADS/1717481621618.png" /></p>
 <p>通过分配初始run的个数为斐波那契数列，每次的run的个数可以辗转相减、滚动减小</p>
 </div>
-<p>对于k路归并，可以通过类似的方法，使用k阶斐波那契数列</p>
+<p>对于k路归并，可以通过类似的方法，使用k个连续的斐波那契数列进行滚动</p>
 <p>但是这样的方法显然会导致pass的次数增加，因此需要权衡</p>
 </li>
 </ul>

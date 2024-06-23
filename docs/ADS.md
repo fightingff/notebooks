@@ -2,6 +2,30 @@
 
 > *第一节课就讲了AVL+Splay+摊还分析，让信息竞赛退役选手的我已经汗流浃背……*
 
+## 期末概念整理
+
+图论
+
+- **Vertex Cover**： 最小顶点覆盖，最少的顶点使得每条边至少有一个端点在其中
+
+    $\pho 
+
+- **Independent Set**： 最大独立集，最多的顶点使得任意两个顶点不相邻
+
+- **Dominating Set**： 最小支配集，最少的顶点使得每个顶点或者在其中，或者与其中的某个顶点相邻
+
+- **Clique**： 最大团，最多的顶点使得团内任意两个顶点相邻
+
+- **Vertex Cut**：最小割，删掉点使得图不连通
+
+- **Max Cut**：交叉的边权值和最大
+
+    ![1719158096260](image/ADS/1719158096260.png)
+
+性质：
+
+二分图：最小割 = 最大匹配 = 最小点覆盖 = n-最大独立集
+
 ## Data Structrure
 
 ----
@@ -1790,6 +1814,12 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
 就讲了最经典的**任务调度**问题和**Huffman编码**问题，略过了。
 
+!!! note "Huffman Tree的一个小性质"
+
+    每个内部节点都有两个子节点，所有的字符集都在叶子节点上
+
+    因此有 $n_{\text{leaf}} + n_{\text{internal}} = 2 n_{\text{internal}} + 1$，即 $n_{\text{leaf}} = n_{\text{internal}} + 1$
+
 ??? danger "❌"
 
     - ![1718195534324](image/ADS/1718195534324.png)
@@ -1863,6 +1893,8 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
     - non-deterministic turing machine: a machine that can have multiple possible states at any time, and can choose best one
 
 - Some NPC problems
+
+    ![1719153662079](image/ADS/1719153662079.png)
 
     - **SAT**: Given a boolean formula, is there an assignment of truth values to the variables that makes the formula true?
 
@@ -2402,7 +2434,7 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
                 通过分配初始run的个数为斐波那契数列，每次的run的个数可以辗转相减、滚动减小
             
-            对于k路归并，可以通过类似的方法，使用k阶斐波那契数列
+            对于k路归并，可以通过类似的方法，使用k个连续的斐波那契数列进行滚动
 
             但是这样的方法显然会导致pass的次数增加，因此需要权衡
         
