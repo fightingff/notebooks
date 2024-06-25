@@ -1349,7 +1349,7 @@
 <p>维护（Rotation）</p>
 <ul>
 <li>
-<p>由定义的严格性，可知只要处理最小不平衡子树即可，并且上面还有可能不平衡，旋转复杂度也为<span class="arithmatex">\(O(h)\)</span></p>
+<p>由定义的严格性，可知只要处理最小不平衡子树即可，并且上面还有可能不平衡，插入的旋转复杂度为 <span class="arithmatex">\(O(1)\)</span>，删除的旋转复杂度为 <span class="arithmatex">\(O(h)\)</span></p>
 </li>
 <li>
 <p><strong>个人感觉旋转反而不够直观，更像是将下面的节点往上面“拎”起来，从而该节点（子树根节点）的各个儿子向两边“掉下去”，整棵子树也就像是被展平了一样更加平衡了。需要注意的是更新的节点在下方，而真正处理（即结构报错）的节点在上方作为Grandparent</strong></p>
@@ -3649,8 +3649,7 @@
 <details class="danger">
 <summary>❌</summary>
 <p>Evaluating the time complexity in backtracking algorithms involves considering various factors. Some important elements that affect time complexity in backtracking include:</p>
-<div class="highlight"><pre><span></span><code>![1718356767426](image/ADS/1718356767426.png)
-</code></pre></div>
+<p><img alt="1718356767426" src="../image/ADS/1718356767426.png" /></p>
 <ul>
 <li>
 <p>The number of decisions or choices to be made at each step.</p>
@@ -4538,7 +4537,8 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 </li>
 <li>
 <p>势能分析：<span class="arithmatex">\(\Phi(S) = \sum_{e \in good} |W_e|\)</span></p>
-<p>那么每次翻转一个点，势能至少增大1，因此最多需要<span class="arithmatex">\(\sum_{e} |W_e|\)</span>次翻转，一定可以达到一个最大值</p>
+<p>那么每次翻转一个点，势能至少增大1，因此最多需要<span class="arithmatex">\(\sum_{e} |W_e|\)</span></p>
+<p><span class="arithmatex">\(\rho(n) = 2\)</span></p>
 </li>
 </ul>
 </li>
@@ -4766,15 +4766,15 @@ xT_{h-1}^2(x) \ (red \ subtree, must \ have \ two \ black \  sub-subtrees) \\
 <thead>
 <tr>
 <th></th>
-<th><span class="arithmatex">\(W\)</span></th>
 <th><span class="arithmatex">\(D\)</span></th>
+<th><span class="arithmatex">\(W\)</span></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>朴素分治</td>
 <td><span class="arithmatex">\(O(logN)\)</span></td>
-<td><span class="arithmatex">\(O(NlogN)\)</span></td>
+<td><span class="arithmatex">\(O(N)\)</span></td>
 </tr>
 <tr>
 <td>并行二重循环</td>
