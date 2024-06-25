@@ -50,7 +50,7 @@
 
 - 维护（Rotation）
 
-    - 由定义的严格性，可知只要处理最小不平衡子树即可，并且上面还有可能不平衡，旋转复杂度也为$O(h)$
+    - 由定义的严格性，可知只要处理最小不平衡子树即可，并且上面还有可能不平衡，插入的旋转复杂度为 $O(1)$，删除的旋转复杂度为 $O(h)$
 
     - **个人感觉旋转反而不够直观，更像是将下面的节点往上面“拎”起来，从而该节点（子树根节点）的各个儿子向两边“掉下去”，整棵子树也就像是被展平了一样更加平衡了。需要注意的是更新的节点在下方，而真正处理（即结构报错）的节点在上方作为Grandparent**
 
@@ -1396,7 +1396,7 @@ $\alpha - \beta$ pruning
 
     Evaluating the time complexity in backtracking algorithms involves considering various factors. Some important elements that affect time complexity in backtracking include:
 
-        ![1718356767426](image/ADS/1718356767426.png)
+    ![1718356767426](image/ADS/1718356767426.png)
 
     - The number of decisions or choices to be made at each step.
 
@@ -2078,7 +2078,9 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
         
         - 势能分析：$\Phi(S) = \sum_{e \in good} |W_e|$
 
-            那么每次翻转一个点，势能至少增大1，因此最多需要$\sum_{e} |W_e|$次翻转，一定可以达到一个最大值
+            那么每次翻转一个点，势能至少增大1，因此最多需要$\sum_{e} |W_e|$
+            
+            $\rho(n) = 2$
 
     - Max-Cut
 
@@ -2285,9 +2287,9 @@ Wonderfully, the FNTT is almost the same as the FFT, except that we change the c
 
     ??? "结论速览"
 
-        | |$W$|$D$|
+        | |$D$|$W$|
         |----|----|----|
-        |朴素分治|$O(logN)$|$O(NlogN)$|
+        |朴素分治|$O(logN)$|$O(N)$|
         |并行二重循环|$O(1)$|$O(N^2)$|
         |递归分块（$p=\sqrt{N}$）|$O(loglogN)$|$O(NloglogN)$|
         |递归分块（$p=loglogN$）|$O(loglogN)$|$O(N)$|

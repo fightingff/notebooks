@@ -1,6 +1,6 @@
 :root {
-    --md-code-fg-color: rgb(250, 158, 11);
-    --md-code-bg-color: rgb(201, 241, 255);
+    --md-code-fg-color: rgb(7, 191, 13);
+    --md-code-bg-color: rgb(241, 248, 255);
 
     --md-code-hl-number-color:           hsla(0, 67%, 50%, 1);
     --md-code-hl-special-color:          hsla(340, 83%, 47%, 1);

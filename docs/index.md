@@ -36,6 +36,7 @@
 - **OOP**
     - Taught by WK, a famous teacher in ZJU
     - Learn some basic OOP concepts and some advanced design patterns using C++
+    - Additionally, I learn some advanced knowledge about C++ following the [CPlusPlusThings](https://light-city.github.io/stories_things/)
 
 - **Information Theory**
     - Taught by YGD, a professor in ZJU

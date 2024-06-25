@@ -1,12 +1,14 @@
 # OOP
 
+----
+
 ## 整理
 
 ### 声明 & 定义
 
 声明不分配内存，定义分配内存
 
-如 extern, struct, class 内都是声明
+如 extern（*除了 `extern const` 这个比较特殊*）, struct, class 内都是声明
 
 ### varibles scope & lifetime
 
@@ -23,11 +25,37 @@
 
 - 编程复杂度 与 现实要求 冲突时，一般选择服从现实要求比较“顺”
 
+- `assert` 用于调试，不会在release版本中执行，其本质是一个宏，如果条件为假，则输出错误信息并终止程序（`#define NDEBUG` 可以关闭）
+
 - 没有成员变量的类 的 size 为1，用来区分，但是在其子类中不会有这个区分，即为0
+
+- 计算类的大小时要求 各成员变量**对齐**，即每个变量的地址都是其大小的整数倍，并且按照声明的顺序排列。
+
+    如果有虚函数，会多一个指针，指向虚函数表，大小为8（64位系统）
+
+    此外，还要求类的大小是最大成员变量的整数倍，因此最后可能还会有一些**填充**字节。
+
+    ```cpp
+    class A {
+        char a; // 1 byte, assume start at 0
+        int b;  // 4 bytes, but need to start at 4, so 3 bytes padding
+        char c; // 1 byte, start at 8, but 3 bytes padding
+    };
+    
+    // sizeof(A) = 12
+    ```
+
+    !!! info
+
+        注意这里的各成员变量指的都是基本数据类型，如果类内有其他对象，也是将其拆开计算
+
+        比如经过实验可以得到 `sizeof(string) = 32`，并且其内部有一个指针，导致对齐大小为8
 
 - 函数传入 & 传出
 
     ![1715311286030](image/OOP/1715311286030.png)
+
+----
 
 ## Buzzwords
 
@@ -56,6 +84,8 @@
 - Field: 字段
 
 - Parameter: 函数参数
+
+----
 
 ## STL
 
@@ -119,11 +149,15 @@
     
     - 随机访问迭代器   
 
+----
+
 ## Container
 
 > 容器，collection of objects that can store an arbitrary number of other objects.
 
 - 通常用 size 来表示其中 object 的数量 
+
+----
 
 ## Class
 
@@ -196,190 +230,6 @@
 - 函数名相同，参数不同
 
 - 不能使用 auto-cast, 会造成二义性
-
-## static
-
-- deprecated：（过时）
-
-    > 限制外部访问
-
-    - static free function
-    
-    - static global variables
-    
-- static local variables
-
-    - 持久存储，多次调用保存上次的值    
-    
-    - 本质上是 **访问受限的全局变量**，在函数被第一次调用时构造，在程序结束时析构(如果被构造了) 
-
-- static member variables
-
-    - 所有对象共享，不属于对象，属于类
-    
-    - 不能在类内初始化，需要在类外初始化
-    
-        **static variable 需要全局定义申请内存空间（包括private / public）** 
-
-        ` Tp ClassName::StaticVariable = x;`
-
-    - 可以通过类名访问，也可以通过对象访问
-    
-    - static member function 只能访问 static member variables  
-
-## Reference
-
-`Tp &x = v`
-
-**本质上相当于给变量起了一个别名，方便变量的引用，不会分配内存空间（否则对于一个对象的拷贝可能开销过大）**
-
-**实质上就是使用指针实现的**
-
-- 在定义时初始化为一个左值，且不能改变指向 (左值引用`&`)
-
-- 在定义时初始化为一个右值，且可以改变指向，相当于记下了一个临时变量 (右值引用`&&`)
-  
-> No pointers to references `(Tp&) *p`
->
-> References to pointers OK `(Tp*) &p`
-
-- *Left value & Right value*
-
-    - Left value: `.` `[]` `->` `*`
-    
-    - Right value: others  
-
-## Const
-
-> **不可赋值（可以在创建时初始化一次）**
-
-- const & pointer
-
-    观察`*`位置
-    
-    - const 在 `*` 前，说明指向的内容不可修改
-    
-    - const 在 `*` 后，说明该指针不可修改 
-
-- 声明 const function
-
-    - `const` 修饰函数，表示该函数不会修改成员变量  (const *this)
-    
-    - 因此，const object 只能调用 const function, 使编译器能够检查错误
-
-    - *建议能加 const 的函数都加上，比如const对象默认只能调用const/static函数*
-
-- 关于定义数组 [const size]：
-
-    - 本地变量可以直接使用，因为在函数内可以自由分配栈空间
-
-        ```cpp
-        void f(int n) {
-            int a[n];//OK
-        }
-        ```
-
-    - 对象成员的数组定义不能用size，哪怕已经直接初始化，因为编译器不能确定（const 常量可能在初始化列表中被重新初始化）
-    
-        ```cpp
-        class A {
-            const int n = 10;
-            int a[10];  //Error
-            A():n(6){}  // Legal and powerful
-            // Thus "change" the n to 6 when the object is constructed
-        };
-        ```
-    
-    - enum & static 可以用来定义数组大小
-
-        ```cpp
-        class A {
-            static const int m = 10;
-            enum {n = 10};
-            int a[n];  //OK
-            int b[m];  //OK
-        };
-        ```
-
-## new & delete
-
-> new 动态申请空间，返回指针
->
-> delete ([]) p 释放空间，[] 取决于单一对象还是数组
->
-> 本质上是运算符
-
-- new的实质 
-
-    - 申请的空间没有默认初始值（直接给内存中的垃圾值），可以用 `{}` 初始化
-  
-    - 对于对象，需要有默认构造函数才能满足默认构造 
-
-    - 前面有一个标记头，记录了口令和大小，用于 delete 时检查; 之后是实际申请的空间
-
-- delete的实质
-
-    - 检查对象的析构函数，**并调用析构（在释放内存前）**
-    
-    - 往前走一个单位，检查口令和空间大小，不对会抛出异常
-
-    - 不加 [] 只会释放第一个对象的空间，而不会释放记录的空间大小，同时系统也会失去这部分内存的信息（最后不再调用剩余的析构）
-
-## default argument（默认参数）
-
-- 默认参数“从右往左连续写”
-    
-- 默认参数值是静态的（编译器处理），**在声明中写默认值，不能在定义中写** 
-
-    - 因此本质上是定义了一个带参函数，小心重载时的重复错误
-
-    - *头文件内定义的默认值可能会被篡改*
-
-## inline（内联）
-
-> 本质上相当于将函数代码直接拷贝到当前代码块中（**直接添加到当前文件的.obj中，而不是后续通过link连接**），避免函数调用的开销
->
-> **inline 函数（包括body）相当于声明，不是定义，因此要整个放在头文件中，让编译器处理。编译器不会分配函数空间，而是直接将对应指令“抄下来”，在需要的地方直接填上去。**
-
-- 会增长代码，本质上是用“空间换时间”
-
-- inline 函数复杂时可能会被编译器放弃 inline
-  
-    一般是比较短小且频繁调用的函数
-
-    ~~递归不适合~~
-
-- class 成员函数加上 body 直接默认 inline，无需特殊标记
-
-    *当长度过长时，可以在头文件内用 inline 声明， 然后直接将定义写在下方（都在头文件内，都加inline）*
-
-## namespace
-
-> Expresses a logical grouping of classes, functions, variables, etc.
->
-> *{}末尾没有 分号 作为结束*
-
-- using 简化
-
-    - `using namespace Name;`
-    
-        `using Name::Func;`
-    
-        `using Name::Class;`
-
-    - using 可能会导致同名成员冲突，但是只有调用冲突成员时才会报错，using并不会马上报错。为了解决冲突问题，可以通过显式指明命名空间。
-
-- alias 重命名
-
-    - `namespace NewName = OldName;`
-
-- openness
-
-    - 同一个命名空间可以分布在多个文件中
-
-## Composition
-
-----
 
 ### Embedded Objects
 
@@ -461,29 +311,60 @@
 
     但是只能调用父类的成员，不能调用子类的成员
 
-    **virtual**
+- **virtual**
 
     - 定义一个接口，让编译器知道该函数将会被子类覆写，从而可以在Up-casting时用父类指针/引用调用子类函数
   
-    - 本质上是动态变量的绑定（dynamic binding），即在运行时根据dynamic type才确定调用的函数，而非编译时的静态绑定。因此速度会相对慢一点，除非编译器发现是静态绑定，会自动转为静态绑定。
+    - 本质上是动态变量的绑定（dynamic binding），即在运行时根据dynamic type才确定调用的函数，而非编译时的静态绑定。因此速度会相对慢一点，除非编译器发现是静态绑定，会自动转为静态绑定
+    
+        有个特殊的情况是默认参数，因为默认参数是在编译时确定的，因此会使用静态绑定，也就是调用**当前指针**类型的默认参数，而不是动态绑定的子类的默认参数
   
     - 编译器执行静态检查，因此父类内的接口不可省略（只要父类定义为虚函数，子类中该函数就自动成为虚函数）
+
+    - **构造函数和静态函数（没有类的vptr等）不能是虚函数，但是析构函数可以是虚函数**
+
+        类似的，一般虚函数无法内联，因为需要在运行时才能确定调用的函数；除非编译器发现是静态绑定 
   
     - 内存存储：
 
-        **头部**有一个vptr指针，且为构造时存入
+        **头部**存一个vptr指针，且为实例构造时存入，具体如下：
 
         - **vptr**：虚函数表指针，指向虚函数表，存储虚函数的地址
         
         - **vtable**：虚函数表，存储虚函数的地址
         
-        - **vfunc**：虚函数，存储函数的地址  
+        - **vfunc**：虚函数，存储函数的地址
+        
+        ```cpp
+        class A {
+            virtual void f();
+            virtual void g();
+        };
+        class B : public A {
+            virtual void f();
+            virtual void h();
+        };
+
+        int main() {
+            A *p = new B();
+            long long **vptr = (long long **)p;
+            long long *vtable = *vptr;
+            void (*f)() = (void (*)())vtable[0];    //B::f
+            void (*g)() = (void (*)())vtable[1];    //A::g
+            void (*h)() = (void (*)())vtable[2];    //B::h
+
+            // 关于函数调用，可以直接调用，也可以通过指针调用
+            // 但是注意到这样调用是没有传入this指针的，因此在函数内无法访问成员变量，但是函数调用本质上是指针还是可以的
+            //(*f)();
+            //f();
+        }
+        ```
 
     - 纯虚函数：
 
         - `virtual Type F() = 0`
 
-        - 整个类成为抽象类，不能定义对象
+        - 只要存在一个纯虚函数，整个类成为抽象类，不能定义对象；其继承类必须实现所有纯虚函数，否则也成为抽象类
     
 - 多继承
 
@@ -597,13 +478,239 @@
 
 > `explicit` to avoid `implicit conversion`
 
+??? info "explicit"
+
+    当加上 `explicit` 时，只能通过 `T(x)` 显示转换，不能通过 `x` 隐式转换
+
+    *可以避免一些不必要的隐式转换，如 `T a = 1;`，必须严格调用*
+
+    ```cpp
+    class A {
+        int x;
+    public:
+        explicit A(int x): x(x) {}
+    };
+    A a = 1; //Error
+    A a(1); //OK
+    ```
+
 ![1715916652058](image/OOP/1715916652058.png)
 
 ![1715916854154](image/OOP/1715916854154.png)
 
 ----
 
-### Template
+## Static
+
+- deprecated：（过时）
+
+    > 限制外部访问
+
+    - static free function
+    
+    - static global variables
+    
+- static local variables
+
+    - 持久存储，多次调用保存上次的值    
+    
+    - 本质上是 **访问受限的全局变量**，在函数被第一次调用时构造，在程序结束时析构(如果被构造了) 
+
+- static member variables
+
+    - 所有对象共享，不属于对象，属于类
+    
+    - 不能在类内初始化，需要在类外初始化，并且一定要初始化（相当于定义一个全局变量）
+    
+        **static variable 需要全局定义申请内存空间（包括private / public）** 
+
+        ` Tp ClassName::StaticVariable = x;`
+
+    - 可以通过类名访问，也可以通过对象访问
+    
+- static member function 
+
+    - 只能访问 static member variables
+  
+    - 可以使用 `ClassName::Function()` 调用，也可以通过对象调用（`.` / `->`）  
+
+----
+
+## Reference
+
+`Tp &x = v`
+
+**本质上相当于给变量起了一个别名，方便变量的引用，不会分配内存空间（否则对于一个对象的拷贝可能开销过大）**
+
+**实质上就是使用指针实现的**
+
+- 在定义时初始化为一个左值，且不能改变指向 (左值引用`&`)
+
+- 在定义时初始化为一个右值，且可以改变指向，相当于记下了一个临时变量 (右值引用`&&`)
+  
+> No pointers to references `(Tp&) *p`
+>
+> References to pointers OK `(Tp*) &p`
+
+- *Left value & Right value*
+
+    - Left value: `.` `[]` `->` `*`
+    
+    - Right value: others  
+
+----
+
+## Const
+
+> **不可赋值（可以在创建时初始化一次）**
+
+- const & pointer
+
+    观察`*`位置
+    
+    - const 在 `*` 前，说明指向的内容不可修改
+    
+    - const 在 `*` 后，说明该指针不可修改
+
+    !!! note
+
+        可以将一个变量的地址赋给一个指向常量的指针，但是不能将一个指向常量的指针赋给一个普通指针
+
+        原因是显然的，不能通过指针修改常量的值
+
+- 声明 const function
+
+    - `const` 修饰函数，表示该函数不会修改成员变量  (const *this)
+    
+    - 因此，const object 只能调用 const function, 使编译器能够检查错误
+
+    - *建议能加 const 的函数都加上，比如const对象默认只能调用const/static函数，本质上类的成员函数的附带指针 `this` 就是 `Class *const` ，加了const后就是 `const Class *const` *
+
+- 关于定义数组 [const size]：
+
+    - 本地变量可以直接使用，因为在函数内可以自由分配栈空间
+
+        ```cpp
+        void f(int n) {
+            int a[n];//OK
+        }
+        ```
+
+    - 对象成员的数组定义不能用size，哪怕已经直接初始化，因为编译器不能确定（const 常量可能在初始化列表中被重新初始化）
+    
+        ```cpp
+        class A {
+            const int n = 10;
+            int a[10];  //Error
+            A():n(6){}  // Legal and powerful
+            // Thus "change" the n to 6 when the object is constructed
+        };
+        ```
+    
+    - enum & static 可以用来定义数组大小
+
+        ```cpp
+        class A {
+            static const int m = 10;
+            enum {n = 10};
+            int a[n];  //OK
+            int b[m];  //OK
+        };
+        ```
+
+    !!! note
+
+        如果要使用其他文件中的 const 变量，并且没有引用相应的头文件，需要在**定义**（赋初值）时加上 `extern` 关键字
+
+----
+
+## new & delete
+
+> new 动态申请空间，返回指针
+>
+> delete ([]) p 释放空间，[] 取决于单一对象还是数组
+>
+> 本质上是运算符
+
+- new的实质 
+
+    - 申请的空间没有默认初始值（直接给内存中的垃圾值），可以用 `{}` 初始化
+  
+    - 对于对象，需要有默认构造函数才能满足默认构造 
+
+    - 前面有一个标记头，记录了口令和大小，用于 delete 时检查; 之后是实际申请的空间
+
+- delete的实质
+
+    - 检查对象的析构函数，**并调用析构（在释放内存前）**
+    
+    - 往前走一个单位，检查口令和空间大小，不对会抛出异常
+
+    - 不加 [] 只会释放第一个对象的空间，而不会释放记录的空间大小，同时系统也会失去这部分内存的信息（最后不再调用剩余的析构）
+
+## default argument（默认参数）
+
+- 默认参数“从右往左连续写”
+    
+- 默认参数值是静态的（编译器处理），**在声明中写默认值，不能在定义中写** 
+
+    - 因此本质上是定义了一个带参函数，小心重载时的重复错误
+
+    - *头文件内定义的默认值可能会被篡改*
+
+----
+
+## Inline（内联）
+
+> 本质上相当于将函数代码直接拷贝到当前代码块中（**直接添加到当前文件的.obj中，而不是后续通过link连接**），避免函数调用的开销
+>
+> **inline 函数（包括body）相当于声明，不是定义（也可以理解成 `inline` 一定要在定义上使用），因此要整个放在头文件中，让编译器处理。编译器不会分配函数空间，而是直接将对应指令“抄下来”，在需要的地方直接填上去。**
+
+- 会增长代码，本质上是用“空间换时间”
+
+- inline 函数复杂时可能会被编译器放弃 inline
+  
+    一般是比较短小且频繁调用的函数
+
+    ~~递归不适合~~
+
+- class 成员函数加上 body 直接默认 inline，无需特殊标记
+
+    *当长度过长时，可以在头文件内用 inline 声明， 然后直接将定义写在下方（都在头文件内，都加inline）*
+
+!!! note "虚函数"
+
+    虚函数也可以成为内联函数，但由于内联函数是在编译时展开，而虚函数是在运行时动态绑定，因此虚函数内敛只有在编译器可以确定调用的函数时才会展开（如对象直接调用，而不是指针调用），否则会按照虚函数的方式动态调用。
+
+----
+
+## namespace
+
+> Expresses a logical grouping of classes, functions, variables, etc.
+>
+> *{}末尾没有 分号 作为结束*
+
+- using 简化
+
+    - `using namespace Name;`
+    
+        `using Name::Func;`
+    
+        `using Name::Class;`
+
+    - using 可能会导致同名成员冲突，但是只有调用冲突成员时才会报错，using并不会马上报错。为了解决冲突问题，可以通过显式指明命名空间。
+
+- alias 重命名
+
+    - `namespace NewName = OldName;`
+
+- openness
+
+    - 同一个命名空间可以分布在多个文件中
+
+----
+
+## Template
 
 > generic programming（泛型编程）
 
@@ -709,7 +816,7 @@
 
 ----
 
-### Exception
+## Exception
 
 ??? danger "处理异常办法"
 
@@ -767,7 +874,7 @@
 
         会触发`std::terminate()`函数，因此析构函数不应该抛出异常，应该在设计时避免
 
-### Smart Pointer
+## Smart Pointer
 
 > A reference count is a count of the number of times an object is shared
 >
@@ -999,3 +1106,53 @@
     - 重构的原则是：不改变代码的功能，只改变代码的结构
 
     - **回归测试：**重构后的代码要进行回归测试，确保重构后的代码没有引入新的bug
+
+----
+
+----
+
+## *volatile
+
+表示变量可能会在外部被修改（如外部中断等），因此编译器不会对其进行优化，每次都会重新读取，而不会使用寄存器缓存
+
+甚至指针、const等都无法保证其不被修改
+
+## *extern 特殊用法
+
+- 由于C与C++ `*.o` 文件的不同，C++由于支持函数重载会在编译时将函数名改变来附带参数信息，而C不会，因此在C++中调用C函数时需要使用 `extern "C" {}` 来避免这种情况
+
+    ```cpp linenums="1"
+    //xx.h
+    extern int add(...)
+
+    //xx.c
+    int add(){
+
+    }
+
+    //xx.cpp
+    extern "C" {
+        #include "xx.h"
+    }
+    ```
+
+- 反过来，如果C中调用C++函数，也需要在CPP文件中使用 `extern "C" {}` 来避免这种情况
+
+    ```cpp linenums="1"
+    //xx.h
+    extern "C"{
+        int add();
+    }
+    //xx.cpp
+    int add(){
+
+    }
+    //xx.c
+    extern int add();
+    ```
+
+需要注意的是，上面这两种方法编译时都需要先编译成 `*.o` 文件，然后再链接，否则会出现找不到函数的情况
+
+## *Union
+
+![1719329942755](image/OOP/1719329942755.png)
