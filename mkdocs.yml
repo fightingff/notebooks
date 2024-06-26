@@ -33,6 +33,8 @@ theme:
   hljs_style: atom-one-dark
   features:
     - content.code.copy
+    - navigation.top # 回到顶部按钮
+    - navigation.sections # 二级导航是粗体
 
 extra_css:
     - stylesheets/extra.css
@@ -63,4 +65,4 @@ extra_javascript:
   - https://cdn.jsdelivr.net/gh/wsqstar/ResHosting@0.031/build/js/Sakura.js
 
 plugins:
-  - statistics
+  #- statistics
