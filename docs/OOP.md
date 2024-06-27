@@ -488,6 +488,12 @@
 
 - const member function(not change `this`): `const T`
 
+    !!! tip
+
+        最简单的理解方法，认为成员函数的参数列表跟python一样有一个 `this` 指针
+
+        如果是 `const` 成员函数，那么 `this` 指针是 `const`的，相当于会导致函数参数列表不同 
+
 - const result(can't be L-value): `const T`
 
 - always use reference
@@ -762,13 +768,29 @@
 
         模板函数必须保证调用的参数类型完全一致，自动类型转换无效！
     
-    ??? 函数调用顺序
+    ??? tip "函数调用顺序"
 
         1. 精确类型
         
         2. 精确模板
         
-        3. overloading  
+        3. overloading
+        
+        ```cpp
+        template<class T>
+        void f(T x){cout << "Template" << endl;}
+            
+        template<>  // 特化
+        void f(int x){cout << "Instance" << endl;}
+                
+        void f(int x){cout << "Function" << endl;}
+                
+        int main(){
+            f(1);// 直接定义的优先，然后是精确特化的模板函数，最后才是函数模板                     
+            return 0;
+        }
+        ```
+
 
 - Class Template
 
@@ -928,13 +950,19 @@
 
 - `dynamic_cast`
 
-    动态转换，如多态类型间，子类指针当父类等down-casting
+    动态转换，如多态类型间，父类当子类等down-casting
 
-    *会在cast时进行动态类型检查*
+    *会在cast时进行动态类型检查，若检查出错，如父类当子类，会使得相应的结果为0*
 
 - `const_cast`
 
     用于修改（去掉）类型的const和volatile（必须与内存交互，不可暂存寄存器）属性
+
+    ```cpp
+    const int a = 10;
+    int *p = const_cast<int*>(&a);
+    *p = 20; //ok
+    ```
 
 - `reinterpret_cast`
 
