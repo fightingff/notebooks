@@ -1125,6 +1125,105 @@
 <p>替换字符</p>
 <p><img alt="1721382712677" src="../image/SD/1721382712677.png" /></p>
 </li>
+<li>
+<p><code>grep</code> 高级用法</p>
+<ul>
+<li>
+<p><code>-v</code>：取反，显示不包含关键字的行</p>
+</li>
+<li>
+<p><code>-i</code>：忽略大小写</p>
+</li>
+<li>
+<p><code>-c</code>：统计匹配行数</p>
+</li>
+<li>
+<p><code>-n</code>：显示行号</p>
+</li>
+<li>
+<p><code>--context|before|after n</code>：显示匹配行前后的行数</p>
+</li>
+</ul>
+</li>
+<li>
+<p>文件权限</p>
+<details class="note">
+<summary>Note</summary>
+<ul>
+<li>
+<p><code>r</code>：读权限</p>
+</li>
+<li>
+<p><code>w</code>：写权限</p>
+</li>
+<li>
+<p><code>x</code>：执行权限</p>
+</li>
+<li>
+<p><code>d</code>：目录</p>
+</li>
+<li>
+<p><code>l</code>：链接文件</p>
+</li>
+<li>
+<p><code>s</code>：套接字文件</p>
+</li>
+<li>
+<p><code>p</code>：管道文件</p>
+</li>
+<li>
+<p><code>c</code>：字符设备文件</p>
+</li>
+<li>
+<p><code>b</code>：块设备文件</p>
+</li>
+</ul>
+</details>
+<p>一般来说，文件权限第1个字符表示文件类型，后面的9个字符分为三组，分别是<code>u</code>（所有者）、<code>g</code>（所属组）、<code>o</code>（其他用户），每组权限分别是<code>rwx</code>，用数字表示则为<code>421</code></p>
+</li>
+<li>
+<p><code>head / tail</code></p>
+<p>显示文件头/尾</p>
+<ul>
+<li><code>--lines n</code>：显示前/后n行</li>
+</ul>
+</li>
+<li>
+<p><code>less / more</code></p>
+<p>分页显示文件内容，<code>less</code>比<code>more</code>更强大</p>
+<ul>
+<li>
+<p><code>space</code>：下一页</p>
+</li>
+<li>
+<p><code>b</code>：上一页</p>
+</li>
+<li>
+<p><code>q</code>：退出</p>
+</li>
+<li>
+<p><code>/</code>：搜索</p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>find</code></p>
+<p>查找文件</p>
+<ul>
+<li>
+<p><code>-name</code>：按文件名查找</p>
+</li>
+<li>
+<p><code>-type</code>：按文件类型查找</p>
+</li>
+<li>
+<p><code>-size</code>：按文件大小查找</p>
+</li>
+<li>
+<p><code>-exec</code>：执行命令</p>
+</li>
+</ul>
+</li>
 </ul>
 
 
