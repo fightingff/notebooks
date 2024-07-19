@@ -8,23 +8,25 @@
       
       
       
-        <link rel="canonical" href="https://fightingff.github.io/notebooks/">
+        <link rel="canonical" href="https://fightingff.github.io/notebooks/SD/">
       
       
+        <link rel="prev" href="../RiscV/">
       
-        <link rel="next" href="ASM/">
+      
+        <link rel="next" href="../Bandit/">
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
     
     
       
-        <title>FF's Notebooks</title>
+        <title>Course Notes - FF's Notebooks</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.6543a935.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
       
       
 
@@ -43,11 +45,11 @@
       
     
     
-      <link rel="stylesheet" href="stylesheets/extra.css">
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -66,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#welcome-to-ffs-notebooks" class="md-skip">
+        <a href="#ucb-linux-system-administration-decal" class="md-skip">
           Skip to content
         </a>
       
@@ -82,7 +84,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="FF&#39;s Notebooks" class="md-header__button md-logo" aria-label="FF's Notebooks" data-md-component="logo">
+    <a href=".." title="FF&#39;s Notebooks" class="md-header__button md-logo" aria-label="FF's Notebooks" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -102,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Course Notes
             
           </span>
         </div>
@@ -189,7 +191,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="FF&#39;s Notebooks" class="md-nav__button md-logo" aria-label="FF's Notebooks" data-md-component="logo">
+    <a href=".." title="FF&#39;s Notebooks" class="md-nav__button md-logo" aria-label="FF's Notebooks" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -216,30 +218,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Home
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -248,86 +230,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#some-interesting-cs-courses" class="md-nav__link">
-    <span class="md-ellipsis">
-      Some interesting CS Courses
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Some interesting CS Courses">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      大一
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      大二上
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      大二下
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#some-useful-tools-in-learning" class="md-nav__link">
-    <span class="md-ellipsis">
-      Some useful tools in learning
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#collections-of-materials" class="md-nav__link">
-    <span class="md-ellipsis">
-      Collections of Materials
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -356,8 +258,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -367,11 +271,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -385,7 +289,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Courses
@@ -436,7 +340,7 @@
   
   
     <li class="md-nav__item">
-      <a href="ASM/" class="md-nav__link">
+      <a href="../ASM/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -502,7 +406,7 @@
   
   
     <li class="md-nav__item">
-      <a href="DigitLogic/" class="md-nav__link">
+      <a href="../DigitLogic/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -523,7 +427,7 @@
   
   
     <li class="md-nav__item">
-      <a href="CS231n/" class="md-nav__link">
+      <a href="../CS231n/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -549,6 +453,8 @@
                 
   
   
+    
+  
   
   
     
@@ -557,11 +463,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
@@ -575,7 +481,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
             大二下
@@ -589,7 +495,7 @@
   
   
     <li class="md-nav__item">
-      <a href="ADS/" class="md-nav__link">
+      <a href="../ADS/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -610,7 +516,7 @@
   
   
     <li class="md-nav__item">
-      <a href="OOP/" class="md-nav__link">
+      <a href="../OOP/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -631,7 +537,7 @@
   
   
     <li class="md-nav__item">
-      <a href="Info/" class="md-nav__link">
+      <a href="../Info/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -652,7 +558,7 @@
   
   
     <li class="md-nav__item">
-      <a href="Database/" class="md-nav__link">
+      <a href="../Database/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -673,7 +579,7 @@
   
   
     <li class="md-nav__item">
-      <a href="RiscV/" class="md-nav__link">
+      <a href="../RiscV/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -691,6 +597,8 @@
                 
   
   
+    
+  
   
   
     
@@ -699,11 +607,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_6" checked>
         
           
           <label class="md-nav__link" for="__nav_3_3_6" id="__nav_3_3_6_label" tabindex="0">
@@ -717,7 +625,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_3_6">
             <span class="md-nav__icon md-icon"></span>
             UCB-Sysadmin DeCal
@@ -728,10 +636,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="SD/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Course Notes
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -740,6 +668,74 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lectures
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lectures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#license" class="md-nav__link">
+    <span class="md-ellipsis">
+      License
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#labs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Labs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Labs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lab-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab 1
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -752,7 +748,7 @@
   
   
     <li class="md-nav__item">
-      <a href="Bandit/" class="md-nav__link">
+      <a href="../Bandit/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -836,7 +832,7 @@
   
   
     <li class="md-nav__item">
-      <a href="Git/" class="md-nav__link">
+      <a href="../Git/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -857,7 +853,7 @@
   
   
     <li class="md-nav__item">
-      <a href="Make/" class="md-nav__link">
+      <a href="../Make/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -925,7 +921,7 @@
   
   
     <li class="md-nav__item">
-      <a href="AI_Materials/" class="md-nav__link">
+      <a href="../AI_Materials/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -994,37 +990,19 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#some-interesting-cs-courses" class="md-nav__link">
+  <a href="#lectures" class="md-nav__link">
     <span class="md-ellipsis">
-      Some interesting CS Courses
+      Lectures
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Some interesting CS Courses">
+    <nav class="md-nav" aria-label="Lectures">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
+  <a href="#license" class="md-nav__link">
     <span class="md-ellipsis">
-      大一
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      大二上
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      大二下
+      License
     </span>
   </a>
   
@@ -1036,20 +1014,26 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#some-useful-tools-in-learning" class="md-nav__link">
+  <a href="#labs" class="md-nav__link">
     <span class="md-ellipsis">
-      Some useful tools in learning
+      Labs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Labs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lab-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab 1
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#collections-of-materials" class="md-nav__link">
-    <span class="md-ellipsis">
-      Collections of Materials
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1071,115 +1055,75 @@
   
 
 
-<h1 id="welcome-to-ffs-notebooks">Welcome to FF's Notebooks</h1>
-<h2 id="some-interesting-cs-courses">Some interesting CS Courses</h2>
-<h3 id="_1">大一</h3>
-<ul>
-<li><strong>x86 ASM</strong><ul>
-<li>Taught by BHH, a hacker in my dream.</li>
-<li>One of the most meaningful classes I've taken, where I learn from hardware implementation in computer (My fundation on ICS) to basic x86 ASM compiling and programming. </li>
-</ul>
-</li>
-</ul>
-<hr />
-<h3 id="_2">大二上</h3>
+<h1 id="ucb-linux-system-administration-decal">UCB-Linux System Administration Decal</h1>
+<blockquote>
+<p>记录一些知识点，包括课程讲义、实验等</p>
+</blockquote>
+<h2 id="lectures">Lectures</h2>
+<h3 id="license">License</h3>
 <ul>
 <li>
-<p><strong>Digit Logic Design</strong></p>
-<ul>
-<li>Taught by CM, one of the best teacher I've met.</li>
-<li>Concretely learn the basic digit design, and some basic hardware programming (Verilog)</li>
-</ul>
+<p>Copyleft(GPL)</p>
+<blockquote>
+<p>All versions of the software remain free</p>
+</blockquote>
+<p>通过GPL协议，要求源程序必须公开，任何人都可以使用、修改、复制、分发源代码，但是必须保持开源，并且任何修改后的代码也必须遵守GPL协议。</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>A quote from Richard Stallman, the founder of the Free Software Foundation, emphasizes his goal to maintain the freedom of GNU software: "I want to make sure that all versions of GNU remain free."</p>
+<p>Steve Ballmer, former CEO of Microsoft, referred to the GPL as "a cancer that attaches itself in an intellectual property sense to everything it touches." </p>
+<p>由此可见，GPL的完全开源会对衍生的商业软件产生不可忽视的“威胁”</p>
+</div>
 </li>
 <li>
-<p><strong>CS231n</strong></p>
-<ul>
-<li>My work in learning CS231n</li>
-<li>It's truly the <strong>best</strong> course for me to learn CV<ul>
-<li>Give me a preliminary understanding of CV</li>
-<li>Introduce many popular and typical Algorithms, <strong>FC, CNN, RNN, Transformer, GAN, Self-Supervised ……</strong></li>
-<li>Leads me to try to read some famous papers by myself</li>
-<li>Help me gain a deeper insight into the model with moderately difficult project which can be auto-checked </li>
-</ul>
+<p>Permissive（MIT,BSD,Apache,WTFPL）</p>
+<blockquote>
+<p>You can do whatever you want with the software, as long as you include the original copyright and license notice in any copy of the software/source.</p>
+</blockquote>
+<p>这类协议允许用户自由使用、修改、复制、分发源代码，但是不需要保持开源，可以闭源，只要在源代码中包含原始版权和许可通知即可。</p>
 </li>
 </ul>
-</li>
-</ul>
-<hr />
-<h3 id="_3">大二下</h3>
+<h2 id="labs">Labs</h2>
+<h3 id="lab-1">Lab 1</h3>
 <ul>
 <li>
-<p><strong>ADS</strong></p>
+<p><code>.tgz</code>(<code>tar.gz</code>)文件</p>
 <ul>
-<li>Taught by CH, my senior and a intelligent researcher </li>
-<li>Learn some advanced data structures, algorithm, and some advanced analysis</li>
-<li>Despite of my experience in Informatics Olympiad, I still feel it challenging</li>
-</ul>
+<li>
+<p>压缩：<code>file --(tar)--&gt; file.tar --(gzip)--&gt; file.tar.gz</code></p>
 </li>
 <li>
-<p><strong>OOP</strong></p>
+<p>解压 </p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>tar<span class="w"> </span>-xvzf<span class="w"> </span>filename.tgz
+</code></pre></div>
 <ul>
-<li>Taught by WK, a famous teacher in ZJU</li>
-<li>Learn some basic OOP concepts and some advanced design patterns using C++</li>
-<li>Additionally, I learn some advanced knowledge about C++ following the <a href="https://light-city.github.io/stories_things/">CPlusPlusThings</a></li>
-</ul>
+<li>
+<p><code>-x</code>：解压</p>
 </li>
 <li>
-<p><strong>Information Theory</strong></p>
-<ul>
-<li>Taught by YGD, a professor in ZJU</li>
-<li>Learn some basic information theory, which is significant in machine learning theory especially in proof, so I think it's necessary to take this course carefully and take notes</li>
+<p><code>-v</code>：显示详细信息</p>
+</li>
+<li>
+<p><code>-z</code>：使用<code>gzip</code>解压</p>
+</li>
+<li>
+<p><code>-f</code>：指定文件</p>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>
-<p><strong>Database</strong></p>
-<ul>
-<li>Taught by MXY, a gentle professor and Big Data scholar in ZJU</li>
-<li>Learn basic and advanced database concepts and SQL programming</li>
-<li>Too many points, so I choose to fork other people's notes and take some notes by myself</li>
-<li><a href="https://github.com/yile-liu/ZJU_database_system">link</a></li>
-</ul>
+<p><code>xargs</code></p>
+<p>常和管道符<code>|</code>一起使用，将前一个命令的输出作为后一个命令的参数，注意<code>xargs</code>默认以空格分隔参数，将换行符转换为空格，并且要写在后一个命令的前面</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># command1 | xargs command2</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>cat<span class="w"> </span>*<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="c1"># 将所有文件内容以一行输出</span>
+</code></pre></div>
 </li>
 <li>
-<p><strong>Computer Organization</strong></p>
-<ul>
-<li>Taught by YK, a professor in ZJU</li>
-<li>Learn some deep computer organization concepts of RISC-V structure(Single Cycle CPU, Pipelined-CPU, Cache...), which is significant in computer architecture especially in hardware design, so I think it's necessary to take this course carefully and take notes</li>
-<li>Since I'm so busy in this semester, I choose to fork other people's notes and only take some additional notes</li>
-</ul>
-</li>
-</ul>
-<h2 id="some-useful-tools-in-learning">Some useful tools in learning</h2>
-<ul>
-<li>
-<p><strong>Git</strong></p>
-<ul>
-<li>Undoubtedly one of the most useful tools as distributed version control system</li>
-<li>Workspace history recorded</li>
-<li>Remote workspace storage &amp; cooperation</li>
-</ul>
-</li>
-<li>
-<p><strong>Makefile &amp; CMake</strong></p>
-<ul>
-<li>Makefile is a tool to compile and link multiple source codes</li>
-<li>CMake is a efficient tool to help generate Makefile (Basically learned to tutorial STEP3)</li>
-</ul>
-</li>
-</ul>
-<h2 id="collections-of-materials">Collections of Materials</h2>
-<ul>
-<li>
-<p><strong>AI Materials</strong></p>
-<ul>
-<li>Record some useful and famous papers and resources in my AI learning. </li>
-</ul>
-</li>
-<li>
-<p><a href="https://github.com/fightingff/AI"><strong>My AI repositoy</strong></a></p>
-<ul>
-<li>Some little notes of my AI trying. </li>
-</ul>
+<p><code>tr</code></p>
+<p>替换字符</p>
+<p><img alt="1721382712677" src="../image/SD/1721382712677.png" /></p>
 </li>
 </ul>
 
@@ -1234,18 +1178,18 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["content.code.copy", "navigation.top", "navigation.sections"], "search": "assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "navigation.top", "navigation.sections"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.ad660dcc.min.js"></script>
+      <script src="../assets/javascripts/bundle.ad660dcc.min.js"></script>
       
-        <script src="javascripts/mathjax.js"></script>
+        <script src="../javascripts/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
-        <script src="javascripts/katex.js"></script>
+        <script src="../javascripts/katex.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js"></script>
       

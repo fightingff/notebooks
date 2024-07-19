@@ -20,6 +20,10 @@ nav:
         - Information Theory: Info.md
         - Database: Database.md
         - Computer Organization: RiscV.md
+        - UCB-Sysadmin DeCal:
+          - Course Notes: SD.md
+          - Bandit for fun: Bandit.md
+
   - Tools:
       - Git: Git.md
       - Makefile & CMake: Make.md
