@@ -27,6 +27,7 @@ nav:
   - Tools:
       - Git: Git.md
       - Makefile & CMake: Make.md
+      - Vim: Vim.md
   - Materials:
       - AI Materials: AI_Materials.md
       - My AI Repository: https://github.com/fightingff/AI
