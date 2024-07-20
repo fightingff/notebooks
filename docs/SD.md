@@ -346,4 +346,6 @@
 ### Lab 2
 
 - [vim](https://fightingff.github.io/notebooks/Vim)
+
+- `wc -l` 会默认输出文件名，目前使用的方法是使用 `cat filename | wc -l`
  
