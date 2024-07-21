@@ -712,6 +712,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#package" class="md-nav__link">
+    <span class="md-ellipsis">
+      Package
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -740,6 +749,15 @@
   <a href="#lab-2" class="md-nav__link">
     <span class="md-ellipsis">
       Lab 2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab 3
     </span>
   </a>
   
@@ -1056,6 +1074,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#package" class="md-nav__link">
+    <span class="md-ellipsis">
+      Package
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1089,6 +1116,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#lab-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab 3
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1114,7 +1150,7 @@
 
 <h1 id="ucb-linux-system-administration-decal">UCB-Linux System Administration Decal</h1>
 <blockquote>
-<p>记录一些知识点，包括课程讲义、实验等</p>
+<p>系统地学习一下linux, 记录一些知识点，包括课程讲义、实验等</p>
 <p><a href="https://decal.ocf.berkeley.edu/">官网</a></p>
 </blockquote>
 <hr />
@@ -1411,6 +1447,40 @@
 <hr />
 </li>
 </ul>
+<h3 id="package">Package</h3>
+<blockquote>
+<p>An archive containing binaries and libraries of an application, along with metadata for installation</p>
+<p><img alt="1721544683672" src="../image/SD/1721544683672.png" /></p>
+</blockquote>
+<p>一般来说，一个软件包包含以下内容：</p>
+<ul>
+<li>
+<p>控制文件：描述软件包的元信息，如名称、版本、依赖等</p>
+</li>
+<li>
+<p>数据文件：软件包的实际内容，包括二进制文件、库文件、配置文件等</p>
+<ul>
+<li>
+<p><code>/usr/bin</code>：可执行文件</p>
+</li>
+<li>
+<p><code>/usr/share</code>：documenation, manpage, locale 等</p>
+</li>
+<li>
+<p><code>/etc</code>：全局配置文件</p>
+</li>
+<li>
+<p><code>md5sums</code>：文件校验和  </p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img alt="1721545001177" src="../image/SD/1721545001177.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">Package Manager</p>
+<p><img alt="1721544567768" src="../image/SD/1721544567768.png" /></p>
+</div>
+<hr />
 <h2 id="labs">Labs</h2>
 <hr />
 <p><a href="https://github.com/fightingff/Sysadmin-Decal">My Labs Repository</a></p>
@@ -1558,6 +1628,7 @@
 </ul>
 </li>
 </ul>
+<hr />
 <h3 id="lab-2">Lab 2</h3>
 <ul>
 <li>
@@ -1565,6 +1636,71 @@
 </li>
 <li>
 <p><code>wc -l</code> 会默认输出文件名，目前使用的方法是使用 <code>cat filename | wc -l</code></p>
+</li>
+</ul>
+<hr />
+<h3 id="lab-3">Lab 3</h3>
+<ul>
+<li>
+<p><code>.deb</code> 文件打包（ex1）</p>
+<ul>
+<li>
+<p>使用 <code>fpm</code> 工具打包</p>
+</li>
+<li>
+<p><code>dpkg -i filename.deb</code>：安装</p>
+</li>
+<li>
+<p><code>dpkg -r package</code>：卸载</p>
+</li>
+<li>
+<p><code>dpkg -l</code>：列出已安装的软件包</p>
+</li>
+<li>
+<p><code>dpkg -L package</code>：列出软件包的文件列表</p>
+</li>
+<li>
+<p><code>dpkg -S file</code>：查找文件属于哪个软件包</p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>.deb</code> 文件解包（ex2）</p>
+<ul>
+<li>
+<p><code>dpkg -c filename.deb</code>：列出文件</p>
+</li>
+<li>
+<p><code>dpkg -x filename.deb</code>：解包，只能得到数据文件</p>
+</li>
+<li>
+<p><code>dpkg -e filename.deb</code>：提取控制文件</p>
+</li>
+</ul>
+<p>最终可以得到这样的文件结构，其中<code>DEBIAN</code>文件夹中存放控制文件, <code>ocfspy</code>文件中为提取出的数据文件 </p>
+<p><img alt="1721550742704" src="../image/SD/1721550742704.png" /></p>
+<p>对<code>control</code>文件进行检查，会发现其中dependency显然不对，不能自己依赖自己</p>
+<p><img alt="1721548930655" src="../image/SD/1721548930655.png" /></p>
+<p>修改完成后，在上图所示的文件结构下，使用<code>dpkg -b ocfspy</code>  <code>fakeroot dpkg-deb --build ocfspy</code> 打包，得到新的<code>.deb</code>文件</p>
+</li>
+<li>
+<p>arch linux package</p>
+<p><em>（目前自己在使用arch，因此也借此机会学习一下）</em></p>
+<ul>
+<li>
+<p><code>PKGBUILD</code>：描述软件包的元信息，如名称、版本、依赖等</p>
+<p><a href="https://wiki.archlinux.org/title/PKGBUILD">官方文档</a></p>
+<p>arch的PKGBUILD文件将对应的软件包信息使用URL或FTP地址的方式进行记录，在下方的四个函数<code>prepare</code> <code>build</code> <code>check</code> <code>package</code>中进行下载、解压、编译、打包等操作</p>
+</li>
+<li>
+<p><code>makepkg</code>：打包</p>
+<p>如果将生成的<code>.pkg.tar.xz</code>文件进行解压，可以看到和<code>.deb</code>文件类似的文件结构，其中包相关的元信息一般以隐藏文件的形式存放</p>
+<p><img alt="1721555596286" src="../image/SD/1721555596286.png" /></p>
+</li>
+<li>
+<p><code>pacman -U filename.pkg.tar.xz</code>：安装</p>
+</li>
+</ul>
 </li>
 </ul>
 
