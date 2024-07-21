@@ -1,6 +1,6 @@
 # UCB-Linux System Administration Decal
 
-> 记录一些知识点，包括课程讲义、实验等
+> 系统地学习一下linux, 记录一些知识点，包括课程讲义、实验等
 >
 > [官网](https://decal.ocf.berkeley.edu/)
 
@@ -234,6 +234,34 @@
         ```
 ----
 
+### Package
+
+> An archive containing binaries and libraries of an application, along with metadata for installation
+>
+> ![1721544683672](image/SD/1721544683672.png)
+
+一般来说，一个软件包包含以下内容：
+
+- 控制文件：描述软件包的元信息，如名称、版本、依赖等
+
+- 数据文件：软件包的实际内容，包括二进制文件、库文件、配置文件等
+
+    - `/usr/bin`：可执行文件
+    
+    - `/usr/share`：documenation, manpage, locale 等
+    
+    - `/etc`：全局配置文件
+    
+    - `md5sums`：文件校验和  
+
+![1721545001177](image/SD/1721545001177.png)
+
+!!! note "Package Manager"
+
+    ![1721544567768](image/SD/1721544567768.png)
+
+----
+
 ## Labs
 
 ----
@@ -343,9 +371,66 @@
     
     - `-exec`：执行命令
 
+----
+
 ### Lab 2
 
 - [vim](https://fightingff.github.io/notebooks/Vim)
 
 - `wc -l` 会默认输出文件名，目前使用的方法是使用 `cat filename | wc -l`
- 
+
+----
+
+### Lab 3
+
+- `.deb` 文件打包（ex1）
+
+    - 使用 `fpm` 工具打包
+
+    - `dpkg -i filename.deb`：安装
+    
+    - `dpkg -r package`：卸载
+    
+    - `dpkg -l`：列出已安装的软件包
+    
+    - `dpkg -L package`：列出软件包的文件列表
+    
+    - `dpkg -S file`：查找文件属于哪个软件包
+
+- `.deb` 文件解包（ex2）
+
+    - `dpkg -c filename.deb`：列出文件
+
+    - `dpkg -x filename.deb`：解包，只能得到数据文件
+    
+    - `dpkg -e filename.deb`：提取控制文件
+    
+    最终可以得到这样的文件结构，其中`DEBIAN`文件夹中存放控制文件, `ocfspy`文件中为提取出的数据文件 
+
+    ![1721550742704](image/SD/1721550742704.png)
+
+    对`control`文件进行检查，会发现其中dependency显然不对，不能自己依赖自己
+
+    ![1721548930655](image/SD/1721548930655.png)
+
+    修改完成后，在上图所示的文件结构下，使用`dpkg -b ocfspy`  `fakeroot dpkg-deb --build ocfspy` 打包，得到新的`.deb`文件
+
+- arch linux package
+
+    *（目前自己在使用arch，因此也借此机会学习一下）*
+
+    - `PKGBUILD`：描述软件包的元信息，如名称、版本、依赖等
+
+        [官方文档](https://wiki.archlinux.org/title/PKGBUILD)
+
+        arch的PKGBUILD文件将对应的软件包信息使用URL或FTP地址的方式进行记录，在下方的四个函数`prepare` `build` `check` `package`中进行下载、解压、编译、打包等操作
+
+    - `makepkg`：打包
+
+        如果将生成的`.pkg.tar.xz`文件进行解压，可以看到和`.deb`文件类似的文件结构，其中包相关的元信息一般以隐藏文件的形式存放
+
+        ![1721555596286](image/SD/1721555596286.png)
+
+    - `pacman -U filename.pkg.tar.xz`：安装
+
+        
