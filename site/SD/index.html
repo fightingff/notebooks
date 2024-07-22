@@ -721,6 +721,33 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -758,6 +785,15 @@
   <a href="#lab-3" class="md-nav__link">
     <span class="md-ellipsis">
       Lab 3
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab 4
     </span>
   </a>
   
@@ -1083,6 +1119,33 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1120,6 +1183,15 @@
   <a href="#lab-3" class="md-nav__link">
     <span class="md-ellipsis">
       Lab 3
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab 4
     </span>
   </a>
   
@@ -1481,6 +1553,111 @@
 <p><img alt="1721544567768" src="../image/SD/1721544567768.png" /></p>
 </div>
 <hr />
+<h3 id="service">Service</h3>
+<div class="admonition note">
+<p class="admonition-title">关于终端中运行程序</p>
+<ul>
+<li>
+<p><code>&amp;</code>：后台运行</p>
+</li>
+<li>
+<p><code>nohup</code>：忽略挂断信号，即使终端关闭也不会停止运行</p>
+</li>
+<li>
+<p><code>ctrl + z</code>：暂停</p>
+</li>
+<li>
+<p><code>bg</code>：后台运行</p>
+</li>
+<li>
+<p><code>fg</code>：前台运行</p>
+</li>
+<li>
+<p><code>jobs</code>：查看后台任务，以任务号区分</p>
+</li>
+</ul>
+</div>
+<h3 id="process">Process</h3>
+<p>process是一个正在运行的程序的实例，每个process都有一个唯一的进程号（PID），可以通过<code>ps</code>命令查看当前系统的进程，每个进程都有一个父进程，可以通过<code>pstree</code>命令查看进程树，其中<code>init</code>是所有进程的祖先，其PID为1</p>
+<p>每个进程都可以有多个线程thread，线程是进程的一个执行单元，线程共享进程的资源，包括内存、文件描述符等，但一般每个线程也有自己的栈空间存储状态，可以通过<code>ps -eLf</code>查看线程</p>
+<p><img alt="1721630531849" src="../image/SD/1721630531849.png" /></p>
+<p>一个进程可以fork出一个子进程，可以通过<code>wait()</code>函数等待子进程结束。子进程会继承父进程的资源，但是有自己的PID，还可以通过<code>exec()</code>函数替换自己的内存空间，从而执行其他程序</p>
+<ul>
+<li>
+<p>特殊情况：</p>
+<ul>
+<li>
+<p><code>zombie</code>（僵尸进程）：子进程结束<code>exit</code>，父进程还没有回收子进程的资源，此时子进程的状态为<code>Z</code>，属于资源浪费（泄漏）。可以通过<code>kill</code>命令杀死父进程，使子进程成为孤儿进程，被<code>init</code>进程回收</p>
+</li>
+<li>
+<p><code>orphan</code>（孤儿进程）：父进程结束，子进程还在运行，此时子进程的父进程变为<code>init</code>进程，<code>init</code>进程会回收子进程的资源 </p>
+</li>
+</ul>
+</li>
+<li>
+<p>进程通信</p>
+<ul>
+<li>
+<p><code>exit code</code>：进程退出码，一般0表示正常退出，其他值表示异常退出</p>
+</li>
+<li>
+<p><code>signal</code>：信号，一种异步通信方式，可以向进程发送信号</p>
+<p>可以使用<code>kill</code>命令向进程发送信号，可以通过<code>kill -l</code>查看信号列表</p>
+<details class="note">
+<summary>常用信号</summary>
+<ul>
+<li>
+<p><code>SIGKILL(9)</code>：强制立即终止，不会发送信号给子进程</p>
+</li>
+<li>
+<p><code>SIGTERM(15)</code>：终止信号，程序正常退出，但不会发送信号给子进程</p>
+</li>
+<li>
+<p><code>SIGSTOP(19)</code>：暂停</p>
+</li>
+<li>
+<p><code>SIGCONT(18)</code>：继续</p>
+</li>
+<li>
+<p><code>SIGINT(2)</code>：中断，<code>ctrl + c</code></p>
+</li>
+<li>
+<p><code>SIGHUP(1)</code>：挂断信号，终端关闭，会将信号发送给所有子进程</p>
+</li>
+</ul>
+</details>
+</li>
+<li>
+<p><code>pipe</code>：管道，可以实现进程间通信，一般用于父子进程间通信，如STDIN /STDOUT / STDERR等</p>
+</li>
+<li>
+<p><code>socket</code>：套接字，可以实现不同主机间的双向通信，一般用于网络通信TCP/IP等</p>
+</li>
+<li>
+<p><code>message bus</code>：消息总线，可以实现不同进程间的通信，如<code>dbus</code>等    </p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="service_1">Service</h3>
+<p><code>Daemon</code>是一种特殊在后台运行的守护进程，可以通过<code>systemctl</code>命令管理，包括启动、停止、重启、查看状态等</p>
+<p><code>systemd</code>是一个Linux系统的初始化系统和服务管理器，可以通过<code>systemctl</code>命令管理服务，<code>systemd</code>会在启动时自动启动服务</p>
+<p>每个服务都有一个<code>unit</code>文件，描述服务的元信息，如名称、描述、依赖等，<code>unit</code>文件一般存放在<code>/etc/systemd/system</code>目录下</p>
+<div class="admonition example">
+<p class="admonition-title">Unit File</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="o">[</span>Unit<span class="o">]</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nv">Description</span><span class="o">=</span>My<span class="w"> </span>Service
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="o">[</span>Service<span class="o">]</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nv">ExecStart</span><span class="o">=</span>/path/to/executable
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="nv">User</span><span class="o">=</span>username
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="nv">Restart</span><span class="o">=</span>always
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="o">[</span>Install<span class="o">]</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</code></pre></div>
+</div>
+<hr />
 <h2 id="labs">Labs</h2>
 <hr />
 <p><a href="https://github.com/fightingff/Sysadmin-Decal">My Labs Repository</a></p>
@@ -1494,7 +1671,7 @@
 </li>
 <li>
 <p>解压 </p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>tar<span class="w"> </span>-xvzf<span class="w"> </span>filename.tgz
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>tar<span class="w"> </span>-xvzf<span class="w"> </span>filename.tgz
 </code></pre></div>
 <ul>
 <li>
@@ -1516,8 +1693,8 @@
 <li>
 <p><code>xargs</code></p>
 <p>常和管道符<code>|</code>一起使用，将前一个命令的输出作为后一个命令的参数，注意<code>xargs</code>默认以空格分隔参数，将换行符转换为空格，并且要写在后一个命令的前面</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># command1 | xargs command2</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>cat<span class="w"> </span>*<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="c1"># 将所有文件内容以一行输出</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># command1 | xargs command2</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>cat<span class="w"> </span>*<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="c1"># 将所有文件内容以一行输出</span>
 </code></pre></div>
 </li>
 <li>
@@ -1699,6 +1876,131 @@
 </li>
 <li>
 <p><code>pacman -U filename.pkg.tar.xz</code>：安装</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="lab-4">Lab 4</h3>
+<ul>
+<li>
+<p><code>systemd</code></p>
+<div class="admonition warning">
+<p class="admonition-title">存放位置</p>
+<p><code>/lib/systemd/system</code>：系统服务</p>
+<p><code>/etc/systemd/system</code>：用户服务，具有最高的优先级，一般自定义服务都放在这里</p>
+<p>*<code>/run/systemd/system</code>：运行时服务，一般不直接操作，优先级介于上面两者之间</p>
+</div>
+<details class="question">
+<summary>管理的unit种类</summary>
+<div class="admonition danger">
+<p class="admonition-title">还没有仔细研究</p>
+</div>
+<ul>
+<li>
+<p><code>service</code>：后台服务进程</p>
+</li>
+<li>
+<p><code>socket</code>：套接字，往往用于监听端口等</p>
+</li>
+<li>
+<p><code>target</code>：可以视为一个组，用来定义系统的运行状态</p>
+</li>
+<li>
+<p><code>device</code>：硬件设备</p>
+</li>
+<li>
+<p><code>mount</code>：管理挂载点</p>
+</li>
+<li>
+<p><code>automount</code>：自动挂载，首次访问时挂载，节省资源</p>
+</li>
+<li>
+<p><code>path</code>：监视文件或目录</p>
+</li>
+<li>
+<p><code>timer</code>：定时器</p>
+</li>
+<li>
+<p><code>snapshot</code>：快照，用于回滚</p>
+</li>
+<li>
+<p><code>swap</code>：管理交换空间</p>
+</li>
+<li>
+<p><code>scope</code>：作用域，临时聚合进程组</p>
+</li>
+<li>
+<p><code>slice</code>：切片，用于资源隔离</p>
+</li>
+</ul>
+</details>
+<ul>
+<li>
+<p>Unit File</p>
+<p><a href="https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files">tutorial</a></p>
+<ul>
+<li>
+<p><code>[Unit]</code>：描述服务的元信息，如名称、描述、依赖等</p>
+<ul>
+<li>
+<p><code>Description</code>：描述</p>
+</li>
+<li>
+<p><code>Requires</code>：依赖，即启动当前服务前，需要启动的其他服务 </p>
+</li>
+<li>
+<p><code>After</code>：假依赖，即先启动列表中的服务，再启动当前服务</p>
+</li>
+<li>
+<p><code>Before</code>：假依赖，即先启动当前服务，再启动列表中的服务   </p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>[Service]</code>：描述服务的执行信息，如启动命令、用户、环境变量等</p>
+<ul>
+<li>
+<p><code>ExecStart</code>：启动命令</p>
+</li>
+<li>
+<p><code>Restart</code>：重启策略，如<code>always</code>表示总是重启，<code>on-failure</code>表示失败时重启，<code>never</code>表示不重启  </p>
+</li>
+<li>
+<p><code>RestartSec</code>：重启间隔 </p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>[Install]</code>：描述服务的安装信息，如启动级别、依赖等</p>
+<ul>
+<li><code>WantedBy</code>：启动级别，即在哪个级别启动服务</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>process</p>
+<ul>
+<li>
+<p><code>ps</code>：查看进程</p>
+<p>默认情况下只会显示当前终端的进程</p>
+<ul>
+<li>
+<p><code>-e</code>：显示所有进程</p>
+</li>
+<li>
+<p><code>-f</code>：显示详细信息</p>
+</li>
+<li>
+<p><code>-u</code>：显示用户进程</p>
+</li>
+<li>
+<p><code>-a</code>：显示所有终端的进程     </p>
+</li>
+</ul>
+<p>...  </p>
 </li>
 </ul>
 </li>

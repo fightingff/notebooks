@@ -262,6 +262,91 @@
 
 ----
 
+### Service
+
+!!! note "关于终端中运行程序"
+
+    - `&`：后台运行
+    
+    - `nohup`：忽略挂断信号，即使终端关闭也不会停止运行
+    
+    - `ctrl + z`：暂停
+    
+    - `bg`：后台运行
+    
+    - `fg`：前台运行
+    
+    - `jobs`：查看后台任务，以任务号区分
+
+### Process
+
+process是一个正在运行的程序的实例，每个process都有一个唯一的进程号（PID），可以通过`ps`命令查看当前系统的进程，每个进程都有一个父进程，可以通过`pstree`命令查看进程树，其中`init`是所有进程的祖先，其PID为1
+
+每个进程都可以有多个线程thread，线程是进程的一个执行单元，线程共享进程的资源，包括内存、文件描述符等，但一般每个线程也有自己的栈空间存储状态，可以通过`ps -eLf`查看线程
+
+![1721630531849](image/SD/1721630531849.png)
+
+一个进程可以fork出一个子进程，可以通过`wait()`函数等待子进程结束。子进程会继承父进程的资源，但是有自己的PID，还可以通过`exec()`函数替换自己的内存空间，从而执行其他程序
+
+- 特殊情况：
+
+    - `zombie`（僵尸进程）：子进程结束`exit`，父进程还没有回收子进程的资源，此时子进程的状态为`Z`，属于资源浪费（泄漏）。可以通过`kill`命令杀死父进程，使子进程成为孤儿进程，被`init`进程回收
+
+    - `orphan`（孤儿进程）：父进程结束，子进程还在运行，此时子进程的父进程变为`init`进程，`init`进程会回收子进程的资源 
+
+- 进程通信
+
+    - `exit code`：进程退出码，一般0表示正常退出，其他值表示异常退出
+    
+    - `signal`：信号，一种异步通信方式，可以向进程发送信号
+
+        可以使用`kill`命令向进程发送信号，可以通过`kill -l`查看信号列表
+
+        ??? note "常用信号"
+        
+            - `SIGKILL(9)`：强制立即终止，不会发送信号给子进程
+            
+            - `SIGTERM(15)`：终止信号，程序正常退出，但不会发送信号给子进程
+            
+            - `SIGSTOP(19)`：暂停
+            
+            - `SIGCONT(18)`：继续
+            
+            - `SIGINT(2)`：中断，`ctrl + c`
+            
+            - `SIGHUP(1)`：挂断信号，终端关闭，会将信号发送给所有子进程
+
+    - `pipe`：管道，可以实现进程间通信，一般用于父子进程间通信，如STDIN /STDOUT / STDERR等
+    
+    - `socket`：套接字，可以实现不同主机间的双向通信，一般用于网络通信TCP/IP等
+    
+    - `message bus`：消息总线，可以实现不同进程间的通信，如`dbus`等    
+
+### Service
+
+`Daemon`是一种特殊在后台运行的守护进程，可以通过`systemctl`命令管理，包括启动、停止、重启、查看状态等
+
+`systemd`是一个Linux系统的初始化系统和服务管理器，可以通过`systemctl`命令管理服务，`systemd`会在启动时自动启动服务
+
+每个服务都有一个`unit`文件，描述服务的元信息，如名称、描述、依赖等，`unit`文件一般存放在`/etc/systemd/system`目录下
+
+!!! example "Unit File"
+
+    ```bash
+    [Unit]
+    Description=My Service
+
+    [Service]
+    ExecStart=/path/to/executable
+    User=username
+    Restart=always
+
+    [Install]
+    WantedBy=multi-user.target
+    ```
+
+----
+
 ## Labs
 
 ----
@@ -433,4 +518,85 @@
 
     - `pacman -U filename.pkg.tar.xz`：安装
 
+### Lab 4
+
+- `systemd`
+
+    !!! warning "存放位置"
+
+        `/lib/systemd/system`：系统服务
+    
+        `/etc/systemd/system`：用户服务，具有最高的优先级，一般自定义服务都放在这里
+
+        *`/run/systemd/system`：运行时服务，一般不直接操作，优先级介于上面两者之间
+
+    ??? question "管理的unit种类"
+
+        !!! danger "还没有仔细研究"
+    
+        - `service`：后台服务进程
+        
+        - `socket`：套接字，往往用于监听端口等
+        
+        - `target`：可以视为一个组，用来定义系统的运行状态
+        
+        - `device`：硬件设备
+        
+        - `mount`：管理挂载点
+        
+        - `automount`：自动挂载，首次访问时挂载，节省资源
+        
+        - `path`：监视文件或目录
+        
+        - `timer`：定时器
+        
+        - `snapshot`：快照，用于回滚
+        
+        - `swap`：管理交换空间
+        
+        - `scope`：作用域，临时聚合进程组
+       
+        - `slice`：切片，用于资源隔离
+    
+    - Unit File
+
+        [tutorial](https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files)
+
+        - `[Unit]`：描述服务的元信息，如名称、描述、依赖等
+        
+            - `Description`：描述
+            
+            - `Requires`：依赖，即启动当前服务前，需要启动的其他服务 
+            
+            - `After`：假依赖，即先启动列表中的服务，再启动当前服务
+            
+            - `Before`：假依赖，即先启动当前服务，再启动列表中的服务   
+        
+        - `[Service]`：描述服务的执行信息，如启动命令、用户、环境变量等
+        
+            - `ExecStart`：启动命令
+            
+            - `Restart`：重启策略，如`always`表示总是重启，`on-failure`表示失败时重启，`never`表示不重启  
+            
+            - `RestartSec`：重启间隔 
+        
+        - `[Install]`：描述服务的安装信息，如启动级别、依赖等
+        
+            - `WantedBy`：启动级别，即在哪个级别启动服务
+
+- process
+
+    - `ps`：查看进程
+    
+        默认情况下只会显示当前终端的进程
+
+        - `-e`：显示所有进程
+        
+        - `-f`：显示详细信息
+        
+        - `-u`：显示用户进程
+        
+        - `-a`：显示所有终端的进程     
+        
+        ...  
         
