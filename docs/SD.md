@@ -232,6 +232,7 @@
 
         fib "$1"
         ```
+
 ----
 
 ### Package
@@ -278,6 +279,8 @@
     
     - `jobs`：查看后台任务，以任务号区分
 
+----
+
 ### Process
 
 process是一个正在运行的程序的实例，每个process都有一个唯一的进程号（PID），可以通过`ps`命令查看当前系统的进程，每个进程都有一个父进程，可以通过`pstree`命令查看进程树，其中`init`是所有进程的祖先，其PID为1
@@ -322,6 +325,8 @@ process是一个正在运行的程序的实例，每个process都有一个唯一
     
     - `message bus`：消息总线，可以实现不同进程间的通信，如`dbus`等    
 
+----
+
 ### Service
 
 `Daemon`是一种特殊在后台运行的守护进程，可以通过`systemctl`命令管理，包括启动、停止、重启、查看状态等
@@ -345,6 +350,120 @@ process是一个正在运行的程序的实例，每个process都有一个唯一
     WantedBy=multi-user.target
     ```
 
+----
+
+### Network
+
+- TCP/IP 4-layer model
+
+    - `Application`：应用层，真正接受处理数据，如HTTP、FTP、DNS等
+    
+    - `Transport`：传输层，管理协议，如TCP（可靠但慢）、UDP（快但不可靠）
+    
+        - `TCP`(transmission control protocol)：传输控制协议，三次握手协议，只有得到对方的确认才会发送数据，保证数据的可靠传输，常用于HTTP、FTP等应用
+        
+            ??? note "工作流程"
+            
+                1. 客户端发送SYN请求，请求建立连接
+                
+                2. 服务器发送SYN+ACK，确认连接
+                
+                3. 客户端发送ACK，确认连接建立
+                
+                4. 数据传输，每次发送数据的时候都会等待对方的确认ACK信号，保证数据的可靠传输
+                
+                5. 断开连接，四次挥手协议，保证数据的可靠传输
+                
+                    1. 客户端发送FIN，请求断开连接
+                    
+                    2. 服务器发送ACK，确认断开连接
+                    
+                    3. 服务器发送FIN，请求断开连接
+                    
+                    4. 客户端发送ACK，确认断开连接
+        
+        - `UDP`(user datagram protocol): 用户数据报协议，不保证数据的可靠传输，但是速度快，相当于直接发送数据包，不管对方是否收到，因此有可能丢包，常用于实时通话、视频等低延时应用
+      
+        - `ICMP`(Internet Control Message Protocol)：网络控制报文协议，用于网络故障诊断 
+    
+    - `Internet`：网络层，由路由器进行全局IP地址之间的转发
+
+        - `IP`：网络地址，可以更改，用于在全球范围内唯一标识主机，IPv4（32位）/IPv6（128位）
+        
+        - `Port`：端口，用于在主机内唯一标识应用程序，16 bit(0-65535)，一个端口在同一时间只能被一个应用程序使用
+        
+            - 0-1023为系统保留端口，一般用于特殊服务，如HTTP（80）、FTP（21）、SSH（22）、HTTPS（443）、DNS（53）等
+            
+            - 1024-49151为注册端口，一般用于常见服务，如NFS（2049）、MySQL（3306）、Tomcat（8080）等 
+            
+            - 49152-65535为动态端口，可以临时分配给应用程序使用，一般用于客户端，如NAT、防火墙等 
+        
+        - `Subnet`：子网，将IP地址划分为多个子网，可以减少广播域，提高网络性能
+        
+            具体地，斜杠后面的数字表示掩码前面1的个数，或者说是网络位数，剩下的是留给主机的位数，其中第一个和最后一个IP地址是网络地址和广播地址，一般不能使用
+
+            也就是说，IP地址与子网掩码进行与运算，可以得到网络起始地址
+
+            ![1721719850552](image/SD/1721719850552.png)
+        
+        - `NAT`：网络地址转换，将内部IP地址转换为外部IP地址，使多个设备共享一个公网IP地址，从而节省IP地址
+        
+        - `ARP`：地址解析协议，用于将IP地址解析为MAC地址
+        
+            !!! tip "工作流程"
+
+                1. 如果目标IP地址在本地网络表中，直接发送
+                
+                2. 否则，发送ARP请求，获取目标IP的MAC地址，然后发送数据包
+        
+        - `Routing`：路由，根据数据包的目标IP地址选择最佳路径
+        
+        - `DNS`(Domain Name System)：域名解析系统，将域名（URL）解析为IP地址
+        
+            ??? note "DNS Record"
+
+                一般包括 **name, value, type, ttl**等字段
+
+                - 简单数据记录 
+                 
+                    `name = value = ip address` 
+                
+                - NS records
+                
+                    重定向到另一个DNS服务器，一般用于子域名
+
+                    - `name = domain name`
+                    
+                    - `value = name server` 
+    
+                - CNAME records
+                
+                    别名记录，将一个域名解析为另一个域名，一般用于负载均衡
+
+                    - `name = alias`
+                    
+                    - `value = canonical name`
+                
+                - MX records
+                
+                    邮件交换记录，指定邮件服务器
+
+                    - `name = domain name`
+                    
+                    - `value = mail server`
+ 
+    - `Link`：链路层，往往为直接连接的硬件设备，不需要路由转发
+    
+        - `MAC address`（Media Access Control）：物理地址，用于在本地网络唯一标识设备, 48位二进制数，前24位为厂商识别码，后24位为设备序列号
+
+            ![1721719152390](image/SD/1721719152390.png) 
+        
+        - `ARP`：地址解析协议，用于将IP地址解析为MAC地址
+        
+        - `NDP`：邻居发现协议，IPv6中的ARP协议   
+
+- [Tools（见下方Lab 5）](#lab-5)
+    
 ----
 
 ## Labs
@@ -599,4 +718,25 @@ process是一个正在运行的程序的实例，每个process都有一个唯一
         - `-a`：显示所有终端的进程     
         
         ...  
-        
+
+----
+
+### Lab 5
+
+- `host`：查看域名解析信息
+
+- `hostname`：查看主机名，主机ip地址等
+
+- `ping`：测试网络连接，发送ICMP包
+
+- `traceroute`：跟踪路由，显示数据包经过的路由器
+
+- `arp`：显示ARP缓存
+
+- `dig`：DNS查询，显示域名解析信息  
+
+- `netstat`：显示网络连接、路由、接口等信息
+
+- `ip`：显示网络接口信息，很强大，可以替代`ifconfig` `route`等命令，[sheet](https://access.redhat.com/sites/default/files/attachments/rh_ip_command_cheatsheet_1214_jcs_print.pdf)
+
+- `nc`：网络工具，可以用于端口扫描、端口监听等

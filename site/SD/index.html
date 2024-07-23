@@ -748,6 +748,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#network" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -794,6 +803,15 @@
   <a href="#lab-4" class="md-nav__link">
     <span class="md-ellipsis">
       Lab 4
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab 5
     </span>
   </a>
   
@@ -1146,6 +1164,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#network" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1192,6 +1219,15 @@
   <a href="#lab-4" class="md-nav__link">
     <span class="md-ellipsis">
       Lab 4
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab 5
     </span>
   </a>
   
@@ -1516,9 +1552,9 @@
 <a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>fib<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>
 </code></pre></div>
 </details>
-<hr />
 </li>
 </ul>
+<hr />
 <h3 id="package">Package</h3>
 <blockquote>
 <p>An archive containing binaries and libraries of an application, along with metadata for installation</p>
@@ -1577,6 +1613,7 @@
 </li>
 </ul>
 </div>
+<hr />
 <h3 id="process">Process</h3>
 <p>process是一个正在运行的程序的实例，每个process都有一个唯一的进程号（PID），可以通过<code>ps</code>命令查看当前系统的进程，每个进程都有一个父进程，可以通过<code>pstree</code>命令查看进程树，其中<code>init</code>是所有进程的祖先，其PID为1</p>
 <p>每个进程都可以有多个线程thread，线程是进程的一个执行单元，线程共享进程的资源，包括内存、文件描述符等，但一般每个线程也有自己的栈空间存储状态，可以通过<code>ps -eLf</code>查看线程</p>
@@ -1639,6 +1676,7 @@
 </ul>
 </li>
 </ul>
+<hr />
 <h3 id="service_1">Service</h3>
 <p><code>Daemon</code>是一种特殊在后台运行的守护进程，可以通过<code>systemctl</code>命令管理，包括启动、停止、重启、查看状态等</p>
 <p><code>systemd</code>是一个Linux系统的初始化系统和服务管理器，可以通过<code>systemctl</code>命令管理服务，<code>systemd</code>会在启动时自动启动服务</p>
@@ -1657,6 +1695,181 @@
 <a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
 </code></pre></div>
 </div>
+<hr />
+<h3 id="network">Network</h3>
+<ul>
+<li>
+<p>TCP/IP 4-layer model</p>
+<ul>
+<li>
+<p><code>Application</code>：应用层，真正接受处理数据，如HTTP、FTP、DNS等</p>
+</li>
+<li>
+<p><code>Transport</code>：传输层，管理协议，如TCP（可靠但慢）、UDP（快但不可靠）</p>
+<ul>
+<li>
+<p><code>TCP</code>(transmission control protocol)：传输控制协议，三次握手协议，只有得到对方的确认才会发送数据，保证数据的可靠传输，常用于HTTP、FTP等应用</p>
+<details class="note">
+<summary>工作流程</summary>
+<ol>
+<li>
+<p>客户端发送SYN请求，请求建立连接</p>
+</li>
+<li>
+<p>服务器发送SYN+ACK，确认连接</p>
+</li>
+<li>
+<p>客户端发送ACK，确认连接建立</p>
+</li>
+<li>
+<p>数据传输，每次发送数据的时候都会等待对方的确认ACK信号，保证数据的可靠传输</p>
+</li>
+<li>
+<p>断开连接，四次挥手协议，保证数据的可靠传输</p>
+<ol>
+<li>
+<p>客户端发送FIN，请求断开连接</p>
+</li>
+<li>
+<p>服务器发送ACK，确认断开连接</p>
+</li>
+<li>
+<p>服务器发送FIN，请求断开连接</p>
+</li>
+<li>
+<p>客户端发送ACK，确认断开连接</p>
+</li>
+</ol>
+</li>
+</ol>
+</details>
+</li>
+<li>
+<p><code>UDP</code>(user datagram protocol): 用户数据报协议，不保证数据的可靠传输，但是速度快，相当于直接发送数据包，不管对方是否收到，因此有可能丢包，常用于实时通话、视频等低延时应用</p>
+</li>
+<li>
+<p><code>ICMP</code>(Internet Control Message Protocol)：网络控制报文协议，用于网络故障诊断 </p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>Internet</code>：网络层，由路由器进行全局IP地址之间的转发</p>
+<ul>
+<li>
+<p><code>IP</code>：网络地址，可以更改，用于在全球范围内唯一标识主机，IPv4（32位）/IPv6（128位）</p>
+</li>
+<li>
+<p><code>Port</code>：端口，用于在主机内唯一标识应用程序，16 bit(0-65535)，一个端口在同一时间只能被一个应用程序使用</p>
+<ul>
+<li>
+<p>0-1023为系统保留端口，一般用于特殊服务，如HTTP（80）、FTP（21）、SSH（22）、HTTPS（443）、DNS（53）等</p>
+</li>
+<li>
+<p>1024-49151为注册端口，一般用于常见服务，如NFS（2049）、MySQL（3306）、Tomcat（8080）等 </p>
+</li>
+<li>
+<p>49152-65535为动态端口，可以临时分配给应用程序使用，一般用于客户端，如NAT、防火墙等 </p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>Subnet</code>：子网，将IP地址划分为多个子网，可以减少广播域，提高网络性能</p>
+<p>具体地，斜杠后面的数字表示掩码前面1的个数，或者说是网络位数，剩下的是留给主机的位数，其中第一个和最后一个IP地址是网络地址和广播地址，一般不能使用</p>
+<p>也就是说，IP地址与子网掩码进行与运算，可以得到网络起始地址</p>
+<p><img alt="1721719850552" src="../image/SD/1721719850552.png" /></p>
+</li>
+<li>
+<p><code>NAT</code>：网络地址转换，将内部IP地址转换为外部IP地址，使多个设备共享一个公网IP地址，从而节省IP地址</p>
+</li>
+<li>
+<p><code>ARP</code>：地址解析协议，用于将IP地址解析为MAC地址</p>
+<div class="admonition tip">
+<p class="admonition-title">工作流程</p>
+<ol>
+<li>
+<p>如果目标IP地址在本地网络表中，直接发送</p>
+</li>
+<li>
+<p>否则，发送ARP请求，获取目标IP的MAC地址，然后发送数据包</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><code>Routing</code>：路由，根据数据包的目标IP地址选择最佳路径</p>
+</li>
+<li>
+<p><code>DNS</code>(Domain Name System)：域名解析系统，将域名（URL）解析为IP地址</p>
+<details class="note">
+<summary>DNS Record</summary>
+<p>一般包括 <strong>name, value, type, ttl</strong>等字段</p>
+<ul>
+<li>
+<p>简单数据记录 </p>
+<p><code>name = value = ip address</code> </p>
+</li>
+<li>
+<p>NS records</p>
+<p>重定向到另一个DNS服务器，一般用于子域名</p>
+<ul>
+<li>
+<p><code>name = domain name</code></p>
+</li>
+<li>
+<p><code>value = name server</code> </p>
+</li>
+</ul>
+</li>
+<li>
+<p>CNAME records</p>
+<p>别名记录，将一个域名解析为另一个域名，一般用于负载均衡</p>
+<ul>
+<li>
+<p><code>name = alias</code></p>
+</li>
+<li>
+<p><code>value = canonical name</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>MX records</p>
+<p>邮件交换记录，指定邮件服务器</p>
+<ul>
+<li>
+<p><code>name = domain name</code></p>
+</li>
+<li>
+<p><code>value = mail server</code></p>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+</li>
+</ul>
+</li>
+<li>
+<p><code>Link</code>：链路层，往往为直接连接的硬件设备，不需要路由转发</p>
+<ul>
+<li>
+<p><code>MAC address</code>（Media Access Control）：物理地址，用于在本地网络唯一标识设备, 48位二进制数，前24位为厂商识别码，后24位为设备序列号</p>
+<p><img alt="1721719152390" src="../image/SD/1721719152390.png" /> </p>
+</li>
+<li>
+<p><code>ARP</code>：地址解析协议，用于将IP地址解析为MAC地址</p>
+</li>
+<li>
+<p><code>NDP</code>：邻居发现协议，IPv6中的ARP协议   </p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><a href="#lab-5">Tools（见下方Lab 5）</a></p>
+</li>
+</ul>
 <hr />
 <h2 id="labs">Labs</h2>
 <hr />
@@ -2003,6 +2216,37 @@
 <p>...  </p>
 </li>
 </ul>
+</li>
+</ul>
+<hr />
+<h3 id="lab-5">Lab 5</h3>
+<ul>
+<li>
+<p><code>host</code>：查看域名解析信息</p>
+</li>
+<li>
+<p><code>hostname</code>：查看主机名，主机ip地址等</p>
+</li>
+<li>
+<p><code>ping</code>：测试网络连接，发送ICMP包</p>
+</li>
+<li>
+<p><code>traceroute</code>：跟踪路由，显示数据包经过的路由器</p>
+</li>
+<li>
+<p><code>arp</code>：显示ARP缓存</p>
+</li>
+<li>
+<p><code>dig</code>：DNS查询，显示域名解析信息  </p>
+</li>
+<li>
+<p><code>netstat</code>：显示网络连接、路由、接口等信息</p>
+</li>
+<li>
+<p><code>ip</code>：显示网络接口信息，很强大，可以替代<code>ifconfig</code> <code>route</code>等命令，<a href="https://access.redhat.com/sites/default/files/attachments/rh_ip_command_cheatsheet_1214_jcs_print.pdf">sheet</a></p>
+</li>
+<li>
+<p><code>nc</code>：网络工具，可以用于端口扫描、端口监听等</p>
 </li>
 </ul>
 

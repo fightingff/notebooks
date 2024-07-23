@@ -164,3 +164,13 @@ cat /etc/ssh/sshd_config
 ssh bandit14@localhost -i sshkey.private -p 2220
 password: MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
 ```
+
+## Level 14 -> Level 15
+
+```bash
+# nc - arbitrary TCP and UDP connections and listens
+# telnet - user interface to the TELNET protocol
+echo "MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS" | nc localhost 30000
+telnet localhost 30000
+password: 8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo
+```
