@@ -422,10 +422,16 @@ process是一个正在运行的程序的实例，每个process都有一个唯一
         
             ??? note "DNS Record"
 
-                一般包括 **name, value, type, ttl**等字段
+                一般包括 **name, value, type, TTL**等字段
 
-                - 简单数据记录 
+                TTL(time to live)表示记录的生存时间，一般为秒，过期后需要重新解析
+
+                - A records(IPv4)
                  
+                    `name = value = ip address`
+
+                - AAAA records(IPv6)
+                
                     `name = value = ip address` 
                 
                 - NS records
@@ -451,6 +457,42 @@ process是一个正在运行的程序的实例，每个process都有一个唯一
                     - `name = domain name`
                     
                     - `value = mail server`
+                
+                - *TXT records
+                
+                    用于存储任意文本信息，一般用于验证域名所有权
+
+                    - `name = domain name`
+                    
+                    - `value = text`
+                
+                - *SRV records
+                
+                    服务记录，指定服务的位置
+
+                    - `name = service`
+                    
+                    - `value = protocol, port, target`
+                
+                - *SOA records
+                
+                    开始授权记录，指定域名的授权服务器
+
+                    - `name = domain name`
+                    
+                    - `value = primary name server, email, serial number, refresh, retry, expire, minimum TTL` 
+
+            !!! danger "DNS poisoning"
+
+                DNS污染，攻击者通过篡改DNS服务器的记录，将合法域名解析为恶意IP地址，从而实现中间人攻击
+
+                ~~比如我国的封闭外网的Great Firewall~~
+        
+            !!! danger "DNS hijacking"
+
+                DNS劫持，攻击者通过篡改DNS服务器的记录，将合法域名解析为恶意IP地址，从而实现重定向攻击
+
+                通常由钓鱼网站、广告商等实施
  
     - `Link`：链路层，往往为直接连接的硬件设备，不需要路由转发
     
@@ -463,8 +505,22 @@ process是一个正在运行的程序的实例，每个process都有一个唯一
         - `NDP`：邻居发现协议，IPv6中的ARP协议   
 
 - [Tools（见下方Lab 5）](#lab-5)
-    
+
 ----
+
+### Web Server
+
+![1721727096536](image/SD/1721727096536.png)
+
+- Scale
+
+    - `Vertical`：垂直扩展，增加单个服务器的性能，如增加CPU、内存等，但是成本高，性能有限
+    
+    - `Horizontal`：水平扩展，增加服务器的数量，如负载均衡、分布式存储等，成本低，性能高
+
+- Load Balancer
+
+    通过负载均衡器，将请求分发到多个服务器，可以提高性能，减少单点故障
 
 ## Labs
 
@@ -740,3 +796,43 @@ process是一个正在运行的程序的实例，每个process都有一个唯一
 - `ip`：显示网络接口信息，很强大，可以替代`ifconfig` `route`等命令，[sheet](https://access.redhat.com/sites/default/files/attachments/rh_ip_command_cheatsheet_1214_jcs_print.pdf)
 
 - `nc`：网络工具，可以用于端口扫描、端口监听等
+
+### Lab 6
+
+- DNS 暂时略过
+
+- Load Balance
+
+    - *`nginx`：反向代理服务器，同时可以实现负载均衡、缓存、反向代理等功能
+
+    - `haproxy`：负载均衡器，可以实现负载均衡、健康检查等功能
+    
+        - `frontend`：前端，接收请求
+        
+        - `backend`：后端，处理请求
+
+            - `mode`：工作模式，如`http` `tcp` `health`等
+
+            - `balance`：负载均衡算法，如`roundrobin` `leastconn` `source`等
+            
+            - `server`：服务器列表，包括`name` `address` `port`等
+            
+            - `option`：选项，如`httpchk` `check`等
+            
+                可以设置健康检查的方式，如`httpchk GET /health` `check port 80`，在`server`后面加上`check`即可，并且可以设置`inter` `rise` `fall`等参数来调整健康检查的频率和判定接口的健康程度的标准   
+
+            !!! note "algorithm"
+            
+                - `roundrobin`：轮询
+                
+                - `leastconn`：最少连接
+                
+                - `source`：源IP的哈希值除以总权重进行分配
+                
+                - `uri`：URI的哈希值除以总权重进行分配
+                
+                - `url_param`：URL参数，使用参数的哈希值除以总权重进行分配
+
+        - `listen stats`：监听端口  
+        
+            ![1721815439110](image/SD/1721815439110.png)

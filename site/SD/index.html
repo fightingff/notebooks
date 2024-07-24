@@ -757,6 +757,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#web-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      Web Server
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -812,6 +821,15 @@
   <a href="#lab-5" class="md-nav__link">
     <span class="md-ellipsis">
       Lab 5
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab 6
     </span>
   </a>
   
@@ -1173,6 +1191,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#web-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      Web Server
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1228,6 +1255,15 @@
   <a href="#lab-5" class="md-nav__link">
     <span class="md-ellipsis">
       Lab 5
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab 6
     </span>
   </a>
   
@@ -1802,10 +1838,15 @@
 <p><code>DNS</code>(Domain Name System)：域名解析系统，将域名（URL）解析为IP地址</p>
 <details class="note">
 <summary>DNS Record</summary>
-<p>一般包括 <strong>name, value, type, ttl</strong>等字段</p>
+<p>一般包括 <strong>name, value, type, TTL</strong>等字段</p>
+<p>TTL(time to live)表示记录的生存时间，一般为秒，过期后需要重新解析</p>
 <ul>
 <li>
-<p>简单数据记录 </p>
+<p>A records(IPv4)</p>
+<p><code>name = value = ip address</code></p>
+</li>
+<li>
+<p>AAAA records(IPv6)</p>
 <p><code>name = value = ip address</code> </p>
 </li>
 <li>
@@ -1844,8 +1885,54 @@
 </li>
 </ul>
 </li>
+<li>
+<p>*TXT records</p>
+<p>用于存储任意文本信息，一般用于验证域名所有权</p>
+<ul>
+<li>
+<p><code>name = domain name</code></p>
+</li>
+<li>
+<p><code>value = text</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>*SRV records</p>
+<p>服务记录，指定服务的位置</p>
+<ul>
+<li>
+<p><code>name = service</code></p>
+</li>
+<li>
+<p><code>value = protocol, port, target</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>*SOA records</p>
+<p>开始授权记录，指定域名的授权服务器</p>
+<ul>
+<li>
+<p><code>name = domain name</code></p>
+</li>
+<li>
+<p><code>value = primary name server, email, serial number, refresh, retry, expire, minimum TTL</code> </p>
+</li>
+</ul>
+</li>
 </ul>
 </details>
+<div class="admonition danger">
+<p class="admonition-title">DNS poisoning</p>
+<p>DNS污染，攻击者通过篡改DNS服务器的记录，将合法域名解析为恶意IP地址，从而实现中间人攻击</p>
+<p>~~比如我国的封闭外网的Great Firewall~~</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">DNS hijacking</p>
+<p>DNS劫持，攻击者通过篡改DNS服务器的记录，将合法域名解析为恶意IP地址，从而实现重定向攻击</p>
+<p>通常由钓鱼网站、广告商等实施</p>
+</div>
 </li>
 </ul>
 </li>
@@ -1871,6 +1958,25 @@
 </li>
 </ul>
 <hr />
+<h3 id="web-server">Web Server</h3>
+<p><img alt="1721727096536" src="../image/SD/1721727096536.png" /></p>
+<ul>
+<li>
+<p>Scale</p>
+<ul>
+<li>
+<p><code>Vertical</code>：垂直扩展，增加单个服务器的性能，如增加CPU、内存等，但是成本高，性能有限</p>
+</li>
+<li>
+<p><code>Horizontal</code>：水平扩展，增加服务器的数量，如负载均衡、分布式存储等，成本低，性能高</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Load Balancer</p>
+<p>通过负载均衡器，将请求分发到多个服务器，可以提高性能，减少单点故障</p>
+</li>
+</ul>
 <h2 id="labs">Labs</h2>
 <hr />
 <p><a href="https://github.com/fightingff/Sysadmin-Decal">My Labs Repository</a></p>
@@ -2247,6 +2353,70 @@
 </li>
 <li>
 <p><code>nc</code>：网络工具，可以用于端口扫描、端口监听等</p>
+</li>
+</ul>
+<h3 id="lab-6">Lab 6</h3>
+<ul>
+<li>
+<p>DNS 暂时略过</p>
+</li>
+<li>
+<p>Load Balance</p>
+<ul>
+<li>
+<p>*<code>nginx</code>：反向代理服务器，同时可以实现负载均衡、缓存、反向代理等功能</p>
+</li>
+<li>
+<p><code>haproxy</code>：负载均衡器，可以实现负载均衡、健康检查等功能</p>
+<ul>
+<li>
+<p><code>frontend</code>：前端，接收请求</p>
+</li>
+<li>
+<p><code>backend</code>：后端，处理请求</p>
+<ul>
+<li>
+<p><code>mode</code>：工作模式，如<code>http</code> <code>tcp</code> <code>health</code>等</p>
+</li>
+<li>
+<p><code>balance</code>：负载均衡算法，如<code>roundrobin</code> <code>leastconn</code> <code>source</code>等</p>
+</li>
+<li>
+<p><code>server</code>：服务器列表，包括<code>name</code> <code>address</code> <code>port</code>等</p>
+</li>
+<li>
+<p><code>option</code>：选项，如<code>httpchk</code> <code>check</code>等</p>
+<p>可以设置健康检查的方式，如<code>httpchk GET /health</code> <code>check port 80</code>，在<code>server</code>后面加上<code>check</code>即可，并且可以设置<code>inter</code> <code>rise</code> <code>fall</code>等参数来调整健康检查的频率和判定接口的健康程度的标准   </p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">algorithm</p>
+<ul>
+<li>
+<p><code>roundrobin</code>：轮询</p>
+</li>
+<li>
+<p><code>leastconn</code>：最少连接</p>
+</li>
+<li>
+<p><code>source</code>：源IP的哈希值除以总权重进行分配</p>
+</li>
+<li>
+<p><code>uri</code>：URI的哈希值除以总权重进行分配</p>
+</li>
+<li>
+<p><code>url_param</code>：URL参数，使用参数的哈希值除以总权重进行分配</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>listen stats</code>：监听端口  </p>
+<p><img alt="1721815439110" src="../image/SD/1721815439110.png" /></p>
+</li>
+</ul>
+</li>
+</ul>
 </li>
 </ul>
 
