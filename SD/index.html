@@ -766,6 +766,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -830,6 +839,15 @@
   <a href="#lab-6" class="md-nav__link">
     <span class="md-ellipsis">
       Lab 6
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab 7
     </span>
   </a>
   
@@ -1200,6 +1218,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1264,6 +1291,15 @@
   <a href="#lab-6" class="md-nav__link">
     <span class="md-ellipsis">
       Lab 6
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab 7
     </span>
   </a>
   
@@ -1977,6 +2013,142 @@
 <p>通过负载均衡器，将请求分发到多个服务器，可以提高性能，减少单点故障</p>
 </li>
 </ul>
+<hr />
+<h3 id="security">Security</h3>
+<ul>
+<li>
+<p><strong>Confidentiality</strong></p>
+<blockquote>
+<p>只有授权用户可以访问数据</p>
+</blockquote>
+<ul>
+<li>
+<p>Cypertext替代明文，利用加密算法保护数据</p>
+<ul>
+<li>
+<p><code>Encryption</code>：加密，将数据转换为密文，只有授权用户才能解密</p>
+</li>
+<li>
+<p><code>Decryption</code>：解密，将密文转换为明文，只有授权用户才能解密 </p>
+</li>
+</ul>
+</li>
+<li>
+<p>加密算法</p>
+<ul>
+<li>
+<p><code>Symmetric</code>：对称加密，加密和解密使用相同的密钥，如DES、AES等</p>
+<p><img alt="1721891280375" src="../image/SD/1721891280375.png" /></p>
+</li>
+<li>
+<p><code>Asymmetric</code>：非对称加密，加密和解密使用不同的密钥，一般加密使用可以公开的公钥，解密使用私钥，如RSA、DSA等</p>
+<p><img alt="1721891300886" src="../image/SD/1721891300886.png" /></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Integrity</strong></p>
+<blockquote>
+<p>数据没有被篡改</p>
+</blockquote>
+<ul>
+<li>
+<p><code>Hash</code>：密码学哈希函数，根据数据计算为固定长度的哈希值，并且无法通过哈希值回推原来的数据，一般用于校验数据完整性</p>
+<ul>
+<li>
+<p><code>MD5</code>：128位哈希值，不安全</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>md5sum<span class="w"> </span>filename
+</code></pre></div>
+</li>
+<li>
+<p><code>SHA</code>：安全哈希算法，如SHA-1（160位）、SHA-256（256位）等</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sha1sum<span class="w"> </span>filename
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>sha256sum<span class="w"> </span>filename
+</code></pre></div>
+</li>
+</ul>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<ul>
+<li>
+<p>MAC(Message Authentication Code)：消息认证码，使用密钥对哈希值进行加密，保证数据的完整性和真实性</p>
+</li>
+<li>
+<p>Checksum：校验和，对数据进行校验，一般用于校验数据传输的完整性</p>
+</li>
+<li>
+<p>存储密码：一般不存储明文密码，而是存储密码的哈希值</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Authentication</strong></p>
+<blockquote>
+<p>确认数据来源/作者的真实性</p>
+</blockquote>
+<ul>
+<li>
+<p>Signature：数字签名，将私钥附在数据上。由于私钥只有本人持有，因此可以结合公钥验证数据的真实性</p>
+<ul>
+<li>
+<p><strong>file + private key → signature</strong></p>
+</li>
+<li>
+<p><strong>signature + public key → verification</strong></p>
+</li>
+</ul>
+<p><img alt="1721891905950" src="../image/SD/1721891905950.png" /></p>
+</li>
+<li>
+<p>Certificate：数字证书，由CA（Certificate Authority，权威第三方）颁发，用于证明公钥的真实性</p>
+<ul>
+<li><strong>public key + CA → certificate</strong></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">CA</p>
+<ul>
+<li>
+<p><code>Root CA</code>：根证书，权威第三方，用于签发其他CA的证书</p>
+</li>
+<li>
+<p><code>Intermediate CA</code>：中间证书，用于签发终端用户的证书</p>
+</li>
+<li>
+<p><code>End Entity</code>：终端用户，用于签发终端用户的证书</p>
+</li>
+</ul>
+<p>证书链：终端用户的证书由中间证书签发，中间证书由根证书签发，因此终端用户的证书需要包含中间证书和根证书，且终端证书验证依赖于根证书</p>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Availability</strong> </p>
+<blockquote>
+<p>数据可用性，保证数据的可靠性和持久性</p>
+</blockquote>
+<ul>
+<li>
+<p><strong>Filtering</strong>: 过滤，防止恶意攻击</p>
+</li>
+<li>
+<p><strong>Load Balancer</strong>: 负载均衡，分发请求，提高性能</p>
+</li>
+<li>
+<p><strong>Redundancy</strong>: 冗余，备份数据，防止数据丢失</p>
+</li>
+<li>
+<p><strong>Backup</strong>: 备份，将数据复制到其他设备，以防数据丢失   </p>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
 <h2 id="labs">Labs</h2>
 <hr />
 <p><a href="https://github.com/fightingff/Sysadmin-Decal">My Labs Repository</a></p>
@@ -1990,7 +2162,7 @@
 </li>
 <li>
 <p>解压 </p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>tar<span class="w"> </span>-xvzf<span class="w"> </span>filename.tgz
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>tar<span class="w"> </span>-xvzf<span class="w"> </span>filename.tgz
 </code></pre></div>
 <ul>
 <li>
@@ -2012,8 +2184,8 @@
 <li>
 <p><code>xargs</code></p>
 <p>常和管道符<code>|</code>一起使用，将前一个命令的输出作为后一个命令的参数，注意<code>xargs</code>默认以空格分隔参数，将换行符转换为空格，并且要写在后一个命令的前面</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># command1 | xargs command2</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>cat<span class="w"> </span>*<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="c1"># 将所有文件内容以一行输出</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># command1 | xargs command2</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>cat<span class="w"> </span>*<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="c1"># 将所有文件内容以一行输出</span>
 </code></pre></div>
 </li>
 <li>
@@ -2076,6 +2248,8 @@
 </ul>
 </details>
 <p>一般来说，文件权限第1个字符表示文件类型，后面的9个字符分为三组，分别是<code>u</code>（所有者）、<code>g</code>（所属组）、<code>o</code>（其他用户），每组权限分别是<code>rwx</code>，用数字表示则为<code>421</code></p>
+<p>使用<code>chmod</code>命令修改文件权限，如<code>chmod 777 filename</code>，其中<code>777</code>表示所有用户都有读写执行权限</p>
+<p>使用<code>chown</code>命令修改文件所有者，如<code>chown user:group filename</code></p>
 </li>
 <li>
 <p><code>head / tail</code></p>
@@ -2199,6 +2373,7 @@
 </ul>
 </li>
 </ul>
+<hr />
 <h3 id="lab-4">Lab 4</h3>
 <ul>
 <li>
@@ -2355,6 +2530,7 @@
 <p><code>nc</code>：网络工具，可以用于端口扫描、端口监听等</p>
 </li>
 </ul>
+<hr />
 <h3 id="lab-6">Lab 6</h3>
 <ul>
 <li>
@@ -2415,6 +2591,79 @@
 <p><img alt="1721815439110" src="../image/SD/1721815439110.png" /></p>
 </li>
 </ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="lab-7">Lab 7</h3>
+<ul>
+<li>
+<p>GPG</p>
+<blockquote>
+<p>GnuPG allows you to encrypt and sign your data and communications; it features a versatile key management system, along with access modules for all kinds of public key directories.</p>
+</blockquote>
+<ul>
+<li>
+<p>Symmetric</p>
+<ul>
+<li>
+<p><code>gpg --symmetric filename</code>：加密，需要输入密码，生成<code>.gpg</code>文件</p>
+</li>
+<li>
+<p><code>gpg -decrypt filename</code>：解密，需要输入密码，生成原文件</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Asymmetric</p>
+<p>gpg使用keyring对密钥进行管理，一般有两个ring，一个是公钥ring，一个是私钥ring，可以通过<code>gpg --list-keys</code> <code>gpg --list-secret-keys</code>查看</p>
+<ul>
+<li>
+<p><code>gpg --gen-key</code>：生成密钥对，需要输入姓名、邮箱等信息，从而获得公钥和私钥</p>
+</li>
+<li>
+<p><code>gpg --export -a "User Name" &gt; public.key</code>：导出公钥</p>
+</li>
+<li>
+<p><code>gpg --import key</code>：导入公钥/私钥</p>
+</li>
+<li>
+<p><code>gpg --delete-key "User Name"</code>：删除公钥</p>
+<p><code>gpg --delete-secret-key "User Name"</code>：删除私钥 </p>
+</li>
+<li>
+<p><code>gpg --encrypt -r "User Name" filename</code>：加密，需要此用户的公钥，生成<code>.gpg</code>文件</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Sign</p>
+<ul>
+<li>
+<p><code>gpg --sign filename</code>：签名，生成<code>.gpg</code>文件</p>
+</li>
+<li>
+<p><code>gpg --verify filename.gpg</code>：验证签名，需要公钥</p>
+</li>
+<li>
+<p>*要解密签名文件，需要两次解密，一次验证签名，一次解密文件</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Hash（Checksum）</p>
+<ul>
+<li>
+<p><code>md5sum file</code>：生成MD5校验和</p>
+</li>
+<li>
+<p><code>sha1sum file</code>：生成SHA1校验和</p>
+</li>
+<li>
+<p><code>sha256sum file</code>：生成SHA256校验和</p>
 </li>
 </ul>
 </li>
