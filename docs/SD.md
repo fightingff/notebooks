@@ -522,6 +522,97 @@ process是一个正在运行的程序的实例，每个process都有一个唯一
 
     通过负载均衡器，将请求分发到多个服务器，可以提高性能，减少单点故障
 
+----
+
+### Security
+
+- **Confidentiality**
+
+    > 只有授权用户可以访问数据
+
+    - Cypertext替代明文，利用加密算法保护数据
+
+        - `Encryption`：加密，将数据转换为密文，只有授权用户才能解密
+        
+        - `Decryption`：解密，将密文转换为明文，只有授权用户才能解密 
+
+    - 加密算法
+
+        - `Symmetric`：对称加密，加密和解密使用相同的密钥，如DES、AES等
+        
+            ![1721891280375](image/SD/1721891280375.png)
+        
+        - `Asymmetric`：非对称加密，加密和解密使用不同的密钥，一般加密使用可以公开的公钥，解密使用私钥，如RSA、DSA等
+
+            ![1721891300886](image/SD/1721891300886.png)
+
+- **Integrity**
+
+    > 数据没有被篡改
+
+    - `Hash`：密码学哈希函数，根据数据计算为固定长度的哈希值，并且无法通过哈希值回推原来的数据，一般用于校验数据完整性
+
+        - `MD5`：128位哈希值，不安全
+        
+            ```bash
+            md5sum filename
+            ``` 
+        
+        - `SHA`：安全哈希算法，如SHA-1（160位）、SHA-256（256位）等
+        
+            ```bash
+            sha1sum filename
+            sha256sum filename
+            ```
+
+        !!! example
+
+            - MAC(Message Authentication Code)：消息认证码，使用密钥对哈希值进行加密，保证数据的完整性和真实性
+            
+            - Checksum：校验和，对数据进行校验，一般用于校验数据传输的完整性
+            
+            - 存储密码：一般不存储明文密码，而是存储密码的哈希值
+
+- **Authentication**
+
+    > 确认数据来源/作者的真实性
+
+    - Signature：数字签名，将私钥附在数据上。由于私钥只有本人持有，因此可以结合公钥验证数据的真实性
+    
+        - **file + private key → signature**
+
+        - **signature + public key → verification**
+
+        ![1721891905950](image/SD/1721891905950.png)
+
+    - Certificate：数字证书，由CA（Certificate Authority，权威第三方）颁发，用于证明公钥的真实性
+
+        - **public key + CA → certificate**
+
+        !!! note "CA"
+            
+            - `Root CA`：根证书，权威第三方，用于签发其他CA的证书
+            
+            - `Intermediate CA`：中间证书，用于签发终端用户的证书
+            
+            - `End Entity`：终端用户，用于签发终端用户的证书
+          
+            证书链：终端用户的证书由中间证书签发，中间证书由根证书签发，因此终端用户的证书需要包含中间证书和根证书，且终端证书验证依赖于根证书
+
+- **Availability** 
+
+    > 数据可用性，保证数据的可靠性和持久性
+
+    - **Filtering**: 过滤，防止恶意攻击
+    
+    - **Load Balancer**: 负载均衡，分发请求，提高性能
+    
+    - **Redundancy**: 冗余，备份数据，防止数据丢失
+    
+    - **Backup**: 备份，将数据复制到其他设备，以防数据丢失   
+
+----
+
 ## Labs
 
 ----
@@ -598,6 +689,10 @@ process是一个正在运行的程序的实例，每个process都有一个唯一
         - `b`：块设备文件
           
     一般来说，文件权限第1个字符表示文件类型，后面的9个字符分为三组，分别是`u`（所有者）、`g`（所属组）、`o`（其他用户），每组权限分别是`rwx`，用数字表示则为`421`
+
+    使用`chmod`命令修改文件权限，如`chmod 777 filename`，其中`777`表示所有用户都有读写执行权限
+
+    使用`chown`命令修改文件所有者，如`chown user:group filename`
 
 - `head / tail`
 
@@ -692,6 +787,8 @@ process是一个正在运行的程序的实例，每个process都有一个唯一
         ![1721555596286](image/SD/1721555596286.png)
 
     - `pacman -U filename.pkg.tar.xz`：安装
+
+----
 
 ### Lab 4
 
@@ -797,6 +894,8 @@ process是一个正在运行的程序的实例，每个process都有一个唯一
 
 - `nc`：网络工具，可以用于端口扫描、端口监听等
 
+----
+
 ### Lab 6
 
 - DNS 暂时略过
@@ -836,3 +935,49 @@ process是一个正在运行的程序的实例，每个process都有一个唯一
         - `listen stats`：监听端口  
         
             ![1721815439110](image/SD/1721815439110.png)
+
+----
+
+### Lab 7
+
+- GPG
+
+    > GnuPG allows you to encrypt and sign your data and communications; it features a versatile key management system, along with access modules for all kinds of public key directories.
+
+    - Symmetric
+    
+        - `gpg --symmetric filename`：加密，需要输入密码，生成`.gpg`文件
+        
+        - `gpg -decrypt filename`：解密，需要输入密码，生成原文件
+        
+    - Asymmetric
+
+        gpg使用keyring对密钥进行管理，一般有两个ring，一个是公钥ring，一个是私钥ring，可以通过`gpg --list-keys` `gpg --list-secret-keys`查看
+
+        - `gpg --gen-key`：生成密钥对，需要输入姓名、邮箱等信息，从而获得公钥和私钥
+        
+        - `gpg --export -a "User Name" > public.key`：导出公钥
+        
+        - `gpg --import key`：导入公钥/私钥
+        
+        - `gpg --delete-key "User Name"`：删除公钥
+        
+            `gpg --delete-secret-key "User Name"`：删除私钥 
+        
+        -  `gpg --encrypt -r "User Name" filename`：加密，需要此用户的公钥，生成`.gpg`文件
+
+    - Sign
+
+        - `gpg --sign filename`：签名，生成`.gpg`文件
+        
+        - `gpg --verify filename.gpg`：验证签名，需要公钥
+        
+        - *要解密签名文件，需要两次解密，一次验证签名，一次解密文件
+
+- Hash（Checksum）
+
+    - `md5sum file`：生成MD5校验和
+    
+    - `sha1sum file`：生成SHA1校验和
+    
+    - `sha256sum file`：生成SHA256校验和
