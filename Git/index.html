@@ -1145,41 +1145,59 @@ message是提交的说明，一般是对本次提交的精简描述</p>
 </ul>
 <h2 id="_3">常用操作</h2>
 <ul>
-<li>新建一个本地仓库并与远程仓库关联</li>
+<li>查看差异</li>
 </ul>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
 <span class="normal"><a href="#__codelineno-0-2">2</a></span>
-<span class="normal"><a href="#__codelineno-0-3">3</a></span>
-<span class="normal"><a href="#__codelineno-0-4">4</a></span>
-<span class="normal"><a href="#__codelineno-0-5">5</a></span>
-<span class="normal"><a href="#__codelineno-0-6">6</a></span>
-<span class="normal"><a href="#__codelineno-0-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>git<span class="w"> </span>init
-<a id="__codelineno-0-2" name="__codelineno-0-2"></a>git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>&lt;url&gt;
-<a id="__codelineno-0-3" name="__codelineno-0-3"></a>git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>master
-<a id="__codelineno-0-4" name="__codelineno-0-4"></a>...
-<a id="__codelineno-0-5" name="__codelineno-0-5"></a>git<span class="w"> </span>add<span class="w"> </span>*
-<a id="__codelineno-0-6" name="__codelineno-0-6"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;...&quot;</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7"></a>git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>master
+<span class="normal"><a href="#__codelineno-0-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>git<span class="w"> </span>diff<span class="w"> </span>hash1<span class="w"> </span>hash2<span class="w">    </span><span class="c1"># 查看两次提交的差异</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a>git<span class="w"> </span>diff<span class="w"> </span>--cached<span class="w">       </span><span class="c1"># 查看暂存区和本地仓库的差异</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a>git<span class="w"> </span>diff<span class="w"> </span>HEAD~n<span class="w"> </span>HEAD<span class="w">    </span><span class="c1"># 查看前第n次提交和当前提交的差异</span>
 </code></pre></div></td></tr></table></div>
 <ul>
-<li>从远程仓库克隆到本地</li>
+<li>将多个提交合并为一个</li>
 </ul>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>git<span class="w"> </span>clone<span class="w"> </span>&lt;url&gt;
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">2</a></span>
+<span class="normal"><a href="#__codelineno-1-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>git<span class="w"> </span>rebase<span class="w"> </span>-i<span class="w"> </span>HEAD~n<span class="w">    </span><span class="c1"># n为要合并的提交数，相当于顺序重新执行</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="c1"># 之后将想要合并的提交前的pick改为squash(s)</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="c1"># 保存退出后，会进入编辑模式，可以修改提交信息</span>
 </code></pre></div></td></tr></table></div>
 <ul>
-<li>从远程仓库拉取分支并完成合并</li>
+<li>新建一个本地仓库并与远程仓库关联</li>
 </ul>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
 <span class="normal"><a href="#__codelineno-2-2">2</a></span>
 <span class="normal"><a href="#__codelineno-2-3">3</a></span>
 <span class="normal"><a href="#__codelineno-2-4">4</a></span>
 <span class="normal"><a href="#__codelineno-2-5">5</a></span>
-<span class="normal"><a href="#__codelineno-2-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>&lt;branch<span class="se">\&gt;</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2"></a>git<span class="w"> </span>merge<span class="w"> </span>&lt;branch<span class="se">\&gt;</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3"></a>git<span class="w"> </span>add<span class="w"> </span>*
-<a id="__codelineno-2-4" name="__codelineno-2-4"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;...&quot;</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5"></a>git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>master
-<a id="__codelineno-2-6" name="__codelineno-2-6"></a>git<span class="w"> </span>push<span class="w"> </span>--delete<span class="w"> </span>origin<span class="w"> </span>&lt;branch<span class="se">\&gt;</span><span class="w"> </span><span class="c1"># 删除远程分支</span>
+<span class="normal"><a href="#__codelineno-2-6">6</a></span>
+<span class="normal"><a href="#__codelineno-2-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>git<span class="w"> </span>init
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a>git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>&lt;url&gt;
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a>git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>master
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a>...
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a>git<span class="w"> </span>add<span class="w"> </span>*
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;...&quot;</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a>git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>master
+</code></pre></div></td></tr></table></div>
+<ul>
+<li>从远程仓库克隆到本地</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>git<span class="w"> </span>clone<span class="w"> </span>&lt;url&gt;
+</code></pre></div></td></tr></table></div>
+<ul>
+<li>从远程仓库拉取分支并完成合并</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
+<span class="normal"><a href="#__codelineno-4-2">2</a></span>
+<span class="normal"><a href="#__codelineno-4-3">3</a></span>
+<span class="normal"><a href="#__codelineno-4-4">4</a></span>
+<span class="normal"><a href="#__codelineno-4-5">5</a></span>
+<span class="normal"><a href="#__codelineno-4-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a>git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>&lt;branch<span class="se">\&gt;</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a>git<span class="w"> </span>merge<span class="w"> </span>&lt;branch<span class="se">\&gt;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a>git<span class="w"> </span>add<span class="w"> </span>*
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;...&quot;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a>git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>master
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a>git<span class="w"> </span>push<span class="w"> </span>--delete<span class="w"> </span>origin<span class="w"> </span>&lt;branch<span class="se">\&gt;</span><span class="w"> </span><span class="c1"># 删除远程分支</span>
 </code></pre></div></td></tr></table></div>
 <ul>
 <li>
@@ -1187,27 +1205,27 @@ message是提交的说明，一般是对本次提交的精简描述</p>
 <ul>
 <li>放弃本地修改</li>
 </ul>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
-<span class="normal"><a href="#__codelineno-3-2">2</a></span>
-<span class="normal"><a href="#__codelineno-3-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>git<span class="w"> </span>fetch<span class="w"> </span>--all
-<a id="__codelineno-3-2" name="__codelineno-3-2"></a>git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>origin/master
-<a id="__codelineno-3-3" name="__codelineno-3-3"></a>git<span class="w"> </span>pull
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
+<span class="normal"><a href="#__codelineno-5-2">2</a></span>
+<span class="normal"><a href="#__codelineno-5-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a>git<span class="w"> </span>fetch<span class="w"> </span>--all
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a>git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>origin/master
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a>git<span class="w"> </span>pull
 </code></pre></div></td></tr></table></div>
 <ul>
 <li>未提交，可以暂存当前工作，回退到上一个版本，然后开始合并</li>
 </ul>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
-<span class="normal"><a href="#__codelineno-4-2">2</a></span>
-<span class="normal"><a href="#__codelineno-4-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a>git<span class="w"> </span>stash
-<a id="__codelineno-4-2" name="__codelineno-4-2"></a>git<span class="w"> </span>pull
-<a id="__codelineno-4-3" name="__codelineno-4-3"></a>git<span class="w"> </span>stash<span class="w"> </span>pop
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
+<span class="normal"><a href="#__codelineno-6-2">2</a></span>
+<span class="normal"><a href="#__codelineno-6-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a>git<span class="w"> </span>stash
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a>git<span class="w"> </span>pull
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a>git<span class="w"> </span>stash<span class="w"> </span>pop
 </code></pre></div></td></tr></table></div>
 <ul>
 <li>已提交，可以直接merge处理冲突，再重新提交</li>
 </ul>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
-<span class="normal"><a href="#__codelineno-5-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a>git<span class="w"> </span>merge
-<a id="__codelineno-5-2" name="__codelineno-5-2"></a>git<span class="w"> </span>add
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
+<span class="normal"><a href="#__codelineno-7-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a>git<span class="w"> </span>merge
+<a id="__codelineno-7-2" name="__codelineno-7-2"></a>git<span class="w"> </span>add
 </code></pre></div></td></tr></table></div>
 </li>
 <li>
@@ -1215,17 +1233,17 @@ message是提交的说明，一般是对本次提交的精简描述</p>
 <ul>
 <li>
 <p>删除分支</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a>git<span class="w"> </span>push<span class="w"> </span>--delete<span class="w"> </span>origin<span class="w"> </span>&lt;branch<span class="se">\&gt;</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a>git<span class="w"> </span>push<span class="w"> </span>--delete<span class="w"> </span>origin<span class="w"> </span>&lt;branch<span class="se">\&gt;</span>
 </code></pre></div></td></tr></table></div>
 </li>
 <li>
 <p>查看远程仓库</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a>git<span class="w"> </span>remote<span class="w"> </span>-v
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a>git<span class="w"> </span>remote<span class="w"> </span>-v
 </code></pre></div></td></tr></table></div>
 </li>
 <li>
 <p>修改远程仓库地址</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a>git<span class="w"> </span>remote<span class="w"> </span>set-url<span class="w"> </span>origin<span class="w"> </span>&lt;url&gt;
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a>git<span class="w"> </span>remote<span class="w"> </span>set-url<span class="w"> </span>origin<span class="w"> </span>&lt;url&gt;
 </code></pre></div></td></tr></table></div>
 </li>
 </ul>
