@@ -67,6 +67,22 @@ git 是一个分布式版本控制系统，即每个人的本地都是一个完�
 
 ## 常用操作
 
+- 查看差异
+
+```bash linenums="1"
+git diff hash1 hash2    # 查看两次提交的差异
+git diff --cached       # 查看暂存区和本地仓库的差异
+git diff HEAD~n HEAD    # 查看前第n次提交和当前提交的差异
+```
+
+- 将多个提交合并为一个
+
+```bash linenums="1"
+git rebase -i HEAD~n    # n为要合并的提交数，相当于顺序重新执行
+# 之后将想要合并的提交前的pick改为squash(s)
+# 保存退出后，会进入编辑模式，可以修改提交信息
+```
+
 - 新建一个本地仓库并与远程仓库关联
 
 ```bash linenums="1"

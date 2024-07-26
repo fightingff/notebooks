@@ -613,6 +613,12 @@ process是一个正在运行的程序的实例，每个process都有一个唯一
 
 ----
 
+### Version Control
+
+[我的Git笔记](https://fightingff.github.io/notebooks/Git)
+
+----
+
 ## Labs
 
 ----
@@ -981,3 +987,25 @@ process是一个正在运行的程序的实例，每个process都有一个唯一
     - `sha1sum file`：生成SHA1校验和
     
     - `sha256sum file`：生成SHA256校验和
+
+### Lab 8
+
+- **Pull Request**
+
+    - 先fork到自己的仓库
+    
+    - 在这个仓库中进行修改
+    
+    - 提交PR  
+
+- `rysnc`
+
+    同步文件（夹），相比`cp` `scp`等命令，`rsync`可以实现增量同步（比较最后修改的时间戳），只同步修改的文件，而不是整个文件夹，并且可以保证文件的元信息，更适合大文件、多服务器同步等场景
+
+    - `rsync -avz source destination`：同步文件夹
+
+    - `rsync -avz --delete source destination`：同步文件夹并删除多余文件
+
+    - `rsync -avz -e ssh source destination`：通过ssh同步文件夹
+
+    - `rsync -avz -e ssh --delete source destination`：通过ssh同步文件夹并删除多余文件

@@ -775,6 +775,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#version-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Version Control
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -848,6 +857,15 @@
   <a href="#lab-7" class="md-nav__link">
     <span class="md-ellipsis">
       Lab 7
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab 8
     </span>
   </a>
   
@@ -1227,6 +1245,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#version-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Version Control
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1300,6 +1327,15 @@
   <a href="#lab-7" class="md-nav__link">
     <span class="md-ellipsis">
       Lab 7
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab 8
     </span>
   </a>
   
@@ -2149,6 +2185,9 @@
 </li>
 </ul>
 <hr />
+<h3 id="version-control">Version Control</h3>
+<p><a href="https://fightingff.github.io/notebooks/Git">我的Git笔记</a></p>
+<hr />
 <h2 id="labs">Labs</h2>
 <hr />
 <p><a href="https://github.com/fightingff/Sysadmin-Decal">My Labs Repository</a></p>
@@ -2664,6 +2703,41 @@
 </li>
 <li>
 <p><code>sha256sum file</code>：生成SHA256校验和</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="lab-8">Lab 8</h3>
+<ul>
+<li>
+<p><strong>Pull Request</strong></p>
+<ul>
+<li>
+<p>先fork到自己的仓库</p>
+</li>
+<li>
+<p>在这个仓库中进行修改</p>
+</li>
+<li>
+<p>提交PR  </p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>rysnc</code></p>
+<p>同步文件（夹），相比<code>cp</code> <code>scp</code>等命令，<code>rsync</code>可以实现增量同步（比较最后修改的时间戳），只同步修改的文件，而不是整个文件夹，并且可以保证文件的元信息，更适合大文件、多服务器同步等场景</p>
+<ul>
+<li>
+<p><code>rsync -avz source destination</code>：同步文件夹</p>
+</li>
+<li>
+<p><code>rsync -avz --delete source destination</code>：同步文件夹并删除多余文件</p>
+</li>
+<li>
+<p><code>rsync -avz -e ssh source destination</code>：通过ssh同步文件夹</p>
+</li>
+<li>
+<p><code>rsync -avz -e ssh --delete source destination</code>：通过ssh同步文件夹并删除多余文件</p>
 </li>
 </ul>
 </li>
