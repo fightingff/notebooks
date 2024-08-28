@@ -252,3 +252,67 @@ password: 0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO
 ### Level 20 -> Level 21
 
 ```bash
+# nc - arbitrary TCP and UDP connections and listens
+# nc -l - listen for incoming connections
+# nc -l -p port - listen on port
+# use tmux to keep the connection
+nc -l -p 6666
+./suconnect 6666
+
+password: EeoULMCra2q0dSkYj561DX7s1CpBuOBt
+```
+
+### Level 21 -> Level 22
+
+```bash
+# cron - daemon to execute scheduled commands
+
+cat /etc/cron.d/cronjob_bandit22
+cat /usr/bin/cronjob_bandit22.sh
+cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+password: tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q
+```
+
+### Level 22 -> Level 23
+
+```bash
+cat /etc/cron.d/cronjob_bandit23
+cat /usr/bin/cronjob_bandit23.sh
+cat /tmp/$(echo I am user bandit23 | md5sum | cut -d ' ' -f 1)
+password: 0Zf11ioIjMVN551jX3CmStKLYqjk54Ga
+# easily get the next password as well
+password: gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8
+```
+
+### Level 23 -> Level 24
+
+```bash
+# similar to Level 22 -> Level 23
+```
+
+### Level 24 -> Level 25
+
+??? note "exit telnet"
+    
+    ![1724857857428](image/Bandit/1724857857428.png)
+
+```bash
+
+# write a script to brute force the password
+
+#!/bin/bash
+# brute force script
+for i in {0000..9999}; do
+    echo $i
+    res=$(echo "gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8 ${i}" | timeout -s SIGINT 0.01 nc localhost 30002)
+    if [[ "$res" != *"Wrong"* ]]; then
+        echo "Password found: ${i}"
+        echo $res
+        break
+    fi
+done
+
+# run the script
+./script.sh
+password: iCi86ttT4KSNe1armKiwbQNmB3YJP3q4
+```
