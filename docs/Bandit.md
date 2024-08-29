@@ -316,3 +316,114 @@ done
 ./script.sh
 password: iCi86ttT4KSNe1armKiwbQNmB3YJP3q4
 ```
+
+### Level 25 -> Level 26
+
+```bash
+# use sshkey to login will be blocked
+cat /etc/passwd | grep bandit26
+# bandit26:x:11026:11026:bandit level 26:/home/bandit26:/usr/bin/showtext
+cat /usr/bin/showtext
+# the script changes the shell to more command and exits
+# so we should resize the terminal and get into interactive mode to avoid the auto exit
+ssh bandit26@localhost -p 2220 -i bandit26.sshkey
+:e /etc/bandit_pass/bandit26
+password: s0773xxkk0MXfdqOfPRVr9L3jJBUOgCZ
+```
+
+### Level 26 -> Level 27
+
+```bash
+# into vi
+:set shell=/bin/bash
+:shell
+./bandit27-do cat /etc/bandit_pass/bandit27
+password: upsNCc7vzaRDx6oZC6GiR6ERwe1MowGB
+```
+
+### Level 27 -> Level 28
+
+```bash
+git clone ssh://bandit27-git@localhost:2220/home/bandit27-git/repo
+cat repo/README
+password: Yz9IpL0sBcCeuG7m9uQFt8ZNpS4HZRcN
+```
+
+### Level 28 -> Level 29
+
+```bash
+# similar to Level 27 -> Level 28
+git clone ssh://bandit28-git@localhost:2220/home/bandit28-git/repo
+cat repo/README.md
+
+# check git log
+git log
+
+# check details of the commit
+git log -p
+
+password: 4pT1t5DENaYuqnqvadYs1oE4QLCdjmJ7
+```
+
+### Level 29 -> Level 30
+
+```bash
+# similar to Level 27 -> Level 28
+git clone ssh://bandit29-git@localhost:2220/home/bandit29-git/repo
+
+# check git log
+git log -p
+
+# check hidden branches
+git branch -a
+git checkout dev
+cat README.md
+
+password: qp30ex3VLz5MDG1n91YowTv4Q8l7CDZL
+```
+
+### Level 30 -> Level 31
+
+```bash
+git clone ssh://bandit30-git@localhost:2220/home/bandit30-git/repo
+cat repo/README.md
+# just an empty file
+
+# check git log
+git log -p
+
+# check hidden branches
+git branch -a
+
+# check the tag
+git tag
+git show secret
+
+password: fb5S2xb7bRyFmAvQYQGEqsbhVyJqhnDy
+```
+
+### Level 31 -> Level 32
+
+```bash
+# wrte the demanding txt file
+git add key.txt -f
+git commit -m "add key.txt"
+git push
+
+password: 3O9RfhqyAlVBEZpVb6LYStshZoqoSx5K
+```
+
+### Level 32 -> Level 33
+
+```bash
+# UPPERCASE SHELL
+# use $0 to get the shell
+$0
+cat /etc/bandit_pass/bandit33
+
+password: tQdtbs5D5i2vJwkO8mEyYEyTL8izoeJ0
+```
+
+## Level 33
+
+Hooraay! You have completed the Bandit challenges! 🎉
