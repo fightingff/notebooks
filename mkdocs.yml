@@ -24,7 +24,8 @@ nav:
           - Course Notes: SD.md
           - Bandit for fun: Bandit.md
       - 大三上:
-        - CA: CA.md
+        - Computer Architecture: CA.md
+        - Network: Network.md
 
   - Tools:
       - Git: Git.md
