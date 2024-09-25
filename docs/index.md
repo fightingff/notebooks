@@ -53,6 +53,11 @@
     - Learn some deep computer organization concepts of RISC-V structure(Single Cycle CPU, Pipelined-CPU, Cache...), which is significant in computer architecture especially in hardware design, so I think it's necessary to take this course carefully and take notes
     - Since I'm so busy in this semester, I choose to fork other people's notes and only take some additional notes
 
+----
+### 大三下
+
+～迷～忙～，不知道干啥了，课程笔记主要fork别人的做一些微调
+
 ## Some useful tools in learning
 
 - **Git**

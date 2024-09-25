@@ -2246,18 +2246,22 @@
 <ul>
 <li>
 <p>RAID 0：No Redundancy</p>
-<ul>
-<li>无冗余，提高性能</li>
-</ul>
+<p>无冗余，提高性能</p>
 </li>
 <li>
 <p>RAID 1：Disk Mirroring/Shadowing</p>
-<ul>
-<li>直接镜像复制一份，最高代价，最高可靠性</li>
-</ul>
+<p>直接镜像复制一份，最高代价，最高可靠性</p>
 </li>
 <li>
-<p>*RAID 2</p>
+<p>RAID 2</p>
+<p>通过 Hamming Code 进行纠错</p>
+<p>具有检错和纠错能力，检测能力越强，相应的数据冗余也越大</p>
+<details class="tip">
+<summary>Hamming Code</summary>
+<p>通过添加冗余位，对其中部分位（子集）进行奇偶校验，从而根据多个校验位的结果来判断出错的位置</p>
+<p>本质上是一种数学组合方法</p>
+<p>但是纠错能力有限，只能适用于错误率较低的场景</p>
+</details>
 </li>
 <li>
 <p>RAID 3：Bit-Interleaved Parity Disk</p>

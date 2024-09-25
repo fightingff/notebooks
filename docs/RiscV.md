@@ -549,13 +549,25 @@
 
         - RAID 0：No Redundancy
 
-            - 无冗余，提高性能
+            无冗余，提高性能
 
         - RAID 1：Disk Mirroring/Shadowing
 
-            - 直接镜像复制一份，最高代价，最高可靠性
+            直接镜像复制一份，最高代价，最高可靠性
 
-        - *RAID 2
+        - RAID 2
+
+            通过 Hamming Code 进行纠错
+
+            具有检错和纠错能力，检测能力越强，相应的数据冗余也越大
+
+            ??? tip "Hamming Code"
+
+                通过添加冗余位，对其中部分位（子集）进行奇偶校验，从而根据多个校验位的结果来判断出错的位置
+
+                本质上是一种数学组合方法
+
+                但是纠错能力有限，只能适用于错误率较低的场景
 
         - RAID 3：Bit-Interleaved Parity Disk
 
