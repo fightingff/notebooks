@@ -54,9 +54,24 @@
     - Since I'm so busy in this semester, I choose to fork other people's notes and only take some additional notes
 
 ----
+
 ### 大三下
 
 ～迷～忙～，不知道干啥了，课程笔记主要fork别人的做一些微调
+
+- **Computer Architecture**
+    - Taught by WXH, a professor in ZJU
+    - Learn some deep computer architecture concepts of RISC-V structure as "Computer Organization Plus".
+
+- **Network**
+    - Taught by ZKG, an interesting professor in ZJU
+    - Learn some basic network concepts and some advanced network programming
+
+- **Operating System**
+    - Taught by SJW, a responsible professor in ZJU
+    - Learn some basic OS concepts and some advanced OS programming
+
+----
 
 ## Some useful tools in learning
 

@@ -26,6 +26,7 @@ nav:
       - 大三上:
         - Computer Architecture: CA.md
         - Network: Network.md
+        - Operating System: OS.md
 
   - Tools:
       - Git: Git.md
