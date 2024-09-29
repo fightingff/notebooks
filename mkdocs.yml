@@ -25,9 +25,12 @@ nav:
           - Bandit for fun: Bandit.md
       - 大三上:
         - Computer Architecture: CA.md
-        - Network: Network.md
-        - Operating System: OS.md
-
+        - Network: 
+          - Overview: Network/Network1.md
+          - Physical Layer: Network/Network2.md
+        - Operating System:
+          - Overview: OS/OS1.md
+          - Process: OS/OS2.md
   - Tools:
       - Git: Git.md
       - Makefile & CMake: Make.md
@@ -65,13 +68,11 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 extra_javascript:
-  - javascripts/mathjax.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
-  - javascripts/katex.js
   - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js
   - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/contrib/auto-render.min.js
-  - https://cdn.jsdelivr.net/gh/wsqstar/ResHosting@0.031/build/js/Sakura.js
+  - stylesheets/Sakura.js
 
 plugins:
   #- statistics
