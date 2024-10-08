@@ -14,7 +14,7 @@
         <link rel="prev" href="../Network1/">
       
       
-        <link rel="next" href="../../OS/OS1/">
+        <link rel="next" href="../Network3/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -870,6 +870,30 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="2.1 有线通信和无线通信">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#guided-media" class="md-nav__link">
+    <span class="md-ellipsis">
+      Guided Media 有线通信
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wireless-transmission" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wireless Transmission 无线通信
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -941,10 +965,49 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#cellular-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cellular Networks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cable-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cable Networks
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Network3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Link Layer
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1299,6 +1362,30 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="2.1 有线通信和无线通信">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#guided-media" class="md-nav__link">
+    <span class="md-ellipsis">
+      Guided Media 有线通信
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wireless-transmission" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wireless Transmission 无线通信
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1370,6 +1457,24 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#cellular-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cellular Networks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cable-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cable Networks
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1392,27 +1497,170 @@
 
 <h3 id="20">2.0 物理层的基本概念</h3>
 <ul>
-<li>物理层存在的意义正是要尽可能地屏蔽不同的传输媒体和通信手段之间的差异，使得物理层上面的数据链路层感受不到这些差异</li>
+<li>物理层存在的意义正是要尽可能地屏蔽不同的传输媒体和通信手段之间的差异，使得物理层上面的数据链路层感受不到这些差异<ul>
 <li>物理层的协议也常常称为规程 procedure，这个词比协议要出现的早</li>
-<li>一个数据通信系统分为如下几个部分</li>
+</ul>
+</li>
+<li>一个数据通信系统分为如下几个部分<ul>
 <li>源系统，也叫发送端和发送方：包含源点和发送器</li>
 <li>传输系统，也叫传输网络</li>
 <li>目的系统，也叫接收端，包含接收器和重点</li>
 </ul>
+</li>
+</ul>
 <h3 id="21">2.1 有线通信和无线通信</h3>
+<h4 id="guided-media">Guided Media 有线通信</h4>
+<div class="admonition info">
+<p class="admonition-title">Twisted Pair</p>
+<p>双绞线，通过两根线螺旋的方式减少电磁干扰，型号为Category 5e，Cat6，Cat7等</p>
 <ul>
-<li>物理层用到的几种线</li>
-<li>双绞线 Twisted Pair</li>
-<li>同轴电缆</li>
-<li>光缆 Fiber Cables<ul>
-<li>利用了光的全反射原理，在特定入射角度下不会发生折射</li>
+<li>UTP（无屏蔽双绞线）：没有屏蔽层，常用于家庭和办公室</li>
+<li>STP（屏蔽双绞线）：有屏蔽层，常用于工业环境</li>
+</ul>
+<p>一般传递的数据为两根线之间的电压差，这样可以减少噪声影响（噪声影响对两根线一致）</p>
+<ul>
+<li>
+<p>常用于电话线，以太网等</p>
+</li>
+<li>
+<p>传输模拟/数字信号</p>
+</li>
+</ul>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Coaxial Cable</p>
+<p>同轴电缆，由一根中心导线，一个绝缘层，一个屏蔽层和一个外层绝缘层组成</p>
+<ul>
+<li>
+<p>常用于有线电视等，抗干扰强，带宽大（6GHz）</p>
+</li>
+<li>
+<p>传输模拟/数字信号</p>
+</li>
+</ul>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Power Line</p>
+<p>电力线通信，通过电力线传输数据，将高频信号叠加到低频电力信号上</p>
+<ul>
+<li>
+<p>常用于家庭网络，智能家居等</p>
+</li>
+<li>
+<p>传输数字信号 </p>
+</li>
+</ul>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Fiber Optics</p>
+<p>光纤，通过光的全反射原理传输数据，速度快，带宽大，抗干扰强，而且材质轻，易于铺设</p>
+<p><img align="right" alt="1728372861822" src="../image/Network2/1728372861822.png" width="40%" /></p>
+<ul>
+<li>
+<p>连接方式：</p>
+<ul>
+<li>socket 连接插座，损失10% ～ 20%</li>
+<li>splice 直接连接，损失10%</li>
+<li>melted 熔接，损失小</li>
 </ul>
 </li>
-<li>接口线 Interface Line</li>
-<li>无线通信：</li>
-<li>卫星通信</li>
-<li>微波通信：常见于移动通讯，微波会穿过遮挡物继续传播，但可能会被吸收</li>
-<li>物理层要做的就是把计算机中的电信号转化成上面这些可以传播的信号</li>
+<li>
+<p>光源：</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>LED</th>
+<th>Laser</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data Rate</td>
+<td>Low</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Fiber type</td>
+<td>Multi-mode</td>
+<td>Single-mode / Multi-mode</td>
+</tr>
+<tr>
+<td>Distance</td>
+<td>Short</td>
+<td>Long</td>
+</tr>
+<tr>
+<td>Lifetime</td>
+<td>Long</td>
+<td>Short</td>
+</tr>
+<tr>
+<td>Temperature sensitivity</td>
+<td>Low</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>Low</td>
+<td>High</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>传输数字信号</p>
+</li>
+</ul>
+<details class="tip">
+<summary>信号衰减图</summary>
+<p><img alt="1728372543020" src="../image/Network2/1728372543020.png" /></p>
+</details>
+</div>
+<hr />
+<h4 id="wireless-transmission">Wireless Transmission 无线通信</h4>
+<details class="info">
+<summary>电磁波谱</summary>
+<p><img alt="1728374162934" src="../image/Network2/1728374162934.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">发送形式</p>
+<ul>
+<li>
+<p>Frequency hopping spread spectrum </p>
+<p>频率跳变扩频，通过在不同频率上发送数据，以避免干扰</p>
+</li>
+<li>
+<p>Direct sequence spread spectrum</p>
+<p>直接序列扩频，通过编码将数据转化为一个冗余序列，以增加抗干扰能力</p>
+</li>
+<li>
+<p>Ultra-Wideband Communication</p>
+<p>发送低能耗的脉冲信号，在大带宽上稀疏分布，对其他信号干扰小</p>
+</li>
+</ul>
+</div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Radio Transmission</p>
+<p>无线电波传输，传输衰减小，无方向，但是容易受到干扰</p>
+<p>一般低频传输在地面传播，高频传输通过大气反射传播</p>
+<p><img alt="1728374985358" src="../image/Network2/1728374985358.png" /></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Microwave Transmission</p>
+<p>微波传输，有方向性，传输速度快，传输距离远，但会受到障碍物影响</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Infrared Transmission</p>
+<p>红外传播，没法穿墙，常见于遥控器</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Light Transmission</p>
+<p>使用光束传播，如激光通信等</p>
+<p>广义上也可以指任何有关光的通信，如LED灯展示的信息</p>
+</div>
+<ul>
+<li>物理层要做的就是把计算机中的电信号转化成上面这些可以传播的信号<ul>
 <li>信号 signal是数据的电气或者电磁表现，分为模拟信号和数字信号<ul>
 <li>模拟信号也叫连续信号，代表消息的参数的取值是连续的</li>
 <li>数字信号也叫离散信号，代表消息的参数取值是离散的，比如计算机和解调器的通信就是数字信号</li>
@@ -1425,39 +1673,99 @@
 </ul>
 </li>
 </ul>
+</li>
+</ul>
 <h3 id="22-channel-transmission">2.2 信道channel和传输 Transmission</h3>
 <ul>
 <li>
-<p>信道：表示向某一方向传送信息的媒体</p>
+<p>带宽</p>
+<blockquote>
+<p>The width of the frequency range transmitted without being strongly attenuated is called the bandwidth</p>
+</blockquote>
+<p>指的是信号稳定传输的频率范围，单位是赫兹</p>
+</li>
+<li>
+<p>信道</p>
+<blockquote>
+<p>表示向某一方向传送信息的媒体  </p>
+</blockquote>
+<p>信道和电路的概念不相同，电路往往包含了发送信道和接受信道各一条</p>
+<div class="admonition note">
+<p class="admonition-title">信道类型</p>
 <ul>
-<li>信道和电路的概念不相同，电路往往包含了发送信道和接受信道各一条</li>
-<li>信道的通信方式也分为单向通信、双向交替通信和双向同时通信</li>
+<li><strong>simplex</strong> 单向通信</li>
+<li><strong>half-duplex</strong> 半双工通信, 通信双方可以交替发送和接收, 但是不能同时发送和接收</li>
+<li><strong>full-duplex</strong> 全双工通信, 通信双方可以同时发送和接收</li>
+</ul>
+</div>
+</li>
+</ul>
+<details class="tip">
+<summary>傅里叶级数与通信</summary>
+<p>任何一个周期信号都可以用一系列正弦波的和来表示，这些波的频率是基频的整数倍，这个原理叫做傅里叶级数</p>
+<p>通过傅里叶变换，我们可以将信号从时域转换到频域，这样我们就可以看到信号的频率分布</p>
+<p><img alt="1728377334194" src="../image/Network2/1728377334194.png" /></p>
+</details>
+<ul>
+<li>
+<p><strong>Nyquist Theorem</strong></p>
+<p>如果我们以2B的速率采样一个模拟信号，那么我们就可以完全恢复这个模拟信号，而不会有“混叠”现象  </p>
+<p>Max Data Rate = <span class="arithmatex">\(2B\log_2V\)</span></p>
+<p>其中V是信号的电平级数，B为带宽</p>
+</li>
+<li>
+<p><strong>Shannon's Theorem</strong></p>
+<ul>
+<li>带宽是B(HZ)，信噪比是S/N，信噪比的计量单位是dB</li>
+<li>最大的数据传输速率是：<span class="arithmatex">\(B\log_2(1+\frac SN) = 2B \log_2\sqrt{1+\frac{S}{N}}\)</span> <ul>
+<li>也就是说信噪比越大，最大的可能传输速率就越高</li>
+</ul>
+</li>
+<li>信噪比的计算公式：<span class="arithmatex">\(信噪比=10\log_{10}(\frac SN)(dB)\)</span>  </li>
 </ul>
 </li>
 <li>
-<p>基带传输 Baseband Transmission 信号分为0和1，分为若干种传输方式：</p>
-</li>
+<p>基带传输 Baseband Transmission</p>
+<ul>
 <li>
-<p>Non-return to zero 用高频代表1，低频信号代表0</p>
+<p><strong>NRZ(Non-return to zero)</strong> </p>
+<blockquote>
+<p>用高频（电平）代表1，低频（电平）信号代表0</p>
+</blockquote>
 <ul>
 <li>存在时钟恢复问题，应该从中间处采样</li>
 </ul>
 </li>
-<li>NRZ Invert 
-      &gt; 在发生10切换的时候信号突变，高低电平进行切换<ul>
+<li>
+<p><strong>NRZI(NRZ Invert)</strong></p>
+<blockquote>
+<p>在1的时候信号突变，高低电平进行切换</p>
+</blockquote>
+<ul>
 <li>被USB使用</li>
 </ul>
 </li>
-<li>Manchester 曼切斯特编码：
-      &gt; 0的时候信号在时钟边沿由高变低，1的时候信号在时钟边沿由低变高<ul>
+<li>
+<p><strong>Manchester</strong> 曼切斯特编码：</p>
+<blockquote>
+<p>0的时候信号在时钟边沿由高变低，1的时候信号在时钟边沿由低变高</p>
+</blockquote>
+<ul>
 <li>被Ethernet 以太网使用</li>
 </ul>
 </li>
+<li>
+<p><strong>AMI(Alternate Mark Inversion)</strong></p>
+<blockquote>
+<p>双极编码，如1在+1/-1间跳变，0就为0,从而均值为0（Balanced Signals）</p>
+</blockquote>
+</li>
 </ul>
-<p><img alt="image-20200929115121369" src="../static/image-20200929115121369.png" />
-  - 二级编码：AMI
-  - 4B/5B编码：每四位一组，按照规则扩展成32位，共有32种组合，其余的16种作为控制码</p>
-<ul>
+<p><img alt="image-20200929115121369" src="../static/image-20200929115121369.png" /></p>
+</li>
+<li>
+<p>4B/5B编码：每四位一组，按照规则扩展成32位，共有32种组合，其余的16种作为控制码</p>
+</li>
 <li>
 <p>宽带传输和基带传输的<strong>区别</strong>：</p>
 <ul>
@@ -1482,50 +1790,34 @@
 <p><img alt="1727178792402" src="../../image/Network/1727178792402.png" /></p>
 </div>
 </li>
-<li>
-<p>信道的<strong>最大数据传输速率</strong>：</p>
-<ul>
-<li>Nyquist定理：带宽为W，则<strong>信号传输速率</strong>不超过2W<ul>
-<li>对于一个信道，并且没有噪声的情况下才适用</li>
-<li>W的单位是赫兹，表示每秒信号变化次数</li>
-</ul>
-</li>
-<li>Bilevel 编码：数据传输速率 = 2倍的带宽，单位是bps</li>
-<li>多进制编码：数据传输速度 =  <span class="arithmatex">\(2W\log_2M\)</span> 其中M是进制，结果的单位是bps<ul>
-<li>没有理论值的上限，但是会产生损失</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>香农定理 Shannon's Theorem</p>
-<ul>
-<li>带宽是H(HZ)，信噪比是S/N，信噪比的计量单位是dB</li>
-<li>最大的数据传输速率是：<span class="arithmatex">\(H\log _2(1+\frac SN)\)</span> <ul>
-<li>也就是说信噪比越大，最大的可能传输速率就越高</li>
-</ul>
-</li>
-<li>信噪比的计算公式：<span class="arithmatex">\(信噪比=10\log_{10}(\frac SN)\)</span>  </li>
-</ul>
-</li>
 </ul>
 <h3 id="23-pstn">2.3 公共电话系统 PSTN</h3>
 <ul>
 <li>PSTN用于传输人声，但是更加难以辨别，结构如下图所示：</li>
 </ul>
 <p><img alt="image-20200929115442909" src="../static/image-20200929115442909.png" />
-  - 主要组成部分：
+- 主要组成部分：
     - 本地回路：传输模拟信号的双绞线
-    - 干线 Trunk：数字光缆，连接了各个交换局
+    - 干线 Trunk：数字光缆，连接了各个交换局，通过PCM(脉冲编码调制)和Codec(编解码器)进行数字化
     - 交换局 Switching office：进行通话的交换，从手动切换变成了计算机切换
-  - 模拟信号在end office通过设备使用codec进行数字化
-    - 每秒采样8000次，每次采样量化成8bit的二进制数，这项技术叫做PCM脉冲编码调制
-    - T1信道有24个PCM信号，数据传输速率是<strong>1.544Mbps</strong> 
-    - E1信道有32个PCM信号，数据传输速率是<strong>2.048Mbps</strong> </p>
-<p><img alt="image-20200929200113363" src="../static/image-20200929200113363.png" /><br />
-  - 信道的<strong>开销cost</strong>：
-    - T1信道每一帧传输的193bit中，有7*24=168bit是有效信息，有25bit是开销，因此开销率是25/193=13%
-    - E1信道的32个信道中30个传输数据，2个传输信号，因此开销是2/32=6.25%</p>
+        <img alt="1727664369717" src="../image/Network2/1727664369717.png" /></p>
+<ul>
+<li>模拟信号在end office通过设备使用codec进行数字化<ul>
+<li>每秒采样8000次，每次采样量化成8bit的二进制数，这项技术叫做PCM脉冲编码调制</li>
+<li>T1信道有24个PCM信号，数据传输速率是<strong>1.544Mbps</strong> </li>
+<li>E1信道有32个PCM信号，数据传输速率是<strong>2.048Mbps</strong> </li>
+</ul>
+</li>
+</ul>
+<p><img alt="image-20200929200113363" src="../static/image-20200929200113363.png" />  </p>
+<p><img alt="1727663720549" src="../image/Network2/1727663720549.png" /></p>
+<ul>
+<li>信道的<strong>开销cost</strong>：<ul>
+<li>T1信道每一帧传输的193bit中，有7*24=168bit是有效信息，有25bit是开销，因此开销率是25/193=13%</li>
+<li>E1信道的32个信道中30个传输数据，2个传输信号，因此开销是2/32=6.25%</li>
+</ul>
+</li>
+</ul>
 <h3 id="24">2.4 信道复用</h3>
 <h4 id="241-fdm-frequency-division-multiplexing">2.4.1 频分复用(FDM, Frequency Division Multiplexing)</h4>
 <ul>
@@ -1560,6 +1852,51 @@
 <li>每天工作8小时，平均一台电话机要打4个电话，每个电话6min，一共是24min所以每小时只需要3min，因此可以一次支持20台远程通话，又因为只有10%是远程通话，所以一个信道可以支持200台</li>
 <li>1MHZ的干线，每个信道的带宽是4KHZ，一共有250个，因此答案是50000个</li>
 </ul>
+<h3 id="cellular-networks">Cellular Networks</h3>
+<blockquote>
+<p>蜂窝网络是一种无线通信网络，它将整个覆盖区域分成许多区域，每个小区域都有一个基站，基站是一个无线电发射器和接收器的组合，它们负责与移动设备通信</p>
+</blockquote>
+<div class="admonition info">
+<p class="admonition-title">基本概念</p>
+<ul>
+<li><strong>Cells</strong>：每个小区域都是一个cell，每个cell都有一个基站，基站负责与移动设备通信</li>
+<li><strong>Handoff</strong>：当一个移动设备从一个cell移动到另一个cell时，通话会被转移到新的cell，这个过程叫做handoff</li>
+<li><strong>Paging</strong>：当一个电话呼叫另一个电话时，基站会广播一个消息，告诉所有的手机有电话呼叫，这个过程叫做paging</li>
+</ul>
+</div>
+<ul>
+<li>
+<p><strong>1G</strong></p>
+<ul>
+<li>1G是模拟信号，使用AMPS模拟蜂窝系统</li>
+</ul>
+</li>
+<li>
+<p><strong>2G</strong></p>
+<ul>
+<li>2G是数字信号，使用GSM全球系统移动通信（以及D-AMPS, CDMA等系统），TDM技术</li>
+</ul>
+</li>
+<li>
+<p><strong>3G</strong></p>
+<ul>
+<li>3G是数字信号，IMT-2000标准，使用CDMA2000和WCDMA技术</li>
+</ul>
+</li>
+<li>
+<p><strong>4G</strong></p>
+<ul>
+<li>4G是数字信号，使用EPC（Evolved Packet Core）和LTE技术进行packet switching</li>
+</ul>
+</li>
+<li>
+<p><strong>5G</strong></p>
+<ul>
+<li>5G是数字信号，使用NR（New Radio）技术，支持更高的频率和更高的带宽</li>
+</ul>
+</li>
+</ul>
+<h3 id="cable-networks">Cable Networks</h3>
 
 
 

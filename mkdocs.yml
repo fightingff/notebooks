@@ -28,6 +28,7 @@ nav:
         - Network: 
           - Overview: Network/Network1.md
           - Physical Layer: Network/Network2.md
+          - Data Link Layer: Network/Network3.md
         - Operating System:
           - Overview: OS/OS1.md
           - Process: OS/OS2.md
