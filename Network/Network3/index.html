@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chapter3-data-link-layer" class="md-skip">
+        <a href="#31" class="md-skip">
           Skip to content
         </a>
       
@@ -876,16 +876,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#chapter3-data-link-layer" class="md-nav__link">
-    <span class="md-ellipsis">
-      Chapter3. Data link layer
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Chapter3. Data link layer">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#31" class="md-nav__link">
     <span class="md-ellipsis">
       3.1 基本概念
@@ -917,8 +907,8 @@
     </nav>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#32" class="md-nav__link">
     <span class="md-ellipsis">
       3.2 数据链路层的错误检测
@@ -937,24 +927,43 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#error-detecting-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      检错码 Error detecting code
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#33" class="md-nav__link">
     <span class="md-ellipsis">
       3.3 数据链路层的协议
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="3.3 数据链路层的协议">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simplex-link-layer-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simplex Link-Layer Protocols
+    </span>
+  </a>
+  
 </li>
         
           <li class="md-nav__item">
-  <a href="#34-hdlc" class="md-nav__link">
+  <a href="#full-duplex-link-layer-protocols" class="md-nav__link">
     <span class="md-ellipsis">
-      3.4 HDLC帧格式
+      Full-Duplex Link-Layer Protocols
     </span>
   </a>
   
@@ -962,6 +971,15 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-hdlc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4 HDLC帧格式
+    </span>
+  </a>
   
 </li>
       
@@ -1407,16 +1425,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#chapter3-data-link-layer" class="md-nav__link">
-    <span class="md-ellipsis">
-      Chapter3. Data link layer
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Chapter3. Data link layer">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#31" class="md-nav__link">
     <span class="md-ellipsis">
       3.1 基本概念
@@ -1448,8 +1456,8 @@
     </nav>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#32" class="md-nav__link">
     <span class="md-ellipsis">
       3.2 数据链路层的错误检测
@@ -1468,24 +1476,43 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#error-detecting-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      检错码 Error detecting code
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#33" class="md-nav__link">
     <span class="md-ellipsis">
       3.3 数据链路层的协议
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="3.3 数据链路层的协议">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simplex-link-layer-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simplex Link-Layer Protocols
+    </span>
+  </a>
+  
 </li>
         
           <li class="md-nav__item">
-  <a href="#34-hdlc" class="md-nav__link">
+  <a href="#full-duplex-link-layer-protocols" class="md-nav__link">
     <span class="md-ellipsis">
-      3.4 HDLC帧格式
+      Full-Duplex Link-Layer Protocols
     </span>
   </a>
   
@@ -1493,6 +1520,15 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-hdlc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4 HDLC帧格式
+    </span>
+  </a>
   
 </li>
       
@@ -1615,37 +1651,42 @@
 
   <h1>Data Link Layer</h1>
 
-<h2 id="chapter3-data-link-layer">Chapter3. Data link layer</h2>
 <h3 id="31">3.1 基本概念</h3>
 <h4 id="_1">数据链路层</h4>
 <blockquote>
 <p>构建数据链路和逻辑链路，区别于物理层，物理层构建的是物理链路</p>
 </blockquote>
 <ul>
-<li><strong>物理层和数据链路层</strong>的本质作用都是用来构建网络通信、访问通道<ul>
+<li>
+<p><strong>物理层和数据链路层</strong>的本质作用都是用来构建网络通信、访问通道</p>
+<ul>
 <li>物理链路是真实存在的物理线路和设备，数据链路层是一些必要的硬件(比如网络适配器)和软件(传输协议)组成的</li>
 <li>数据链路层向上提供网络层的服务，处理传输的错误(因为物理层不能发现传输错误)，调节数据流，确保接收方不会被淹没</li>
 </ul>
 </li>
-<li>提供的一些服务：<ul>
-<li>无确认，无连接的服务：对丢失的帧不负责重发而是交给上一层处理，适用于实时通信或者误码率低的信道，比如以太网</li>
-<li>有确认的，无连接的服务，比如无线通信</li>
-<li>有确认的，面向连接的服务：帧的传输需要建立数据链路、传输帧、释放数据链路，适用于长距离的不可靠链路</li>
+<li>
+<p>提供的一些服务：</p>
+<ul>
+<li><strong>无确认，无连接</strong>的服务：对丢失的帧不负责重发而是交给上一层处理，适用于实时通信或者误码率低的信道，比如以太网</li>
+<li><strong>有确认的，无连接</strong>的服务，比如无线通信</li>
+<li><strong>有确认的，面向连接</strong>的服务：帧的传输需要建立数据链路、传输帧、释放数据链路，适用于长距离的不可靠链路</li>
 <li>*无确认，面向连接的服务（现实中无用）</li>
-<li>提供“虚拟的交流”：实际上就是通过协议和查错，避免需要通过物理层的通信产生的差错，就好像绕过了物理层一样</li>
 </ul>
 </li>
-</ul>
+<li>
+<p>提供“虚拟的交流”：实际上就是通过协议和查错，避免需要通过物理层的通信产生的差错，就好像绕过了物理层一样</p>
 <p><img alt="image-20201014114245291" src="../static/image-20201014114245291.png" /></p>
+</li>
+</ul>
 <h4 id="frame">Frame</h4>
 <blockquote>
 <p>数据链路层<strong>发送数据的单位</strong> </p>
 </blockquote>
 <ul>
-<li>Packet和Frame的关系</li>
-</ul>
+<li>
+<p>Packet和Frame的关系</p>
 <p><img alt="image-20201014113939446" src="../static/image-20201014113939446.png" /></p>
-<ul>
+</li>
 <li>
 <p>特殊格式：</p>
 <ul>
@@ -1690,30 +1731,72 @@
 <p>假设一帧由 <span class="arithmatex">\(m\)</span> 个数据位和 <span class="arithmatex">\(r\)</span> 个冗余位组成，记 <span class="arithmatex">\(n=m+r\)</span>， 并将该编码描述成<span class="arithmatex">\((m,n)\)</span>码</p>
 </li>
 <li>
-<p>海明码：设置一系列校验码和校验位</p>
+<p><strong>海明码</strong>：设置一系列校验码和校验位</p>
 <ul>
 <li>海明距离：两个码字(codeword)中不同的位的个数，如果两个码字的海明距离为 <span class="arithmatex">\(d\)</span> ，则需要 <span class="arithmatex">\(d\)</span> 个1位错误才能把一个码字转换成另一个码字<ul>
 <li>也就是一个码字中最多可能错误的位数</li>
 </ul>
 </li>
-<li>纠错能力：<ul>
-<li>为了检测d个错误，就需要d+1的海明距离的编码方案，其实也就是说海明距离为n的编码方案只能检测出n-1个错误</li>
-<li>为了纠正d个错误，需要2d+1的海明编码方案</li>
+<li>
+<p>纠错能力：</p>
+<ul>
+<li>如果我们想可靠地检测可能的 e 个错误，我们需要一个海明距离为 e + 1 的编码方案（即，任意两个合法码字之间的距离不小于 e + 1）。因为这样任意 e 个错误不可能将一个合法码字变成另一个合法码字；当我们发现一个非法码字时，我们就知道出现了错误。</li>
+<li>如果我们想可靠地纠正可能的 e 个错误，我们需要一个海明距离为 2e + 1 的编码方案。因为这样任意的 e 个错误发生后，原来的码字仍然是现在的码字距离最近的那一个。</li>
 </ul>
 </li>
+<li>
+<p>构造：</p>
+<ul>
 <li>对于每<span class="arithmatex">\(2^m\)</span>个合法消息，任何一个消息都有n个非法码字，即海明距离为1的非法码字有n个，因此每个合法消息都需要用n+1位来标识，由于总共有<span class="arithmatex">\(2^n\)</span>种位模式，也就是<span class="arithmatex">\((n+1)\le 2^r\)</span> </li>
 <li>用2的幂次的位置作为校验码，其他位置依次放数据</li>
 <li>海明码的海明距离为3，可以发现2bit的错误，可以纠正1bit的错误，将码字内的位编号为1到n，其中是2的幂次的位就是校验码，其余的都是数据码</li>
 </ul>
+<p><img alt="1729509840227" src="../image/Network3/1729509840227.png" /> </p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>卷积码</strong>：根据设计的卷积状态机，可以很容易地生成码字，但是解码的时候需要用到Viterbi算法</p>
+<p><img alt="1729510763643" src="../image/Network3/1729510763643.png" /></p>
+</li>
+</ul>
+<details class="info">
+<summary>others</summary>
+<ul>
+<li>Reed-Solomon码：用于CD、DVD等存储介质</li>
+<li>LDPC码：低密度奇偶校验码，用于蓝光光盘</li>
+</ul>
+</details>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>只有卷积码是线性码不是块码，其他的都是线性块码</p>
+</div>
+<h4 id="error-detecting-code">检错码 Error detecting code</h4>
+<ul>
+<li>
+<p><strong>奇偶校验</strong> parity</p>
+<ul>
+<li>n-1 位信息，1 位冗余。奇校验码：在加上该位后 1 的个数为奇数；偶校验码则为偶数。</li>
+<li>交错校验 interleaving 技术可以一定程度上防止突发的若干比特范围内的错误。将数据块作为 k 行 n 列处理，每列计算一个 parity bit 后附在数据块最后发送。这样除非突发错误持续 n 个 bit 以上，否则仍然可以被检测出来</li>
+</ul>
+<p><img alt="1729511294844" src="../image/Network3/1729511294844.png" /></p>
+</li>
+<li>
+<p><strong>校验和 checksum</strong></p>
+<ul>
+<li>对数据进行一些求和运算（奇偶校验位也可以看做校验和的一个例子）</li>
+<li>另一个实际例子是 Internet Checksum。规则是：首先将数据分割成 16 bit 的若干段（最后一段不足 16 bit 则在末尾补 0）；然后将这些段相加，最高位进位 wrap around（见下图）；最后将结果按位取反 (?) 作为校验。检查时再次计算数据之和，加上校验，如果结果不为全 1 则发生过错误。</li>
+</ul>
+<p><img alt="1729511394456" src="../image/Network3/1729511394456.png" /></p>
 </li>
 <li>
 <p><strong>循环冗余校验 Cyclic Redundancy Check</strong>  </p>
-</li>
+<ul>
 <li>
 <p>基本思路：并在数据帧的末尾添加若干位作为校验码，<strong>要使所生成的新帧能与</strong>发送端和接收端<strong>共同选定的某个特定数整除</strong> </p>
 <ul>
 <li>
-<p>约定一个生成多项式<span class="arithmatex">\(G(x)\)</span> 需要首位和末尾的系数都是1</p>
+<p>约定一个生成多项式<span class="arithmatex">\(G(x)\)</span> （需要首位和末尾的系数都是1）</p>
 <ul>
 <li>所选定的除数二进制位数（假设为 k 位），然后在要发送的数据帧（假设为 m 位）后面加上 k- 1 位0，接着以这个加了 k-1 个0的新帧（一共是 m+k-1 位）<strong>除</strong>以上面这个除数</li>
 </ul>
@@ -1721,36 +1804,67 @@
 <li>
 <p>所得到的余数（也是二进制的比特串）就是该帧的 CRC 校验码，又称 FCS（帧校验序列）</p>
 <ul>
-<li>但要注意的是，余数的位数比除数位数只能少一位，不能省略0</li>
+<li>余数的位数比除数位数只能少一位，不能省略前导0</li>
+<li>这里的除法是特殊的计算方式，除法中用到的减法是异或XOR，也就是不会借位</li>
 </ul>
 </li>
-<li>还要注意这里的除法是特殊的计算方式，除法中用到的减法是异或XOR，也就是不会借位</li>
+<li>
+<p>再把这个余数附加在原数据帧的末尾(覆盖之前的0)，构建一个新的帧发送到接收端，在接收端除以第二步中的除数，如果没有余数就说明没有差错 </p>
+</li>
 </ul>
-<p><img alt="image-20201013111047773" src="../static/image-20201013111047773.png" />  <br />
-- 再把这个余数附加在原数据帧的末尾(覆盖之前的0)，构建一个新的帧发送到接收端
-- 在接收端除以第二步中的除数，如果没有余数就说明没有差错</p>
+<p><img alt="image-20201013111047773" src="../static/image-20201013111047773.png" />    </p>
+</li>
+</ul>
 </li>
 </ul>
 <h3 id="33">3.3 数据链路层的协议</h3>
+<h4 id="simplex-link-layer-protocols">Simplex Link-Layer Protocols</h4>
 <ul>
 <li>
-<p>停止-等待协议 <code>Stop-and-Wait Protocol</code></p>
+<p>乌托邦式的单工协议 A Utopian Simplex Protocol(Protocol 1)</p>
+<p>发送方不断地从网络层获取数据包并构造一个帧，通过物理层发送该帧；接收方不断等待唯一可能的事件 FRAME_ARRIVAL 发生，将该帧从物理层取得，并将数据部分发送给网络层。这种方案的问题是，如果发送方发送帧的速度大于接收方处理的速度，接收方就会被淹没 (flood)。</p>
 </li>
 <li>
-<p>最简单的通信协议</p>
+<p>无错信道上的单工停-等协议 A Simplex Stop-and-Wait Protocol for an Error-Free Channel(Protocol 2)</p>
+<p>接收方每当接收一个帧并处理完成后，发回一个确认帧；发送方在收到确认帧后（不需要处理，因为此时唯一的可能就是确认帧），则可以发送下一帧。这种协议在数据传输上是单工的，但是接收方需要发回消息，因此需要使用半双工信道。这种方案的实际问题在于，没有考虑出现错误的情况</p>
+<p><img alt="image-20201013112052219" src="../static/image-20201013112052219.png" /></p>
+</li>
+<li>
+<p>有错信道上的单工停-等协议 A Simplex Stop-and-Wait Protocol for a Noisy Channel(Protocol 3)</p>
+<p>这种协议在上一种的基础上考虑 3 种可能的错误 </p>
+<ol>
+<li>
+<p>接收到的帧检出错误。为了解决第 1 种错误，我们引入一个新的事件 CKSUM_ERR 表示校验和有误；因而接收方在收到一个帧后应当校验正确性，发回一个表示正确或者错误的确认帧；如果检出错误，则直接抛弃该帧等待重传。如果发送方收到了表示错误的确认帧导致事件 CKSUM_ERR 发生，那么发送方将重新发送上一帧。</p>
+</li>
+<li>
+<p>发送方发送的帧完全丢失。对于第 2 种错误，接收方完全没有接到一个帧，因而也不可能对此作出确认。为了避免这种情况，发送方每次发送一个帧后启动或重置一个计时器，这个计时器的时间应当长于预期正常情况下收到确认帧的时间。如果计时器超时发送方仍未收到确认帧（事件 TIMEOUT），那么第 2 种错误有可能发生，此时发送方会将（缓存下来的）刚刚发出去的那一帧重新发出一次。直至发送方收到一个积极的确认帧，此时发送方再加载下一帧，上一帧的缓存即可以被覆盖掉。</p>
+</li>
+<li>
+<p>接收方的确认帧丢失但是需要考虑的是，除了第 2 种错误，这种问题也可能导致发送方没有收到确认帧，因此可能会将一个正确收到（没有被抛弃）的帧重发，导致接收方收到两个该帧；如果不加限制，接收方的网络层则可能收到重复两次的该数据段，引起错误。我们需要防止这种重复的发生。考虑到发送方发送第 i + 1 帧的充要条件是第 i 帧已经收到了正确的确认，而这一确认的必要条件是接收方已经正确收到了第 i 帧。因此我们只需记录每一帧序号的奇偶性，并将其包含在帧头中（称为字段 seq）。如果接收方接收到了预期的（与前一帧相反的）奇偶标记，那么就将其保存；否则就说明前一帧被重复发送了，此时则直接抛弃该帧，同时发回一个确认（作为对前一个丢失确认帧的补充）。</p>
+</li>
+</ol>
+<p>这种在接收到肯定确认之前定时重传的协议也称为 自动重复请求 ARQ, Automatic Repeat reQuest 或 带重传的肯定确认 PAR, Positive Acknowledgement with Retransmission。</p>
+<ul>
+<li>
+<p>基本思路：每次发送完毕，停止，等到接收方收到<strong>表示发送成功的数据包(ACK)</strong>之后再进行下一次的发送</p>
+<ul>
+<li>如果收到了NAK包，表示不确认，此时需要发送方重新发送一次数据包</li>
+<li>如果产生了数据丢失，就会Time Out，即发送方迟迟等不到接收方的回复，就会尝试<strong>主动重发</strong> </li>
+<li>如果产生了ACK丢失，也会导致发送方重发，这时就会丢弃收到的数据，并再发送一个ACK提醒发送方已经收到</li>
+</ul>
+</li>
+<li>
+<p>效率的衡量</p>
+<ul>
+<li><span class="arithmatex">\(T_{frame}\)</span> 表示发送方<strong>发出去完整的一个帧</strong>需要的时间，<span class="arithmatex">\(T_{prop}\)</span> 表示传输到接收方需要的时间<ul>
+<li><span class="arithmatex">\(T_{prop}=\frac{distance}{\mathcal {speed}}\)</span> 而且 <span class="arithmatex">\(T_{frame}=\frac{frame\_size}{bit\_rate}\)</span> </li>
+<li>令<span class="arithmatex">\(\alpha = \frac{T_{prop}}{T_{frame}}\)</span> 则链路利用率 <span class="arithmatex">\(U=\frac 1 {2\alpha +1}\)</span> </li>
+</ul>
 </li>
 </ul>
-<p><img alt="image-20201013112052219" src="../static/image-20201013112052219.png" />
-  - 基本思路：每次发送完毕，停止，等到接收方收到<strong>表示发送成功的数据包(ACK)</strong>之后再进行下一次的发送
-    - 如果收到了NAK包，表示不确认，此时需要发送方重新发送一次数据包
-    - 如果产生了数据丢失，就会Time Out，即发送方迟迟等不到接收方的回复，就会尝试<strong>主动重发</strong> 
-    - 如果产生了ACK丢失，也会导致发送方重发，这时就会丢弃收到的数据，并再发送一个ACK提醒发送方已经收到
-  - 对发送的数据包的标记方式可以只用1个bit来标记，01交替表示换了个新的数据包
-  - 效率的衡量
-    - <span class="arithmatex">\(T_{frame}\)</span> 表示发送方<strong>发出去完整的一个帧</strong>需要的时间，<span class="arithmatex">\(T_{prop}\)</span> 表示传输到接收方需要的时间
-      - <span class="arithmatex">\(T_{prop}=\frac{distance}{\mathcal {speed}}\)</span> 而且 <span class="arithmatex">\(T_{frame}=\frac{frame\_size}{bit\_rate}\)</span> 
-      - 令<span class="arithmatex">\(\alpha = \frac{T_{prop}}{T_{frame}}\)</span> 则链路利用率 <span class="arithmatex">\(U=\frac 1 {2\alpha +1}\)</span> 
-  - 停止等待协议的编程实现——重要的数据结构</p>
+</li>
+<li>
+<p>停止等待协议的编程实现——重要的数据结构</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">#define MAX_PKT 1024</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">typedef</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">seq_nr</span><span class="p">;</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">packet</span><span class="w"> </span><span class="p">{</span>
@@ -1763,63 +1877,109 @@
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="n">packet</span><span class="w"> </span><span class="n">info</span><span class="p">;</span>
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="p">}</span><span class="w"> </span><span class="n">frame</span><span class="p">;</span>
 </code></pre></div>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="full-duplex-link-layer-protocols">Full-Duplex Link-Layer Protocols</h4>
 <ul>
 <li>
-<p>滑动窗口协议 <code>Sliding Window Protocols</code></p>
+<p>捎带确认 <code>piggybacking</code></p>
+<ul>
+<li>
+<p>需要注意的一个问题是，前面两种带有确认的协议都需要使用半双工传输，而这种传输和全双工传输一样都需要往返两条信道；因此实际上同一条链路最好用来往返传输数据。这种情况下，某一帧的接收方就可以把该帧的确认包含在它发回的另一帧的帧头中，<strong>从而减少总帧数，降低数据头的开销</strong>，这种方式就称为捎带确认。</p>
 </li>
+<li>
+<p>捎带确认引入的另一个问题是，需要发回确认的那一方并不知道网络层什么时候会让它发送下一个数据包，以便它将确认包含在其帧头中（称为字段 ack）。为了解决这个问题，发回确认的那一方也可以设置一个计时器，在计时器结束前如果网络层交付了一个数据包让它发送，那么就将确认包含在其中；否则就直接发送一个单独的确认帧。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>滑动窗口协议 <code>Sliding Window Protocols</code>(Protocol 4)</p>
+<ul>
 <li>
 <p>窗口就是一系列用于收发数据的<strong>序列号的集合</strong> </p>
 <ul>
 <li>
-<p>发送方维持一组连续的允许发送帧的窗口，称为发送窗口</p>
+<p>发送方维持一组连续的允许发送帧的窗口，称为发送窗口；发送方每次收到一个ACK就把窗口移动一个位置</p>
 </li>
 <li>
-<p>发送方每次收到一个ACK就把窗口移动一个位置</p>
-</li>
-<li>某些协议中的发送窗口</li>
-</ul>
+<p>接收方维持一组连续的允许接收帧的窗口，称为接收窗口；接收端收到一个数据帧之后就把接收窗口移动一格，并发回确认帧ACK，落在接收窗口之外的数据帧一律丢弃</p>
 </li>
 <li>
-<p>接收方维持一组连续的允许接收帧的窗口，称为接收窗口</p>
-<ul>
-<li>接收端收到一个数据帧之后就把接收窗口移动一格，并发回确认帧ACK，落在接收窗口之外的数据帧一律丢弃</li>
-<li>当发生错误时，丢弃错误帧后所有的帧，不发回确认，要求发送方重传开始错误之后的帧</li>
+<p>当发生错误时，丢弃错误帧后所有的帧，不发回确认，要求发送方重传开始错误之后的帧</p>
+</li>
 </ul>
 </li>
 <li>
 <p>滑动窗口协议的利用率<span class="arithmatex">\(U=\min (\frac{N}{2\alpha +1}, 1)\)</span> 但是仅存理论可能</p>
+<ul>
+<li>
+<p>Line Utilization = Frame Length / (Frame Length + 2 * Bandwidth * Propagation Delay)</p>
+</li>
+<li>
+<p>Line Utilization = Frame Length / (Frame Length + Bandwidth * Round-Trip Delay)</p>
+</li>
+</ul>
+</li>
+</ul>
 </li>
 <li>
 <p>几种不同的<strong>重新发送</strong>的协议</p>
 <ul>
 <li>
-<p>Go-Back-N </p>
-</li>
+<p>Go-Back-N(Protocol 5)</p>
+<ul>
 <li>
-<p>回退到第一个出问题的窗口，对后面的所有内容都进行重新发送，因此接收端也必须丢弃所有相应的数据包</p>
-</li>
-<li>发送方窗口大小不超过 <code>MAX_SEQ</code>，即<strong>最大的序列号</strong> </li>
-<li>
-<p>接收方的窗口大小为1</p>
+<p>N 代表 sending window 的大小，而这种协议中 receiving window 的大小始终为 1。当当前 sending window 的第一帧的计时器（实际上每一帧发出后都启动一个独立的计时器）超时仍未得到 ACK 时，回退 N 位到 sending window 的开头重新发送这 N 帧；而由于 receiving window 的大小是 1，因此提前到达的帧都会被抛弃。</p>
 </li>
 <li>
 <p>问题在于网络情况不好的时候会进一步恶化网络状况</p>
 </li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">累计确认</p>
+<p>累计确认 cumulative acknowledgement，这种确认方式为：当接收方发回 ACK n 的确认，其中表示 n 和 n 之前的所有帧都已经收到；如果 n 之前有任何没有收到的帧，则 ACK n 不会被发出。 </p>
+</div>
+<p><img alt="1729520392202" src="../image/Network3/1729520392202.png" /></p>
+</li>
 <li>
 <p>Selective Repeat Protocol 选择重复协议</p>
-</li>
-</ul>
-</li>
-</ul>
-<p><img alt="image-20201013114512808" src="../static/image-20201013114512808.png" />  <br />
-      - 在滑动窗口的基础上，不需要发送丢失之后的所有数据帧，只需要发送缺少的数据帧就可以
-      - 为了保证没有序号重叠，窗口的最大尺寸不应该超过序号空间的一半，即(MAX_SEQ+1)/2
-        - 接收方和发送方的窗口size一样，接收方的缓冲区=窗口的size
-      - 相比于GO-Back-N需要更大的缓冲区</p>
+<blockquote>
+<p>如果错误很少发生，那么 GBN 是一个良好的策略；而当错误频繁发生，GBN 的重发方式会浪费大量的带宽。GBN 协议可以有两种思路的优化。</p>
 <ul>
 <li>
-<p>PPP协议(Point to Point Protocol) </p>
+<p>第一种是，当接收方发现了发来的帧有错误或者不是所期待的那个帧时，发送一个否定的确认信息 NAK, Negative Acknowledgement 并说明想要的下一帧，这样可以不用等到 timeout 再回退重发；</p>
 </li>
+<li>
+<p>第二种是，增大 receiving window size，这样当错误发生时可以先缓存一部分发来的后面的帧，这样发送方只需重发 NAK 的帧即可。</p>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li>
+<p>在滑动窗口的基础上，不需要发送丢失之后的所有数据帧，只需要发送缺少的数据帧就可以</p>
+</li>
+<li>
+<p>为了保证没有序号重叠，窗口的最大尺寸不应该超过序号空间的一半，即(MAX_SEQ+1)/2</p>
+<ul>
+<li>接收方和发送方的窗口size一样，接收方的缓冲区=窗口的size</li>
+</ul>
+</li>
+<li>
+<p>相比于GO-Back-N需要更大的缓冲区</p>
+</li>
+</ul>
+<p><img alt="1729520651925" src="../image/Network3/1729520651925.png" /></p>
+</li>
+</ul>
+</li>
+<li>
+<p>PPP协议(Point to Point Protocol) </p>
+<blockquote>
+<p><img alt="1729521294052" src="../image/Network3/1729521294052.png" /></p>
+</blockquote>
+<ul>
 <li>
 <p>用于在链路中发送数据包的协议，包含光纤链路和ADSL</p>
 </li>
@@ -1831,18 +1991,28 @@
 </li>
 <li>
 <p>有若干种状态</p>
+<p><img alt="image-20201019123822959" src="../static/image-20201019123822959.png" />  </p>
 </li>
 </ul>
-<p><img alt="image-20201019123822959" src="../static/image-20201019123822959.png" />  </p>
+</li>
+</ul>
 <h3 id="34-hdlc">3.4 HDLC帧格式</h3>
+<blockquote>
+<p>HDLC 是一种 bit-oriented protocol，使用全双工通信；有顺序编号和校验，传输可靠性高</p>
+</blockquote>
 <ul>
-<li>起始和结束都是8bit的01111110+8bit address + 8bit control + 若干位data + 16位checksum </li>
+<li>
+<p>起始和结束都是8bit的01111110+8bit address + 8bit control + 若干位data + 16位checksum </p>
+<ul>
 <li>不同类型的帧的控制位数不一样</li>
 <li>对于信息帧而言，8bit = 1bit 0 + 3bit seq序号 + 1bit P/F + 3bit next序号</li>
 <li>监督帧：10+2bit type + P/F + 3bit next</li>
 <li>无符号帧： 11+2bit type + P/F + 3bit modifier</li>
+<li>(如前面提到的，发送方的数据链路层在数据中每发现连续的 5 个 1，发送时就在其后面添加一个 0)</li>
 </ul>
 <p><img alt="image-20201019123740549" src="../static/image-20201019123740549.png" /></p>
+</li>
+</ul>
 <h2 id="chapter4medium-access-sublayer">Chapter4：Medium Access Sublayer</h2>
 <ul>
 <li>中译名：介质<strong>访问控制</strong>子层</li>
