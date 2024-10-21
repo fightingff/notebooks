@@ -129,3 +129,51 @@
         - $IC = Instruction Count$
 
     - $IPC = \frac{1}{CPI}$(CPU throughput)
+
+## Chapter 2
+
+!!! note "Miss"
+
+    | 种类 | 解释 |
+    | -- | -- |
+    | compulsory miss | 冷启动失配，刚上电cache是空的，所以不论什么访问都要miss一次。cache越大compulsory miss越多。 | 
+    | capacity miss | cache块的大小不满足程序局部性时发生的失配，称为容量失配。cache块大小增大，容量失配率减小，与关联度无关。 |
+    | conflict miss | 在采用组关联和直接映像方式的cache中，主存的很多块都映射到cache的同一块，如果某块本来在cache中，刚被替换出去，又被访问到。有点像 OS 里页替换时讲到的“抖动”。关联度越大，Conflict失配越小。 |
+
+### 优化Cache
+
+- **Larger Block Size**
+
+    - 降低miss rate
+    
+    - 增加miss penalty 
+
+- **Larger Cache Size**
+
+    - 降低miss rate
+    
+    - 增加hit time，cost, power 
+
+- **Higher Associativity**
+
+    - 降低conflict miss rate
+    
+    - 增加hit time
+
+- **Multilevel Caches**
+
+    - Multilevel inclusion
+    
+        L1 cache的所有块都在L2 cache中，L2 cache的所有块都在L3 cache中，以此类推
+
+    - Multilevel exclusion 
+
+        L1 cache的所有块都不在L2 cache中，L2 cache的所有块都不在L3 cache中，以此类推
+
+- **Prioritize Read Misses Over Writes
+
+- **Avoiding Address Translation**
+
+    - Virtual Address -> Physical Address
+
+    - TLB(Translation Lookaside Buffer)

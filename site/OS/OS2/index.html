@@ -1928,15 +1928,18 @@ Diagram of process state.
 </li>
 <li>周转时间(turnaround time)：<ul>
 <li>从进程<strong>开始建立</strong>到进程完成的时间，即包括等待进入内存、在各种 queue 中的等待时间、在 CPU 中的运行时间、I/O 时间等，通过观察最大周转时间，能反映调度的效率和“公平性”；</li>
+<li>即进入 ready queue 的到进程结束的时间；</li>
 </ul>
 </li>
 <li>等待时间(waiting time)：<ul>
 <li>进程在 ready queue 中等待的时间的总和，由于任务所需要的 CPU 时间、I/O 时间不受调度算法影响，所以抛开这些只看在 ready queue 中的等待时间，能反映调度算法的效率；</li>
+<li>即在 ready queue 中的等待时间；</li>
 <li>容易发现，等待时间 = 周转时间 - 运行时间；</li>
 </ul>
 </li>
 <li>响应时间(response time)：<ul>
 <li>进程从发出请求到第一次响应的时间，能反应交互式系统中调度算法的“及时性”；</li>
+<li>即进入 ready queue 的到第一次有输出的时间；</li>
 </ul>
 </li>
 </ul>

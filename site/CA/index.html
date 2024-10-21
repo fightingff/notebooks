@@ -870,6 +870,30 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#chapter-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      优化Cache
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1407,6 +1431,30 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#chapter-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      优化Cache
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1598,6 +1646,95 @@
 </li>
 <li>
 <p><span class="arithmatex">\(IPC = \frac{1}{CPI}\)</span>(CPU throughput)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="chapter-2">Chapter 2</h2>
+<div class="admonition note">
+<p class="admonition-title">Miss</p>
+<table>
+<thead>
+<tr>
+<th>种类</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>compulsory miss</td>
+<td>冷启动失配，刚上电cache是空的，所以不论什么访问都要miss一次。cache越大compulsory miss越多。</td>
+</tr>
+<tr>
+<td>capacity miss</td>
+<td>cache块的大小不满足程序局部性时发生的失配，称为容量失配。cache块大小增大，容量失配率减小，与关联度无关。</td>
+</tr>
+<tr>
+<td>conflict miss</td>
+<td>在采用组关联和直接映像方式的cache中，主存的很多块都映射到cache的同一块，如果某块本来在cache中，刚被替换出去，又被访问到。有点像 OS 里页替换时讲到的“抖动”。关联度越大，Conflict失配越小。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="cache">优化Cache</h3>
+<ul>
+<li>
+<p><strong>Larger Block Size</strong></p>
+<ul>
+<li>
+<p>降低miss rate</p>
+</li>
+<li>
+<p>增加miss penalty </p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Larger Cache Size</strong></p>
+<ul>
+<li>
+<p>降低miss rate</p>
+</li>
+<li>
+<p>增加hit time，cost, power </p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Higher Associativity</strong></p>
+<ul>
+<li>
+<p>降低conflict miss rate</p>
+</li>
+<li>
+<p>增加hit time</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Multilevel Caches</strong></p>
+<ul>
+<li>
+<p>Multilevel inclusion</p>
+<p>L1 cache的所有块都在L2 cache中，L2 cache的所有块都在L3 cache中，以此类推</p>
+</li>
+<li>
+<p>Multilevel exclusion </p>
+<p>L1 cache的所有块都不在L2 cache中，L2 cache的所有块都不在L3 cache中，以此类推</p>
+</li>
+</ul>
+</li>
+<li>
+<p>**Prioritize Read Misses Over Writes</p>
+</li>
+<li>
+<p><strong>Avoiding Address Translation</strong></p>
+<ul>
+<li>
+<p>Virtual Address -&gt; Physical Address</p>
+</li>
+<li>
+<p>TLB(Translation Lookaside Buffer)</p>
 </li>
 </ul>
 </li>
