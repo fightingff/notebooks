@@ -409,6 +409,10 @@ SJF 的思路是，当有多个进程处于就绪态时，选择需要**运行�
 
 #### 算法 | Round-Robin (RR)
 
+!!! danger
+    
+    注意，使用RR算法调度时与进程的优先级无关，即所有进程的优先级相同。
+
 RR 调度是使用[分时技术](./Unit0.md/time-sharing)的调度算法。由于时间片到期后，操作系统会强制停止进程，因此它是**抢占式**的。每一个进程最多连续执行一个时间片的长度，完成后被插入到 FIFO ready queue 的末尾，并取出 FIFO ready queue 的队首进行执行。
 
 我们之前提到[分时](./Unit0.md/time-sharing)的时候也说过，分时技术通过优化响应时间解决了用户交互问题，RR 调度虽然相比 SJF 有了更长的等待时间，但是有了更短的响应时间，而实际直接影响用户交互问题的应该是响应时间。
@@ -459,6 +463,10 @@ RR 调度是使用[分时技术](./Unit0.md/time-sharing)的调度算法。由�
 
 同一进程的若干线程共享代码、数据等“相对静态”的资源，而各自维护寄存器、栈、PC 等“相对动态”的资源；或者说线程只拥有一些运行中必不可省的资源，而所有其它资源都属于进程，线程与进程中的其它线程共享这些资源，以此来减少进程创建过程中复制代码段等资源时带来的不小开销。
 
+!!! danger "线程资源共享"
+
+    线程资源共享，因此没有Mem, File等资源边界限制
+
 ![Single-threaded and multithreaded processes.](img/18.png)
 
 线程天生和同一进程内的其它线程共享资源，因此同进程内线程天生就有线程间通信的能力。同时，由于将进程进行了再划分，一方面在硬件支持的情况下能更好地适配并行，另一方面也能（代价更小地）让任务的粒度变小，此时可以将整个进程的阻塞转移到单个线程的阻塞上，进一步减少响应时间。
@@ -480,10 +488,14 @@ RR 调度是使用[分时技术](./Unit0.md/time-sharing)的调度算法。由�
 
 需要注意的是，用户级多线程和内核级多线程并不冲突，因而排列组合后得到多线程主要有如下三种模型：
 
-<figure markdown>
-<center>![](img/19.png)</center>
+<center>![model](img/19.png)</center>
 (a) One-to-one model. (b) Many-to-many model. \(c) Many-to-one model.
-</figure>
+
+??? "线程的终止"
+
+    线程使用cancel()来终止线程，通过join()来等待线程终止。
+
+    ![1729662964600](image/OS2/1729662964600.png)
 
 !!! quote "Linux 线程"
     - [Linux 线程](https://xuan-insr.github.io/%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86/os/II_process_management/5_thread/#53-linux-%E7%BA%BF%E7%A8%8B)

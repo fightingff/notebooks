@@ -144,23 +144,37 @@
 
 - **Larger Block Size**
 
-    - 降低miss rate
+    - 降低compulsory miss rate
+
+    - 降低static power
     
-    - 增加miss penalty 
+    - 增加miss penalty（larger blocks)
+   
+    - 增加capacity/confilct miss rate (fewer blocks)
+
+    ![1729651249222](image/CA/1729651249222.png){width = 80%}
 
 - **Larger Cache Size**
 
-    - 降低miss rate
+    - 降低miss rate(capacity miss)
     
-    - 增加hit time，cost, power 
+    - 增加hit time
+    
+    - 增加cost, power 
 
 - **Higher Associativity**
 
     - 降低conflict miss rate
     
     - 增加hit time
+    
+    - 增加power
 
 - **Multilevel Caches**
+
+    - 减少 miss penalty
+    
+    - 减少power 
 
     - Multilevel inclusion
     
@@ -170,10 +184,73 @@
 
         L1 cache的所有块都不在L2 cache中，L2 cache的所有块都不在L3 cache中，以此类推
 
-- **Prioritize Read Misses Over Writes
+    !!! tip
+
+        AMAT = Hit time$_{L1}$ + Miss rate$_{L1}$ x(Hit time$_{L2}$ + Miss rate$_{L2}$ x Miss penalty$_{L2}$)
+
+- **Prioritize Read Misses Over Writes**
+
+    - 减少miss penalty
 
 - **Avoiding Address Translation**
 
-    - Virtual Address -> Physical Address
+    - 减少hit time 
 
-    - TLB(Translation Lookaside Buffer)
+    - 手段
+
+        - Virtual Address -> Physical Address
+
+        - TLB(Translation Lookaside Buffer)
+
+    !!! note "Virtual Memory"
+
+        [计组笔记](https://xuan-insr.github.io/computer_organization/5_cache/#55-virtual-memory)
+
+        本质上，初始的想法就是每次读取数据读两次，一次是到页表获取物理地址，一次是从物理地址读取数据
+
+        为了减少开销，使用TLB这个cache来存储最近访问的数据，从而减少访问页表的次数
+
+        ![1729652754381](image/CA/1729652754381.png){width = 80%}
+
+        ??? tip "page size"
+            
+            - Small: 减少内存碎片带来的浪费
+            - Large: 减少TLB entries 和 TLB miss rate
+            - Multiple
+
+### 超级优化
+
+- **Small and Simple L1-Cache**
+
+    - Small size
+        - 增加时钟主频
+        - 减少功耗
+    - Lower associativity
+        - 减少hit time
+        - 减少功耗
+
+- **Way Prediction**
+
+    - 添加block predictor bit，每次先通过预测的方式找到对应的block，同时并行进行比较选择
+
+- **Pipelined Access**
+
+- **Multibanked Caches**
+
+    - 通过多个bank并行访问，增大带宽，减少访问时间
+
+- **Non-blocking Caches**
+
+    - hit under miss
+    - miss under miss
+    - hit under multiple misses
+
+- **Early Restart**
+
+- **Merging Write Buffer**
+
+    - 把多个写请求打包成一个写请求，减少写请求的次数
+
+- **Compiler Optimization**
+
+    - Loop interchange
