@@ -838,6 +838,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Network/Network4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Network Layer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -916,6 +937,27 @@
   
   <span class="md-ellipsis">
     Process
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OS3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory
   </span>
   
 
@@ -1851,7 +1893,7 @@ Volume mounted at /users.
 </div>
 </details>
 <h3 id="_22">块分配与块组织</h3>
-<p>我们在讲内存的时候，讨论过<a href="../Unit3-Part1/#连续分配及其问题" target="_blank">进程的内存分配策略</a>。这里讨论的内容是类似的，我们考虑文件内存要如何被分配，同时，块如何分配也暗示了块是如何组织的。</p>
+<p>我们在讲内存的时候，讨论过<a href="./Unit3-Part1.md#连续分配及其问题" target="_blank">进程的内存分配策略</a>。这里讨论的内容是类似的，我们考虑文件内存要如何被分配，同时，块如何分配也暗示了块是如何组织的。</p>
 <p>通常来说主要有三种：连续(contiguous)、链接(linked)和索引(indexed)，它们之间各有优劣，需要注意掌握它们的组织形式，会有计算题。</p>
 <details class="section" open="open">
 <summary>continuous</summary>
@@ -1876,7 +1918,7 @@ Contiguous allocation of disk space.
 <p class="admonition-title">disadvantages</p>
 <ul>
 <li>分配时寻找合适空间比较困难；<ul>
-<li>类似<a href="../Unit3-Part1/#连续分配及其问题" target="_blank">进程的内存分配策略</a>，需要考虑外部碎片等问题；</li>
+<li>类似<a href="./Unit3-Part1.md#连续分配及其问题" target="_blank">进程的内存分配策略</a>，需要考虑外部碎片等问题；</li>
 </ul>
 </li>
 <li>在文件可能动态变化的情况下会很糟糕（或者说，文件需要多少空间有时是难以预计的，可能会出现实际使用空间比预期大或小的情况）；<ul>
@@ -1955,7 +1997,7 @@ Indexed allocation of disk space.
 <p>当然，我们也要考虑 index block 太小的情况，这时候我们需要维护复数个 index blocks，几种常见的方案：</p>
 <ol>
 <li>使用链接索引，用链表将它们连起来；</li>
-<li>使用多级索引（回顾<a href="../Unit3-Part1/#页表设计改进" target="_blank">多级页表</a>）；</li>
+<li>使用多级索引（回顾<a href="Unit3-Part1.md#页表设计改进" target="_blank">多级页表</a>）；</li>
 <li>使用混合模式，该方案为 UNIX 所采用，类似于分级电费，inode 中有 15 个指针，各自用途不同：<ol>
 <li>前 12 个直接索引 12 个 block；</li>
 <li>第 13 个指向一个 indirect index block（用不到的时候就不用）；</li>
