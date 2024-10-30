@@ -838,6 +838,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Network/Network4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Network Layer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -916,6 +937,27 @@
   
   <span class="md-ellipsis">
     Process
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OS3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory
   </span>
   
 
@@ -1374,10 +1416,10 @@
 <h1 id="u3-part-2-memory-management">U3 Part 2: 内存管理 | Memory Management</h1>
 <div class="admonition info">
 <p class="admonition-title">导读</p>
-<p><a href="../Unit3-Part1/" target="_blank">上一节</a>我们介绍了内存的一些基本设计，并在最后提出了 swap，这一节我们将利用 swap 的思想，提出一套更完善的内存管理系统：demand paging。</p>
+<p><a href="./Unit3-Part1.md" target="_blank">上一节</a>我们介绍了内存的一些基本设计，并在最后提出了 swap，这一节我们将利用 swap 的思想，提出一套更完善的内存管理系统：demand paging。</p>
 </div>
 <h2 id="_1">按需换页系统概述</h2>
-<p><strong>按需换页(demand paging)</strong>^<a href="https://en.wikipedia.org/wiki/Demand_paging" target="_blank">Wiki</a>^和<a href="../Unit3-Part1/#交换技术" target="_blank">交换技术中的页置换</a>很类似，指只把<strong>被需要</strong>的页载入内存，是一种内存管理系统。</p>
+<p><strong>按需换页(demand paging)</strong>^<a href="https://en.wikipedia.org/wiki/Demand_paging" target="_blank">Wiki</a>^和<a href="./Unit3-Part1.md#交换技术" target="_blank">交换技术中的页置换</a>很类似，指只把<strong>被需要</strong>的页载入内存，是一种内存管理系统。</p>
 <div class="admonition section">
 <p class="admonition-title">pure demand paging</p>
 <p>如果激进一点，如果在被需求之前页不会被载入内存，只有在内存被需求后才会被载入内存，我们称之为纯按需换页(pure demand paging)。</p>
@@ -1598,9 +1640,9 @@ Reclaiming pages.
 <h2 id="_4">置换策略</h2>
 <p>当 free-frame list 为空，但用户仍然需要 frame 来进行 page in 时，就需要进行<strong>页置换(page replacement)</strong>，将并没有正在被使用的页腾出来给需要 page in 的内容用，而这个“被要求腾出地方”的页，我们称之为<strong>牺牲帧(victim frame)</strong>。</p>
 <blockquote>
-<p>显然这里的 “page” 是基于 <a href="../Unit3-Part1/#page-frame-def-2" target="_blank">Definition 2</a>。</p>
+<p>显然这里的 “page” 是基于 <a href="./Unit3-Part1.md#page-frame-def-2" target="_blank">Definition 2</a>。</p>
 </blockquote>
-<p>我们细化 <a href="../Unit3-Part1/#page-fault-handling" target="_blank">page fault 处理流程</a>的 2.a. 项，大概是如下的步骤：</p>
+<p>我们细化 <a href="./Unit3-Part1.md#page-fault-handling" target="_blank">page fault 处理流程</a>的 2.a. 项，大概是如下的步骤：</p>
 <div class="admonition section">
 <p class="admonition-title">page replacement</p>
 <ol>

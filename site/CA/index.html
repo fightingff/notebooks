@@ -898,6 +898,39 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Protection
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Protection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#virtual-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Virtual Memory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtual-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Virtual Machine
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1012,6 +1045,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Network/Network4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Network Layer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1090,6 +1144,27 @@
   
   <span class="md-ellipsis">
     Process
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OS/OS3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory
   </span>
   
 
@@ -1468,6 +1543,39 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Protection
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Protection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#virtual-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Virtual Memory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtual-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Virtual Machine
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1826,39 +1934,135 @@
 <li>
 <p><strong>Way Prediction</strong></p>
 <ul>
-<li>添加block predictor bit，每次先通过预测的方式找到对应的block，同时并行进行比较选择</li>
+<li>降低conflict miss 和 hit time</li>
+<li>添加block predictor bit，每次先通过预测的方式找到对应的block，同时并行进行正常的比较选择</li>
 </ul>
 </li>
 <li>
 <p><strong>Pipelined Access</strong></p>
+<ul>
+<li>通过pipeline的方式来访问cache</li>
+<li>增加带宽</li>
+<li>会导致更高的延迟和预测penalty</li>
+</ul>
 </li>
 <li>
 <p><strong>Multibanked Caches</strong></p>
 <ul>
 <li>通过多个bank并行访问，增大带宽，减少访问时间</li>
+<li>一般需要把地址“打散”到不同的bank中，从而可以并行访问</li>
 </ul>
 </li>
 <li>
 <p><strong>Non-blocking Caches</strong></p>
 <ul>
+<li>当出现miss时，不会阻塞后续的访问，从而提高效率<ul>
 <li>hit under miss</li>
 <li>miss under miss</li>
 <li>hit under multiple misses</li>
 </ul>
 </li>
+</ul>
+</li>
+<li>
+<p><strong>Critical Word First</strong></p>
+<ul>
+<li>每次miss时总是从内存中读取一片数据，但CPU需要的只需要其中一部分。因此可以先返回cache line中需求的关键数据，然后再返回其他数据</li>
+<li>降低miss penalty</li>
+</ul>
+</li>
 <li>
 <p><strong>Early Restart</strong></p>
+<ul>
+<li>读到CPU需要的数据后，CPU可以先开始执行，而不用等到整个cache line都读取完毕（往往就是配合上面的Critical Word First）</li>
+</ul>
 </li>
 <li>
 <p><strong>Merging Write Buffer</strong></p>
 <ul>
 <li>把多个写请求打包成一个写请求，减少写请求的次数</li>
+<li>降低miss penalty</li>
 </ul>
 </li>
 <li>
 <p><strong>Compiler Optimization</strong></p>
 <ul>
-<li>Loop interchange</li>
+<li>通过编译器优化，增加局部性，从而减少miss rate</li>
+<li>
+<p>Loop interchange</p>
+<p>通过调整循环次序，使得内存访问更加连续</p>
+<details class="example">
+<summary>Example</summary>
+<p><img alt="1730255100447" src="../image/CA/1730255100447.png" /></p>
+</details>
+</li>
+<li>
+<p>Blocking</p>
+<div class="highlight"><pre><span></span><code>通过分块，使得内存访问更加连续，如矩阵乘法
+
+??? example
+
+    ![1730255202411](image/CA/1730255202411.png)
+</code></pre></div>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Hardware Prefetching</strong></p>
+<ul>
+<li>通过预测CPU的访问模式，提前把数据读入cache</li>
+<li>降低miss rate和miss penalty（但是也可能造成额外的miss）<ul>
+<li>Instruction prefetch</li>
+<li>Data prefetch</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Compiler Prefetching</strong></p>
+<ul>
+<li>通过编译器预测CPU的访问模式，加入prefetch，提前把数据读入cache<ul>
+<li>Register prefetch</li>
+<li>Cache prefetch </li>
+</ul>
+</li>
+<li>降低miss rate和miss penalty</li>
+</ul>
+</li>
+<li>
+<p><strong>HBM</strong></p>
+<ul>
+<li>使用high-bandwidth memory作为L4 cache（对于一般的DRAM,需要多次访问才能读取完整的cache line，一次访问tag, 一次访问data）<ul>
+<li>把 tag 和 data 放在同一行中</li>
+<li>alloy cache, 把tag和data混合在一起</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="protection">Protection</h3>
+<h4 id="virtual-memory">Virtual Memory</h4>
+<div class="admonition note">
+<p class="admonition-title">4 Tasks</p>
+<ul>
+<li>User Mode / Kernel Mode</li>
+<li>Accessible Processor state</li>
+<li>Mode Switch</li>
+<li>Limit Memory Access</li>
+</ul>
+</div>
+<h4 id="virtual-machine">Virtual Machine</h4>
+<blockquote>
+<p>VM: a protection mode with a much smaller code base than the full OS</p>
+<p>VMM: software that supports VMs</p>
+<p>Host: underlying OS</p>
+</blockquote>
+<ul>
+<li>
+<p>优势</p>
+<ul>
+<li>同一个物理机上可以运行多个虚拟机</li>
+<li>多个虚拟机可以共享硬件资源</li>
 </ul>
 </li>
 </ul>

@@ -231,26 +231,101 @@
 
 - **Way Prediction**
 
-    - 添加block predictor bit，每次先通过预测的方式找到对应的block，同时并行进行比较选择
+    - 降低conflict miss 和 hit time
+    - 添加block predictor bit，每次先通过预测的方式找到对应的block，同时并行进行正常的比较选择
 
 - **Pipelined Access**
+
+    - 通过pipeline的方式来访问cache
+    - 增加带宽
+    - 会导致更高的延迟和预测penalty
 
 - **Multibanked Caches**
 
     - 通过多个bank并行访问，增大带宽，减少访问时间
+    - 一般需要把地址“打散”到不同的bank中，从而可以并行访问
 
 - **Non-blocking Caches**
 
-    - hit under miss
-    - miss under miss
-    - hit under multiple misses
+    - 当出现miss时，不会阻塞后续的访问，从而提高效率
+        - hit under miss
+        - miss under miss
+        - hit under multiple misses
+
+- **Critical Word First**
+
+    - 每次miss时总是从内存中读取一片数据，但CPU需要的只需要其中一部分。因此可以先返回cache line中需求的关键数据，然后再返回其他数据
+    - 降低miss penalty
 
 - **Early Restart**
+
+    - 读到CPU需要的数据后，CPU可以先开始执行，而不用等到整个cache line都读取完毕（往往就是配合上面的Critical Word First）
 
 - **Merging Write Buffer**
 
     - 把多个写请求打包成一个写请求，减少写请求的次数
+    - 降低miss penalty
 
 - **Compiler Optimization**
 
+    - 通过编译器优化，增加局部性，从而减少miss rate
     - Loop interchange
+
+        通过调整循环次序，使得内存访问更加连续
+
+        ??? example
+
+            ![1730255100447](image/CA/1730255100447.png)
+    
+    - Blocking
+    
+            通过分块，使得内存访问更加连续，如矩阵乘法
+    
+            ??? example
+    
+                ![1730255202411](image/CA/1730255202411.png)
+
+- **Hardware Prefetching**
+
+    - 通过预测CPU的访问模式，提前把数据读入cache
+    - 降低miss rate和miss penalty（但是也可能造成额外的miss）
+        - Instruction prefetch
+        - Data prefetch
+
+- **Compiler Prefetching**
+
+    - 通过编译器预测CPU的访问模式，加入prefetch，提前把数据读入cache
+        - Register prefetch
+        - Cache prefetch 
+    - 降低miss rate和miss penalty
+
+- **HBM**
+
+    - 使用high-bandwidth memory作为L4 cache（对于一般的DRAM,需要多次访问才能读取完整的cache line，一次访问tag, 一次访问data）
+        - 把 tag 和 data 放在同一行中
+        - alloy cache, 把tag和data混合在一起
+
+### Protection
+
+#### Virtual Memory
+
+!!! note "4 Tasks"
+
+    - User Mode / Kernel Mode
+    - Accessible Processor state
+    - Mode Switch
+    - Limit Memory Access
+
+#### Virtual Machine
+
+> VM: a protection mode with a much smaller code base than the full OS
+>
+> VMM: software that supports VMs
+>
+> Host: underlying OS
+
+- 优势
+
+    - 同一个物理机上可以运行多个虚拟机
+    - 多个虚拟机可以共享硬件资源
+

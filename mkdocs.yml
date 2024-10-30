@@ -29,9 +29,11 @@ nav:
           - Overview: Network/Network1.md
           - Physical Layer: Network/Network2.md
           - Data Link Layer: Network/Network3.md
+          - Network Layer: Network/Network4.md
         - Operating System:
           - Overview: OS/OS1.md
           - Process: OS/OS2.md
+          - Memory: OS/OS3.md
   - Tools:
       - Git: Git.md
       - Makefile & CMake: Make.md
