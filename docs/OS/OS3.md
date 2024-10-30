@@ -22,17 +22,16 @@
 
 我们通过引入 base 和 limit 两个寄存器来实现框定进程的内存空间，当前进程的内存空间始于 base 寄存器中存储的地址，终于 base + limit 对应的地址，即：
 
-<figure markdown>
 <center> ![](img/27.png) </center>
-A base and a limit register define a logical address space. (left)<br/>
+<center> A base and a limit register define a logical address space. (left)<br/>
 Hardware address protection with base and limit registers. (right)
-</figure>
+</center>
 
 两个特殊的寄存器只能由内核通过特定的特权指令来修改。而内存的保护，通过**[内存管理单元(memory management unit, MMU)](#MMU){target="_blank"}**来实现，MMU 会在每次访问内存时，检查访问的地址是否在 base 和 limit 寄存器所定义的范围内，如果不在，则会产生一个异常，中断程序的执行。
 
 ### 地址绑定
 
-我们在[总览#链接器和装载器](./Unit0.md#链接器和装载器){target="_blank"}中提到过，静态的代码程序成为动态的进程，可能会需要图中这么几步。
+我们在[总览#链接器和装载器](./OS1.md#链接器和装载器){target="_blank"}中提到过，静态的代码程序成为动态的进程，可能会需要图中这么几步。
 
 <center> ![](img/28.png){ width=40% align=right} </center>
 
@@ -52,7 +51,9 @@ Hardware address protection with base and limit registers. (right)
 
 ### 动态链接和共享库
 
-我们在[总览#链接器和装载器](./Unit0.md#链接器和装载器){target="_blank"}中已经谈论过动态链接了。而能被动态链接的库就被称为**动态链接库(dynamically linked libraries, DDLs)**，由于它们可以被多个进程共享，所以也被称为**共享库(shared libraries)**。
+我们在[总览#链接器和装载器](./OS1.md#链接器和装载器){target="_blank"}中已经谈论过动态链接了。而能被动态链接的库就被称为**动态链接库(dynamically linked libraries, DDLs)**，由于它们可以被多个进程共享，所以也被称为**共享库(shared libraries)**。
+
+动态链接指的是，将linking的过程推迟到了运行时，而不是在装载时。这样，多个进程可以共享同一个库，而不需要每个进程都有一份。不仅可以节省内存，还可以减少磁盘上的存储空间。
 
 > 区别于动态装载，动态链接需要操作系统的支持。
 
@@ -75,14 +76,16 @@ Hardware address protection with base and limit registers. (right)
 
 通常来说，主存会被划分为用户空间和内核空间两个部分，后者用于运行操作系统软件。主流操作系统倾向于将高位地址划为给操作系统，所以我们此处的语境也依照主流设计。
 
-在连续内存分配(contiguous memory allocation)问题中，我们认为所有进程都被囊括在一段完整的内存中。而在内存分配的动态过程中，整个内存中空闲的部分将有可能被分配给索取内存的进程，而被分配的内存在释放之前都不能被分配给其它进程。在进程执行完毕后，内存会被释放，切我们对于进程何时释放内存不做假设。
+在连续内存分配(contiguous memory allocation)问题中，我们认为所有进程都被囊括在一段完整的内存中。而在内存分配的动态过程中，整个内存中空闲的部分将有可能被分配给索取内存的进程，而被分配的内存在释放之前都不能被分配给其它进程。在进程执行完毕后，内存会被释放。
 
-最简单的是一种**可变划分(variable partition)**的设计，即不对内存中的划分方式做约束，只要是空闲且足够大的连续内存区域都可以被分配。但我们可以想象，在内存被动态使用的过程中，原本完整的内存可能变得支离破碎。如果我们记一块连续的空闲内存为一个 hole，则原先可能只有一个 hole，而在长时间的运行后，内存中可能存在大量较小的，难以利用的 holes。这就是**外部碎片(external fragmentation)**，在最坏的情况下，每个非空闲的内存划分之间都可能有一块不大不小的 hole，而这些 hole 单独来看可能无法利用，但其总和可能并不小，这是个非常严重的问题。
+#### Variable Partition
 
-<figure markdown>
+最简单的是一种**可变划分(variable partition)**的设计，即不对内存中的划分方式做约束，只要是空闲且足够大的连续内存区域都可以被分配。
+
+但我们可以想象，在内存被动态使用的过程中，原本完整的内存可能变得支离破碎。如果我们记一块连续的空闲内存为一个 hole，则原先可能只有一个 hole，而在长时间的运行后，内存中可能存在大量较小的，难以利用的 holes。这就是**外部碎片(external fragmentation)**，在最坏的情况下，每个非空闲的内存划分之间都可能有一块不大不小的 hole，而这些 hole 单独来看可能无法利用，但其总和可能并不小，这是个非常严重的问题。
+
 <center> ![](img/30.png) </center>
-Variable partition. 1 hole to 2 holes.
-</figure>
+<center> Variable partition. 1 hole to 2 holes. </center>
 
 但是显然我们不能频繁地要求操作系统去重新整理内存，所以我们需要想办法来减少外部碎片的产生。我们考虑三种分配策略：
 
@@ -90,13 +93,15 @@ Variable partition. 1 hole to 2 holes.
 - Best Fit
 - Worst Fit
 
-关于这三个是什么，可以参考[这篇 ADS 笔记](../D2CX_AdvancedDataStructure/Lec11#online-first-fit-ff.md){target="_blank"}。
+*实验结果表明，FF 和 BF 的速度都比 WF 快，但通常 FF 会更快一些；而看内存的利用效率，两者则没有明显的区别，但是 FF 和 BF 都深受外部碎片之害。
 
-实验结果表明，FF 和 BF 的速度都比 WF 快，但通常 FF 会更快一些；而看内存的利用效率，两者则没有明显的区别，但是 FF 和 BF 都深受外部碎片之害。
+#### Fixed Partition
 
-除了 variable partition 的设计以外，还有一些别的设计，例如**固定划分(fixed partition)**，内容比较简单我就不介绍了。读者可以通过 [xxjj 的笔记](https://xuan-insr.github.io/%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86/os/IV_memory_management/9_main_memory/#921-fixed-partition){target="_blank"}来做一些了解。
+除了 variable partition 的设计以外，还有一些别的设计，例如**固定划分(fixed partition)**。
 
-在 fixed partition 中，还会产生另外一种碎片，叫**内部碎片(internal fragmentation)**，它指的是在类似 fixed partition 的策略中，操作系统分配给进程的内存往往是成块的，这就会导致需求的分配量大于进程实际需求量，而那些被分配了但实际闲置的内存，就被称为内部碎片。我们之后介绍的分页技术，也同样会产生内部碎片。
+固定划分是指将内存划分为固定大小的区域，每个区域只能被一个进程占用。这样，内存中的空闲区域就会被划分为若干个固定大小的区域，这样就不会产生外部碎片。但是，这样的设计也有缺点，例如内存的利用率会降低，因为每个进程都需要一个固定大小的区域，而这个区域可能会比进程实际需要的内存大很多。
+
+在 fixed partition 中，会产生的这种种碎片，叫**内部碎片(internal fragmentation)**，它指的是在类似 fixed partition 的策略中，操作系统分配给进程的内存往往是成块的，这就会导致需求的分配量大于进程实际需求量，而那些被分配了但实际闲置的内存，就被称为内部碎片。我们之后介绍的分页技术，也同样会产生内部碎片。
 
 ### 物理地址和虚拟地址
 
@@ -104,10 +109,8 @@ Variable partition. 1 hole to 2 holes.
 
 物理地址实际在内存设备中进行内存寻址，主要反应内存在硬件实现上的属性；而 CPU 所使用的一般指的是虚拟内存，主要反应内存在逻辑上的属性。物理地址和虚拟地址存在映射关系，而实现从虚拟地址到物理地址的映射的硬件，是**内存管理单元(memory management unit, MMU)**<a id="MMU"/>，除了是实现虚拟地址->物理地址的映射外，MMU 还负责内存访问的[保护](#内存保护){target="_blank"}。我们在之后会将了解到，[TBL](#硬件支持){target="_blank"} 也属于 MMU 的一部分。
 
-<figure markdown>
 <center> ![](img/29.png){ width=60% } </center>
-Dynamic relocation using a relocation register.
-</figure>
+<center> Dynamic relocation using a relocation register.</center>
 
 物理地址和虚拟地址的区分让使得用户程序不再需要（也不被允许）关注物理地址。此外，通过利用虚拟地址和物理地址的灵活映射，我们可以通过分页来实现良好的内存管理。
 
@@ -125,7 +128,7 @@ Dynamic relocation using a relocation register.
     请读者思考，物理地址和虚拟地址的长度需要一样吗？
 
 <a id="virtual-address-space"/>
-一个进程的**虚拟地址空间(virtual address space)**，指的是在虚拟内存的语境下，进程的内存结构。通常进程在虚拟地址空间中的[大致结构](./Unit1.md#进程的形式){target="_blank"}和地址分布都是相同的，例如可能都是从 0 地址开始放 text 段，栈底一般都在末尾等——这就意味着进程的虚拟地址空间应当是**互不相关**的，由将若干互相隔离的虚拟地址空间映射到各自的物理地址这个任务，则由 [MMU](#MMU){target="_blank"} 完成。（在我们之后介绍了[页表](#帧--页){target="_blank"}后，这意味着每个进程都应当有自己的页表。）
+一个进程的**虚拟地址空间(virtual address space)**，指的是在虚拟内存的语境下，进程的内存结构。通常进程在虚拟地址空间中的[大致结构](./OS2.md#进程的形式){target="_blank"}和地址分布都是相同的，例如可能都是从 0 地址开始放 text 段，栈底一般都在末尾等——这就意味着进程的虚拟地址空间应当是**互不相关**的，由将若干互相隔离的虚拟地址空间映射到各自的物理地址这个任务，则由 [MMU](#MMU){target="_blank"} 完成。（在我们之后介绍了[页表](#帧--页){target="_blank"}后，这意味着每个进程都应当有自己的页表。）
 
 ## 分页技术
 
@@ -191,11 +194,11 @@ Dynamic relocation using a relocation register.
 
         联系[页 & 虚拟地址](#页--虚拟地址){target="_blank"}，考虑整个地址的二进制表示中表示页号的部分在整个二进制串中的构成！
 
-<figure markdown>
 <center> ![](img/31.png){ width=50% } </center>
+<center>
 Paging model of logical and physical memory.<br/>
 以 page table 中的第一项为例：<font color="blue">0</font>:<font color="green">5</font> 表示虚拟地址中的第 <font color="blue">0</font> 页对应物理地址中的第 <font color="green">5</font> 帧。
-</figure>
+</center>
 
 !!! tip "头脑风暴"
 
@@ -454,10 +457,17 @@ Swapping with paging.
 在下一节，我们引入一套更完善的虚拟内存管理系统：[demand paging](./Unit3-Part2.md){target="_blank"}。
 
 [^1]: [Translation lookaside buffer | Wikipedia](https://en.wikipedia.org/wiki/Translation_lookaside_buffer){target="_blank"}
+
 [^2]: [Cache replacement policies | Wikipedia](https://en.wikipedia.org/wiki/Cache_replacement_policies){target="_blank"}
+
 [^3]: 出自 [Buttered cat paradox | Wikipedia](https://en.wikipedia.org/wiki/Buttered_cat_paradox){target="_blank"}，我在这里表示死循环。
+
 [^4]: [how does an inverted page table deal with multiple process accessing the same frame | Stack Overflow](https://stackoverflow.com/questions/44159535/how-does-an-inverted-page-table-deal-with-multiple-process-accessing-the-same-fr){target="_blank"}
+
 [^5]: [What is the difference between executable and relocatable in elf format? | Stack Overflow](https://stackoverflow.com/questions/24655839/what-is-the-difference-between-executable-and-relocatable-in-elf-format){target="_blank"}
+
 [^6]: 例如 ⓵ 异常处理程序，异常类型可能很多，对应的处理方案可能也会有很多，但均摊下来每一个异常处理程序的使用频率都不会很高；⓶ 数组列表等相对不那么智能的数据结构在定义声明的时候可能开了一大块内存，基本都是为了 bound 住可能需要的内存量的上界，但是可能实际上经常碰不到上界，例如我申请了一个 1024 长的 `int` 数组，但是我可能一般只会用到其中的前 128 个元素；⓷ 一些可能单纯不怎么常用的功能，道理和第一点是类似的。
+
 [^7]: [Shared Memory "Segment" in Operating System | Stack Overflow](https://stackoverflow.com/questions/34545631/shared-memory-segment-in-operating-system){target="_blank"}
+
 [^8]: [Where is linux shared memory actually located? | Stack Overflow](https://arc.net/l/quote/qjkjycww){target="_blank"}
