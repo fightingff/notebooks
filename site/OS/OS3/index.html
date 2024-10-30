@@ -1729,14 +1729,14 @@
 <h3 id="_2">内存保护</h3>
 <p>每一个进程在内存中都应当有一块连续的内存空间，而单个进程应当只能访问自己的内存空间，而不能访问其他进程的内存空间。这就是内存保护的基本要求。</p>
 <p>我们通过引入 base 和 limit 两个寄存器来实现框定进程的内存空间，当前进程的内存空间始于 base 寄存器中存储的地址，终于 base + limit 对应的地址，即：</p>
-<p><center> <img alt="" src="../img/27.png" /> </center>
+<p><img alt="" src="../img/27.png" />
 <center> A base and a limit register define a logical address space. (left)<br/>
 Hardware address protection with base and limit registers. (right)
 </center></p>
 <p>两个特殊的寄存器只能由内核通过特定的特权指令来修改。而内存的保护，通过<strong><a href="#MMU" target="_blank">内存管理单元(memory management unit, MMU)</a></strong>来实现，MMU 会在每次访问内存时，检查访问的地址是否在 base 和 limit 寄存器所定义的范围内，如果不在，则会产生一个异常，中断程序的执行。</p>
 <h3 id="_3">地址绑定</h3>
 <p>我们在<a href="../OS1/#链接器和装载器" target="_blank">总览#链接器和装载器</a>中提到过，静态的代码程序成为动态的进程，可能会需要图中这么几步。</p>
-<p><center> <img align="right" alt="" src="../img/28.png" width="40%" /> </center></p>
+<p><img align="right" alt="" src="../img/28.png" width="40%" /></p>
 <p>具体来说有三个阶段：编译时间(compile time)，装载时间(load time)和执行时间(execution time)。而内存也分三种：符号地址(symbolic addresses)，可重定位地址(relocatable addresses)（类似于一种相对量）和绝对地址(absolute addresses)。</p>
 <ul>
 <li>通常来说，在 compile time，compiler 会将代码中的 symbol 转为 relocatable addresses；而如果在 compile time 就知道了进程最终会被安置在何处，那么在 compile time 就将 symbol 转为 absolute addresses 也是可能的，只不过如果此时起始地址发生改变，就需要重新编译。</li>
@@ -1775,7 +1775,7 @@ Hardware address protection with base and limit registers. (right)
 <h4 id="variable-partition">Variable Partition</h4>
 <p>最简单的是一种<strong>可变划分(variable partition)</strong>的设计，即不对内存中的划分方式做约束，只要是空闲且足够大的连续内存区域都可以被分配。</p>
 <p>但我们可以想象，在内存被动态使用的过程中，原本完整的内存可能变得支离破碎。如果我们记一块连续的空闲内存为一个 hole，则原先可能只有一个 hole，而在长时间的运行后，内存中可能存在大量较小的，难以利用的 holes。这就是<strong>外部碎片(external fragmentation)</strong>，在最坏的情况下，每个非空闲的内存划分之间都可能有一块不大不小的 hole，而这些 hole 单独来看可能无法利用，但其总和可能并不小，这是个非常严重的问题。</p>
-<p><center> <img alt="" src="../img/30.png" /> </center>
+<p><img alt="" src="../img/30.png" />
 <center> Variable partition. 1 hole to 2 holes. </center></p>
 <p>但是显然我们不能频繁地要求操作系统去重新整理内存，所以我们需要想办法来减少外部碎片的产生。我们考虑三种分配策略：</p>
 <ul>
@@ -1790,8 +1790,8 @@ Hardware address protection with base and limit registers. (right)
 <p>在 fixed partition 中，会产生的这种种碎片，叫<strong>内部碎片(internal fragmentation)</strong>，它指的是在类似 fixed partition 的策略中，操作系统分配给进程的内存往往是成块的，这就会导致需求的分配量大于进程实际需求量，而那些被分配了但实际闲置的内存，就被称为内部碎片。我们之后介绍的分页技术，也同样会产生内部碎片。</p>
 <h3 id="_7">物理地址和虚拟地址</h3>
 <p>为了让内存具有更强的灵活性，我们区分内存的<strong>物理地址(physical address)</strong>和<strong>虚拟地址(virtual address)</strong>，后者也叫<strong>逻辑地址(logical address)</strong>。</p>
-<p>物理地址实际在内存设备中进行内存寻址，主要反应内存在硬件实现上的属性；而 CPU 所使用的一般指的是虚拟内存，主要反应内存在逻辑上的属性。物理地址和虚拟地址存在映射关系，而实现从虚拟地址到物理地址的映射的硬件，是<strong>内存管理单元(memory management unit, MMU)</strong><a id="MMU"/>，除了是实现虚拟地址-&gt;物理地址的映射外，MMU 还负责内存访问的<a href="#内存保护" target="_blank">保护</a>。我们在之后会将了解到，<a href="#硬件支持" target="_blank">TBL</a> 也属于 MMU 的一部分。</p>
-<p><center> <img alt="" src="../img/29.png" width="60%" /> </center>
+<p>物理地址实际在内存设备中进行内存寻址，主要反应内存在硬件实现上的属性；而 CPU 所使用的一般指的是虚拟内存，主要反应内存在逻辑上的属性。物理地址和虚拟地址存在映射关系，而实现从虚拟地址到物理地址的映射的硬件，是<strong>内存管理单元(memory management unit, MMU)</strong><a id="MMU"/>，除了是实现虚拟地址-&gt;物理地址的映射外，MMU 还负责内存访问的<a href="#内存保护" target="_blank">保护</a>。我们在之后会将了解到，<a href="#硬件支持" target="_blank">TLB</a> 也属于 MMU 的一部分。</p>
+<p><img alt="" src="../img/29.png" width="60%" />
 <center> Dynamic relocation using a relocation register.</center></p>
 <p>物理地址和虚拟地址的区分让使得用户程序不再需要（也不被允许）关注物理地址。此外，通过利用虚拟地址和物理地址的灵活映射，我们可以通过分页来实现良好的内存管理。</p>
 <div class="admonition tip">
@@ -1870,7 +1870,7 @@ Hardware address protection with base and limit registers. (right)
 <p>联系<a href="#页--虚拟地址" target="_blank">页 &amp; 虚拟地址</a>，考虑整个地址的二进制表示中表示页号的部分在整个二进制串中的构成！</p>
 </details>
 </div>
-<p><center> <img alt="" src="../img/31.png" width="50%" /> </center>
+<p><img alt="" src="../img/31.png" width="50%" />
 <center>
 Paging model of logical and physical memory.<br/>
 以 page table 中的第一项为例：<font color="blue">0</font>:<font color="green">5</font> 表示虚拟地址中的第 <font color="blue">0</font> 页对应物理地址中的第 <font color="green">5</font> 帧。
@@ -1909,15 +1909,15 @@ Paging model of logical and physical memory.<br/>
 <p>而其含义就是下一张页表的 0 号位。而我们知道，相邻页对应的帧不一定是连续的，但这个不连续的性质对虚拟地址是透明的。</p>
 <h4 id="_12">总体梳理</h4>
 <p>稍微对上面的内容做一下总结，我们拥有了<strong>逻辑的页</strong>到<strong>物理的帧</strong>的映射关系，这个映射关系存在<strong>页表</strong>里，实现逻辑上连续、物理上离散的内存<strong>块</strong>索引；而利用 page number + offset 的结构定位了内存块中的具体地址，其中 offset 在帧和页中都表示对于块首地址的偏移，因此可以直接迁移使用。</p>
-<p>因此，从虚拟地址到物理地址的映射，实际上就是在页表中查询虚拟地址中的 page number，将其换为 frame number，再直接拼接 offset 就行了。</p>
-<p><center> <img alt="" src="../img/32.png" width="80%" /> </center></p>
+<p>因此，从虚拟地址到物理地址的映射，实际上就是在页表中查询虚拟地址中的 page number（<strong>注意这里页表内并不需要存储page number，因为一个进程的虚拟地址是连续的，这里的page number本质上相当于页表这个数组的索引</strong>），将其换为 frame number，再直接拼接 offset 就行了。</p>
+<p><img alt="" src="../img/32.png" width="80%" /></p>
 <blockquote>
 <p>实际上这是个非常自然的过程：整体地看虚拟地址，就是直接在连续的虚拟内存中找到对应的 Byte；整体地看物理地址，同样也是直接在连续的物理内存中找到对应的 Byte。现在通过置换二进制地址字符串的前缀，实现了一个寻址空间的映射。而这个映射中，表示 offset 的后缀不变，正对应着页和帧中偏移寻址规则的统一。</p>
 </blockquote>
 <div class="admonition warning">
 <p class="admonition-title">Protection</p>
 <p>请注意，使用过程中有些页可能尚未与实际的帧建立映射关系，换句话来说是不可用的。所以我们需要一个手段来标识表项是否有效，于是在页表中引入 valid bit，用来标识页是否有效，如果试图访问 invalid 的地址，则会出现异常，以此实现了 protection。</p>
-<p><center> <img alt="" src="../img/34.png" width="80%" /> </center></p>
+<p><img alt="" src="../img/34.png" width="80%" /></p>
 <p>也有一些操作系统通过维护 page-table length register, PTLR 来实现 protection，这里不重点介绍。</p>
 </div>
 <div class="admonition tip">
@@ -1938,13 +1938,13 @@ Paging model of logical and physical memory.<br/>
 <h4 id="tlb">TLB</h4>
 <p>为了解决这个问题，我们引用计组里学到的 Eight Great Ideas 之 Make Common Case Fast！引入一个缓存来加速页表的维护：<strong>页表缓存(translation look-aside buffer, TLB)</strong>，它实际上是 MMU 的一部分[^1]，页号和帧号以键值对的形式存储在 TLB 中。除了访问速度快以外，TLB 允许并行地查询所有键值对。从效率上来说，现代的 TLB 已经能够在一个流水线节拍中完成查询操作。</p>
 <p>但是这么厉害的东西肯定还是有局限性的，TLB 一般都比较小，往往只能支持 32 - 1024 个表项。而且，作为一个“缓存”，它有可能产生 miss（即没在 TLB 中找到待查的页号），当 TLB miss 出现的时候，就需要访问放在内存中的页表，并做朴素的查询。同时，按照一定策略（如 LRU、round-robin to random 等[^2]）将当前查询的键值对更新到 TLB 中。</p>
-<p><center> <img alt="" src="../img/33.png" width="80%" /> </center></p>
+<p><img alt="" src="../img/33.png" width="80%" /></p>
 <p>此外，TLB 允许特定的表项被线固(wired down)，<u>被线固的表项不再允许被替换</u>。（~~这个中文是我自己才华横溢出来的，请不要到处用容易被当没见识。~~）</p>
 <div class="admonition warning">
 <p class="admonition-title">虽然页表是 per-process data structures，但 TLB 并不是！</p>
 </div>
 <p>正因如此，在 context switch 的时候，我们需要清空 TLB，即进行 flush 操作，否则下一个进程就会访问到上一个进程的页表。又或者我们不需要每次都清空 TLB，而是在 TLB 的表项中加入一个<strong>地址空间标识符(address-space identifier, ASIDs)</strong>字段；在查询页号时，也比较 ASID，只有 ASID 一致才算匹配成功。</p>
-<p><center> <img alt="" src="../img/35.png" width="80%" /> </center></p>
+<p><img alt="" src="../img/35.png" width="80%" /></p>
 <div class="admonition section">
 <p class="admonition-title">定量分析</p>
 <p>我们使用<strong>击中比例(hit ratio)</strong>来描述我们在 TLB 中成功找到我们需要的页帧键值对的概率，那么假设访问一次内存需要 <span class="arithmatex">\(t \text{nanoseconds}\)</span>，那么使用该 TLB 的<strong>有效内存访问时间(effective memory-access time)</strong>为：</p>
@@ -1987,7 +1987,9 @@ Paging model of logical and physical memory.<br/>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>│ p1    │ p2    │ d            │
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>└───────┴───────┴──────────────┘
 </code></pre></div>
-<p>类似的，我们可以将它看作在原先维护 p2 -&gt; d 的 inner 页表外，再维护一个 p1 -&gt; inner 的 outer 页表。通过这种方式，我们减少了单个页表所需要包含的表项数（原先一个页表需要有 2^p^ 个表项，现在只需要有 2^p1^ 或 2 ^p2^ 个即可）；除此之外，虽然看起来表总量增加了（现在一共需要 2^p1+p2^ + 2^p1^ 个表，原来只需要 2^p1+p2^ 个表），但是 ⓵ 一方面这个增加是可以忽略的相对小量，⓶ 另外一方面，实际上我们并不总是需要创建所有的表——假设某个 inner 表里的虚拟内地址我们都用不到，那么我们就不需要创建这个 inner 表，只需要在 outer 表中标记这个 inner 表是 invalid 就可以了。</p>
+<p>类似的，我们可以将它看作在原先维护 p2 -&gt; d 的 inner 页表外，再维护一个 p1 -&gt; inner 的 outer 页表。通过这种方式，我们减少了单个页表所需要包含的表项数（原先一个页表需要有 <span class="arithmatex">\(2^p\)</span> 个表项，现在只需要有 <span class="arithmatex">\(2^{p1}\)</span> 或 <span class="arithmatex">\(2 ^{p2}\)</span> 个即可）；除此之外，虽然看起来表总量增加了（现在一共需要 <span class="arithmatex">\(2^{p1+p2} + 2^{p1}\)</span> 个表，原来只需要 <span class="arithmatex">\(2^{p1+p2}\)</span> 个表），但是 </p>
+<p>⓵ 一方面这个增加是可以忽略的相对小量</p>
+<p>⓶ 另外一方面，实际上我们并不总是需要创建所有的表——假设某个 inner 表里的虚拟内地址我们都用不到，那么我们就不需要创建这个 inner 表，只需要在 outer 表中标记这个 inner 表是 invalid 就可以了。</p>
 <p>通过这种设计，我们成功地节省了维护页表所需要的内存空间，同时减小了连续内存对页表维护的约束。</p>
 <p>如上这种设计，就是<strong>分层分页(hierarchical paging)</strong>，而上面这个就是二级页表(two-level page table)设计。</p>
 <p>显然，有二就可以有三，有三就可以有四，具体使用哪种，应当秉持具体问题具体分析的原则。</p>
@@ -2010,7 +2012,7 @@ Paging model of logical and physical memory.<br/>
 </ul>
 </details>
 <p><strong>哈希页表(hashed page table)</strong>维护了一张哈希表，以页号的哈希为索引，维护了一个链表，每一个链表项包含页号、帧号、和链表 next 指针，以此来实现页号到帧号的映射。此时，一方面我们没必要再维护一个大若虚拟地址总数的表，另一方面由于引入链表，大量的指针操作导致对地址连续性的要求降低，也能变相地减轻连续内存约束。</p>
-<p><center> <img alt="" src="../img/37.png" width="80%" /> </center></p>
+<p><img alt="" src="../img/37.png" width="80%" /></p>
 <details class="section" open="open">
 <summary>clustered page tables</summary>
 <p>A variation of this scheme that is useful for 64-bit address spaces has been proposed. This variation uses <strong>clustered page tables</strong>, which are similar to hashed page tables except that <strong>each entry in the hash table refers to several pages</strong> (such as 16) rather than a single page. </p>
@@ -2037,21 +2039,15 @@ Paging model of logical and physical memory.<br/>
 <blockquote>
 <p>在这里我们只简单介绍一下交换的思想，而具体的细节与实现，将会在之后连同更明确的定义给出。</p>
 </blockquote>
-<figure markdown>
-<center> ![](img/38.png){ width=60% } </center>
-Standard swapping of two processes using a disk as a backing store.
-</figure>
-
+<p><img alt="" src="../img/38.png" width="60%" />
+<center> Standard swapping of two processes using a disk as a backing store. </center></p>
 <p>在标准的 swap 操作中，我们以进程为单位进行 swap，这意味着我们要把所有 per-process 的东西都一同 swap，相当于“冻结”整个 process 或“解冻”了整个 process，就好像跨内存和后备存储进行 context switch。可想而知，这个开销是巨大的。</p>
 <p>如今我们有分页技术，我们完全可以以页/帧为单位进行 swap，只不过我们称这种以页/帧为单位的<strong>交换(swap)</strong>叫<strong>换页(page)</strong>。</p>
 <blockquote>
 <p>显然这里的 “page” 是基于 <a href="#page-frame-def-2" target="_blank">Definition 2</a>。</p>
 </blockquote>
-<figure markdown>
-<center> ![](img/39.png){ width=60% } </center>
-Swapping with paging.
-</figure>
-
+<p><img alt="" src="../img/39.png" width="60%" />
+<center> Swapping with paging. </center></p>
 <div class="admonition property">
 <p class="admonition-title">优势</p>
 <p>利用页置换技术和虚拟内存的组合拳，我们可以让进程所使用的内存空间总和看起来大于硬件支持的物理内存空间大小上限，<strong>扩展</strong>抽象的“内存”的容量。</p>

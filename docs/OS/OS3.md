@@ -22,7 +22,7 @@
 
 我们通过引入 base 和 limit 两个寄存器来实现框定进程的内存空间，当前进程的内存空间始于 base 寄存器中存储的地址，终于 base + limit 对应的地址，即：
 
-<center> ![](img/27.png) </center>
+![](img/27.png)
 <center> A base and a limit register define a logical address space. (left)<br/>
 Hardware address protection with base and limit registers. (right)
 </center>
@@ -33,7 +33,7 @@ Hardware address protection with base and limit registers. (right)
 
 我们在[总览#链接器和装载器](./OS1.md#链接器和装载器){target="_blank"}中提到过，静态的代码程序成为动态的进程，可能会需要图中这么几步。
 
-<center> ![](img/28.png){ width=40% align=right} </center>
+![](img/28.png){ width=40% align=right}
 
 具体来说有三个阶段：编译时间(compile time)，装载时间(load time)和执行时间(execution time)。而内存也分三种：符号地址(symbolic addresses)，可重定位地址(relocatable addresses)（类似于一种相对量）和绝对地址(absolute addresses)。
 
@@ -84,7 +84,7 @@ Hardware address protection with base and limit registers. (right)
 
 但我们可以想象，在内存被动态使用的过程中，原本完整的内存可能变得支离破碎。如果我们记一块连续的空闲内存为一个 hole，则原先可能只有一个 hole，而在长时间的运行后，内存中可能存在大量较小的，难以利用的 holes。这就是**外部碎片(external fragmentation)**，在最坏的情况下，每个非空闲的内存划分之间都可能有一块不大不小的 hole，而这些 hole 单独来看可能无法利用，但其总和可能并不小，这是个非常严重的问题。
 
-<center> ![](img/30.png) </center>
+![](img/30.png)
 <center> Variable partition. 1 hole to 2 holes. </center>
 
 但是显然我们不能频繁地要求操作系统去重新整理内存，所以我们需要想办法来减少外部碎片的产生。我们考虑三种分配策略：
@@ -107,9 +107,9 @@ Hardware address protection with base and limit registers. (right)
 
 为了让内存具有更强的灵活性，我们区分内存的**物理地址(physical address)**和**虚拟地址(virtual address)**，后者也叫**逻辑地址(logical address)**。
 
-物理地址实际在内存设备中进行内存寻址，主要反应内存在硬件实现上的属性；而 CPU 所使用的一般指的是虚拟内存，主要反应内存在逻辑上的属性。物理地址和虚拟地址存在映射关系，而实现从虚拟地址到物理地址的映射的硬件，是**内存管理单元(memory management unit, MMU)**<a id="MMU"/>，除了是实现虚拟地址->物理地址的映射外，MMU 还负责内存访问的[保护](#内存保护){target="_blank"}。我们在之后会将了解到，[TBL](#硬件支持){target="_blank"} 也属于 MMU 的一部分。
+物理地址实际在内存设备中进行内存寻址，主要反应内存在硬件实现上的属性；而 CPU 所使用的一般指的是虚拟内存，主要反应内存在逻辑上的属性。物理地址和虚拟地址存在映射关系，而实现从虚拟地址到物理地址的映射的硬件，是**内存管理单元(memory management unit, MMU)**<a id="MMU"/>，除了是实现虚拟地址->物理地址的映射外，MMU 还负责内存访问的[保护](#内存保护){target="_blank"}。我们在之后会将了解到，[TLB](#硬件支持){target="_blank"} 也属于 MMU 的一部分。
 
-<center> ![](img/29.png){ width=60% } </center>
+![](img/29.png){ width=60% }
 <center> Dynamic relocation using a relocation register.</center>
 
 物理地址和虚拟地址的区分让使得用户程序不再需要（也不被允许）关注物理地址。此外，通过利用虚拟地址和物理地址的灵活映射，我们可以通过分页来实现良好的内存管理。
@@ -194,7 +194,7 @@ Hardware address protection with base and limit registers. (right)
 
         联系[页 & 虚拟地址](#页--虚拟地址){target="_blank"}，考虑整个地址的二进制表示中表示页号的部分在整个二进制串中的构成！
 
-<center> ![](img/31.png){ width=50% } </center>
+![](img/31.png){ width=50% }
 <center>
 Paging model of logical and physical memory.<br/>
 以 page table 中的第一项为例：<font color="blue">0</font>:<font color="green">5</font> 表示虚拟地址中的第 <font color="blue">0</font> 页对应物理地址中的第 <font color="green">5</font> 帧。
@@ -251,9 +251,9 @@ Paging model of logical and physical memory.<br/>
 
 稍微对上面的内容做一下总结，我们拥有了**逻辑的页**到**物理的帧**的映射关系，这个映射关系存在**页表**里，实现逻辑上连续、物理上离散的内存**块**索引；而利用 page number + offset 的结构定位了内存块中的具体地址，其中 offset 在帧和页中都表示对于块首地址的偏移，因此可以直接迁移使用。
 
-因此，从虚拟地址到物理地址的映射，实际上就是在页表中查询虚拟地址中的 page number，将其换为 frame number，再直接拼接 offset 就行了。
+因此，从虚拟地址到物理地址的映射，实际上就是在页表中查询虚拟地址中的 page number（**注意这里页表内并不需要存储page number，因为一个进程的虚拟地址是连续的，这里的page number本质上相当于页表这个数组的索引**），将其换为 frame number，再直接拼接 offset 就行了。
 
-<center> ![](img/32.png){ width=80% } </center>
+![](img/32.png){ width=80% }
 
 > 实际上这是个非常自然的过程：整体地看虚拟地址，就是直接在连续的虚拟内存中找到对应的 Byte；整体地看物理地址，同样也是直接在连续的物理内存中找到对应的 Byte。现在通过置换二进制地址字符串的前缀，实现了一个寻址空间的映射。而这个映射中，表示 offset 的后缀不变，正对应着页和帧中偏移寻址规则的统一。
 
@@ -261,7 +261,7 @@ Paging model of logical and physical memory.<br/>
 
     请注意，使用过程中有些页可能尚未与实际的帧建立映射关系，换句话来说是不可用的。所以我们需要一个手段来标识表项是否有效，于是在页表中引入 valid bit，用来标识页是否有效，如果试图访问 invalid 的地址，则会出现异常，以此实现了 protection。
 
-    <center> ![](img/34.png){ width=80% } </center>
+    ![](img/34.png){ width=80% }
 
     也有一些操作系统通过维护 page-table length register, PTLR 来实现 protection，这里不重点介绍。
 
@@ -288,7 +288,7 @@ Paging model of logical and physical memory.<br/>
 
 但是这么厉害的东西肯定还是有局限性的，TLB 一般都比较小，往往只能支持 32 - 1024 个表项。而且，作为一个“缓存”，它有可能产生 miss（即没在 TLB 中找到待查的页号），当 TLB miss 出现的时候，就需要访问放在内存中的页表，并做朴素的查询。同时，按照一定策略（如 LRU、round-robin to random 等[^2]）将当前查询的键值对更新到 TLB 中。
 
-<center> ![](img/33.png){ width=80% } </center>
+![](img/33.png){ width=80% }
 
 此外，TLB 允许特定的表项被线固(wired down)，<u>被线固的表项不再允许被替换</u>。（~~这个中文是我自己才华横溢出来的，请不要到处用容易被当没见识。~~）
 
@@ -296,7 +296,7 @@ Paging model of logical and physical memory.<br/>
     
 正因如此，在 context switch 的时候，我们需要清空 TLB，即进行 flush 操作，否则下一个进程就会访问到上一个进程的页表。又或者我们不需要每次都清空 TLB，而是在 TLB 的表项中加入一个**地址空间标识符(address-space identifier, ASIDs)**字段；在查询页号时，也比较 ASID，只有 ASID 一致才算匹配成功。
 
-<center> ![](img/35.png){ width=80% } </center>
+![](img/35.png){ width=80% }
 
 !!! section "定量分析"
 
@@ -355,7 +355,11 @@ Paging model of logical and physical memory.<br/>
     └───────┴───────┴──────────────┘
     ```
 
-    类似的，我们可以将它看作在原先维护 p2 -> d 的 inner 页表外，再维护一个 p1 -> inner 的 outer 页表。通过这种方式，我们减少了单个页表所需要包含的表项数（原先一个页表需要有 2^p^ 个表项，现在只需要有 2^p1^ 或 2 ^p2^ 个即可）；除此之外，虽然看起来表总量增加了（现在一共需要 2^p1+p2^ + 2^p1^ 个表，原来只需要 2^p1+p2^ 个表），但是 ⓵ 一方面这个增加是可以忽略的相对小量，⓶ 另外一方面，实际上我们并不总是需要创建所有的表——假设某个 inner 表里的虚拟内地址我们都用不到，那么我们就不需要创建这个 inner 表，只需要在 outer 表中标记这个 inner 表是 invalid 就可以了。
+    类似的，我们可以将它看作在原先维护 p2 -> d 的 inner 页表外，再维护一个 p1 -> inner 的 outer 页表。通过这种方式，我们减少了单个页表所需要包含的表项数（原先一个页表需要有 $2^p$ 个表项，现在只需要有 $2^{p1}$ 或 $2 ^{p2}$ 个即可）；除此之外，虽然看起来表总量增加了（现在一共需要 $2^{p1+p2} + 2^{p1}$ 个表，原来只需要 $2^{p1+p2}$ 个表），但是 
+    
+    ⓵ 一方面这个增加是可以忽略的相对小量
+    
+    ⓶ 另外一方面，实际上我们并不总是需要创建所有的表——假设某个 inner 表里的虚拟内地址我们都用不到，那么我们就不需要创建这个 inner 表，只需要在 outer 表中标记这个 inner 表是 invalid 就可以了。
 
     通过这种设计，我们成功地节省了维护页表所需要的内存空间，同时减小了连续内存对页表维护的约束。
 
@@ -382,7 +386,7 @@ Paging model of logical and physical memory.<br/>
 
     **哈希页表(hashed page table)**维护了一张哈希表，以页号的哈希为索引，维护了一个链表，每一个链表项包含页号、帧号、和链表 next 指针，以此来实现页号到帧号的映射。此时，一方面我们没必要再维护一个大若虚拟地址总数的表，另一方面由于引入链表，大量的指针操作导致对地址连续性的要求降低，也能变相地减轻连续内存约束。
 
-    <center> ![](img/37.png){ width=80% } </center>
+    ![](img/37.png){ width=80% }
 
     ???+ section "clustered page tables"
 
@@ -413,10 +417,8 @@ Paging model of logical and physical memory.<br/>
 
 > 在这里我们只简单介绍一下交换的思想，而具体的细节与实现，将会在之后连同更明确的定义给出。
 
-<figure markdown>
-<center> ![](img/38.png){ width=60% } </center>
-Standard swapping of two processes using a disk as a backing store.
-</figure>
+![](img/38.png){ width=60% }
+<center> Standard swapping of two processes using a disk as a backing store. </center>
 
 在标准的 swap 操作中，我们以进程为单位进行 swap，这意味着我们要把所有 per-process 的东西都一同 swap，相当于“冻结”整个 process 或“解冻”了整个 process，就好像跨内存和后备存储进行 context switch。可想而知，这个开销是巨大的。
 
@@ -424,10 +426,8 @@ Standard swapping of two processes using a disk as a backing store.
 
 > 显然这里的 “page” 是基于 [Definition 2](#page-frame-def-2){target="_blank"}。
 
-<figure markdown>
-<center> ![](img/39.png){ width=60% } </center>
-Swapping with paging.
-</figure>
+![](img/39.png){ width=60% }
+<center> Swapping with paging. </center>
 
 !!! property "优势"
 
