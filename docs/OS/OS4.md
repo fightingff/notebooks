@@ -2,11 +2,11 @@
 
 !!! info "导读"
 
-    [上一节](./Unit3-Part1.md){target="_blank"}我们介绍了内存的一些基本设计，并在最后提出了 swap，这一节我们将利用 swap 的思想，提出一套更完善的内存管理系统：demand paging。
+    [上一节](./OS3.md){target="_blank"}我们介绍了内存的一些基本设计，并在最后提出了 swap，这一节我们将利用 swap 的思想，提出一套更完善的内存管理系统：demand paging。
 
 ## 按需换页系统概述
 
-**按需换页(demand paging)**^[Wiki](https://en.wikipedia.org/wiki/Demand_paging){target="_blank"}^和[交换技术中的页置换](./Unit3-Part1.md#交换技术){target="_blank"}很类似，指只把**被需要**的页载入内存，是一种内存管理系统。
+**按需换页(demand paging)**[Wiki](https://en.wikipedia.org/wiki/Demand_paging){target="_blank"}和[交换技术中的页置换](./OS3.md#交换技术){target="_blank"}很类似，指只把**被需要**的页载入内存，是一种内存管理系统。
 
 !!! section "pure demand paging"
 
@@ -40,7 +40,7 @@
     1. 进程可能需要引用一个共享库的 page，而这个共享库的 page 已经在内存中，我们只需要更新一下页表把它链上去就行了；
     2. 进程可能需要引用一个之前被释放了的 page，而那个被释放的 page 还没有被 flush 或分配给别的进程，此时我们可以直接使用这个 page（~~捡垃圾！五秒原则？~~）；
 
-区别于之前的页表设计——访问 invalid 的表项是一种预期外行为，现在产生缺页反而**更多**是一种预期内的行为——系统对某个被 page out 了的页产生了“需求”。当然，情况 3. 这种非法操作也会引起异常，所以我们需要在之后的异常处理过程中对此做区分并分别处理。
+区别于之前的页表设计——访问 invalid 的表项是一种预期外行为，现在产生缺页反而**更多**是一种预期内的行为——系统对某个被 swap out 了的页产生了“需求”。当然，情况 3. 这种非法操作也会引起异常，所以我们需要在之后的异常处理过程中对此做区分并分别处理。
 
 > 说实话其实我感觉这里的逻辑稍微有点绕，可能是一些历史原因。
 
@@ -65,6 +65,8 @@
     </figure>
 
     > 我们可以在 [Lab5](https://zju-sec.github.io/os23fall-stu/lab5/){target="_blank"} 里对这一系列步骤有跟深刻的影响，Lab5 中的 vma 大概就是这里的“内部表”。
+
+    EAT(Effective Access Time) = (1 - p) * (memory access time) + p * (page fault overhead + swap page out time + swap page in time)
 
 !!! not-advice "慢！"
 
@@ -119,16 +121,16 @@
 
 ## 回顾 copy on write
 
-我们在[进程管理](./Unit1.md){target="_blank"}一节中提出了 [copy on write](./Unit1.md#copy-on-write){target="_blank"} 技术和 [vfork](./Unit1.md#vfork){target="_blank"} 技术，现在读者可以尝试再回顾一下这两个知识点与本节内容的联系。
+我们在[进程管理](./OS2.md){target="_blank"}一节中提出了 [copy on write](./Unit1.md#copy-on-write){target="_blank"} 技术和 [vfork](./OS2.md#vfork){target="_blank"} 技术，现在读者可以尝试再回顾一下这两个知识点与本节内容的联系。
+
+简单地说，copy on write 技术是一种优化技术，用于减少 page fault 的次数。在 fork 时，子进程并不会立即复制父进程的内存，而是共享父进程的内存，只有在子进程试图写入这个共享的内存时，才会触发 page fault进行复制。
 
 ## 可用帧列表
 
 在 demand paging 系统里，页是动态地被映射到帧的，所以我们需要维护一个**可用帧列表(free-frame list)**，用来记录当前哪些帧是空闲的。
 
-<figure markdown>
 <center> ![](img/42.svg) </center>
 Example of free-frame list.
-</figure>
 
 在系统启动后，我们需要将所有可用的帧都加入到 free-frame list 中；当有用户需要物理内存时候，就从 free-frame list 中取出一项，对其进行擦除，即被需求时清零(zero-fill-on-deman)。
 
@@ -203,9 +205,11 @@ Example of free-frame list.
     
     所以，我们可以在 proportional allocation 的基础上，在计算 $a_i$ 时综合考虑 priority。
 
+    比如课上讲的最朴素的办法，用priority替换 **proportional allocation**中的 $s_i$即可
+
 我们发现，上面关于内存分配大小的式子中，有一项 $n$ 表示 #process，区别于其它相对静态的参数，这个参数是会在调度过程中动态变化的，所以实际上分配给每个进程的 frame 数量也是会动态变化的。
 
-在多核设计下，有一种设计叫做 NUMA^[Wiki](https://en.wikipedia.org/wiki/Non-uniform_memory_access){target="_blank"}^，我们在 Overview 其实也提到过。在这种设计里，由于硬件设计问题，不同的 CPU 都有自己“更快”访问的内存。读者可以通过上面的 Wiki 链接做详细了解。
+在多核设计下，有一种设计叫做 [NUMA](https://en.wikipedia.org/wiki/Non-uniform_memory_access){target="_blank"}，我们在 Overview 其实也提到过。在这种设计里，由于硬件设计问题，不同的 CPU 都有自己“更快”访问的内存。读者可以通过上面的 Wiki 链接做详细了解。
 
 ## 置换策略
 
@@ -228,35 +232,7 @@ Example of free-frame list.
 
 ### OPT
 
-理论上最优，即 ⓵ 能带来最低的 page fault rate，⓶ 绝对不会遭受 [Belady's anomaly](#Belady-s-anomaly){target="_blank"} 的做法是：<u>在**未来**最久的时间内不会被访问到的页作为 victim frame</u>。这句话说起来有点绕，用英文描述是：Replace the page that **will** not be used for the longest period of time.
-
-换句话来说就是选之后再也不会被用到的或（如果没有前者）下一次用到的时间最晚的页作为 victim frame。
-
-可以发现，我们实际上很难来预测一个 frame 下一次被使用是什么时候，所以该方法只是一个理论上的最优建模，我们在后面应当考虑去逼近这个建模。
-
-???+ tip "头脑风暴"
-
-    这段内容有没有让你想起我们已经学过的某个东西？
-
-    ??? success "提示"
-
-        [Shortest-Job-First Scheduling](./Unit1.md#SJF){target="_blank"}!
-
-        实际上，下面介绍 FIFO 你也应当会想起 [FCFS](./Unit1.md#FCFS){target="_blank"} 调度算法。
-
-### FIFO
-
-先入先出(first-in, first-out, FIFO)策略，即<u>选择正在使用中的、最早进入内存的 frame 作为 victim frame</u>。我们可以通过在内存中完整地维护一个 FIFO 队列来实现这个策略。
-
-FIFO 策略的优点就是简单，方便实现；缺点是并不够好——早被载入的 page 也可能会被频繁的使用。换句话来说，这个方法用被载入的早晚来建模 page 的使用频率，但是这个建模相比 [optimal](#OPT){target="_blank"} 的建模并不足够接近。
-
-???+ tip "头脑风暴"
-
-    请读者试着思考一下，假设现在最早被载入的 page 正在使用过程中，这时候出现了一个 page fault，会发生什么？会导致出现错误吗？
-
-    ??? success "提示"
-            
-        会影响效率，但是不会出错哦！
+理论上最优，即 ⓵ 能带来最低的 page fault rate，⓶ 绝对不会遭受 [Belady's anomaly现象](https://en.wikipedia.org/wiki/B%C3%A9l%C3%A1dy%27s_anomaly) 的做法是：<u>在**未来**最久的时间内不会被访问到的页作为 victim frame</u>。
 
 <a id="Belady-s-anomaly">
 ??? extra "Belady's anomaly"
@@ -272,6 +248,36 @@ FIFO 策略的优点就是简单，方便实现；缺点是并不够好——早
     $$
 
     在 3 个 frame 的情况下，page fault rate 为 $\frac{9}{12} = 75.0%$；而在 4 个 frame 的情况下，page fault rate 为$\frac{10}{12} = 83.3%$。
+
+这句话说起来有点绕，用英文描述是：Replace the page that **will** not be used for the longest period of time.换句话来说就是选之后再也不会被用到的或（如果没有前者）下一次用到的时间最晚的页作为 victim frame。
+
+可以发现，我们实际上很难来预测一个 frame 下一次被使用是什么时候，所以该方法只是一个理论上的最优建模，我们在后面应当考虑去逼近这个建模。
+
+???+ tip "头脑风暴"
+
+    这段内容有没有让你想起我们已经学过的某个东西？
+
+    ??? success "提示"
+
+        [Shortest-Job-First Scheduling](./OS2.md#SJF){target="_blank"}!
+
+        实际上，下面介绍 FIFO 你也应当会想起 [FCFS](./OS2.md#FCFS){target="_blank"} 调度算法。
+
+### FIFO
+
+先入先出(first-in, first-out, FIFO)策略，即<u>选择正在使用中的、最早进入内存的 frame 作为 victim frame</u>。我们可以通过在内存中完整地维护一个 FIFO 队列来实现这个策略。
+
+FIFO 策略的优点就是简单，方便实现；
+
+缺点是并不够好——早被载入的 page 也可能会被频繁的使用。换句话来说，这个方法用被载入的早晚来建模 page 的使用频率，但是这个建模相比 [optimal](#OPT){target="_blank"} 的建模并不足够接近。
+
+???+ tip "头脑风暴"
+
+    请读者试着思考一下，假设现在最早被载入的 page 正在使用过程中，这时候出现了一个 page fault，会发生什么？会导致出现错误吗？
+
+    ??? success "提示"
+            
+        会影响效率，但是不会出错哦！（只会导致这个 page 被替换后重新载入）
 
 ### LRU
 
@@ -317,9 +323,17 @@ LRU 是比较常用的 replacement algorithm（实际上是 [LRU-Approximation](
 
 多数操作系统会提供一个叫 reference bit 的功能。所有 frame 都有一个与之关联的 reference bit，在初始化的时候都会被置 0；而每当 frame 被使用时，reference bit 就会被置 1。于是，我们可以通过观察 reference bit 来观察某些 frame 是否被使用过。
 
-开始之前，我们分析 LRU 的限制，主要体现在两个方面：⓵ 需要全部历史信息，维护成本较大（需要设计数据结构来存储）；⓶ 数据维护过于频繁，每次使用 frame 都需要用一段不小的开销去更新状态。
+开始之前，我们分析 LRU 的限制，主要体现在两个方面：
 
-对应的解决方案是：⓵ 我们完全可以只关注一个邻域里的历史信息，⓶ 我们可以降低更新 frame 信息的频率。（虽然对于后者，实际上如果对应于 reference bit 的更新，其实并没有降低频率。）
+⓵ 需要全部历史信息，维护成本较大（需要设计数据结构来存储）；
+
+⓶ 数据维护过于频繁，每次使用 frame 都需要用一段不小的开销去更新状态。
+
+对应的解决方案是：
+
+⓵ 我们完全可以只关注一个邻域里的历史信息，
+
+⓶ 我们可以降低更新 frame 信息的频率。（虽然对于后者，实际上如果对应于 reference bit 的更新，其实并没有降低频率。）
 
 ???+ section "Additional-Reference-Bits Algorithm"
 
@@ -333,7 +347,7 @@ LRU 是比较常用的 replacement algorithm（实际上是 [LRU-Approximation](
 
     而之所以从高位开始，是因为在数值大小体系中，高位代表着高权重，正好对应 reference 出现的越近，frame 越新。所以，我们可以直接找这个 bits vector 中最小的那个 frame 作为 victim frame。
 
-???+ section "Second-Chance Algorithm"
+???+ section "Second-Chance（Clock） Algorithm"
 
     Second-Chance Algorithm 只利用 reference bit 来进行置换，类似 [FIFO](#FIFO){target="_blank"} 的改进版，在 FIFO 的基础上，我们引入了 reference bit，并且定期擦除 reference bit。
 
@@ -402,7 +416,7 @@ LRU 是比较常用的 replacement algorithm（实际上是 [LRU-Approximation](
 
     当然，我们需要维护每个进程所拥有的 frame 数量被 minimum frame number 给 bound 限住。
 
-    对比 local replacement 和 global replacement，主要就是一个封闭性和灵活性的 trade-off，很直观：global replacement 分配更灵活，内存的利用率更高，但对于 frame 被“抢”的进程来说，整体运行的效率就不稳定了；反观 local replacement，虽然由于能够利用的内存有限，可能出现别的进程省了不少但是自己很吃紧的情况，出现内存利用率较低的情况，但整体来说较为稳定，进程之间相对来说不会**互相干扰**。
+    对比 local replacement 和 global replacement，主要就是一个封闭性和灵活性的 trade-off，很直观：global replacement 分配更灵活，内存的利用率更高，但对于 frame 被“抢”的进程来说，整体运行的效率就不稳定了；反观 local replacement，虽然由于能够利用的内存有限，可能出现别的进程剩下了不少空闲空间但是自己很吃紧，内存利用率较低的情况，但整体来说较为稳定，进程之间相对来说不会**互相干扰**。
 
     > 上面是书上的意思，但我认为这个评价还是不公平的，因为所谓的、属于进程的 frames 的数量是会变的，在新的进程被 allocation 后，进程总数会增加，而这个新进程只能从别的地方刮一些内存来用，所以就算用的是 local replacement，也说不上特别稳定。
 
@@ -410,7 +424,7 @@ LRU 是比较常用的 replacement algorithm（实际上是 [LRU-Approximation](
 
 ## 抖动
 
-倘若系统的多道程度过高，那么可能分配给每一个 process 的 frames 数量就会比较少，process 所使用的 frames 中被频繁使用的 page 占比更大。这时候可能就会产生较为**频繁的 paging 活动**——几乎所有 frames 都正在被使用，相当于每次置换都会导致一个新的 page fault——进而导致 CPU 的利用率下降，这种现象被称为**抖动(thrashing)**。
+倘若系统的多道程度过高，或者IO请求过多，那么可能分配给每一个 process 的 frames 数量就会比较少，process 所使用的 frames 中被频繁使用的 page 占比更大。这时候可能就会产生较为**频繁的 paging 活动**——几乎所有 frames 都正在被使用，相当于每次置换都会导致一个新的 page fault——进而导致 CPU 的利用率下降，这种现象被称为**抖动(thrashing)**。
 
 例如，process A 可能抢走了 process B 的正要被使用的 frame，于是导致 process B 之后会产生一次 page fault；而在处理这个 page fault 的时候，可能又把 process C 的正要使用的 frame 给抢走了……
 
@@ -431,6 +445,11 @@ LRU 是比较常用的 replacement algorithm（实际上是 [LRU-Approximation](
 ### Working Set
 
 还有一种基于局部性假设的做法，叫 working set model。它的大致思路是将「每一个进程在一个 $\Delta$ 时间窗口内用到过的 frame」建模为一个进程的 working set $WS_i$，如果 $\sum_i |WS_i| > m$，即所有进程的 working set 的大小之和大于可用 frame 的数量，那么就可能会出现 thrashing。此时操作系统可能就会选择挂起某个 process，以降低 degree of multiprogramming。这个做法的一个问题和 LRU 是类似的，要去维护 $WS_i$ 是比较吃力的，而解决办法也是类似的，我们可以近似地去维护 $WS_i$。
+
+但是$\Delta$ 的选择是一个比较困难的问题，会大大影响系统的估计准确度：
+
+- $\Delta$ 太小，可能会导致没能覆盖整个系统的局部性
+- $\Delta$ 太大，可能会导致覆盖了太多的局部性，进而导致过度的挂起
 
 详细内容不再展开，读者可以参考 [Wiki](https://en.wikipedia.org/wiki/Working_set){target="_blank"} 做更多了解。此外，working set 的思路可以用于实现 [pre-paging](#pre-paging){target="_blank"}。
 

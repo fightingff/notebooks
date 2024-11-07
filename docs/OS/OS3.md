@@ -454,7 +454,7 @@ Paging model of logical and physical memory.<br/>
 
 > 但是无论如何，硬盘的速度还是不如内存，所以在内存足够的情况下我们一般不使用 swap。
 
-在下一节，我们引入一套更完善的虚拟内存管理系统：[demand paging](./Unit3-Part2.md){target="_blank"}。
+在下一节，我们引入一套更完善的虚拟内存管理系统：[demand paging](./OS4.md){target="_blank"}。
 
 [^1]: [Translation lookaside buffer | Wikipedia](https://en.wikipedia.org/wiki/Translation_lookaside_buffer){target="_blank"}
 

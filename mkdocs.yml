@@ -34,6 +34,7 @@ nav:
           - Overview: OS/OS1.md
           - Process: OS/OS2.md
           - Memory: OS/OS3.md
+          - Virtual Memory: OS/OS4.md
   - Tools:
       - Git: Git.md
       - Makefile & CMake: Make.md

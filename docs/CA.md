@@ -279,11 +279,11 @@
     
     - Blocking
     
-            通过分块，使得内存访问更加连续，如矩阵乘法
-    
-            ??? example
-    
-                ![1730255202411](image/CA/1730255202411.png)
+        通过分块，使得内存访问更加连续，如矩阵乘法
+
+        ??? example
+
+            ![1730255202411](image/CA/1730255202411.png)
 
 - **Hardware Prefetching**
 
@@ -301,7 +301,7 @@
 
 - **HBM**
 
-    - 使用high-bandwidth memory作为L4 cache（对于一般的DRAM,需要多次访问才能读取完整的cache line，一次访问tag, 一次访问data）
+    - 先进封装技术，使用high-bandwidth memory作为L4 cache（对于一般的DRAM,需要多次访问才能读取完整的cache line，一次访问tag, 一次访问data）
         - 把 tag 和 data 放在同一行中
         - alloy cache, 把tag和data混合在一起
 
@@ -328,4 +328,68 @@
 
     - 同一个物理机上可以运行多个虚拟机
     - 多个虚拟机可以共享硬件资源
+    - 隔离性、安全性、隐私性高
 
+- 劣势
+
+    - 微小的性能下降
+
+## Chapter 3
+
+### ILP (Instruction Level Parallelism)
+
+#### Pipelining
+
+- Floating-Point Operation
+
+    > 一般来说，浮点数运算的延迟比整数运算要长
+
+    - 降低时钟频率：导致整个流水线其他指令的速度也会下降
+    
+    - 多个功能单元：增加硬件成本，从而加速浮点数运算 
+
+- Structure Hazard
+
+    - Interlock Detection
+
+        - ID、MEM冲突，进行重新排序
+    
+- Data Hazard
+
+    - WAW（Write After Write）
+
+        - 两个指令同时写入，后者会覆盖前者的结果，可能会由于指令运行速度不同而导致错误（比如前面的指令运行较慢，后面的指令先写入，导致最终留下了前面指令的写入结果）
+    
+    - RAW（Read After Write）
+
+        - 一个指令读取了另一个指令的写入结果，但是另一个指令还没有写入，导致读取错误的结果，因此需要等待另一个指令写入完成再读取
+    
+    - WAR（Write After Read）
+
+        - 一个指令写入了一个寄存器，另一个指令读取了这个寄存器，但是读取的指令先执行，导致读取错误的结果，因此需要等待写入完成再读取
+
+- **Exploitation** 
+
+    - Compiler-based static parallelism
+
+        - Loop unrolling
+
+            - 通过展开循环，增加指令级并行性
+
+        - Software pipelining
+
+            - 通过重组指令，增加指令级并行性
+    
+    - Hardware-based dynamic parallelism 
+
+- Name Dependence
+
+    
+    !!! question
+    
+        （假设指令i先于指令j执行）
+    
+        - Anti Dependence：i读取Rx, j写入Rx，本质上没有依赖，但是i,j的执行顺序不能颠倒
+        - Output Dependence：i写入Rx, j写入Rx，本质上没有依赖，但是i,j的执行顺序不能颠倒
+  
+    Register Renaming: 通过重命名寄存器，使得不同指令可以使用相同的寄存器，从而避免数据冲突
