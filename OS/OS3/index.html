@@ -14,7 +14,7 @@
         <link rel="prev" href="../OS2/">
       
       
-        <link rel="next" href="../../Git/">
+        <link rel="next" href="../OS4/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -1233,6 +1233,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OS4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Virtual Memory
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1723,7 +1744,7 @@
 <p>除了性能，内存还需要实现一些保护措施，防止程序越界访问内存，或者程序之间互相干扰。</p>
 <p>同时，由于计算机运行程序是一个动态的过程，而我们使用内存往往需要的是连续的、大块的内存，所以在运行过程中如何保证内存的分布是相对完整的，也是一个重要的问题。</p>
 <p>在引入<a href="#帧--页" target="_blank">帧 &amp; 页</a>设计后，我们不再需要以进程为单位去观察内存，而是以页为单位，这意味着粒度更小，我们可以更加灵活地去管理内存。</p>
-<p>在<a href="#交换技术" target="_blank">交换技术</a>的支持下，<strong>不是正在被使用的</strong>虚拟内存可以<strong>实际</strong>被映射到物理内存或<a href="#交换技术" target="_blank">后备存储</a>中。更具体的来说，我们会将“暂时用不到”的东西暂放在<a href="#交换技术" target="_blank">后备存储</a>中，而在需要的时候将它们换到物理内存中。而在<a href="../Unit3-Part2/" target="_blank">下一节</a>，我们要关注的重要问题就是，这些操作具体如何执行、如何优化，也就是介绍 demand paging 系统。</p>
+<p>在<a href="#交换技术" target="_blank">交换技术</a>的支持下，<strong>不是正在被使用的</strong>虚拟内存可以<strong>实际</strong>被映射到物理内存或<a href="#交换技术" target="_blank">后备存储</a>中。更具体的来说，我们会将“暂时用不到”的东西暂放在<a href="#交换技术" target="_blank">后备存储</a>中，而在需要的时候将它们换到物理内存中。而在<a href="./Unit3-Part2.md" target="_blank">下一节</a>，我们要关注的重要问题就是，这些操作具体如何执行、如何优化，也就是介绍 demand paging 系统。</p>
 </div>
 <h2 id="_1">内存基础设计</h2>
 <h3 id="_2">内存保护</h3>
@@ -2066,7 +2087,7 @@ Diagram showing virtual memory that is larger than physical memory.
 <p><strong>这一部分的内容写的比较简略，对应课本 10.2.3 的后半部分。</strong></p>
 <p>但是无论如何，硬盘的速度还是不如内存，所以在内存足够的情况下我们一般不使用 swap。</p>
 </blockquote>
-<p>在下一节，我们引入一套更完善的虚拟内存管理系统：<a href="../Unit3-Part2/" target="_blank">demand paging</a>。</p>
+<p>在下一节，我们引入一套更完善的虚拟内存管理系统：<a href="../OS4/" target="_blank">demand paging</a>。</p>
 <p>[^1]: <a href="https://en.wikipedia.org/wiki/Translation_lookaside_buffer" target="_blank">Translation lookaside buffer | Wikipedia</a></p>
 <p>[^2]: <a href="https://en.wikipedia.org/wiki/Cache_replacement_policies" target="_blank">Cache replacement policies | Wikipedia</a></p>
 <p>[^3]: 出自 <a href="https://en.wikipedia.org/wiki/Buttered_cat_paradox" target="_blank">Buttered cat paradox | Wikipedia</a>，我在这里表示死循环。</p>

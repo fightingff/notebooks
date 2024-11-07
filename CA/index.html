@@ -936,6 +936,45 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#chapter-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 3
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ilp-instruction-level-parallelism" class="md-nav__link">
+    <span class="md-ellipsis">
+      ILP (Instruction Level Parallelism)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ILP (Instruction Level Parallelism)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pipelining" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pipelining
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1165,6 +1204,27 @@
   
   <span class="md-ellipsis">
     Memory
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OS/OS4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Virtual Memory
   </span>
   
 
@@ -1566,6 +1626,45 @@
   <a href="#virtual-machine" class="md-nav__link">
     <span class="md-ellipsis">
       Virtual Machine
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 3
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ilp-instruction-level-parallelism" class="md-nav__link">
+    <span class="md-ellipsis">
+      ILP (Instruction Level Parallelism)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ILP (Instruction Level Parallelism)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pipelining" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pipelining
     </span>
   </a>
   
@@ -1998,12 +2097,11 @@
 </li>
 <li>
 <p>Blocking</p>
-<div class="highlight"><pre><span></span><code>通过分块，使得内存访问更加连续，如矩阵乘法
-
-??? example
-
-    ![1730255202411](image/CA/1730255202411.png)
-</code></pre></div>
+<p>通过分块，使得内存访问更加连续，如矩阵乘法</p>
+<details class="example">
+<summary>Example</summary>
+<p><img alt="1730255202411" src="../image/CA/1730255202411.png" /></p>
+</details>
 </li>
 </ul>
 </li>
@@ -2032,7 +2130,7 @@
 <li>
 <p><strong>HBM</strong></p>
 <ul>
-<li>使用high-bandwidth memory作为L4 cache（对于一般的DRAM,需要多次访问才能读取完整的cache line，一次访问tag, 一次访问data）<ul>
+<li>先进封装技术，使用high-bandwidth memory作为L4 cache（对于一般的DRAM,需要多次访问才能读取完整的cache line，一次访问tag, 一次访问data）<ul>
 <li>把 tag 和 data 放在同一行中</li>
 <li>alloy cache, 把tag和data混合在一起</li>
 </ul>
@@ -2063,7 +2161,104 @@
 <ul>
 <li>同一个物理机上可以运行多个虚拟机</li>
 <li>多个虚拟机可以共享硬件资源</li>
+<li>隔离性、安全性、隐私性高</li>
 </ul>
+</li>
+<li>
+<p>劣势</p>
+<ul>
+<li>微小的性能下降</li>
+</ul>
+</li>
+</ul>
+<h2 id="chapter-3">Chapter 3</h2>
+<h3 id="ilp-instruction-level-parallelism">ILP (Instruction Level Parallelism)</h3>
+<h4 id="pipelining">Pipelining</h4>
+<ul>
+<li>
+<p>Floating-Point Operation</p>
+<blockquote>
+<p>一般来说，浮点数运算的延迟比整数运算要长</p>
+</blockquote>
+<ul>
+<li>
+<p>降低时钟频率：导致整个流水线其他指令的速度也会下降</p>
+</li>
+<li>
+<p>多个功能单元：增加硬件成本，从而加速浮点数运算 </p>
+</li>
+</ul>
+</li>
+<li>
+<p>Structure Hazard</p>
+<ul>
+<li>
+<p>Interlock Detection</p>
+<ul>
+<li>ID、MEM冲突，进行重新排序</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Data Hazard</p>
+<ul>
+<li>
+<p>WAW（Write After Write）</p>
+<ul>
+<li>两个指令同时写入，后者会覆盖前者的结果，可能会由于指令运行速度不同而导致错误（比如前面的指令运行较慢，后面的指令先写入，导致最终留下了前面指令的写入结果）</li>
+</ul>
+</li>
+<li>
+<p>RAW（Read After Write）</p>
+<ul>
+<li>一个指令读取了另一个指令的写入结果，但是另一个指令还没有写入，导致读取错误的结果，因此需要等待另一个指令写入完成再读取</li>
+</ul>
+</li>
+<li>
+<p>WAR（Write After Read）</p>
+<ul>
+<li>一个指令写入了一个寄存器，另一个指令读取了这个寄存器，但是读取的指令先执行，导致读取错误的结果，因此需要等待写入完成再读取</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Exploitation</strong> </p>
+<ul>
+<li>
+<p>Compiler-based static parallelism</p>
+<ul>
+<li>
+<p>Loop unrolling</p>
+<ul>
+<li>通过展开循环，增加指令级并行性</li>
+</ul>
+</li>
+<li>
+<p>Software pipelining</p>
+<ul>
+<li>通过重组指令，增加指令级并行性</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Hardware-based dynamic parallelism </p>
+</li>
+</ul>
+</li>
+<li>
+<p>Name Dependence</p>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>（假设指令i先于指令j执行）</p>
+<ul>
+<li>Anti Dependence：i读取Rx, j写入Rx，本质上没有依赖，但是i,j的执行顺序不能颠倒</li>
+<li>Output Dependence：i写入Rx, j写入Rx，本质上没有依赖，但是i,j的执行顺序不能颠倒</li>
+</ul>
+</div>
+<p>Register Renaming: 通过重命名寄存器，使得不同指令可以使用相同的寄存器，从而避免数据冲突</p>
 </li>
 </ul>
 
