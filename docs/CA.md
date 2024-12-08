@@ -340,6 +340,10 @@
 
 #### Pipelining
 
+> 通过流水线并行提高总体的运行效率（latency hidding）
+>
+> 注意load balance，或者增加流水线层级来降低某一环节的延迟，因为流水线的频率取决于最慢的环节
+
 - Floating-Point Operation
 
     > 一般来说，浮点数运算的延迟比整数运算要长
@@ -349,6 +353,10 @@
     - 多个功能单元：增加硬件成本，从而加速浮点数运算 
 
 - Structure Hazard
+
+    - Hardware Bandwidth
+
+        - 通过增加硬件资源，增加带宽，从而提高效率
 
     - Interlock Detection
 
@@ -384,12 +392,81 @@
 
 - Name Dependence
 
-    
     !!! question
     
-        （假设指令i先于指令j执行）
+        （假设指令i先于指令j执行 & i,j指令靠得很近）
     
         - Anti Dependence：i读取Rx, j写入Rx，本质上没有依赖，但是i,j的执行顺序不能颠倒
         - Output Dependence：i写入Rx, j写入Rx，本质上没有依赖，但是i,j的执行顺序不能颠倒
   
     Register Renaming: 通过重命名寄存器，使得不同指令可以使用相同的寄存器，从而避免数据冲突
+
+- Control Dependence
+
+    - Branch Hazard
+    
+        - Stall: 等待分支结果
+        - Predict: 预测分支结果
+            
+            - Static Prediction
+                固定预测策略
+
+            - Dynamic Prediction
+             
+                > 越复杂，消耗越大，利用的历史信息越多
+            
+                - 1-bit predictor（last time BHT）：根据上一次的结果来预测
+                - 2-bit predictor（BHT）：根据多次的结果来预测
+                - Local predictor：根据当前指令的历史来预测
+                - Correlating predictor：根据多个不同指令的历史来预测
+                - Two-level predictor：根据两个预测器的结果来预测，获得更多global信息
+                - Hybrid / Alloyed predictor：多种预测器混合使用
+ 
+        - Delayed Branch: 延迟分支，即先执行后面一些无关指令，等待分支结果（尽早解决，减少延迟）
+    
+    - Loop Unrolling
+
+        - 减少循环branch跳转
+        - 但是要考虑Instruction Cache容量问题，不一定展开越多越好
+    
+    - Dynamic Scheduling
+
+        - Out-of-order
+
+    - Scoreboard
+
+        > 使用数据流的形式，通过硬件来解决数据冲突
+
+        - Four Steps
+
+            - Issue: 选择可以执行的指令
+            - Read Operands: 读取操作数
+            - Execution
+            - Write Back: 结果写回
+        
+        - Functional Unit Status
+
+            - Busy : 该功能单元是否被占用
+            - Op : 该功能单元执行的指令
+            - Fi : 目标寄存器
+            - Fj, Fk ： 源寄存器
+            - Qj, Qk ： **指向源寄存器的计算单元的指针**
+            - Rj, Rk ： 源寄存器是否就绪，读完之后状态会改写成No
+    
+    - Tomasulo Algorithm
+
+        > 消除WAW, WAR依赖
+        >
+        > 通过添加RS（Reservation stations）存储操作数
+
+        - Register Renaming
+        
+            - WAR: rename latter/destination
+            - WAW: rename former 
+        
+        - Seven fields:
+            - Op : 操作类型
+            - Qj, Qk : 源操作数
+            - Vj, Vk : **源操作数的值**
+            - A : load/store地址
+            - Busy : 是否被占用
