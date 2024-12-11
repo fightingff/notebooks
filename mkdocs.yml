@@ -35,6 +35,10 @@ nav:
           - Process: OS/OS2.md
           - Memory: OS/OS3.md
           - Virtual Memory: OS/OS4.md
+          - Synchronization: 
+            - Basic Sync: OS/OS5.md
+            - Calssic Problems: OS/OS6.md
+            - Deadlock: OS/OS7.md
   - Tools:
       - Git: Git.md
       - Makefile & CMake: Make.md

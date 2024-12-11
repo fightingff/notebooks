@@ -64,6 +64,8 @@
 
 !!! definition "race condition"
     
+    > A race condition is a situation in which a memory location is accessed concurrently, and at least one access is a write.
+
     类似这种的，由两个信号产生竞争，其竞争情况影响最终结果的情况，被称为**竞态条件(race condition)**。在上面这个例子中，谁后执行，最终结果就是谁的输出，而另一个用户的输出则会被覆盖。
 
     需要注意的是，我们对竞态条件的看法并不应该是“如何控制竞争结果”，因为无论竞争结果如何（甚至谁赢了结果可能都一样），只要这种“竞争”出现，那么最终结果就有可能不符合预期的。就比如上面的例子，无论最终 `mem[x]` 是 3 还是 2 都不对，理想情况下应该是 4——无论是先进行 `+1` 还是先进行 `+2`。
@@ -171,6 +173,26 @@
     欲解决 kernel code 中的 CS 问题，我们可以保证只有一个进程可以运行在 kernel mode，这样就可以保证在 kernel code 中访问临界资源的行为，从而解决 CS 问题。
 
     对于单处理器来说，我们只需要在 kernel code 中禁止中断，就可以保证只有一个进程可以运行在 kernel mode；而对于多处理器来说，这种方法就不那么合适了——我们需要同时告诉多个处理器中断被禁止，而这个过程中的时延仍然会产生问题；不仅如此，这个方法也会带来额外的开销。在多处理器语境下，我们需要实现**抢占式内核(preemptive kernels)**和**非抢占式内核(non-preemptive kernels)**，关键是后者实现了一段时间内只有一个进程可以运行在 kernel mode[^2]。
+
+    > 抢占式内核允许进程在内核模式运行时被抢占。
+    > 
+    > 非抢占内核不允许在内核模式中运行的进程被抢占;内核模式下，进程将一直运行，直到它退出内核模式、阻塞或自愿让出CPU控制。
+
+    ??? info "参考"
+        
+        为保证Linux内核在一些情况下不会被抢占，抢占式内核使用了一个变量preempt_ count，称为内核抢占锁。这一变量被设置在进程的PCB结构task_struct中。每当内核要进入以上几种状态时，变量preempt_count就加1，指示内核不允许抢占。每当内核从以上几种状态退出时，变量preempt_count就减1，同时进行可抢占的判断与调度。
+
+        从中断返回内核空间的时候，内核会检查need_resched和preempt_count的值。如果need_resched被设置，并且preempt_count为0的话，这说明可能有一个更为重要的任务需要执行并且可以安全地抢占，此时，调度程序就会被调用。如果preempt_count不为0，则 说明内核现在处干不可抢占状态，不能进行重新调度。这时，就会像通常那样直接从中断返回当前执行进程。如果当前进程持有的所有的锁都被释放了，那么 preempt_count就会重新为0。此时，释放锁的代码会检查need_ resched是否被设置。如果是的话，就会调用调度程序。
+
+        因此，内核的抢占性是在以下情况下被激活的：
+
+        - 当从中断处理程序正在执行，且返回内核空间之前。
+
+        - 当内核代码再一次具有可抢占性的时候，如解锁及使能软中断等。
+
+        - 如果内核中的任务显式的调用schedule()
+
+        - 如果内核中的任务阻塞(这同样也会导致调用schedule())
 
 接下来我们探索更为通用的解决方案。
 
@@ -549,7 +571,7 @@ increment(atomic_int * v) {
     int tmp;
     do {
         tmp = *v;
-    } while ( tmp != compare_and_swap(v, tmp, tmp+1) );
+    } while ( tmp == compare_and_swap(v, tmp, tmp+1) );
 }
 ```
 
@@ -657,6 +679,8 @@ Semaphores 只提供两个标准化的接口：`wait()`（或`P()`） 和 `signa
 显然，这两个操作的实现也应当保证是 atomic 的。
 
 区别于普通的 atomic variables，semaphores 多了在第 2 行的 busy wait，这暗含了一种“有限”的概念，即保证 $0 \leq S$。在实际使用中，semaphores 分为 counting semaphore 和 binary semaphore，前者的功能如上，后者只不过是额外要求 $0 \leq S \leq 1$，修改 loop 的条件即可。
+
+**事实上，可以用 S 来表示可用的资源数量。**
 
 ### 使用
 

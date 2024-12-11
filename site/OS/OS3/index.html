@@ -1254,6 +1254,114 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4_3_5" id="__nav_3_4_3_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Synchronization
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_3_4_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            Synchronization
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OS5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Basic Sync
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OS6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Calssic Problems
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OS7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deadlock
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1951,7 +2059,7 @@ Paging model of logical and physical memory.<br/>
 <p class="admonition-title">导读</p>
 <p>本节侧重于从硬件实现的角度来看分页技术。</p>
 </div>
-<p>我们前面说过，页表是 per-process data structures，所以页表应当作为一个进程的元信息被维护。显然我们不能直接用大量寄存器来维护页表（理论上很快，但是太贵、设计上也不现实），所以页表实际上应当被放在<u>内存</u>中（进一步的，为了保证效率，我们将页表放在主存中），我们通过用寄存器维护一个指向页表的指针来维护页表，这个特殊的寄存器被称为<strong>页表基址寄存器(page-table base register, PTBR)</strong>，当进程不处于 running 态时，PTBR 应当被存储在 <a href="../Unit2-Part1/#PCB" target="_blank">PCB</a> 中，在 <a href="./Unit1.md#context-switch" target="_blank">context switch</a> 的过程中，我们也应当对 PTBR 进行交换。</p>
+<p>我们前面说过，页表是 per-process data structures，所以页表应当作为一个进程的元信息被维护。显然我们不能直接用大量寄存器来维护页表（理论上很快，但是太贵、设计上也不现实），所以页表实际上应当被放在<u>内存</u>中（进一步的，为了保证效率，我们将页表放在主存中），我们通过用寄存器维护一个指向页表的指针来维护页表，这个特殊的寄存器被称为<strong>页表基址寄存器(page-table base register, PTBR)</strong>，当进程不处于 running 态时，PTBR 应当被存储在 <a href="Unit2-Part1.md#PCB" target="_blank">PCB</a> 中，在 <a href="./Unit1.md#context-switch" target="_blank">context switch</a> 的过程中，我们也应当对 PTBR 进行交换。</p>
 <div class="admonition question">
 <p class="admonition-title">嘿！可是内存真的好慢！</p>
 <p>不仅如此，由于地址映射的实现逻辑，我们首先需要利用页表查询帧号，利用帧号去得到物理地址，再去内存里做查询，这里有足足两次内存访问操作！</p>
