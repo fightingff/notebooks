@@ -34,7 +34,7 @@
 - `create`：分为两步，⓵ 在文件系统中为文件[分配](#分配){target="_blank"}一块空间，⓶ 在[目录](#目录结构){target="_blank"}中创建对应的条目；
 - `open` / `close`：打开文件后会得到文件的句柄(handle)，其它对特定文件的操作一般都需要通过这个句柄来完成，类似于“与文件建立一个会话”，关闭文件就是“结束这个会话”；
     - 通常来说，文件被打开后需要由用户来负责关闭；
-    - 打开后的文件会被加入到一个打开文件表(open-file table)中，这个表中保存了所有打开的文件的信息，包括文件的**句柄**、文件的**位置**、文件的**访问权限**等；
+    - 打开后的文件会被加入到一个打开文件表(open-file table)中，这个表中保存了所有打开的文件的信息，包括文件的**句柄**、文件的**位置**、文件的**访问权限**等，其中这个打开文件表实际上分为"System-wide open-file table"和"Per-process open-file table"两部分；
     - 文件可能被多方用户（进/线程）打开，而只有所有用户都关闭文件后才应当释放文件在打开文件表中的条目，所以维护一个 open-file count 用于记录当前文件被打开的次数，有点类似智能指针；
 - `read` / `write`：维护一个 current-file-position pointer 表示当前操作的位置，在对应位置上做读写操作，有一点像[图灵机](https://note.tonycrane.cc/cs/tcs/toc/topic3/){target="_blank"}；
 - `repositioning within a file`：将 current-file-position pointer 的位置重新定位到给定值（如文件开头或结尾），也被叫做 `seek`；

@@ -554,6 +554,12 @@
         - RAID 1：Disk Mirroring/Shadowing
 
             直接镜像复制一份，最高代价，最高可靠性
+        
+        - RAID 0+1(Strip + Mirror)
+
+            先条带化分块，交错存储，然后再镜像复制（因此至少需要4块磁盘）
+
+            ![1735471409549](image/RiscV/1735471409549.png)
 
         - RAID 2
 

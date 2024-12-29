@@ -8,6 +8,8 @@
 
     ![1727231510006](image/CA/1727231510006.png)
 
+    ![1735470091785](image/CA/1735470091785.png)
+
 ### 芯片进化
 
 - Moore's Law
@@ -79,8 +81,11 @@
     - MTTR(Mean Time To Repair)
     - MTBF(Mean Time Between Failure) = MTTF + MTTR
     - Availability = MTTF / MTBF
+    - FIT(Failures per billion hours) = $\frac{1}{MTTF}$
+        
+        ![1735470629507](image/CA/1735470629507.png)
 
-**Fault** -> **Error** -> **Failure**
+**Fault** （潜在BUG）-> **Error**（触发了潜在BUG） -> **Failure**（造成明显后果）
 
 - Dependability V/S Redundancy
 
@@ -132,15 +137,34 @@
 
 ## Chapter 2
 
+!!! question "一些概念"
+
+    - Latency
+        - Access Time: 从CPU发出请求到数据返回的时间
+        - Cycle Time: 两次连续的访问之间的时间
+    - Bandwidth
+        - Throughput: 每秒传输的数据量
+
 !!! note "Miss"
 
     | 种类 | 解释 |
     | -- | -- |
     | compulsory miss | 冷启动失配，刚上电cache是空的，所以不论什么访问都要miss一次。cache越大compulsory miss越多。 | 
-    | capacity miss | cache块的大小不满足程序局部性时发生的失配，称为容量失配。cache块大小增大，容量失配率减小，与关联度无关。 |
+    | capacity miss | cache的容量大小不满足程序局部性时发生的失配，称为容量失配。cache的总大小增大，容量失配率减小，与关联度无关。 |
     | conflict miss | 在采用组关联和直接映像方式的cache中，主存的很多块都映射到cache的同一块，如果某块本来在cache中，刚被替换出去，又被访问到。有点像 OS 里页替换时讲到的“抖动”。关联度越大，Conflict失配越小。 |
 
+### 优化DRAM
+
+- Timing Signal： 连续访问不用再次激活
+- Spatial Locality： 一次读取多个数据
+- Wider DRAM: 提高贷款
+- DDR: Double Data Rate
+- Multiple Banks: 并行访问
+- Dynamic Energy Saving: 动态调整电压和频率
+
 ### 优化Cache
+
+Average Memory Access Time (AMAT) = Hit Time + Miss Rate x Miss Penalty
 
 - **Larger Block Size**
 
@@ -208,7 +232,7 @@
 
         本质上，初始的想法就是每次读取数据读两次，一次是到页表获取物理地址，一次是从物理地址读取数据
 
-        为了减少开销，使用TLB这个cache来存储最近访问的数据，从而减少访问页表的次数
+        为了减少开销，使用TLB这个高速cache（不在内存中，速度比内存快）来存储最近访问的数据的物理页地址，从而减少访问页表的次数
 
         ![1729652754381](image/CA/1729652754381.png){width = 80%}
 
@@ -219,6 +243,8 @@
             - Multiple
 
 ### 超级优化
+
+![1735478324763](image/CA/1735478324763.png)
 
 - **Small and Simple L1-Cache**
 
@@ -337,6 +363,17 @@
 ## Chapter 3
 
 ### ILP (Instruction Level Parallelism)
+
+??? "RiscV"
+
+    ![1735480039313](image/CA/1735480039313.png)
+
+    ![1735480069593](image/CA/1735480069593.png)
+
+    ![1735480094513](image/CA/1735480094513.png)
+
+    ![1735480263271](image/CA/1735480263271.png)
+
 
 #### Pipelining
 
