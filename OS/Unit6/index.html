@@ -1683,7 +1683,7 @@
 <li><code>create</code>：分为两步，⓵ 在文件系统中为文件<a href="#分配" target="_blank">分配</a>一块空间，⓶ 在<a href="#目录结构" target="_blank">目录</a>中创建对应的条目；</li>
 <li><code>open</code> / <code>close</code>：打开文件后会得到文件的句柄(handle)，其它对特定文件的操作一般都需要通过这个句柄来完成，类似于“与文件建立一个会话”，关闭文件就是“结束这个会话”；<ul>
 <li>通常来说，文件被打开后需要由用户来负责关闭；</li>
-<li>打开后的文件会被加入到一个打开文件表(open-file table)中，这个表中保存了所有打开的文件的信息，包括文件的<strong>句柄</strong>、文件的<strong>位置</strong>、文件的<strong>访问权限</strong>等；</li>
+<li>打开后的文件会被加入到一个打开文件表(open-file table)中，这个表中保存了所有打开的文件的信息，包括文件的<strong>句柄</strong>、文件的<strong>位置</strong>、文件的<strong>访问权限</strong>等，其中这个打开文件表实际上分为"System-wide open-file table"和"Per-process open-file table"两部分；</li>
 <li>文件可能被多方用户（进/线程）打开，而只有所有用户都关闭文件后才应当释放文件在打开文件表中的条目，所以维护一个 open-file count 用于记录当前文件被打开的次数，有点类似智能指针；</li>
 </ul>
 </li>
