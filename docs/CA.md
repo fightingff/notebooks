@@ -380,6 +380,8 @@ Average Memory Access Time (AMAT) = Hit Time + Miss Rate x Miss Penalty
 > 通过流水线并行提高总体的运行效率（latency hidding）
 >
 > 注意load balance，或者增加流水线层级来降低某一环节的延迟，因为流水线的频率取决于最慢的环节
+>
+> ![1735526791466](image/CA/1735526791466.png)
 
 - Floating-Point Operation
 
@@ -427,14 +429,18 @@ Average Memory Access Time (AMAT) = Hit Time + Miss Rate x Miss Penalty
     
     - Hardware-based dynamic parallelism 
 
-- Name Dependence
+- Data Dependence（真依赖）
+
+    只有RAW
+
+- Name Dependence（假依赖）
 
     !!! question
     
         （假设指令i先于指令j执行 & i,j指令靠得很近）
     
-        - Anti Dependence：i读取Rx, j写入Rx，本质上没有依赖，但是i,j的执行顺序不能颠倒
-        - Output Dependence：i写入Rx, j写入Rx，本质上没有依赖，但是i,j的执行顺序不能颠倒
+        - Anti Dependence(WAR)：i读取Rx, j写入Rx，本质上没有依赖，但是i,j的执行顺序不能颠倒
+        - Output Dependence(WAW)：i写入Rx, j写入Rx，本质上没有依赖，但是i,j的执行顺序不能颠倒
   
     Register Renaming: 通过重命名寄存器，使得不同指令可以使用相同的寄存器，从而避免数据冲突
 
@@ -453,14 +459,20 @@ Average Memory Access Time (AMAT) = Hit Time + Miss Rate x Miss Penalty
                 > 越复杂，消耗越大，利用的历史信息越多
             
                 - 1-bit predictor（last time BHT）：根据上一次的结果来预测
+                    ![1735526112473](image/CA/1735526112473.png)
                 - 2-bit predictor（BHT）：根据多次的结果来预测
-                - Local predictor：根据当前指令的历史来预测
-                - Correlating predictor：根据多个不同指令的历史来预测
-                - Two-level predictor：根据两个预测器的结果来预测，获得更多global信息
-                - Hybrid / Alloyed predictor：多种预测器混合使用
- 
+                    ![1735526133353](image/CA/1735526133353.png) 
+                - Branch-target buffer（BTB）：存储分支目标地址，减少分支延迟
+                    ![1735526393665](image/CA/1735526393665.png)
+
+                ??? tip "others"
+                    - Local predictor：根据当前指令的历史来预测
+                    - Correlating predictor：根据多个不同指令的历史来预测
+                    - Two-level predictor：根据两个预测器的结果来预测，获得更多global信息
+                    - Hybrid / Alloyed predictor：多种预测器混合使用
+        
         - Delayed Branch: 延迟分支，即先执行后面一些无关指令，等待分支结果（尽早解决，减少延迟）
-    
+
     - Loop Unrolling
 
         - 减少循环branch跳转
@@ -470,40 +482,234 @@ Average Memory Access Time (AMAT) = Hit Time + Miss Rate x Miss Penalty
 
         - Out-of-order
 
-    - Scoreboard
+#### Scoreboard
 
-        > 使用数据流的形式，通过硬件来解决数据冲突
+> 使用数据流的形式，通过硬件来解决数据冲突
+>
+> 本质上利用乱序执行来提高效率
+>
+> ![1735526933546](image/CA/1735526933546.png)
 
-        - Four Steps
+- Four Steps
 
-            - Issue: 选择可以执行的指令
-            - Read Operands: 读取操作数
-            - Execution
-            - Write Back: 结果写回
-        
-        - Functional Unit Status
+    - Issue: 选择可以执行的指令
+    - Read Operands: 读取操作数
+    - Execution
+    - Write Back: 结果写回
 
-            - Busy : 该功能单元是否被占用
-            - Op : 该功能单元执行的指令
-            - Fi : 目标寄存器
-            - Fj, Fk ： 源寄存器
-            - Qj, Qk ： **指向源寄存器的计算单元的指针**
-            - Rj, Rk ： 源寄存器是否就绪，读完之后状态会改写成No
+- Functional Unit Status
+
+    - Busy : 该功能单元是否被占用
+    - Op : 该功能单元执行的指令
+    - Fi : 目标寄存器
+    - Fj, Fk ： 源寄存器
+    - Qj, Qk ： **指向源寄存器的计算单元的指针**
+    - Rj, Rk ： 源寄存器是否就绪，读完之后状态会改写成No
+
+#### Tomasulo Algorithm
+
+> 消除WAW, WAR依赖
+>
+> 通过添加RS（Reservation stations）存储操作数
+
+- Register Renaming
+
+    - WAR: rename latter/destination
+    - WAW: rename former 
+
+- Seven fields:
+    - Op : 操作类型
+    - Qj, Qk : 源操作数
+    - Vj, Vk : **源操作数的值**
+    - A : load/store地址
+    - Busy : 是否被占用
+
+![1735530205463](image/CA/1735530205463.png)
+
+### ROB
+
+> 通过Reorder Buffer来解决数据冲突
+>
+> 3 fields: instruction type, destination address, value
+>
+> 本质上相当于给寄存器堆建立了一个缓冲区，用来存储指令的结果，给指令执行增加一个commit阶段，从而实现**乱序执行、顺序commit**
+
+在Tomosulo算法的基础上，把Qj,Qk改为指向ROB的指针，并增加一个指向ROB的指针，用来指向下一个commit的指令
+
+![1735530233797](image/CA/1735530233797.png)
+
+### Multi-Issue Processor
+
+![1735530457108](image/CA/1735530457108.png)
+
+![1735530686565](image/CA/1735530686565.png)
+
+- SuperScalar
+
+    > 通过多个流水线来提高效率，每次流出多个指令
+
+- VLIM（Very long instruction word）
+
+    > 将一个很长的指令拆分成多个
+
+- Super Pipeline
+
+    > 阶段数超级多的流水线，每个阶段进一步细分
+
+## chapter 4
+
+![1735537975518](image/CA/1735537975518.png)
+
+### DLP
+
+#### SIMD
+
+- Vector Processor
+
+    D = A * (B + C)
+    - Horizontal: 一行行做
+
+        ![1735531882098](image/CA/1735531882098.png)
+
+    - Vertical： 一列列做
+
+        ![1735531899586](image/CA/1735531899586.png)
+
+    - Horizontal + Vertical： 行分组，一列列算
+
+        ![1735531924787](image/CA/1735531924787.png)
+
+    ![1735532244259](image/CA/1735532244259.png)
+
+    !!! tip "Improvemnt"
+
+        - Parallelism: 通过多个不同功能单元并行
+        - link：类似forwarding, 把结果直接传递，而不用重复存储
+        - Segments： 把数据分成多个片段，分别计算
+        - Multi-Processor: 多个处理器并行计算
+            - Multiple-Lane: 多个lane并行计算
+            - Gather-Scatter: 通过gather和scatter,即引用index来提高效率
+
+- Array Processor
+
+    - 通过多个处理器并行计算，每个处理器计算一个元素
+    - 关键点是如何连接通信网络，实现数据的传递
+
+- GPU： Multi-Thread SIMD
+
+- LLP: Loop-Level Parallelism
+
+    - 关节点在判断/解决循环能否并行化，“跨循环迭代”
+
+    ??? example
+
+        ![1735539346659](image/CA/1735539346659.png)
+
+### TLP
+
+#### MIMD
+
+!!! note "分类"
+
+    - Multiple-Processor: Based on shared memory
+        ![1735539788032](image/CA/1735539788032.png)
+
+    - Multiple-Computer: Based on message passing
+        ![1735539814014](image/CA/1735539814014.png) 
+
+- **Architecture**
+
+    ![1735539907559](image/CA/1735539907559.png)
+
+    ??? info "SMP & DSP"
+
+        ![1735540469067](image/CA/1735540469067.png)
+
+    - UMA: Uniform Memory Access（SMP）
+
+        ![1735540051490](image/CA/1735540051490.png)
+
+        每个处理器地位均等，访问内存的时间相同
+
+        每个处理器也可以有自己的cache、private memory等
+
+    - NUMA: Non-Uniform Memory Access（DSP）
+
+        ![1735540208802](image/CA/1735540208802.png)
+
+        访问本地内存的时间短，访问远程内存的时间长
+
+        如果有Cache，就会有Cache Coherence问题，本质就是让所有处理器使用时好像在共用同一个Cache
     
-    - Tomasulo Algorithm
+    - COMA: Cache-Only Memory Access
 
-        > 消除WAW, WAR依赖
-        >
-        > 通过添加RS（Reservation stations）存储操作数
+        ![1735540427580](image/CA/1735540427580.png)
 
-        - Register Renaming
-        
-            - WAR: rename latter/destination
-            - WAW: rename former 
-        
-        - Seven fields:
-            - Op : 操作类型
-            - Qj, Qk : 源操作数
-            - Vj, Vk : **源操作数的值**
-            - A : load/store地址
-            - Busy : 是否被占用
+        没有内存，只有cache，通过cache来访问数据, 本质上是NUMA的一种变种
+
+    - *MPP: Massive Parallel Processing
+
+        ![1735544624299](image/CA/1735544624299.png)
+
+    - *COW: 在MPP基础上，实现异构体系结构
+
+        ![1735544643818](image/CA/1735544643818.png)
+
+!!! danger "Memory Consistence & Cache Conherence"
+
+    ![1735540687822](image/CA/1735540687822.png)
+
+    - Memory Consistence: 多线程访问同一位置时，先写后读，保证读到的是最新的数据
+
+    - Cache Conherence: 保证所有处理器使用的是同一个cache
+
+### Cache Coherence
+
+> UMA: Snoopy Protocol
+>
+> NUMA: Directory Protocol
+
+#### Snoopy Protocol
+
+- Write through
+
+    ![1735544424776](image/CA/1735544424776.png)
+
+- Write back
+
+    - CPU 层面
+        ![1735542167989](image/CA/1735542167989.png)
+
+    - Bus 层面
+    
+        ![1735544484315](image/CA/1735544484315.png)
+
+- MSEI
+
+    ![1735544519969](image/CA/1735544519969.png)
+
+    !!! example
+
+        ![1735546012100](image/CA/1735546012100.png)
+
+#### Directory Protocol
+
+本质上是对BUS的一种优化，通过Directory优化数据通信与传递
+
+其中Shares就用来记录每个物理块在哪些处理器上有副本，从而方便查找
+
+- CPU 层面
+
+    ![1735546043997](image/CA/1735546043997.png)
+
+- Directory 层面
+
+    ![1735546056795](image/CA/1735546056795.png)
+
+### *Memory Consistence
+
+- Relax
+
+    > allow reads and writes to complete out of order, but to use synchronization operations to enforce ordering
+
+    ![1735548561899](image/CA/1735548561899.png)
