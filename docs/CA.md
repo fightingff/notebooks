@@ -688,6 +688,8 @@ Average Memory Access Time (AMAT) = Hit Time + Miss Rate x Miss Penalty
 
     ![1735544519969](image/CA/1735544519969.png)
 
+    ![1735559696958](image/CA/1735559696958.png)
+
     !!! example
 
         ![1735546012100](image/CA/1735546012100.png)
