@@ -360,6 +360,10 @@ Average Memory Access Time (AMAT) = Hit Time + Miss Rate x Miss Penalty
 
     - 微小的性能下降
 
+### ISA
+
+![1735569808328](image/CA/1735569808328.png)
+
 ## Chapter 3
 
 ### ILP (Instruction Level Parallelism)
@@ -492,10 +496,10 @@ Average Memory Access Time (AMAT) = Hit Time + Miss Rate x Miss Penalty
 
 - Four Steps
 
-    - Issue: 选择可以执行的指令
-    - Read Operands: 读取操作数
+    - Issue: 选择可以执行的指令(如果指令对应的功能部件空闲，且指令要写的目标寄存器没有别的指令将要写< WAW 冒险>)
+    - Read Operands: 读取操作数(RAW 冒险)
     - Execution
-    - Write Back: 结果写回
+    - Write Back: 结果写回(WAR 冒险)
 
 - Functional Unit Status
 
@@ -715,3 +719,13 @@ Average Memory Access Time (AMAT) = Hit Time + Miss Rate x Miss Penalty
     > allow reads and writes to complete out of order, but to use synchronization operations to enforce ordering
 
     ![1735548561899](image/CA/1735548561899.png)
+
+    ??? example
+
+        - TSO
+
+            ![1735575220723](image/CA/1735575220723.png)
+
+        - PSO
+
+            ![1735615600212](image/CA/1735615600212.png)
