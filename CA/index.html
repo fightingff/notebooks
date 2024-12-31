@@ -940,6 +940,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#isa" class="md-nav__link">
+    <span class="md-ellipsis">
+      ISA
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1903,6 +1912,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#isa" class="md-nav__link">
+    <span class="md-ellipsis">
+      ISA
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2609,6 +2627,8 @@
 </ul>
 </li>
 </ul>
+<h3 id="isa">ISA</h3>
+<p><img alt="1735569808328" src="../image/CA/1735569808328.png" /></p>
 <h2 id="chapter-3">Chapter 3</h2>
 <h3 id="ilp-instruction-level-parallelism">ILP (Instruction Level Parallelism)</h3>
 <details>
@@ -2790,10 +2810,10 @@
 <li>
 <p>Four Steps</p>
 <ul>
-<li>Issue: 选择可以执行的指令</li>
-<li>Read Operands: 读取操作数</li>
+<li>Issue: 选择可以执行的指令(如果指令对应的功能部件空闲，且指令要写的目标寄存器没有别的指令将要写&lt; WAW 冒险&gt;)</li>
+<li>Read Operands: 读取操作数(RAW 冒险)</li>
 <li>Execution</li>
-<li>Write Back: 结果写回</li>
+<li>Write Back: 结果写回(WAR 冒险)</li>
 </ul>
 </li>
 <li>
@@ -3040,6 +3060,19 @@
 <p>allow reads and writes to complete out of order, but to use synchronization operations to enforce ordering</p>
 </blockquote>
 <p><img alt="1735548561899" src="../image/CA/1735548561899.png" /></p>
+<details class="example">
+<summary>Example</summary>
+<ul>
+<li>
+<p>TSO</p>
+<p><img alt="1735575220723" src="../image/CA/1735575220723.png" /></p>
+</li>
+<li>
+<p>PSO</p>
+<p><img alt="1735615600212" src="../image/CA/1735615600212.png" /></p>
+</li>
+</ul>
+</details>
 </li>
 </ul>
 
