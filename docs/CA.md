@@ -528,7 +528,19 @@ Average Memory Access Time (AMAT) = Hit Time + Miss Rate x Miss Penalty
     - A : load/store地址
     - Busy : 是否被占用
 
+- Three Steps
+
+    - Issue: 选择可以执行的指令(唯一标准是指令对应通路的保留站是否有空余位置)
+    - Execution: 从保留站中读取操作数，执行指令
+    - Write Back: 结果写回
+
 ![1735530205463](image/CA/1735530205463.png)
+
+!!! danger
+
+    Scoreboard由于是从寄存器堆读取数据，因此会有一个RO阶段，并且应该是等WB阶段完成后下一个阶段才能读
+
+    Tomasulo由于保留站会听取CDB的广播，因此可以在WB阶段之后立即开始执行，不用再读（有些load指令这种等一个周期是为了计算地址）
 
 ### ROB
 

@@ -2851,8 +2851,21 @@
 <li>Busy : 是否被占用</li>
 </ul>
 </li>
+<li>
+<p>Three Steps</p>
+<ul>
+<li>Issue: 选择可以执行的指令(唯一标准是指令对应通路的保留站是否有空余位置)</li>
+<li>Execution: 从保留站中读取操作数，执行指令</li>
+<li>Write Back: 结果写回</li>
+</ul>
+</li>
 </ul>
 <p><img alt="1735530205463" src="../image/CA/1735530205463.png" /></p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Scoreboard由于是从寄存器堆读取数据，因此会有一个RO阶段，并且应该是等WB阶段完成后下一个阶段才能读</p>
+<p>Tomasulo由于保留站会听取CDB的广播，因此可以在WB阶段之后立即开始执行，不用再读（有些load指令这种等一个周期是为了计算地址）</p>
+</div>
 <h3 id="rob">ROB</h3>
 <blockquote>
 <p>通过Reorder Buffer来解决数据冲突</p>
