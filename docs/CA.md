@@ -583,6 +583,7 @@ Average Memory Access Time (AMAT) = Hit Time + Miss Rate x Miss Penalty
 - Vector Processor
 
     D = A * (B + C)
+    
     - Horizontal: 一行行做
 
         ![1735531882098](image/CA/1735531882098.png)
