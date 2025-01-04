@@ -14,7 +14,6 @@
 
     > This scheme is pure demand paging: **never** bring a page into memory until it is required.
 
-<a id="pre-paging"/>
 !!! section "pre-paging"
 
     Pure demand paging 的缺点就是在程序开始的时候会产生大量的 page fault。为了解决这个办法，我们可以在一开始将需要的页一起存入内存。这种做法叫做预换页(pre-paging)。
@@ -46,7 +45,6 @@
 
 操作系统就需要去处理这个异常的大概流程如下：
 
-<a id="page-fault-handling"/>
 !!! section "page fault 处理流程"
 
     1. 检查一张 PCB 里的内部表，来区分这个地址到底是情况 2. 还是情况 3.；
@@ -66,7 +64,9 @@
 
     > 我们可以在 [Lab5](https://zju-sec.github.io/os23fall-stu/lab5/){target="_blank"} 里对这一系列步骤有跟深刻的影响，Lab5 中的 vma 大概就是这里的“内部表”。
 
-    EAT(Effective Access Time) = (1 - p) * (memory access time) + p * (page fault overhead + swap page out time + swap page in time)
+    EAT(Effective Access Time) = (1 - p) * (memory access time) + 
+    
+    p * (page fault overhead + swap page out time + swap page in time)
 
 !!! not-advice "慢！"
 
@@ -140,7 +140,6 @@ Example of free-frame list.
 
 当我们发现 free-frame list 为空，即没有空闲的 frame 时，我们考虑将一些先前已经被分配的 frame 给 page out 走，拿来给当前这个页用。而具体如何选择换走哪个 frame，我们会在[置换策略](#置换策略){target="_blank"}一节中介绍。
 
-<a id="free-frame-buffer-pool"/>
 !!! section "free-frame buffer pool"
 
     虽然我们还没介绍[置换策略](#置换策略){target="_blank"}，但是想象一下，如果等到没有 free-frame 的时候再去做置换，那么进程就需要**等待置换完成**以后再分配。
@@ -234,7 +233,6 @@ Example of free-frame list.
 
 理论上最优，即 ⓵ 能带来最低的 page fault rate，⓶ 绝对不会遭受 [Belady's anomaly现象](https://en.wikipedia.org/wiki/B%C3%A9l%C3%A1dy%27s_anomaly) 的做法是：<u>在**未来**最久的时间内不会被访问到的页作为 victim frame</u>。
 
-<a id="Belady-s-anomaly">
 ??? extra "Belady's anomaly"
     
     > 这一段内容没啥用，只是一个有趣的现象。
@@ -477,10 +475,8 @@ Buddy system^[Wiki](https://en.wikipedia.org/wiki/Buddy_system){target="_blank"}
 
 具体来说，Buddy system 通过不断二分的方式来寻找一块合适的内存，如下图：
 
-<figure markdown>
 <center> ![](img/45.png){ width=60% } </center>
 例如 kernel 申请一块 21KB 的内存，那么 $C_L$ 就是我们最终分配的内存。
-</figure>
 
 Buddy system 还有一个特点是，它通过 coalesce 相邻的空闲块来形成更大的内存块，例如上图可以按照分裂的方式合并回 256 KB 的大内存块（~~合并大内存~~）。
 
@@ -491,4 +487,5 @@ Slab 分配的大概思路是预先了解到 kernel 内的常见数据结构（�
 相当于预先把内存分成了苹果小盒、冰箱大箱、超大车库，然后根据要放的东西的大小选择合适的空间来放。
 
 [^1]: [Linux OOM (Out-of-memory) Killer | Medium](https://medium.com/@adilrk/linux-oom-out-of-memory-killer-74fbae6dc1b0#9707){target="_blank"}
+
 [^2]: [Enhanced Second-Chance Algorithm](http://www.faadooengineers.com/online-study/post/ece/operating-systems/1165/enhanced-second-chance-algorithm){target="_blank"}

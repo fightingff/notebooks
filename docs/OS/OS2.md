@@ -2,7 +2,7 @@
 
 ## 进程
 
-一段本质上程序是静态的、存储在硬盘上的指令数据，而当它附带运行程序所需要的必要信息进入内存，得到相关资源后，它成为一个动态的、与计算机资源互动的实体，这个实体就是**进程(process)**。
+一段程序本质上是静态的、存储在硬盘上的指令数据，而当它附带运行程序所需要的必要信息进入内存，得到相关资源后，它成为一个动态的、与计算机资源互动的实体，这个实体就是**进程(process)**。
 
 进程是是操作系统进行资源分配和调度的一个**独立单位**，它以特定形式存在于内存中，具有一定的封闭性，是多道技术的重要基础。
 
@@ -225,10 +225,8 @@ Diagram of process state.
 
 我们再次审视进程状态的 FSM，发现所有状态都是围绕着 `ready`/`running` 展开的，而 CPU 具体资源分配的过程也正是通过这两个状态的转化体现的。而 <font color=green>❶</font> 当运行态的进程由于某些原因需要主动离开运行态时，或 <font color=blue>❷</font> 当就绪态的某个进程需要立刻得到 CPU 资源时，scheduler 会进行调度。上面这句话反应在　FSM 上，就是 <font color=green>❶</font> 进程从运行态转化为其它状态，即箭头从 `running` 出发向外；<font color=blue>❷</font> 进程从其它状态转化为就绪态，即箭头从外指向 `ready`，这里其实还暗含了一个 `ready` 指向 `ready` 的箭头，在例如 priority aging 的情况下，`ready` 中可能突然有一个优先级足够大了就会发生抢占式调度。上面描述的这两种**时机**下产生的调度，就分别定义为**非抢占式调度(non-preemptive scheduling)**和**抢占式调度(preemptive scheduling)**。
 
-<figure markdown>
 <center>![Diagram of process state.](img/20.png)</center>
 Diagram of process state.
-</figure>
 
 两者本质上的区别就是，非抢占式调度是由已经拥有资源的进程主动释放 CPU 资源引起的，而抢占式调度则是不占有资源的进程索取 CPU 资源成功引起的。
 
@@ -252,10 +250,8 @@ Diagram of process state.
 
     > 上下文切换的相关内容在 [lab1](https://zju-sec.github.io/os23fall-stu/lab1/#_11) 里有所涉及，需要实现一个简单的上下文切换。
 
-<figure markdown>
 <center>![(a) Diagram showing context switch from process to process. (b) Role of dispatcher.](img/16.png)</center>
 (a) Diagram showing context switch from process to process. (b) Role of dispatcher.
-</figure>
 
 ### 调度算法
 
@@ -267,26 +263,22 @@ Diagram of process state.
     - 单位时间内完成的进程数，从结果来看任务完成是否足够高效；
 - 周转时间(turnaround time)：
     - 从进程**开始建立**到进程完成的时间，即包括等待进入内存、在各种 queue 中的等待时间、在 CPU 中的运行时间、I/O 时间等，通过观察最大周转时间，能反映调度的效率和“公平性”；
-    - 即进入 ready queue 的到进程结束的时间；
+    - 即进入 ready queue 到进程结束的时间；
 - 等待时间(waiting time)：
     - 进程在 ready queue 中等待的时间的总和，由于任务所需要的 CPU 时间、I/O 时间不受调度算法影响，所以抛开这些只看在 ready queue 中的等待时间，能反映调度算法的效率；
     - 即在 ready queue 中的等待时间；
     - 容易发现，等待时间 = 周转时间 - 运行时间；
 - 响应时间(response time)：
     - 进程从发出请求到第一次响应的时间，能反应交互式系统中调度算法的“及时性”；
-    - 即进入 ready queue 的到第一次有输出的时间；
+    - 即进入 ready queue 到第一次有输出的时间；
 
 > 上面五个里，前两个越大越好，后三个越小越好。
 
 接下来我们开始介绍各种调度算法，需要注意的是，如下调度算法中存在一些理想化的建模（例如假设我们知道进程需要使用多久 CPU），而我们重点需要掌握它的思路，做到能画甘特图、能算时间。此外，这里我们以“多道”为语境，即如果不是特别说明，不考虑分时技术。
 
-<a id="FCFS"/>
-
 #### 算法 | First-Come, First-Serve (FCFS)
 
 FCFS 是最基本的**非抢占式**调度方法就是按照进程先来后到的顺序进行调度，可以很简单地通过一个 FIFO 的队列实现。FCFS 最大的优点就是实现简单。
-
-<a id="SJF"/>
 
 #### 算法 | Shortest-Job-First (SJF) / Shortest-Remaining-Time-First (SRTF)
 
@@ -294,7 +286,7 @@ SJF 的思路是，当有多个进程处于就绪态时，选择需要**运行�
 
 ???+ eg "🌰"
 
-    === "题面"
+    - **题面**
 
         现在有三个进程，它们将要执行的时间分别如下：
 
@@ -304,7 +296,7 @@ SJF 的思路是，当有多个进程处于就绪态时，选择需要**运行�
 
         现在它们按照顺序进入 ready queue，请分别计算 FCFS 下和 SJF 下的平均等待时间。
 
-    === "解析"
+    - **解析**
 
         画出两者的甘特图：
 
@@ -328,7 +320,7 @@ SJF 的思路是，当有多个进程处于就绪态时，选择需要**运行�
 
 ???+ eg "🌰"
 
-    === "题面"
+    - **题面**
 
         现在有三个进程，它们将要执行的时间分别如下：
 
@@ -346,7 +338,7 @@ SJF 的思路是，当有多个进程处于就绪态时，选择需要**运行�
 
         请分别计算 SJF 下和 SRTF 下的平均等待时间。
 
-    === "解析"
+    - **解析**
 
         对于 SJF 来说，在第 0 时刻，只有 P1 可用，所以只能执行 P1；P1 执行结束后所有其它进程都可用了，此时按照正常的 SJF 即可得到结果。
 
@@ -417,7 +409,7 @@ RR 调度是使用[分时技术](./Unit0.md/time-sharing)的调度算法。由�
 
 我们之前提到[分时](./Unit0.md/time-sharing)的时候也说过，分时技术通过优化响应时间解决了用户交互问题，RR 调度虽然相比 SJF 有了更长的等待时间，但是有了更短的响应时间，而实际直接影响用户交互问题的应该是响应时间。
 
-一个需要注意的是，RR 调度有一个“超参数”，即时间片的长度。理论上，时间片约短，响应时间越短；但更短的时间片将带来更频繁的进程切换，从而带来更多的 dispatch latency。
+一个需要注意的是，RR 调度有一个“超参数”，即时间片的长度。理论上，时间片越短，响应时间越短；但更短的时间片将带来更频繁的进程切换，从而带来更多的 dispatch latency。
 
 #### 算法 | Priority Scheduling
 

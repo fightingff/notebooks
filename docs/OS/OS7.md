@@ -69,7 +69,7 @@
 
 !!! definition "safe sequence"
 
-    首先 high level 地讲一下 safe sequence 的思路，safe sequence 中的每一项 $T_i$ 所需要的资源，都能通过现有资源或其之前的进程/线程 $ T_{j} (\forall j < i)$ 执行完毕释放的资源来满足。
+    首先 high level 地讲一下 safe sequence 的思路，safe sequence 中的每一项 $T_i$ 所需要的资源，都能通过现有资源或其之前的进程/线程 $T_{j} (\forall j < i)$ 执行完毕释放的资源来满足。
 
     具体来说，对于 safe sequence $<T_1, T_2, \dots, T_n>$，我们定义每一项还需要的 $R_j$ 资源为 $need_{i,j}$、已经被分配的 $R_j$ 资源为 $allocated_{i,j}$，以及资源 $R_j$ 中还空闲的资源的量 $available_{j}$，则应当有：
 
@@ -161,8 +161,7 @@
 2. 进程/线程 $T_i$ 申请资源 $R_j$ 时候，如果这条边变为 assignment edge 不会导致成环，则将 claim edge 转化为一条 request edge $T_i \rightarrow R_j$；
     - > 请注意，这里需要判断的是 assignment edge，而转化的是 request edge；
 3. 进程/线程 $T_i$ 获得资源 $R_j$ 时候，将 request edge 转化为一条 assignment edge $R_j \rightarrow T_i$；
-4. 进程/线程 $T_i$ 释放资源 $R_j$ 时候，将 assignment edge 删去；
-
+4. 进程/线程 $T_i$ 释放资源 $R_j$ 时候，将 assignment edge 删去，变回 claim edge；
 我们在上面也说了：「该算法只适用于**每个资源类别中都只有一个实例**的情况」，那么如何解除这个限制呢？该问题我们早在[资源分配图](#资源分配图){target="_blank"}小节就已经讨论，我们使用[安全状态与不安全状态](#安全状态与不安全状态){target="_blank"}来描述一个约束较强的、不会产生死锁的状态。
 
 ### 银行家算法
@@ -281,5 +280,7 @@
 
 
 [^1]: [What's the difference between deadlock and livelock?](https://stackoverflow.com/a/6155978/22331129){target="_blank"}
+
 [^2]: [Deadlock Prevention](https://www.javatpoint.com/os-deadlock-prevention){target="_blank"} 一文中提到了使用**假脱机(spooling)**的方法来解除打印机资源的互斥性。
+
 [^3]: [Banker's Algorithm in Operating System (OS)](https://www.javatpoint.com/bankers-algorithm-in-operating-system){target="_blank"} 一文中提到了要恢复矩阵状态，书上貌似没写这个。

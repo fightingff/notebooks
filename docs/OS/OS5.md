@@ -475,7 +475,7 @@ process(i) {
 
 !!! proof "progress"
 
-    代码中对 `LOCK` 的修改操作是闭合的，即进入 critical section 会导致 `LOCK` 变为 `#!cpp false`，但离开 critical section 必定导致 `LOCK` 变为 `#!cpp true`。因此，只要没有进程处于 critical section，那么 `LOCK` 必定为 `#!cpp false`，则一定有就绪的进程能够进入 critical section，而运行 critical section 的时间是有限的，因此 `LOCK` 又一定会在有限时间内变为 `#!cpp false`，从而满足 progress。
+    代码中对 `LOCK` 的修改操作是闭合的，即进入 critical section 会导致 `LOCK` 变为 `#!cpp true`，但离开 critical section 必定导致 `LOCK` 变为 `#!cpp false`。因此，只要没有进程处于 critical section，那么 `LOCK` 必定为 `#!cpp false`，则一定有就绪的进程能够进入 critical section，而运行 critical section 的时间是有限的，因此 `LOCK` 又一定会在有限时间内变为 `#!cpp false`，从而满足 progress。
 
 !!! bug "bounded waiting time"
 

@@ -61,7 +61,6 @@ Hardware address protection with base and limit registers. (right)
 
 包括操作系统本身，内存中能存下多少东西，决定了操作系统能同时运行多少进程。而进程需要的内存需要是连续的，而内存的分配与释放又是个动态的过程，所以我们需要想一个办法高效地利用内存空间。
 
-<a id="why-continuous"/>
 !!! question "为什么进程所需要的内存是连续的？"
 
     请读者思考，为什么装载进程所需要的内存需要是完整、连续的，而不能是东一块而西一块的呢？
@@ -127,7 +126,6 @@ Hardware address protection with base and limit registers. (right)
     
     请读者思考，物理地址和虚拟地址的长度需要一样吗？
 
-<a id="virtual-address-space"/>
 一个进程的**虚拟地址空间(virtual address space)**，指的是在虚拟内存的语境下，进程的内存结构。通常进程在虚拟地址空间中的[大致结构](./OS2.md#进程的形式){target="_blank"}和地址分布都是相同的，例如可能都是从 0 地址开始放 text 段，栈底一般都在末尾等——这就意味着进程的虚拟地址空间应当是**互不相关**的，由将若干互相隔离的虚拟地址空间映射到各自的物理地址这个任务，则由 [MMU](#MMU){target="_blank"} 完成。（在我们之后介绍了[页表](#帧--页){target="_blank"}后，这意味着每个进程都应当有自己的页表。）
 
 ## 分页技术
@@ -197,7 +195,7 @@ Hardware address protection with base and limit registers. (right)
 ![](img/31.png){ width=50% }
 <center>
 Paging model of logical and physical memory.<br/>
-以 page table 中的第一项为例：<font color="blue">0</font>:<font color="green">5</font> 表示虚拟地址中的第 <font color="blue">0</font> 页对应物理地址中的第 <font color="green">5</font> 帧。
+以 page table 中的第一项为例：<font color="blue">0</font>:<font color="green">1</font> 表示虚拟地址中的第 <font color="blue">0</font> 页对应物理地址中的第 <font color="green">1</font> 帧。
 </center>
 
 !!! tip "头脑风暴"
@@ -300,7 +298,7 @@ Paging model of logical and physical memory.<br/>
 
 !!! section "定量分析"
 
-    我们使用**击中比例(hit ratio)**来描述我们在 TLB 中成功找到我们需要的页帧键值对的概率，那么假设访问一次内存需要 $t \text{nanoseconds}$，那么使用该 TLB 的**有效内存访问时间(effective memory-access time)**为：
+    我们使用**击中比例(hit ratio)**来描述我们在 TLB 中成功找到我们需要的页帧键值对的概率，那么假设访问一次内存需要 $t$ nanoseconds，那么使用该 TLB 的**有效内存访问时间(effective memory-access time)**为：
 
     $$
     \begin{aligned}
@@ -335,13 +333,12 @@ Paging model of logical and physical memory.<br/>
 
 我们回顾一下目前的[页表的设计](#帧--页){target="_blank"}：现在的页表是以页号为索引、帧号为值的一维数组，而由于我们直接将页表存在物理内存中（否则会黄油猫[^3]！），所以我们其实需要一块完整的连续物理内存来存储整个页表——每一个虚拟地址我们都得存。
 
-假设我们的虚拟地址一共 32 位，而 page size 为 4 KB = 2^12^ B，即 offset 对应虚拟地址 32 位中的后 12 位，那么我们就需要连续的 2^20^ 个表项（对应一共 2^20^ 个虚拟地址）来存储页帧的映射关系。假设一个表项 4 Bytes，那么光一个页表就要占据我们 4 MB 的物理内存——而且是连续的物理内存。这实在是太夸张了！
+假设我们的虚拟地址一共 32 位，而 page size 为 4 KB = $2^12$ B，即 offset 对应虚拟地址 32 位中的后 12 位，那么我们就需要连续的 $2^20$ 个表项（对应一共 $2^20$ 个虚拟地址）来存储页帧的映射关系。假设一个表项 4 Bytes，那么光一个页表就要占据我们 4 MB 的物理内存——而且是连续的物理内存。这实在是太夸张了！
 
 现在我们要冷静地解决这个问题！现在问题有两个：⓵ 页表实在太大了，⓶ 它不仅大，而且必须是连续的。其中第二点是最关键的，在本节之后的内容中，我将称之为“连续内存约束问题”（非正式表述）。
 
 我们介绍三个方法来解决上述问题：[分层页表](#hierarchical-paging){target="_blank"}、[哈希页表](#hashed-pgtb){target="_blank"}和[反转页表](#inverted-pgtb){target="_blank"}。
 
-<a id="hierarchical-paging"/>
 ???+ section "分层页表"
 
     同样，我们首先来思考为什么这里需要的内存是连续的——作为一个一维数字，只有内存连续才能保证 random access。类似的问题我们在探索[连续分配](#连续分配及其问题){target="_blank"}的过程中已经遇到过了：在物理地址空间中寻求连续，一个重要就是因为只有物理地址的设计中，只有保证连续才能保证能 random access 地去访问地址，而现在这个一维数组太大块了，我们希望它碎一点；而我们通过保证分块地连续（帧内物理地址的连续），再保证块索引的连续（虚拟地址空间中页号的连续）的方式解决了这个问题，就好像把一个一维数组变成了一个**指针数组**，或者说逻辑上的二维数组。
@@ -373,7 +370,6 @@ Paging model of logical and physical memory.<br/>
 
         同时，实验三指导手册也提供了关于 [Risc-V Sv39](https://zju-sec.github.io/os23fall-stu/lab3/#risc-v-sv39-page-table-entry){target="_blank"} 的一些介绍。
 
-<a id="hashed-pgtb"/>
 ???+ section "哈希页表"
 
     简单回顾一下我们遇到的问题：页表太大，而且必须是连续的。但是实际上我们使用的映射关系，从虚拟地址来看是集中的，从物理地址来看是稀疏的，反正页表中有大量表项是 invalid 的，所以想办法不存这些用不到的表项，也是一种解决思路。
@@ -394,7 +390,6 @@ Paging model of logical and physical memory.<br/>
         
         Therefore, a single page-table entry can store the mappings for multiple physical-page frames. Clustered page tables are particularly useful for **sparse** address spaces, where memory references are **noncontiguous and scattered** throughout the address space.
 
-<a id="inverted-pgtb"/>
 ???+ section "反式页表"
 
     我们之前的页表通过维护虚拟地址的有序来实现对页号的 random access，但是代价是需要维护大量连续虚拟地址。反式页表(inverted page table)则直接大逆不道地修改了整套思路——以物理地址为索引维护映射关系。

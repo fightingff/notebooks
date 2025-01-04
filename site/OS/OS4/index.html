@@ -1786,7 +1786,6 @@
 <p>This scheme is pure demand paging: <strong>never</strong> bring a page into memory until it is required.</p>
 </blockquote>
 </div>
-<p><a id="pre-paging"/></p>
 <div class="admonition section">
 <p class="admonition-title">pre-paging</p>
 <p>Pure demand paging 的缺点就是在程序开始的时候会产生大量的 page fault。为了解决这个办法，我们可以在一开始将需要的页一起存入内存。这种做法叫做预换页(pre-paging)。</p>
@@ -1814,7 +1813,6 @@
 <p>说实话其实我感觉这里的逻辑稍微有点绕，可能是一些历史原因。</p>
 </blockquote>
 <p>操作系统就需要去处理这个异常的大概流程如下：</p>
-<p><a id="page-fault-handling"/></p>
 <div class="admonition section">
 <p class="admonition-title">page fault 处理流程</p>
 <ol>
@@ -1841,7 +1839,8 @@ Steps in handling a page fault.
 <blockquote>
 <p>我们可以在 <a href="https://zju-sec.github.io/os23fall-stu/lab5/" target="_blank">Lab5</a> 里对这一系列步骤有跟深刻的影响，Lab5 中的 vma 大概就是这里的“内部表”。</p>
 </blockquote>
-<p>EAT(Effective Access Time) = (1 - p) * (memory access time) + p * (page fault overhead + swap page out time + swap page in time)</p>
+<p>EAT(Effective Access Time) = (1 - p) * (memory access time) + </p>
+<p>p * (page fault overhead + swap page out time + swap page in time)</p>
 </div>
 <div class="admonition not-advice">
 <p class="admonition-title">慢！</p>
@@ -1931,7 +1930,6 @@ Example of free-frame list.</p>
 </div>
 <p>如果读者足够敏锐就会发现，我们只说了怎么取出 free-frame，而没说 free-frame 如何“再生”。</p>
 <p>当我们发现 free-frame list 为空，即没有空闲的 frame 时，我们考虑将一些先前已经被分配的 frame 给 page out 走，拿来给当前这个页用。而具体如何选择换走哪个 frame，我们会在<a href="#置换策略" target="_blank">置换策略</a>一节中介绍。</p>
-<p><a id="free-frame-buffer-pool"/></p>
 <div class="admonition section">
 <p class="admonition-title">free-frame buffer pool</p>
 <p>虽然我们还没介绍<a href="#置换策略" target="_blank">置换策略</a>，但是想象一下，如果等到没有 free-frame 的时候再去做置换，那么进程就需要<strong>等待置换完成</strong>以后再分配。</p>
@@ -2015,7 +2013,6 @@ Reclaiming pages.
 <p>现在我们来讨论具体的<strong>置换算法(replacement algorithm)</strong>。</p>
 <h3 id="opt">OPT</h3>
 <p>理论上最优，即 ⓵ 能带来最低的 page fault rate，⓶ 绝对不会遭受 <a href="https://en.wikipedia.org/wiki/B%C3%A9l%C3%A1dy%27s_anomaly">Belady's anomaly现象</a> 的做法是：<u>在<strong>未来</strong>最久的时间内不会被访问到的页作为 victim frame</u>。</p>
-<p><a id="Belady-s-anomaly"></p>
 <details class="extra">
 <summary>Belady's anomaly</summary>
 <blockquote>
@@ -2225,17 +2222,14 @@ Reclaiming pages.
 <p>显而易见的，这样还是容易出现内部碎片，Buddy system 无法解决这种内部碎片，但是稍候接受的 <a href="#slab-分配" target="_blank">Slab allocation</a> 可以。</p>
 </blockquote>
 <p>具体来说，Buddy system 通过不断二分的方式来寻找一块合适的内存，如下图：</p>
-<figure markdown>
-<center> ![](img/45.png){ width=60% } </center>
-例如 kernel 申请一块 21KB 的内存，那么 $C_L$ 就是我们最终分配的内存。
-</figure>
-
+<p><center> <img alt="" src="../img/45.png" width="60%" /> </center>
+例如 kernel 申请一块 21KB 的内存，那么 <span class="arithmatex">\(C_L\)</span> 就是我们最终分配的内存。</p>
 <p>Buddy system 还有一个特点是，它通过 coalesce 相邻的空闲块来形成更大的内存块，例如上图可以按照分裂的方式合并回 256 KB 的大内存块（~~合并大内存~~）。</p>
 <h3 id="slab">Slab 分配</h3>
 <p>Slab 分配的大概思路是预先了解到 kernel 内的常见数据结构（被称为各种 object）的大小，并预先准备好对应粒度的小内存块，注册到每类 object 的 cache 里。当一个 object 需要使用内存时，就查询对应的 cache 里是否有空闲的内存块，如果有就分配给它，如果没有就向 Buddy system 申请。</p>
 <p>相当于预先把内存分成了苹果小盒、冰箱大箱、超大车库，然后根据要放的东西的大小选择合适的空间来放。</p>
-<p>[^1]: <a href="https://medium.com/@adilrk/linux-oom-out-of-memory-killer-74fbae6dc1b0#9707" target="_blank">Linux OOM (Out-of-memory) Killer | Medium</a>
-[^2]: <a href="http://www.faadooengineers.com/online-study/post/ece/operating-systems/1165/enhanced-second-chance-algorithm" target="_blank">Enhanced Second-Chance Algorithm</a></p>
+<p>[^1]: <a href="https://medium.com/@adilrk/linux-oom-out-of-memory-killer-74fbae6dc1b0#9707" target="_blank">Linux OOM (Out-of-memory) Killer | Medium</a></p>
+<p>[^2]: <a href="http://www.faadooengineers.com/online-study/post/ece/operating-systems/1165/enhanced-second-chance-algorithm" target="_blank">Enhanced Second-Chance Algorithm</a></p>
 
 
 

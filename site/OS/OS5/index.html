@@ -2269,7 +2269,7 @@ The effects of instruction reordering in Peterson’s solution.
 </div>
 <div class="admonition proof">
 <p class="admonition-title">progress</p>
-<p>代码中对 <code>LOCK</code> 的修改操作是闭合的，即进入 critical section 会导致 <code>LOCK</code> 变为 <code class="highlight"><span class="nb">false</span></code>，但离开 critical section 必定导致 <code>LOCK</code> 变为 <code class="highlight"><span class="nb">true</span></code>。因此，只要没有进程处于 critical section，那么 <code>LOCK</code> 必定为 <code class="highlight"><span class="nb">false</span></code>，则一定有就绪的进程能够进入 critical section，而运行 critical section 的时间是有限的，因此 <code>LOCK</code> 又一定会在有限时间内变为 <code class="highlight"><span class="nb">false</span></code>，从而满足 progress。</p>
+<p>代码中对 <code>LOCK</code> 的修改操作是闭合的，即进入 critical section 会导致 <code>LOCK</code> 变为 <code class="highlight"><span class="nb">true</span></code>，但离开 critical section 必定导致 <code>LOCK</code> 变为 <code class="highlight"><span class="nb">false</span></code>。因此，只要没有进程处于 critical section，那么 <code>LOCK</code> 必定为 <code class="highlight"><span class="nb">false</span></code>，则一定有就绪的进程能够进入 critical section，而运行 critical section 的时间是有限的，因此 <code>LOCK</code> 又一定会在有限时间内变为 <code class="highlight"><span class="nb">false</span></code>，从而满足 progress。</p>
 </div>
 <div class="admonition bug">
 <p class="admonition-title">bounded waiting time</p>
