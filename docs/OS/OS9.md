@@ -10,10 +10,8 @@
 
 硬盘(hard disk, HD)是常见的二级存储，其结构按照从小到大分为：扇区(sectors)、磁道(tracks)、柱面(cylinders)，侧面的磁臂(disk arm)会以整体移动上面的所有读写磁头(r/w heads)。
 
-<figure markdown>
 <center> ![](img/46.png){ width=80% } </center>
 HDD moving-head disk mechanism.
-</figure>
 
 从硬盘上读写内容的过程如下：
 
@@ -100,10 +98,8 @@ SSTF 即 shortest seek time first，由于 seek time 基本和物理地址距离
 
 SCAN 算法下磁头在碰到 LBA 边界前只会单向移动，而在移动过程中处理能够处理的请求。这样保证了处理请求的过程中总是顺序的。
 
-<figure markdown>
 <center> ![](img/47.png){ width=80% } </center>
 SCAN disk scheduling.
-</figure>
 
 !!! advice "Advantages"
 
@@ -121,10 +117,8 @@ SCAN disk scheduling.
 
 C-SCAN 即 Circular SCAN，C-SCAN 与 SCAN 的唯一区别是，C-SCAN 的磁头移动是始终单向的，当磁头达到 LBA 的边界时，径直返回到另一端，回程中不响应任何请求，类似于“[首尾相撞](https://www.xiaoyuzhoufm.com/podcast/6291be6c5cf4a5ad60ca0cc5){target="_blank"}”了，所以才叫 “circular”。
 
-<figure markdown>
 <center> ![](img/48.png){ width=80% } </center>
 C-SCAN disk scheduling.
-</figure>
 
 !!! advice "Advantages"
     
@@ -136,7 +130,7 @@ C-SCAN disk scheduling.
 
 ???+ eg "🌰"
 
-    === "题面"
+    - "题面"
 
         假设设备 LBA 从 0 到 4999，现在磁头位于 `143`。此时，接下来待解决请求按照先来后到的顺序排列为：`86`, `1470`, `913`, `1774`, `948`, `1509`, `1022`, `1750`, `130`，并假设之后不会再有新的请求。
 
@@ -151,7 +145,7 @@ C-SCAN disk scheduling.
 
         > **提示**：从计算上来讲比较繁琐的就只有第一个，后面的都有比较容易的算法。
 
-    === "解析"
+    - "解析"
 
         **FCFS**：
         

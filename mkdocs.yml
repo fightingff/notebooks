@@ -39,6 +39,9 @@ nav:
             - Basic Sync: OS/OS5.md
             - Calssic Problems: OS/OS6.md
             - Deadlock: OS/OS7.md
+          - I/O: OS/OS8.md
+          - Storage: OS/OS9.md
+          - File System: OS/OS10.md
   - Tools:
       - Git: Git.md
       - Makefile & CMake: Make.md

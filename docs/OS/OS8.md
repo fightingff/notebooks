@@ -33,10 +33,8 @@ I/O 是计算机系统中的重要组成部分，它是计算机系统与外部�
     
     现代计算机系统中，中断是操作系统与 I/O 设备交互的主要方式，计算机向设备发出请求以后，可以将当前进程调度走，等到设备处理完成后会向 CPU 发送中断，此时计算机再对结果做处理。中断的优点是 CPU 不需要进行 busy wait，在设备处理时间远大于上下文交换的情况下可以提高 CPU 的利用率。
 
-    <figure markdown>
     <center> ![](img/49.png){ width=80% } </center>
     Interrupt-driven I/O cycle.
-    </figure>
 
 
 实际上使用哪种方案，其实与 “busy wait” 的优劣这个问题是等价的，我们已经在[同步](./Unit2-Part1.md#忙等待){target="_blank"}中有所涉及。
@@ -57,10 +55,8 @@ I/O 是计算机系统中的重要组成部分，它是计算机系统与外部�
 
 于是，操作系统能够使用系统调用封装 I/O 操作，将不同操作的差异性透明化，在 UNIX 中，这个系统调用是 `ioctl`^[Wiki](https://en.wikipedia.org/wiki/Ioctl){target="_blank"}^。
 
-<figure markdown>
 <center> ![](img/50.png){ width=80% } </center>
 A kernel I/O structure.
-</figure>
 
 具体来说，不同设备可能在这些方面有区别：
 
