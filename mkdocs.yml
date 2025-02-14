@@ -30,6 +30,9 @@ nav:
           - Physical Layer: Network/Network2.md
           - Data Link Layer: Network/Network3.md
           - Network Layer: Network/Network4.md
+          - Transport Layer: Network/Network5.md
+          - Application Layer: Network/Network6.md
+          - Security: Network/Network7.md
         - Operating System:
           - Overview: OS/OS1.md
           - Process: OS/OS2.md
@@ -46,6 +49,7 @@ nav:
       - Git: Git.md
       - Makefile & CMake: Make.md
       - Vim: Vim.md
+      - Server: Server.md
   - Materials:
       - AI Materials: AI_Materials.md
       - My AI Repository: https://github.com/fightingff/AI
